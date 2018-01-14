@@ -4,6 +4,7 @@ import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.runningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,27 +23,78 @@ public class BlueLeftAuto extends CommandGroup {
 
     	if(selectedAuto == 0) {
     		
-    		//Run Default Auto
-    		//Code for default auto goes here
+    		if(RobotStates.fieldSetup.equals("LR")) {
+    			//Default Auto for LR Setup
+    		}
+    		
+    		else if(RobotStates.fieldSetup.equals("LL")) {
+    			//Default Auto for LL Setup
+    		}
+    		
+    		else if(RobotStates.fieldSetup.equals("RL")) {
+    			//Default Auto for RL Setup
+    		}
+    		
+    		else if(RobotStates.fieldSetup.equals("RR")) {
+    			//Default Auto for RR Setup
+    		}
+    		
+    		else {
+    			DriverStation.reportError("Auto failed to init, error in Field Data", true);
+    		}
     		
     	}
     	
     	else if(selectedAuto == 1) {
     	
-    		//Run Auto 2
-    		//Code for auto 2 goes here
+    		if(RobotStates.fieldSetup.equals("LR")) {
+    			//Alternative Auto 1 for LR Setup
+    		}
     		
+    		else if(RobotStates.fieldSetup.equals("LL")) {
+    			//Alternative Auto 1 for LL Setup
+        	}
+    		
+    		else if(RobotStates.fieldSetup.equals("RL")) {
+    			//Alternative Auto 1 for RL Setup
+        	}
+    		
+    		else if(RobotStates.fieldSetup.equals("RR")) {
+    			//Alternative Auto 1 for RR Setup
+        	}
+    		
+    		else {
+    			DriverStation.reportError("Auto failed to init, error in Field Data", true);
+    		}
     	}
     	
     	else if(selectedAuto == 2) {
         	
-    		//Run Auto 3
-    		//Code for auto 3 goes here
+
+    		if(RobotStates.fieldSetup.equals("LR")) {
+    			//Alternative Auto 1 for LR Setup
+    		}
+    		
+    		else if(RobotStates.fieldSetup.equals("LL")) {
+    			//Alternative Auto 1 for LL Setup
+        	}
+    		
+    		else if(RobotStates.fieldSetup.equals("RL")) {
+    			//Alternative Auto 1 for RL Setup
+        	}
+    		
+    		else if(RobotStates.fieldSetup.equals("RR")) {
+    			//Alternative Auto 1 for RR Setup
+        	}
+    		
+    		else {
+    			DriverStation.reportError("Auto failed to init, error in Field Data", true);
+    		}
     		
     	}
-    	
-    	
+    	    	
     }
+    
     
     public void looper() {
     	

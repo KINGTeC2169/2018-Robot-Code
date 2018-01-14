@@ -5,7 +5,8 @@ public class RobotStates {
 	
 	//FMS Handler
 		public static boolean isFMSConnected;
-	
+		public static String fieldSetup;
+		
 	//RunningMode Handler
 		public static enum runningMode{
 			

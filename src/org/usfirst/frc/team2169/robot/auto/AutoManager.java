@@ -9,6 +9,7 @@ import org.usfirst.frc.team2169.robot.auto.modes.RedLeftAuto;
 import org.usfirst.frc.team2169.robot.auto.modes.RedRightAuto;
 import org.usfirst.frc.team2169.robot.auto.modes.SelfTest;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,7 +25,6 @@ public class AutoManager {
 		int position;
 		int mode;
 		public static String autoName;
-		public static String gameMessage;
 		
 	//Sendable Chooser Declarations
 		
@@ -41,9 +41,8 @@ public class AutoManager {
 		RedCenterAuto rCAuto;
 		RedRightAuto rRAuto;
 		SelfTest selfTest;
+	
 		
-	
-	
 	public AutoManager() {
 		
 		
@@ -72,9 +71,29 @@ public class AutoManager {
 
 	}
 	
-	public void runAuto(String gameMessage_) {
+	public String determineField(String gameMessage_) {
+	
+		if(gameMessage_.equals("LRL") || gameMessage_.equals("LRR")) {
+			return "LR";
+		}
+		else if(gameMessage_.equals("LLL") || gameMessage_.equals("LLR")) {
+			return "LL";
+		}
+		else if(gameMessage_.equals("RLL") || gameMessage_.equals("RLR")) {
+			return "RL";
+		}
+		else if(gameMessage_.equals("RRL") || gameMessage_.equals("RRR")) {
+			return "RR";
+		}
+		else {
+			DriverStation.reportError("Failure to recieve Field Data", true);
+			return null;
+		}
+		
+	}
+	
+	public void runAuto() {
 
-		gameMessage = gameMessage_;
 		alliance = allianceChooser.getSelected().intValue();
 		position = positionChooser.getSelected().intValue();
 		mode = modeChooser.getSelected().intValue();
