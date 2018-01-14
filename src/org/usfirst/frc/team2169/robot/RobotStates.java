@@ -34,7 +34,7 @@ public class RobotStates {
 		
 		public static armPos armPos;
 	
-	//Arm Position Handler
+	//Elevator Position Handler
 			public static enum elevatorPos{
 				
 				HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
@@ -42,5 +42,6 @@ public class RobotStates {
 			}
 			
 			public static elevatorPos elevatorPos;
+			public static double elevatorHeight;
 	
 }

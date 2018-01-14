@@ -33,6 +33,10 @@ public class ElevatorArm extends Subsystem{
 			RobotStates.elevatorPos = elevatorPos.SCALE_MID;
 			RobotStates.elevatorPos = elevatorPos.SCALE_HIGH;
 			RobotStates.elevatorPos = elevatorPos.HANG;
+			
+			//Make this return a number between 0 and 1 representing a percent of maximum height of the elevator.
+			//Ex. If elevator is halfway up, this number equals .5
+			RobotStates.elevatorHeight = 0;
 	
 	}
 
