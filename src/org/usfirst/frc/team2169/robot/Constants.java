@@ -14,6 +14,13 @@ public class Constants {
 	public static final int ticksPerRotation = 1250;
 
 	
+	//Current Limits
+	public static final int maxDriveTrainCurrent = 40;
+	
+	//Current Limit Timeouts
+	public static final int driveTrainCurrentTimeout = 50;
+	
+	
 	//Pathfinder
 	
 	public static final double timeStep= 0.05; //Seconds
@@ -37,6 +44,7 @@ public class Constants {
 	public static final double pathfinderI = 0;
 	public static final double pathfinderD = 0;
 	public static final double pathfinderVR = 0;
+	
 	
 	
 }
