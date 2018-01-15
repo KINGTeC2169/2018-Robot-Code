@@ -3,6 +3,7 @@ package org.usfirst.frc.team2169.robot;
 import org.usfirst.frc.team2169.robot.RobotStates.runningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
 import org.usfirst.frc.team2169.robot.subsystems.Superstructure;
+import org.usfirst.frc.team2169.util.CameraManager;
 import org.usfirst.frc.team2169.util.FMSManager;
 import org.usfirst.frc.team2169.util.ShuffleBoardManager;
 
@@ -18,18 +19,20 @@ public class Robot extends IterativeRobot {
 	Superstructure superStructure;
 	public static FMSManager fms;
 	ShuffleBoardManager shuffle;
+	CameraManager camera;
 	
 	@Override
 	public void robotInit() {
-
-		fms = new FMSManager(m_ds);
+		
 		RobotStates.runningMode = runningMode.IDLE;
+		camera = new CameraManager();
+		fms = new FMSManager(m_ds);
 		auto = new AutoManager();
 		superStructure = new Superstructure();
 		controls = new ControlMap();
 		shuffle = new ShuffleBoardManager();
-
-	
+		camera.startCameraServer(true, true, true);
+		
 	}
 	
 	public void disabledPeriodic() {

@@ -6,14 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShuffleBoardManager {
 	
-	public void startCameraServer() {
-     
-		//TODO Camera Server
+	
+	public void init(boolean fms) {		
 		
-	}
-	
-	public void init(boolean fms) {
-	
 		if(fms) {
 			//FMS Is Attached
 			connected();

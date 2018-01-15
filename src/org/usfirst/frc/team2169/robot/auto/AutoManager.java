@@ -1,6 +1,7 @@
  package org.usfirst.frc.team2169.robot.auto;
 
 import org.usfirst.frc.team2169.robot.Constants;
+import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.auto.modes.BlueCenterAuto;
 import org.usfirst.frc.team2169.robot.auto.modes.BlueLeftAuto;
 import org.usfirst.frc.team2169.robot.auto.modes.BlueRightAuto;
@@ -98,6 +99,7 @@ public class AutoManager {
 		position = positionChooser.getSelected().intValue();
 		mode = modeChooser.getSelected().intValue();
 		
+		SmartDashboard.putString("Field Setup", RobotStates.fieldSetup);
 
 		//Self Test
 		if(alliance == 0) {

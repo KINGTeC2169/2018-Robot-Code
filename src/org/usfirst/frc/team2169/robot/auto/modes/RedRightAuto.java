@@ -90,7 +90,7 @@ public class RedRightAuto extends CommandGroup {
     		
     		else if(RobotStates.fieldSetup.equals("RR")) {
     			//Alternative Auto 1 for RR Setup
-        	}
+    		}
     		
     		else {
     			DriverStation.reportError("Auto failed to init, error in Field Data", true);
