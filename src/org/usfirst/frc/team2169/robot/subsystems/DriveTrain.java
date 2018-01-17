@@ -12,12 +12,12 @@ public class DriveTrain extends Subsystem{
 	//Define null objects up here
 	//Public because autonomous needs to access actuators
 	//Static because there is only one of each subsystem
-	public static TalonSRX left;
-	public static TalonSRX leftSlave1;
-	public static TalonSRX leftSlave2;
-	public static TalonSRX right;
-	public static TalonSRX rightSlave1;
-	public static TalonSRX rightSlave2;
+	public TalonSRX left;
+	public TalonSRX leftSlave1;
+	public TalonSRX leftSlave2;
+	public TalonSRX right;
+	public TalonSRX rightSlave1;
+	public TalonSRX rightSlave2;
 	
 	public DriveTrain(){
 		
@@ -49,7 +49,7 @@ public class DriveTrain extends Subsystem{
 	}
 	
 	
-	public static void drive(boolean handleAcceleration, double left_, double right_) {
+	public void drive(boolean handleAcceleration, double left_, double right_) {
 		if(!handleAcceleration) {
 
 			//If you get here, override is active.

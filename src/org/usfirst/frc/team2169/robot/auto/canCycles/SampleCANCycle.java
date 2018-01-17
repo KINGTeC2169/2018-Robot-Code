@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot.auto.canCycles;
 
+import org.usfirst.frc.team2169.robot.auto.tasks.BlankTask;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class SampleCANCycle extends CommandGroup {
@@ -8,17 +10,15 @@ public class SampleCANCycle extends CommandGroup {
 	
     public SampleCANCycle() {
     	
-    	//Create Subsystems
-    	
     	//Put Sequentials and Parallels here
-    	
+    	addSequential(new BlankTask());
     	
     }
     
     
     public void smartDashPush() {
     	
-    //Put Smartdashboard output
+    	//Put Smartdashboard output
 
     }
 }

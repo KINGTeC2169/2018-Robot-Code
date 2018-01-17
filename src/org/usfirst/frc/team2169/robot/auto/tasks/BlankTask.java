@@ -1,14 +1,20 @@
 package org.usfirst.frc.team2169.robot.auto.tasks;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class SampleTask extends Command {
+public class BlankTask extends Command {
+	
+	boolean finished;
 
-    public SampleTask() {
-        // Use requires() here to declare subsystem dependencies
+    public BlankTask() {
+    
+    	finished = false;
+    	
+    	// Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
@@ -23,6 +29,10 @@ public class SampleTask extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        if(finished /* || Put Control Override here (if it exists)*/) {
+        	DriverStation.reportWarning("Task Cancelled", false);
+        	return true;	
+        }    
         return false;
     }
 
