@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2169.robot.auto.canCycles;
+package org.usfirst.frc.team2169.robot.auto.canCycles.cycles;
 
 import org.usfirst.frc.team2169.robot.auto.tasks.BlankTask;
 

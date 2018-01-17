@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot.auto.canCycles;
 
+import org.usfirst.frc.team2169.robot.auto.canCycles.cycles.SampleCANCycle;
+
 public class CANCycleHandler {
 	
 	public static SampleCANCycle sampleCANCycle;
