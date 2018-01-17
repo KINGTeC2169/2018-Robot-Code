@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class Robot extends IterativeRobot {
 
 	static AutoManager auto;
-	ControlMap controls;
-	Superstructure superStructure;
+	static ControlMap controls;
+	static Superstructure superStructure;
 	public static FMSManager fms;
-	ShuffleBoardManager shuffle;
-	CameraManager camera;
+	static ShuffleBoardManager shuffle;
+	static CameraManager camera;
 	
 	@Override
 	public void robotInit() {
