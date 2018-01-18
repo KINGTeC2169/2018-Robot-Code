@@ -8,11 +8,11 @@ import org.usfirst.frc.team2169.util.FMSManager;
 import org.usfirst.frc.team2169.util.ShuffleBoardManager;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
 
 	static AutoManager auto;
 	static ControlMap controls;
