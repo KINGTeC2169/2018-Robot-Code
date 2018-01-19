@@ -3,9 +3,7 @@ package org.usfirst.frc.team2169.robot.auto.modes;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.runningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
-import org.usfirst.frc.team2169.robot.auto.Paths;
 import org.usfirst.frc.team2169.robot.auto.tasks.FollowPath;
-import org.usfirst.frc.team2169.robot.subsystems.Superstructure;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,7 +26,7 @@ public class PathfinderSample extends CommandGroup {
 	
     public PathfinderSample() {
 
-    	follow = new FollowPath(Paths.example, Superstructure.drive.left, Superstructure.drive.right, Superstructure.navX);
+    	//follow = new FollowPath(Paths.example, Superstructure.drive.left, Superstructure.drive.right, Superstructure.navX);
     	if(selectedAuto == 0) {
     		
     		

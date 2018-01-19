@@ -11,5 +11,8 @@ public class ActuatorMap {
 		public static final int rightMasterDriveTalon = 3;
 		public static final int rightSlave1DriveTalon = 4;
 		public static final int rightSlave2DriveTalon = 5;
+		
+		//Compressor
+		public static final int compressorPCMPort = 0;
 }
 

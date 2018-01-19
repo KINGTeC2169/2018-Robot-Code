@@ -1,7 +1,5 @@
 package org.usfirst.frc.team2169.robot.auto.tasks;
 
-import org.usfirst.frc.team2169.robot.ControlMap;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,10 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TestTask extends Command {
 
-	int i;
 	boolean finished;
-    public TestTask() {
-    	i=0;
+	
+	public TestTask() {
     	finished = false;
     	DriverStation.reportWarning("Command Created", false);
     }
@@ -28,16 +25,26 @@ public class TestTask extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	DriverStation.reportWarning("Task Active", false);
+    	for(int i = 0; i < 11; i++) {
+    		
+    		DriverStation.reportWarning("Running Task: Loop # " + i, false);
+    		
+    	}
+    	
+    	finished = true;
+    	
+    	
+    	
+
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(finished || ControlMap.leftStickActive()) {
-        	DriverStation.reportWarning("Task Cancelled", false);
-        	return true;	
-        }    
-        return false;
+
+    	return finished;
+    	
+    	
     }
 
     // Called once after isFinished returns true
