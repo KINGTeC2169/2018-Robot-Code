@@ -8,11 +8,12 @@ import org.usfirst.frc.team2169.util.FMSManager;
 import org.usfirst.frc.team2169.util.ShuffleBoardManager;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class Robot extends TimedRobot {
+public class Robot extends IterativeRobot {
 
 	static AutoManager auto;
 	static ControlMap controls;
@@ -31,7 +32,9 @@ public class Robot extends TimedRobot {
 		superStructure = new Superstructure();
 		controls = new ControlMap();
 		shuffle = new ShuffleBoardManager();
-		camera.startCameraServer(true, true, true);
+		///camera.startCameraServer(true, true, true);
+		SmartDashboard.putBoolean("isRunning", false);
+		
 		
 	}
 	
@@ -54,23 +57,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		
-		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		Scheduler.getInstance().run();
+		
+		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
 		
-	}
-
-	
-	@Override
-	public void teleopInit() {
-		// TODO Auto-generated method stub
-		super.teleopInit();
+		
 	}
 	
 	
 	@Override
 	public void teleopPeriodic() {
+		
+		Scheduler.getInstance().run();
 		
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		RobotStates.runningMode = runningMode.TELEOP;
@@ -78,12 +78,18 @@ public class Robot extends TimedRobot {
 		try{
 			
 			shuffle.teleOp(m_ds.isFMSAttached());
+			superStructure.teleOpLoop();
+			
 			//Put Tele-Op Methods here
-		
+			
 		}
 		catch(Exception e){
 			DriverStation.reportError(e.toString(), true);
 		}
+
+		//test.start();
+		
+		//superStructure.teleOpLoop();
 		
 	}
 

@@ -29,8 +29,8 @@ public class Constants {
 		public static final int camera3ID = 2;
 		public static final int camera3FPS = 0;
 		public static final int camera3Width = 640;
-		public static final int camera3Height = 480;
-	
+		public static final int camera3Height = 480;	
+		
 	//Robot Contants go here
 	public static final double wheelBaseWidth = 5;
 	public static final double wheelDiameter = 5;
