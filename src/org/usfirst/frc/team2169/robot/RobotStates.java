@@ -19,10 +19,11 @@ public class RobotStates {
 	//Intake Mode Handler
 		public static enum intakeMode{
 			
-			INTAKE, OUTTAKE, IDLE
+			INTAKE, EXHAUST, IDLE
 			
 		}
 		
+		public static boolean intakeClamp;
 		public static intakeMode intakeMode;
 	
 

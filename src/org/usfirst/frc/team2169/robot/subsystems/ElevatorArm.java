@@ -25,11 +25,11 @@ public class ElevatorArm extends Subsystem{
 		//by the DriveTrain class to determine acceleration limits to prevent tipping.
 	
 	
-	static TalonSRX lift;
-	static TalonSRX liftSlave;
-	static TalonSRX arm;
-	static TalonSRX armSlave;
-	static AnalogInput elevatorHeightSensor;
+	TalonSRX lift;
+	TalonSRX liftSlave;
+	TalonSRX arm;
+	TalonSRX armSlave;
+	AnalogInput elevatorHeightSensor;
 	
 	public ElevatorArm() {
 		

@@ -18,10 +18,15 @@ public class ActuatorMap {
 		public static final int armMasterID = 8;
 		public static final int armSlaveID = 9;
 		
+		//Intake TalonSRX IDs
+		public static final int leftIntakeID = 10;
+		public static final int rightIntakeID = 11;
+		
 		//Compressor
 		public static final int compressorPCMPort = 0;
 						
 		//Analog Inputs
 		public static final int elevatorHeightSensorPort = 0;
+
 }
 
