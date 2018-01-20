@@ -67,7 +67,7 @@ public class ElevatorArm extends Subsystem{
 		
 		else {
 			
-			switch(RobotWantedStates.elevatorPos){
+			switch(RobotWantedStates.wantedElevatorPos){
 			case GROUND:
 				
 				//Check if safe

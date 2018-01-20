@@ -38,7 +38,7 @@ public class Intake extends Subsystem{
 		//Make sure these enums are actively updated or depended on.
 		//This method can be deleted
 		
-			switch(RobotWantedStates.intakeMode){
+			switch(RobotWantedStates.wantedIntakeMode){
 			
 			case IDLE:
 				//Check if safe

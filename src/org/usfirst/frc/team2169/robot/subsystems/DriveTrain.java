@@ -2,10 +2,18 @@ package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
 import org.usfirst.frc.team2169.robot.Constants;
+import org.usfirst.frc.team2169.robot.ControlMap;
+import org.usfirst.frc.team2169.robot.RobotStates;
+import org.usfirst.frc.team2169.robot.RobotStates.driveMode;
+import org.usfirst.frc.team2169.robot.RobotWantedStates;
+import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.subsystems.Subsystem;
+import org.usfirst.frc.team2169.util.FlyByWireHandler;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class DriveTrain extends Subsystem{
 	
@@ -18,6 +26,7 @@ public class DriveTrain extends Subsystem{
 	public TalonSRX right;
 	public TalonSRX rightSlave1;
 	public TalonSRX rightSlave2;
+	public DoubleSolenoid shifter;
 	
 	public DriveTrain(){
 		
@@ -49,21 +58,62 @@ public class DriveTrain extends Subsystem{
 	}
 	
 	
-	public void drive(boolean handleAcceleration, double left_, double right_) {
-		if(!handleAcceleration) {
+	public void drive() {
+		if(ControlMap.primaryDriverOverride()) {
 
 			//If you get here, override is active.
-			left.set(ControlMode.PercentOutput, left_);
-			right.set(ControlMode.PercentOutput, right_);
+			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick());
+			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick());
+			shift(null, true);
 	
 		}	
 		
 		else {
 			
-			//Drive code with acceleration handler
+			//TODO Drive code with acceleration handler
+			
+			shift(null, false);
 			
 		}
 		
+	}
+	
+	
+	void shift(RobotWantedStates.WantedDriveMode driveMode_, boolean override) {
+		//If the override is active, switch to the requested Drive Mode
+		if(override) {
+			
+			if(driveMode_ == WantedDriveMode.HIGH) {
+				
+				shifter.set(Constants.highGear);
+				RobotStates.driveMode = driveMode.HIGH;
+				
+			}
+			
+			if(driveMode_ == WantedDriveMode.LOW) {
+				
+				shifter.set(Constants.lowGear);
+				RobotStates.driveMode = driveMode.LOW;
+				
+			}
+		}
+		else {
+			
+			if(driveMode_ == WantedDriveMode.HIGH && FlyByWireHandler.determineSafety(driveMode_)) {
+				
+				shifter.set(Constants.highGear);
+				RobotStates.driveMode = driveMode.HIGH;
+				
+			}
+			
+			if(driveMode_ == WantedDriveMode.LOW && FlyByWireHandler.determineSafety(driveMode_)) {
+				
+				shifter.set(Constants.lowGear);
+				RobotStates.driveMode = driveMode.LOW;
+				
+			}
+		
+		}
 	}
 	
 	@Override

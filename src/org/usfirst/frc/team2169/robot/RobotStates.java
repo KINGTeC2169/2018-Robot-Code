@@ -15,6 +15,14 @@ public class RobotStates {
 		}
 	
 		public static runningMode runningMode;
+		
+		public static enum driveMode{
+			
+			LOW, HIGH, SHIFTING
+			
+		}
+		
+		public static driveMode driveMode;
 	
 	//Intake Mode Handler
 		public static enum intakeMode{

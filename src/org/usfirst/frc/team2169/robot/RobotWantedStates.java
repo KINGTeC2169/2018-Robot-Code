@@ -7,40 +7,50 @@ public class RobotWantedStates {
 		public static String fieldSetup;
 		
 	//RunningMode Handler
-		public static enum runningMode{
+		public static enum WantedRunningMode{
 			
 			IDLE, AUTO, TELEOP, LIMP
 			
 		}
 	
-		public static runningMode runningMode;
+		public static WantedRunningMode wantedrunningMode;
 	
+	//Drive Mode Handler
+		public static enum WantedDriveMode{
+			
+			LOW, HIGH, SHIFTING
+			
+		}
+		
+		public static WantedDriveMode wantedDriveMode;
+	
+		
 	//Intake Mode Handler
-		public static enum intakeMode{
+		public static enum WantedIntakeMode{
 			
 			INTAKE, EXHAUST, IDLE
 			
 		}
 		
 		public static boolean intakeClamp;
-		public static intakeMode intakeMode;
+		public static WantedIntakeMode wantedIntakeMode;
 	
 
 	//Arm Position Handler
-		public static enum armPos{
+		public static enum WantedArmPos{
 			
 			GROUND, FULLY_RETRACTED, PARTIALLY_RETRACTED
 			
 		}
 		
-		public static armPos armPos;
+		public static WantedArmPos wantedArmPos;
 	
 	//Elevator Position Handler
-			public static enum elevatorPos{
-				
-				HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
-				
-			}
+		public static enum WantedElevatorPos{
 			
-			public static elevatorPos elevatorPos;
+			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
+			
+		}
+		
+		public static WantedElevatorPos wantedElevatorPos;
 }

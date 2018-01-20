@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 public class Constants {
 
 	//Auto Names
@@ -36,6 +38,9 @@ public class Constants {
 	public static final double wheelDiameter = 5;
 	public static final int ticksPerRotation = 1250;
 
+	//SolenoidStates
+	public static final DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kForward;
+	public static final DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kReverse;
 	
 	//Current Limits
 	public static final int maxDriveTrainCurrent = 40;

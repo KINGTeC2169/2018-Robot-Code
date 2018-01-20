@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2169.robot;
 
+import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlMap {
@@ -8,9 +10,13 @@ public class ControlMap {
 	static Joystick primaryRight;
 	static Joystick operator;
 	
-	//Axis/Button Constants
-	public static int armAxis = 1;
-	public static int elevatorAxis = 2;
+	//Axis Constants
+	static int armAxis = 1;
+	static int elevatorAxis = 2;
+
+	//Button Constants
+	static int shiftUp = 3;
+	static int shiftDown = 4;	
 	
 	public ControlMap(){
 		
@@ -24,6 +30,22 @@ public class ControlMap {
 			
 			return primaryLeft.getRawAxis(1);
 			
+		}
+		
+		public static double rightTankStick() {
+		
+			return primaryRight.getRawAxis(1);
+		
+		}
+		
+		public static RobotWantedStates.WantedDriveMode getWantedShift(){
+			if(primaryLeft.getRawButtonPressed(shiftUp) || primaryLeft.getRawButtonPressed(shiftUp)) {
+				return WantedDriveMode.HIGH;
+			}
+			else if(primaryLeft.getRawButtonPressed(shiftDown) || primaryRight.getRawButtonPressed(shiftDown)){
+				return WantedDriveMode.LOW;
+			}
+			return null;
 		}
 		
 		public static boolean operatorOverrideActive() {
@@ -58,6 +80,15 @@ public class ControlMap {
 			return false;
 			
 		}
+
+		public static boolean primaryDriverOverride() {
+			if(primaryLeft.getRawButton(1) || primaryRight.getRawButton(1)) {
+				return true;
+			}
+			return false;
+		}
+
+
 	
 	}
 
