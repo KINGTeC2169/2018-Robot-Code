@@ -1,8 +1,17 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.ActuatorMap;
+import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
+import org.usfirst.frc.team2169.robot.RobotWantedStates;
+import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
 import org.usfirst.frc.team2169.robot.RobotStates.armPos;
 import org.usfirst.frc.team2169.robot.RobotStates.elevatorPos;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class ElevatorArm extends Subsystem{
 
@@ -14,30 +23,107 @@ public class ElevatorArm extends Subsystem{
 	//Support for arm position and elevator positions enums
 		//These macros should be in ranges because they will be used for rough CG calculations 
 		//by the DriveTrain class to determine acceleration limits to prevent tipping.
-
 	
-	public void enumExamples() {
+	
+	static TalonSRX lift;
+	static TalonSRX liftSlave;
+	static TalonSRX arm;
+	static TalonSRX armSlave;
+	static AnalogInput elevatorHeightSensor;
+	
+	public ElevatorArm() {
+		
+		elevatorHeightSensor = new AnalogInput(ActuatorMap.elevatorHeightSensorPort);
+		
+		//Lift Motors Setup
+		lift = new TalonSRX(ActuatorMap.liftMasterID);
+		liftSlave = new TalonSRX(ActuatorMap.liftSlaveID);
+		liftSlave.set(ControlMode.Follower, ActuatorMap.liftMasterID);
+		
+		//Arm Motors Setup
+		arm = new TalonSRX(ActuatorMap.armMasterID);
+		armSlave = new TalonSRX(ActuatorMap.armSlaveID);
+		armSlave.set(ControlMode.Follower, ActuatorMap.armMasterID);
+	}
+	
+	public void elevatorHandler() {
 		
 		//Make sure these enums are actively updated or depended on.
 		//This method can be deleted
 		
-			//Arm Enums
-			RobotStates.armPos = armPos.FULLY_RETRACTED;
-			RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
-			RobotStates.armPos = armPos.GROUND;
+		if(ControlMap.operatorOverrideActive()) {
+
+			if(ControlMap.isArmOverrideActive()) {
+				arm.set(ControlMode.PercentOutput, ControlMap.armOverrideValue());
+			}
 			
-			//Elevator Emums
-			RobotStates.elevatorPos = elevatorPos.GROUND;
-			RobotStates.elevatorPos = elevatorPos.SWITCH;
-			RobotStates.elevatorPos = elevatorPos.SCALE_LOW;
-			RobotStates.elevatorPos = elevatorPos.SCALE_MID;
-			RobotStates.elevatorPos = elevatorPos.SCALE_HIGH;
-			RobotStates.elevatorPos = elevatorPos.HANG;
+			if(ControlMap.isElevatorOverrideActive()) {
+				lift.set(ControlMode.PercentOutput, ControlMap.elevatorOverrideValue());	
+			}
 			
-			//Make this return a number between 0 and 1 representing a percent of maximum height of the elevator.
-			//Ex. If elevator is halfway up, this number equals .5
-			RobotStates.elevatorHeight = 0;
-	
+			CANCycleHandler.cancelArmElevatorCycles();
+			
+		}
+		
+		else {
+			
+			switch(RobotWantedStates.elevatorPos){
+			case GROUND:
+				
+				//Check if safe
+				//CANCycle for Ground Position
+				RobotStates.armPos = armPos.GROUND;
+				RobotStates.elevatorPos = elevatorPos.GROUND;
+				break;
+				
+			case HANG:
+			
+				//Check if safe
+				//CANCycle Hang Position
+				RobotStates.armPos = armPos.FULLY_RETRACTED;
+				RobotStates.elevatorPos = elevatorPos.HANG;
+				break;
+			
+			case SCALE_HIGH:
+				
+				//Check if safe
+				//CANCycle for (High) Position
+				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = elevatorPos.SCALE_HIGH;
+				break;
+				
+			case SCALE_LOW:
+				
+				//Check if safe
+				//CANCycle for Scale (Low) Position
+				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = elevatorPos.SCALE_LOW;
+				break;
+				
+			case SCALE_MID:
+				
+				//Check if safe
+				//CANCycle for Scale (Mid) Position
+				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = elevatorPos.SCALE_MID;
+				break;
+				
+			case SWITCH:
+				
+				//Check if safe
+				//CANCycle for Switch Position
+				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = elevatorPos.SWITCH;
+				break;
+				
+			default:
+				break;
+
+			}
+			
+		}
+
+			RobotStates.elevatorHeight = elevatorHeightSensor.getValue();
 	}
 
 	@Override

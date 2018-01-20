@@ -1,39 +1,63 @@
 package org.usfirst.frc.team2169.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 
 public class ControlMap {
 	
-	static Joystick joy;
-	static Button button;
+	static Joystick primaryLeft;
+	static Joystick primaryRight;
+	static Joystick operator;
+	
+	//Axis/Button Constants
+	public static int armAxis = 1;
+	public static int elevatorAxis = 2;
 	
 	public ControlMap(){
 		
-		//Controls go here
-		joy = new Joystick(0);
-		
+		primaryLeft = new Joystick(0);
+		primaryRight = new Joystick(1);
+		operator = new Joystick(2);
 	
 	}
-	
-		public static boolean buttonPressed() {
+		
+		public static double leftTankStick() {
 			
-			return joy.getRawButtonPressed(1);
-			
-		}
-	
-		public static double leftStickX() {
-			
-			return joy.getRawAxis(0);
+			return primaryLeft.getRawAxis(1);
 			
 		}
 		
-		public static boolean leftStickActive() {
-			if(joy.getRawAxis(0) > -.05 && joy.getRawAxis(0) < .05) {
-				return false;
+		public static boolean operatorOverrideActive() {
+			if(isArmOverrideActive() && isElevatorOverrideActive()) {
+				return true;
 			}
-			return true;
+			return false;
 		}
 		
+		public static double armOverrideValue() {
+			return operator.getRawAxis(armAxis);
+		}
+		
+		public static double elevatorOverrideValue() {
+			return operator.getRawAxis(elevatorAxis);
+		}
+		
+		public static boolean isArmOverrideActive() {
+		
+			if(operator.getRawAxis(armAxis) > .1 || operator.getRawAxis(armAxis) < -.1) {
+				return true;
+			}
+			return false;
+			
+		}
+		
+		public static boolean isElevatorOverrideActive() {
+			
+			if(operator.getRawAxis(elevatorAxis) > .1 || operator.getRawAxis(elevatorAxis) < -.1) {
+				return true;
+			}
+			return false;
+			
+		}
+	
 	}
 

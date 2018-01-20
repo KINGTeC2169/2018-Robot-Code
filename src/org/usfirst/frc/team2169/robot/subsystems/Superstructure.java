@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 //import org.usfirst.frc.team2169.robot.ActuatorMap;
-import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -34,9 +33,6 @@ public class Superstructure {
 	
 	public void teleOpLoop() {
 		
-		if(ControlMap.buttonPressed()) {
-			canHandler.test.start();	
-		}
 		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 		
 	}
