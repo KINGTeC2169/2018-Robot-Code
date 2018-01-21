@@ -64,7 +64,7 @@ public class DriveTrain extends Subsystem{
 			//If you get here, override is active.
 			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick());
 			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick());
-			shift(null, true);
+			shift(true);
 	
 		}	
 		
@@ -72,44 +72,51 @@ public class DriveTrain extends Subsystem{
 			
 			//TODO Drive code with acceleration handler
 			
-			shift(null, false);
+			shift(false);
 			
 		}
 		
 	}
 	
 	
-	void shift(RobotWantedStates.WantedDriveMode driveMode_, boolean override) {
+	void shift(boolean override) {
 		//If the override is active, switch to the requested Drive Mode
+		
+		ControlMap.getWantedShift();
+		
 		if(override) {
 			
-			if(driveMode_ == WantedDriveMode.HIGH) {
+			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH) {
 				
 				shifter.set(Constants.highGear);
 				RobotStates.driveMode = driveMode.HIGH;
+				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
 				
 			}
 			
-			if(driveMode_ == WantedDriveMode.LOW) {
+			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW) {
 				
 				shifter.set(Constants.lowGear);
 				RobotStates.driveMode = driveMode.LOW;
+				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
 				
 			}
 		}
 		else {
 			
-			if(driveMode_ == WantedDriveMode.HIGH && FlyByWireHandler.determineSafety(driveMode_)) {
+			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH && FlyByWireHandler.determineSafety(RobotWantedStates.wantedDriveMode)) {
 				
 				shifter.set(Constants.highGear);
 				RobotStates.driveMode = driveMode.HIGH;
+				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
 				
 			}
 			
-			if(driveMode_ == WantedDriveMode.LOW && FlyByWireHandler.determineSafety(driveMode_)) {
+			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW && FlyByWireHandler.determineSafety(RobotWantedStates.wantedDriveMode)) {
 				
 				shifter.set(Constants.lowGear);
 				RobotStates.driveMode = driveMode.LOW;
+				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
 				
 			}
 		

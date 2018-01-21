@@ -18,7 +18,7 @@ public class RobotWantedStates {
 	//Drive Mode Handler
 		public static enum WantedDriveMode{
 			
-			LOW, HIGH, SHIFTING
+			LOW, HIGH, SHIFT_TO_HIGH, SHIFT_TO_LOW
 			
 		}
 		

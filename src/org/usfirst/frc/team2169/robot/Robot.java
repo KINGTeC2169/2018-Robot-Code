@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 
 	static AutoManager auto;
-	static ControlMap controls;
 	static Superstructure superStructure;
 	public static FMSManager fms;
 	static ShuffleBoardManager shuffle;
@@ -30,10 +29,10 @@ public class Robot extends IterativeRobot {
 		fms = new FMSManager(m_ds);
 		auto = new AutoManager();
 		superStructure = new Superstructure();
-		controls = new ControlMap();
 		shuffle = new ShuffleBoardManager();
 		///camera.startCameraServer(true, true, true);
 		SmartDashboard.putBoolean("isRunning", false);
+		ControlMap.init();
 		
 		
 	}

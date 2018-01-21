@@ -18,13 +18,13 @@ public class ControlMap {
 	static int shiftUp = 3;
 	static int shiftDown = 4;	
 	
-	public ControlMap(){
-		
-		primaryLeft = new Joystick(0);
-		primaryRight = new Joystick(1);
-		operator = new Joystick(2);
-	
-	}
+		public static void init() {
+			
+			primaryLeft = new Joystick(0);
+			primaryRight = new Joystick(1);
+			operator = new Joystick(2);
+			
+		}
 		
 		public static double leftTankStick() {
 			
@@ -38,14 +38,13 @@ public class ControlMap {
 		
 		}
 		
-		public static RobotWantedStates.WantedDriveMode getWantedShift(){
+		public static void getWantedShift(){
 			if(primaryLeft.getRawButtonPressed(shiftUp) || primaryLeft.getRawButtonPressed(shiftUp)) {
-				return WantedDriveMode.HIGH;
+				RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_HIGH;
 			}
 			else if(primaryLeft.getRawButtonPressed(shiftDown) || primaryRight.getRawButtonPressed(shiftDown)){
-				return WantedDriveMode.LOW;
+				RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_LOW;
 			}
-			return null;
 		}
 		
 		public static boolean operatorOverrideActive() {
@@ -88,7 +87,5 @@ public class ControlMap {
 			return false;
 		}
 
-
-	
 	}
 

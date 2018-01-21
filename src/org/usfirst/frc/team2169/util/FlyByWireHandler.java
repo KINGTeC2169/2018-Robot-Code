@@ -32,7 +32,7 @@ public class FlyByWireHandler {
 	//Drivetrain wants to shift.  Decide if it's safe.
 	public static boolean determineSafety(WantedDriveMode driveMode_) {
 		
-		if(driveMode_ == WantedDriveMode.SHIFTING) {
+		if(driveMode_ == WantedDriveMode.SHIFT_TO_HIGH) {
 			
 			if(RobotStates.elevatorPos == elevatorPos.SCALE_HIGH) {
 				return false;
@@ -45,9 +45,21 @@ public class FlyByWireHandler {
 			}
 		}
 		
-		
+		if(driveMode_ == WantedDriveMode.SHIFT_TO_LOW) {
+			
+			if(RobotStates.elevatorPos == elevatorPos.SCALE_HIGH) {
+				return false;
+			}
+			if(RobotStates.elevatorPos == elevatorPos.SCALE_MID) {
+				return false;
+			}
+			if(RobotStates.elevatorPos == elevatorPos.SCALE_LOW) {
+				return false;
+			}
+		}
 		
 		return true;
+	
 	}
 	
 }
