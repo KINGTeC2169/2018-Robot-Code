@@ -1,8 +1,9 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.RobotStates;
+import org.usfirst.frc.team2169.robot.RobotStates.elevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedArmPos;
-import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedIntakeMode;
 //import org.usfirst.frc.team2169.robot.ActuatorMap;
 import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
@@ -36,7 +37,7 @@ public class Superstructure {
 
 		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
 		RobotWantedStates.wantedArmPos = WantedArmPos.FULLY_RETRACTED;
-		RobotWantedStates.wantedElevatorPos = WantedElevatorPos.GROUND;
+		RobotStates.elevatorPos = elevatorPos.SCALE_HIGH;
 		//comp.start();
 		
 	}

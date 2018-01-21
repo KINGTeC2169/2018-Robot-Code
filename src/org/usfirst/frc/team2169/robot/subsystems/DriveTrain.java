@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class DriveTrain extends Subsystem{
 	
@@ -86,9 +87,12 @@ public class DriveTrain extends Subsystem{
 		
 		if(override) {
 			
+			DriverStation.reportWarning("Shifting Override Active", false);
+			
 			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH) {
 				
 				shifter.set(Constants.highGear);
+				DriverStation.reportWarning("High Gear (override)", false);
 				RobotStates.driveMode = driveMode.HIGH;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
 				
@@ -97,6 +101,7 @@ public class DriveTrain extends Subsystem{
 			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW) {
 				
 				shifter.set(Constants.lowGear);
+				DriverStation.reportWarning("Low Gear (override)", false);
 				RobotStates.driveMode = driveMode.LOW;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
 				
@@ -104,17 +109,21 @@ public class DriveTrain extends Subsystem{
 		}
 		else {
 			
-			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH && FlyByWireHandler.determineSafety(RobotWantedStates.wantedDriveMode)) {
+			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH && 
+					FlyByWireHandler.determineSafety(RobotWantedStates.wantedDriveMode)) {
 				
 				shifter.set(Constants.highGear);
+				DriverStation.reportWarning("High Gear (no override)", false);
 				RobotStates.driveMode = driveMode.HIGH;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
 				
 			}
 			
-			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW && FlyByWireHandler.determineSafety(RobotWantedStates.wantedDriveMode)) {
+			if(RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW && 
+					FlyByWireHandler.determineSafety(RobotWantedStates.wantedDriveMode)) {
 				
 				shifter.set(Constants.lowGear);
+				DriverStation.reportWarning("Low Gear (no override)", false);
 				RobotStates.driveMode = driveMode.LOW;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
 				
