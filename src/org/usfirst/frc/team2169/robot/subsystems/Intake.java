@@ -2,11 +2,12 @@ package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
-import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotStates.intakeMode;
+import org.usfirst.frc.team2169.robot.RobotWantedStates;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends Subsystem{
@@ -23,7 +24,7 @@ public class Intake extends Subsystem{
 	
 	TalonSRX left;
 	TalonSRX right;
-	Solenoid clamp;
+	Solenoid clamp; 
 	
 	public Intake() {
 		
@@ -35,26 +36,30 @@ public class Intake extends Subsystem{
 	
 	public void intakeHandler() {
 		
-		//Make sure these enums are actively updated or depended on.
-		//This method can be deleted
 		
 			switch(RobotWantedStates.wantedIntakeMode){
 			
 			case IDLE:
-				//Check if safe
 				//Stop Intakes
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Intakes Idle", false);
+				}
 				RobotStates.intakeMode = intakeMode.IDLE;
 				break;
 				
 			case INTAKE:
-				//Check if safe
 				//Run Intakes Normally
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Intakes Intaking", false);
+				}
 				RobotStates.intakeMode = intakeMode.INTAKE;
 				break;
 			
 			case EXHAUST:
-				//Check if safe
 				//Run Intakes Backwards
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Intakes Exhaust", false);
+				}
 				RobotStates.intakeMode = intakeMode.EXHAUST;
 				break;
 
@@ -67,6 +72,9 @@ public class Intake extends Subsystem{
 			if(RobotWantedStates.intakeClamp) {
 				
 				//Retract Piston
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Intakes Clamping", false);
+				}
 				RobotStates.intakeClamp = true;
 				
 			}
@@ -74,6 +82,9 @@ public class Intake extends Subsystem{
 			else {
 				
 				//Extend Pistons
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Intakes Unclamped", false);
+				}
 				RobotStates.intakeClamp = false;
 				
 			}

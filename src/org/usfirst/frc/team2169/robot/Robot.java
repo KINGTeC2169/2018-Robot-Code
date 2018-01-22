@@ -33,6 +33,7 @@ public class Robot extends IterativeRobot {
 		///camera.startCameraServer(true, true, true);
 		SmartDashboard.putBoolean("isRunning", false);
 		ControlMap.init();
+		superStructure.robotInit();
 		
 		
 	}
@@ -86,6 +87,8 @@ public class Robot extends IterativeRobot {
 			DriverStation.reportError(e.toString(), true);
 		}
 
+		superStructure.teleOpLoop();
+		
 		//test.start();
 		
 		//superStructure.teleOpLoop();

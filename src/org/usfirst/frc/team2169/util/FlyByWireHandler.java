@@ -2,6 +2,9 @@ package org.usfirst.frc.team2169.util;
 
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 import org.usfirst.frc.team2169.robot.RobotStates.elevatorPos;
 
 public class FlyByWireHandler {
@@ -30,7 +33,7 @@ public class FlyByWireHandler {
 	}
 	
 	//Drivetrain wants to shift.  Decide if it's safe.
-	public static boolean determineSafety(WantedDriveMode driveMode_) {
+	public static boolean determineShiftSafety(WantedDriveMode driveMode_) {
 		
 		if(driveMode_ == WantedDriveMode.SHIFT_TO_HIGH) {
 			
@@ -43,6 +46,7 @@ public class FlyByWireHandler {
 			if(RobotStates.elevatorPos == elevatorPos.SCALE_LOW) {
 				return false;
 			}
+			
 		}
 		
 		if(driveMode_ == WantedDriveMode.SHIFT_TO_LOW) {
@@ -57,6 +61,8 @@ public class FlyByWireHandler {
 				return false;
 			}
 		}
+		
+		DriverStation.reportWarning("No Override!  Everything is safe!", false);
 		
 		return true;
 	

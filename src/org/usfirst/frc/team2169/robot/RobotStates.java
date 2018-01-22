@@ -4,6 +4,9 @@ public class RobotStates {
 	
 	
 	//FMS Handler
+	
+		public static boolean debugMode = true;
+		
 		public static boolean isFMSConnected;
 		public static String fieldSetup;
 		

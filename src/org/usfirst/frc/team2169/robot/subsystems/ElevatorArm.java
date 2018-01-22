@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class ElevatorArm extends Subsystem{
 
@@ -52,6 +53,10 @@ public class ElevatorArm extends Subsystem{
 		//This method can be deleted
 		
 		if(ControlMap.operatorOverrideActive()) {
+			
+			if(RobotStates.debugMode) {
+				DriverStation.reportWarning("Elevator Override Active", false);
+			}
 
 			if(ControlMap.isArmOverrideActive()) {
 				arm.set(ControlMode.PercentOutput, ControlMap.armOverrideValue());
@@ -72,6 +77,9 @@ public class ElevatorArm extends Subsystem{
 				
 				//Check if safe
 				//CANCycle for Ground Position
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Running Macro: Ground", false);
+				}
 				RobotStates.armPos = armPos.GROUND;
 				RobotStates.elevatorPos = elevatorPos.GROUND;
 				break;
@@ -80,6 +88,9 @@ public class ElevatorArm extends Subsystem{
 			
 				//Check if safe
 				//CANCycle Hang Position
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Running Macro: Hang", false);
+				}
 				RobotStates.armPos = armPos.FULLY_RETRACTED;
 				RobotStates.elevatorPos = elevatorPos.HANG;
 				break;
@@ -88,6 +99,9 @@ public class ElevatorArm extends Subsystem{
 				
 				//Check if safe
 				//CANCycle for (High) Position
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Running Macro: Scale High", false);
+				}
 				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
 				RobotStates.elevatorPos = elevatorPos.SCALE_HIGH;
 				break;
@@ -96,6 +110,9 @@ public class ElevatorArm extends Subsystem{
 				
 				//Check if safe
 				//CANCycle for Scale (Low) Position
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Running Macro: Scale Low", false);
+				}
 				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
 				RobotStates.elevatorPos = elevatorPos.SCALE_LOW;
 				break;
@@ -104,6 +121,10 @@ public class ElevatorArm extends Subsystem{
 				
 				//Check if safe
 				//CANCycle for Scale (Mid) Position
+
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Running Macro: Scale Mid", false);
+				}
 				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
 				RobotStates.elevatorPos = elevatorPos.SCALE_MID;
 				break;
@@ -112,6 +133,9 @@ public class ElevatorArm extends Subsystem{
 				
 				//Check if safe
 				//CANCycle for Switch Position
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Running Macro: Switch", false);
+				}
 				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
 				RobotStates.elevatorPos = elevatorPos.SWITCH;
 				break;
