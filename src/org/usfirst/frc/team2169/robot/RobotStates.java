@@ -2,7 +2,7 @@ package org.usfirst.frc.team2169.robot;
 
 public class RobotStates {
 	
-	public static boolean debugMode = false;
+	public static boolean debugMode = true;
 	
 	//FMS Handler
 		public static boolean isFMSConnected;

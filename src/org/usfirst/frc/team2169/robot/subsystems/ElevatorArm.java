@@ -59,16 +59,22 @@ public class ElevatorArm extends Subsystem{
 			
 			
 			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Elevator Override Active", false);
+				DriverStation.reportWarning("Operator Override Active", false);
 			}
 
 			//Set power to arm based directly on operator input
 			if(ControlMap.isArmOverrideActive()) {
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Arm Override Active", false);
+				}				
 				arm.set(ControlMode.PercentOutput, ControlMap.armOverrideValue());
 			}
 
 			//Set power to elevator based directly on operator input			
 			if(ControlMap.isElevatorOverrideActive()) {
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Elevator Override Active", false);
+				}	
 				lift.set(ControlMode.PercentOutput, ControlMap.elevatorOverrideValue());	
 			}
 			
