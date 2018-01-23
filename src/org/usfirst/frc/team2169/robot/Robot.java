@@ -1,6 +1,6 @@
 package org.usfirst.frc.team2169.robot;
 
-import org.usfirst.frc.team2169.robot.RobotStates.runningMode;
+import org.usfirst.frc.team2169.robot.RobotStates.RunningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
 import org.usfirst.frc.team2169.robot.subsystems.Superstructure;
 import org.usfirst.frc.team2169.util.CameraManager;
@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		
-		RobotStates.runningMode = runningMode.IDLE;
+		RobotStates.runningMode = RunningMode.IDLE;
 		camera = new CameraManager();
 		fms = new FMSManager(m_ds);
 		auto = new AutoManager();
@@ -33,6 +33,7 @@ public class Robot extends IterativeRobot {
 		///camera.startCameraServer(true, true, true);
 		SmartDashboard.putBoolean("isRunning", false);
 		ControlMap.init();
+		superStructure.robotInit();
 		
 		
 	}
@@ -48,7 +49,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		RobotStates.fieldSetup = auto.determineField(m_ds.getGameSpecificMessage());
-		RobotStates.runningMode = runningMode.AUTO;
+		RobotStates.runningMode = RunningMode.AUTO;
 		auto.runAuto();
 		
 	}
@@ -72,7 +73,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
-		RobotStates.runningMode = runningMode.TELEOP;
+		RobotStates.runningMode = RunningMode.TELEOP;
 		
 		try{
 			
@@ -86,6 +87,8 @@ public class Robot extends IterativeRobot {
 			DriverStation.reportError(e.toString(), true);
 		}
 
+		superStructure.teleOpLoop();
+		
 		//test.start();
 		
 		//superStructure.teleOpLoop();

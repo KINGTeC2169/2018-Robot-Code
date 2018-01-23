@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedArmPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
@@ -10,6 +11,7 @@ import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Superstructure {
@@ -34,9 +36,15 @@ public class Superstructure {
 
 	public void robotInit() {
 
+		if(RobotStates.debugMode) {
+			DriverStation.reportWarning("Starting Superstructure Init", false);
+		}
 		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
 		RobotWantedStates.wantedArmPos = WantedArmPos.FULLY_RETRACTED;
 		RobotWantedStates.wantedElevatorPos = WantedElevatorPos.GROUND;
+		if(RobotStates.debugMode) {
+			DriverStation.reportWarning("Superstructure Init Finished", false);
+		}
 		//comp.start();
 		
 	}
