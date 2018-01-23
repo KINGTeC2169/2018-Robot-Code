@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
+import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.IntakeMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
@@ -36,10 +37,13 @@ public class Intake extends Subsystem{
 	
 	public void intakeHandler() {
 		
+			//Get WantedState from ControlMap
+			ControlMap.getWantedIntake();
 		
+			//Set Intakes to whatever drivers want
 			switch(RobotWantedStates.wantedIntakeMode){
 			
-			case IDLE:
+			case IDLE: default:
 				//Stop Intakes
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Idle", false);
@@ -63,10 +67,6 @@ public class Intake extends Subsystem{
 				RobotStates.intakeMode = IntakeMode.EXHAUST;
 				break;
 
-			default:
-				//Stop Intakes
-				break;
-			
 			}
 			
 			if(RobotWantedStates.intakeClamp) {

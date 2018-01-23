@@ -39,7 +39,7 @@ public class RobotStates {
 	//Arm Position Handler
 		public static enum ArmPos{
 			
-			GROUND, FULLY_RETRACTED, PARTIALLY_RETRACTED
+			EXTENDED, FULLY_RETRACTED, PARTIALLY_RETRACTED
 			
 		}
 		

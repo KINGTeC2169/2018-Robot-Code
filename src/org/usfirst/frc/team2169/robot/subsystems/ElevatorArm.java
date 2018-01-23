@@ -54,24 +54,32 @@ public class ElevatorArm extends Subsystem{
 		
 		if(ControlMap.operatorOverrideActive()) {
 			
+			//Cancel all CANCycles related to Elevator/Arm
+			CANCycleHandler.cancelArmElevatorCycles();
+			
+			
 			if(RobotStates.debugMode) {
 				DriverStation.reportWarning("Elevator Override Active", false);
 			}
 
+			//Set power to arm based directly on operator input
 			if(ControlMap.isArmOverrideActive()) {
 				arm.set(ControlMode.PercentOutput, ControlMap.armOverrideValue());
 			}
-			
+
+			//Set power to elevator based directly on operator input			
 			if(ControlMap.isElevatorOverrideActive()) {
 				lift.set(ControlMode.PercentOutput, ControlMap.elevatorOverrideValue());	
 			}
-			
-			CANCycleHandler.cancelArmElevatorCycles();
 			
 		}
 		
 		else {
 			
+			//Pull WantedState from ControlMap
+			ControlMap.getWantedElevatorPos();
+			
+			//If safe, set robot's actual state to WantedState's value
 			switch(RobotWantedStates.wantedElevatorPos){
 			case GROUND:
 				
@@ -80,7 +88,7 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Ground", false);
 				}
-				RobotStates.armPos = ArmPos.GROUND;
+				RobotStates.armPos = ArmPos.EXTENDED;
 				RobotStates.elevatorPos = ElevatorPos.GROUND;
 				break;
 				
@@ -102,7 +110,7 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Scale High", false);
 				}
-				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.armPos = ArmPos.EXTENDED;
 				RobotStates.elevatorPos = ElevatorPos.SCALE_HIGH;
 				break;
 				
@@ -113,7 +121,7 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Scale Low", false);
 				}
-				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.armPos = ArmPos.EXTENDED;
 				RobotStates.elevatorPos = ElevatorPos.SCALE_LOW;
 				break;
 				
@@ -125,7 +133,7 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Scale Mid", false);
 				}
-				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.armPos = ArmPos.EXTENDED;
 				RobotStates.elevatorPos = ElevatorPos.SCALE_MID;
 				break;
 				
@@ -136,7 +144,7 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Switch", false);
 				}
-				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.armPos = ArmPos.EXTENDED;
 				RobotStates.elevatorPos = ElevatorPos.SWITCH;
 				break;
 				
@@ -147,24 +155,22 @@ public class ElevatorArm extends Subsystem{
 			
 		}
 
+			//Return Elevator Height from yo-yo sensor
 			RobotStates.elevatorHeight = elevatorHeightSensor.getValue();
 	}
 
 	@Override
 	public void pushToDashboard() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void zeroSensors() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 		
 	}
 	
