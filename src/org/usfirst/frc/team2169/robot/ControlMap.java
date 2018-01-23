@@ -4,7 +4,6 @@ import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedIntakeMode;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -18,9 +17,12 @@ public class ControlMap {
 		
 	//Operator Controls
 		
+		//Operator Master Override
+		static int operatorOverride = 10;
+		
 		//Axis Constants
 		static int armAxis = 1;
-		static int elevatorAxis = 2;
+		static int elevatorAxis = 5;
 		
 		//Elevator Macro Keys
 		static int liftGroundMacro = 1;
@@ -31,9 +33,13 @@ public class ControlMap {
 		static int liftHangMacro = 6;
 		
 		//Intake Keys
-		static int intakeAxis = 1;
-		static int clamp = 6;
+		static int intakeAxis = 3;
+		static int clamp = 7;
 	
+		//Deadbands
+		static double elevatorDeadband = .2;
+		static double armDeadband = .2;
+		
 		//Create Joystick Objects
 		static Joystick primaryLeft;
 		static Joystick primaryRight;
@@ -142,10 +148,7 @@ public class ControlMap {
 	
 	//Operator Override Handlers
 		public static boolean operatorOverrideActive() {
-			if(isArmOverrideActive() || isElevatorOverrideActive()) {
-				return true;
-			}
-			return false;
+			return operator.getRawButton(operatorOverride);
 		}
 		
 		public static double armOverrideValue() {
@@ -157,8 +160,8 @@ public class ControlMap {
 		}
 	
 		public static boolean isArmOverrideActive() {
-	
-		if(operator.getRawAxis(armAxis) > .1 || operator.getRawAxis(armAxis) < -.1) {
+
+		if(operator.getRawAxis(armAxis) > armDeadband || operator.getRawAxis(armAxis) < -armDeadband) {
 			return true;
 		}
 		return false;
@@ -167,7 +170,7 @@ public class ControlMap {
 	
 		public static boolean isElevatorOverrideActive() {
 		
-		if(operator.getRawAxis(elevatorAxis) > .1 || operator.getRawAxis(elevatorAxis) < -.1) {
+		if(operator.getRawAxis(elevatorAxis) > elevatorDeadband || operator.getRawAxis(elevatorAxis) < -elevatorDeadband) {
 			return true;
 		}
 		return false;
