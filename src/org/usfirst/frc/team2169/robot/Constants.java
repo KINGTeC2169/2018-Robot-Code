@@ -37,6 +37,7 @@ public class Constants {
 	public static final double wheelBaseWidth = 5;
 	public static final double wheelDiameter = 5;
 	public static final int ticksPerRotation = 1250;
+	public static final double maxElevatorHeight = 1250;
 
 	//SolenoidStates
 	public static final DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kForward;

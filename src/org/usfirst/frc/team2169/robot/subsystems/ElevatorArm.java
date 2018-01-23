@@ -5,8 +5,8 @@ import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
-import org.usfirst.frc.team2169.robot.RobotStates.armPos;
-import org.usfirst.frc.team2169.robot.RobotStates.elevatorPos;
+import org.usfirst.frc.team2169.robot.RobotStates.ArmPos;
+import org.usfirst.frc.team2169.robot.RobotStates.ElevatorPos;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -80,8 +80,8 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Ground", false);
 				}
-				RobotStates.armPos = armPos.GROUND;
-				RobotStates.elevatorPos = elevatorPos.GROUND;
+				RobotStates.armPos = ArmPos.GROUND;
+				RobotStates.elevatorPos = ElevatorPos.GROUND;
 				break;
 				
 			case HANG:
@@ -91,8 +91,8 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Hang", false);
 				}
-				RobotStates.armPos = armPos.FULLY_RETRACTED;
-				RobotStates.elevatorPos = elevatorPos.HANG;
+				RobotStates.armPos = ArmPos.FULLY_RETRACTED;
+				RobotStates.elevatorPos = ElevatorPos.HANG;
 				break;
 			
 			case SCALE_HIGH:
@@ -102,8 +102,8 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Scale High", false);
 				}
-				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
-				RobotStates.elevatorPos = elevatorPos.SCALE_HIGH;
+				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = ElevatorPos.SCALE_HIGH;
 				break;
 				
 			case SCALE_LOW:
@@ -113,8 +113,8 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Scale Low", false);
 				}
-				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
-				RobotStates.elevatorPos = elevatorPos.SCALE_LOW;
+				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = ElevatorPos.SCALE_LOW;
 				break;
 				
 			case SCALE_MID:
@@ -125,8 +125,8 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Scale Mid", false);
 				}
-				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
-				RobotStates.elevatorPos = elevatorPos.SCALE_MID;
+				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = ElevatorPos.SCALE_MID;
 				break;
 				
 			case SWITCH:
@@ -136,8 +136,8 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Running Macro: Switch", false);
 				}
-				RobotStates.armPos = armPos.PARTIALLY_RETRACTED;
-				RobotStates.elevatorPos = elevatorPos.SWITCH;
+				RobotStates.armPos = ArmPos.PARTIALLY_RETRACTED;
+				RobotStates.elevatorPos = ElevatorPos.SWITCH;
 				break;
 				
 			default:

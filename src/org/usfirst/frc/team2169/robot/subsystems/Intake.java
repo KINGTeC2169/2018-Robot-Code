@@ -2,7 +2,7 @@ package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
-import org.usfirst.frc.team2169.robot.RobotStates.intakeMode;
+import org.usfirst.frc.team2169.robot.RobotStates.IntakeMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -44,7 +44,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Idle", false);
 				}
-				RobotStates.intakeMode = intakeMode.IDLE;
+				RobotStates.intakeMode = IntakeMode.IDLE;
 				break;
 				
 			case INTAKE:
@@ -52,7 +52,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Intaking", false);
 				}
-				RobotStates.intakeMode = intakeMode.INTAKE;
+				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			
 			case EXHAUST:
@@ -60,7 +60,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Exhaust", false);
 				}
-				RobotStates.intakeMode = intakeMode.EXHAUST;
+				RobotStates.intakeMode = IntakeMode.EXHAUST;
 				break;
 
 			default:

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2169.robot.auto.modes;
 
 import org.usfirst.frc.team2169.robot.RobotStates;
-import org.usfirst.frc.team2169.robot.RobotStates.runningMode;
+import org.usfirst.frc.team2169.robot.RobotStates.RunningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -100,7 +100,7 @@ public class RedLeftAuto extends CommandGroup {
     	//Put looping checks/code in here
     	
     	smartDashPush();
-    	RobotStates.runningMode = runningMode.AUTO;
+    	RobotStates.runningMode = RunningMode.AUTO;
     	
     }
     

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2169.robot.auto.modes;
 
 import org.usfirst.frc.team2169.robot.RobotStates;
-import org.usfirst.frc.team2169.robot.RobotStates.runningMode;
+import org.usfirst.frc.team2169.robot.RobotStates.RunningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
 import org.usfirst.frc.team2169.robot.auto.tasks.FollowPath;
 
@@ -60,7 +60,7 @@ public class PathfinderSample extends CommandGroup {
     public void looper() {
     	
     	smartDashPush();
-    	RobotStates.runningMode = runningMode.AUTO;
+    	RobotStates.runningMode = RunningMode.AUTO;
     	
     }
     

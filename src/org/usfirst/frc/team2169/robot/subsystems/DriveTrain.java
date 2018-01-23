@@ -3,7 +3,7 @@ package org.usfirst.frc.team2169.robot.subsystems;
 import org.usfirst.frc.team2169.robot.ActuatorMap;
 import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
-import org.usfirst.frc.team2169.robot.RobotStates.driveMode;
+import org.usfirst.frc.team2169.robot.RobotStates.DriveMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.subsystems.Subsystem;
@@ -114,7 +114,7 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Robot States
-				RobotStates.driveMode = driveMode.HIGH;
+				RobotStates.driveMode = DriveMode.HIGH;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
 				
 			}
@@ -128,7 +128,7 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Robot States
-				RobotStates.driveMode = driveMode.LOW;
+				RobotStates.driveMode = DriveMode.LOW;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
 				
 			}
@@ -149,7 +149,7 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Robot States
-				RobotStates.driveMode = driveMode.HIGH;
+				RobotStates.driveMode = DriveMode.HIGH;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
 				
 			}
@@ -165,7 +165,7 @@ public class DriveTrain extends Subsystem{
 				}
 
 				//Set Robot States
-				RobotStates.driveMode = driveMode.LOW;
+				RobotStates.driveMode = DriveMode.LOW;
 				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
 				
 			}

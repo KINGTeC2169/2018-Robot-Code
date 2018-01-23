@@ -1,7 +1,9 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.RobotStates;
-import org.usfirst.frc.team2169.robot.RobotStates.elevatorPos;
+import org.usfirst.frc.team2169.robot.RobotStates.ArmPos;
+import org.usfirst.frc.team2169.robot.RobotStates.ElevatorPos;
+import org.usfirst.frc.team2169.robot.RobotStates.IntakeMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedArmPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
@@ -42,8 +44,10 @@ public class Superstructure {
 		}
 		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
 		RobotWantedStates.wantedArmPos = WantedArmPos.FULLY_RETRACTED;
-		RobotWantedStates.wantedElevatorPos = WantedElevatorPos.SCALE_HIGH;
-		RobotStates.elevatorPos = elevatorPos.SCALE_LOW;
+		RobotWantedStates.wantedElevatorPos = WantedElevatorPos.GROUND;
+		RobotStates.elevatorPos = ElevatorPos.GROUND;
+		RobotStates.armPos = ArmPos.FULLY_RETRACTED;
+		RobotStates.intakeMode = IntakeMode.IDLE;
 		if(RobotStates.debugMode) {
 			DriverStation.reportWarning("Superstructure Init Finished", false);
 		}
