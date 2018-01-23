@@ -4,6 +4,8 @@ import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedIntakeMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlMap {
@@ -11,8 +13,8 @@ public class ControlMap {
 	//Primary Controls
 	
 		//Button Constants
-		static int shiftUp = 3;
-		static int shiftDown = 4;	
+		static int shiftUp = 4;
+		static int shiftDown = 3;	
 		
 	//Operator Controls
 		
@@ -21,17 +23,16 @@ public class ControlMap {
 		static int elevatorAxis = 2;
 		
 		//Elevator Macro Keys
-		static int liftGroundMacro = 0;
-		static int liftSwitchMacro = 1;
-		static int liftScaleLowMacro = 2;
-		static int liftScaleMidMacro = 3;
-		static int liftScaleHighMacro = 4;
-		static int liftHangMacro = 5;
+		static int liftGroundMacro = 1;
+		static int liftSwitchMacro = 2;
+		static int liftScaleLowMacro = 3;
+		static int liftScaleMidMacro = 4;
+		static int liftScaleHighMacro = 5;
+		static int liftHangMacro = 6;
 		
 		//Intake Keys
-		static int intake = 6;
-		static int exhaust = 7;
-		static int clamp = 8;
+		static int intakeAxis = 1;
+		static int clamp = 6;
 	
 		//Create Joystick Objects
 		static Joystick primaryLeft;
@@ -41,8 +42,8 @@ public class ControlMap {
 		//Joystick Creater
 		public static void init() {
 			
-			primaryLeft = new Joystick(0);
-			primaryRight = new Joystick(0);
+			primaryLeft = new Joystick(1);
+			primaryRight = new Joystick(2);
 			operator = new Joystick(0);
 			
 		}
@@ -100,30 +101,34 @@ public class ControlMap {
 	
 	//Intake WantedState handler
 	public static void getWantedIntake(){
-		
+
 		//Intake Wheel States
-		if(operator.getRawButton(intake)) {
+		if(operator.getRawAxis(intakeAxis) < -.2) {
 			RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;
 		}
-		else if(operator.getRawButton(exhaust)){
+		else if(operator.getRawAxis(intakeAxis) > .2){
 			RobotWantedStates.wantedIntakeMode = WantedIntakeMode.EXHAUST;
 		}
-		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
+		else{
+			RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
+		}
 		
 		//Intake Clamp States
 		
 		//Clamp Button pressed and Is Clamping
-		if(operator.getRawButtonPressed(clamp) && RobotStates.intakeClamp) {
-			RobotWantedStates.intakeClamp = false;
-		}
-		//Clamp Button pressed and Is Not Clamping
-		else if(operator.getRawButton(clamp) && !RobotStates.intakeClamp) {
-			RobotWantedStates.intakeClamp = true;
-		}
-		//Clamp Button pressed and ClampState is unknown
-		else if(operator.getRawButton(clamp)) {
-			//Unclamp by default (safer option because system can still be used)
-			RobotWantedStates.intakeClamp = false;
+		if(operator.getRawButtonPressed(clamp)) {
+			
+			if(!RobotWantedStates.intakeClamp) {
+				RobotWantedStates.intakeClamp = true;
+			}
+			else if(RobotWantedStates.intakeClamp) {
+				RobotWantedStates.intakeClamp = false;
+			}
+			else {
+				//Something failed
+				RobotWantedStates.intakeClamp = false;
+			}
+			
 		}
 	}
 	
@@ -167,6 +172,10 @@ public class ControlMap {
 		}
 		return false;
 		
+	}
+		
+	public static void operatorUnsafeAction() {
+		operator.setRumble(RumbleType.kLeftRumble, 1);
 	}
 
 

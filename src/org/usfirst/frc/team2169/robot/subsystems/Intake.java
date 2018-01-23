@@ -72,23 +72,23 @@ public class Intake extends Subsystem{
 			if(RobotWantedStates.intakeClamp) {
 				
 				//Retract Piston
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("Intakes Clamping", false);
-				}
+				//if(RobotStates.debugMode) {
+					DriverStation.reportWarning("Intakes Clamped", false);
+				//}
 				RobotStates.intakeClamp = true;
 				
 			}
 			
-			else {
+			else if(!RobotWantedStates.intakeClamp) {
 				
 				//Extend Pistons
-				if(RobotStates.debugMode) {
+				//if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Unclamped", false);
-				}
+				//}
 				RobotStates.intakeClamp = false;
 				
 			}
-			
+		
 		}
 
 	@Override
