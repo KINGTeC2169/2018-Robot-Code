@@ -33,6 +33,17 @@ public class Constants {
 		public static final int camera3Width = 640;
 		public static final int camera3Height = 480;	
 		
+		
+	//Macro Encoder Positions go here
+	public static final double groundElevatorEncoderPosition = 0;
+	public static final double switchElevatorEncoderPosition = 50;
+	public static final double scaleLowElevatorEncoderPosition = 100;
+	public static final double scaleMidElevatorEncoderPosition = 150;
+	public static final double scaleHighElevatorEncoderPosition = 200;
+		
+	//Elevator PID
+	
+	
 	//Robot Contants go here
 	public static final double wheelBaseWidth = 5;
 	public static final double wheelDiameter = 5;

@@ -8,9 +8,8 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.command.Command;
 
-public class FollowPath extends Command {
+public class FollowPath extends Task {
 
 	PathfinderObject path;
 	Encoder leftEnc;

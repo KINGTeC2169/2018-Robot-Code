@@ -3,7 +3,7 @@ package org.usfirst.frc.team2169.robot.auto.modes;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.RunningMode;
 import org.usfirst.frc.team2169.robot.auto.AutoManager;
-import org.usfirst.frc.team2169.robot.auto.tasks.TestTask;
+import org.usfirst.frc.team2169.robot.auto.tasks.FollowPath;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -11,10 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RedRightAuto extends CommandGroup {
 	
-	//
+	FollowPath path;
 	
 	int selectedAuto;
-	TestTask task;
 	int i = 0;
 	
 	//Getter Method to get auto mode from AutoManager
