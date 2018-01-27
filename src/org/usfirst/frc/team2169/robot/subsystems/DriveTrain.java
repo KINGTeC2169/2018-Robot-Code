@@ -6,7 +6,6 @@ import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.DriveMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
-import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveOverride;
 import org.usfirst.frc.team2169.robot.subsystems.Subsystem;
 import org.usfirst.frc.team2169.util.FlyByWireHandler;
 
@@ -77,43 +76,56 @@ public class DriveTrain extends Subsystem{
 		
 		ControlMap.getWantedDriveOverride();
 		
-		//Override Active
-		if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
-			//Hang Code
-		}
-		else if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.OVERRIDE) {
-
-			if(RobotStates.debugMode) {
-				DriverStation.reportError("DriveTrain Class: Master Override Active!", false);	
-			}
-			
-			//Raw stick output with Squared controls
-			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
-			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
-			
-			climb(false);
-			
-			//Shift with override
-			shift(true);
-	
-		}	
-
-		//Override Not Active
-		else {
-			
-			//Acceleration Handler with Squared controls
-			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
-			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
-			
-			//Shift without override
-			shift(false);
-			
-		}
+		switch(RobotWantedStates.wantedDriveOverride) {
 		
-	}
+			//Drive without Override
+			case NONE: default:
+				
+				//Acceleration Handler with Squared controls
+				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
+				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
+				
+				//Shift without override
+				shift(false);
+				break;
+			
+			//Drive with Override
+			case OVERRIDE:
+		
+				//Drive with Override
+				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
+				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
+				
+				//Shift with override
+				shift(true);
+				break;
+		
+			//Hang
+			case HANG:
+				break;
+		
+			//Single-Run Go into Drive Mode
+			case WANTS_TO_DRIVE:
+				wantedClimbHander(false);
+				break;
+			
+			//Single-Run Go into Hang Mode
+			case WANTS_TO_HANG:
+				wantedClimbHander(true);
+				break;
 	
-	void climb(boolean climb) {
+			}
+
+		}
+	
+	void wantedClimbHander(boolean climb) {
 		if(climb){
+			
+			//Set Right Talons as slaves of Left Master
+			right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+			rightSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+			rightSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+			
 			//Dogshifter Extended
 			ptoShift.set(Value.kForward);
 			RobotStates.ptoActive = true;
@@ -121,6 +133,11 @@ public class DriveTrain extends Subsystem{
 		}
 			
 		else if(!climb){
+			
+			//Set Right Slaves as slaves of Right Master
+			rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+			rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+			
 			//Dogshifter Retracted
 			ptoShift.set(Value.kReverse);
 			RobotStates.ptoActive = false;
@@ -207,31 +224,6 @@ public class DriveTrain extends Subsystem{
 		
 		}
 	}
-	
-	void configureMotors(boolean climb) {
-		
-		if(!climb) {
-			//Left Slave Talons
-			leftSlave1.set(ControlMode.Follower, left.getDeviceID());
-			leftSlave2.set(ControlMode.Follower, left.getDeviceID());
-
-			//Right Slave Talons
-			rightSlave1.set(ControlMode.Follower, right.getDeviceID());
-			rightSlave2.set(ControlMode.Follower, right.getDeviceID());
-
-		}
-		else {
-			//Left Slave Talons
-			leftSlave1.set(ControlMode.Follower, left.getDeviceID());
-			leftSlave2.set(ControlMode.Follower, left.getDeviceID());
-
-			//Right Slave Talons
-			rightSlave1.set(ControlMode.Follower, left.getDeviceID());
-			rightSlave2.set(ControlMode.Follower, left.getDeviceID());
-
-		}
-	}
-	
 	
 	
 	@Override

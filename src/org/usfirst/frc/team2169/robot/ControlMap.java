@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2169.robot;
 
-import org.usfirst.frc.team2169.robot.RobotStates.DriveOverride;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveOverride;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
@@ -195,45 +194,32 @@ public class ControlMap {
 	
 	public static void getWantedDriveOverride() {
 		
-		//Coming from Driving
-		if(driversWantToHang() && (RobotStates.driveOverride != DriveOverride.WANTS_TO_HANG || RobotStates.driveOverride != DriveOverride.HANG)) {
+		//Drivers Want to Hang
+		if(driversWantToHang()) {
+			if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.WANTS_TO_HANG 
+					|| RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.HANG;
+			}
 			
-			RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_HANG;
-			
+			else {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_HANG;
+			}
 		}
-		
-		//Coming From WANTS_TO_HANG
-		else if(driversWantToHang() && RobotStates.driveOverride == DriveOverride.WANTS_TO_HANG) {
-			
-			RobotWantedStates.wantedDriveOverride = WantedDriveOverride.HANG;
-			
-		}
-		
-		//Coming from Hanging
-		else if(!driversWantToHang() && (RobotStates.driveOverride != DriveOverride.WANTS_TO_DRIVE 
-				|| RobotStates.driveOverride != DriveOverride.OVERRIDE || RobotStates.driveOverride != DriveOverride.NONE)) {
-				
-			RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_DRIVE;
-		}
-		
-		//Drive from Driving
+		//Drivers Want to Drive
 		else {
-
-			//Primary Override
-			if(primaryDriverOverride()) {
-				
+			//Coming from Climbing
+			if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.WANTS_TO_HANG 
+					|| RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_DRIVE;
+			}
+			else if(primaryDriverOverride()){
 				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.OVERRIDE;
 			}
-			
-			//Standard Drive
 			else {
-				
 				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.NONE;
-				
 			}
-	
 		}
-			
+		
 	}
 
 	public static void getWantedPlatform() {
