@@ -13,7 +13,6 @@ public class Constants {
 	public static final double armI = 0;
 	public static final double armD = 0;
 	
-	
 	//Auto Names
 	public static final String defaultAutoName = "Default Auto";
 	public static final String secondAutoName = "Auto 2";
@@ -43,6 +42,8 @@ public class Constants {
 		public static final int camera3Width = 640;
 		public static final int camera3Height = 480;	
 		
+	//Climb Speed
+	public static final double climbPower = .75;
 		
 	//Macro Encoder Positions go here
 	public static final double groundElevatorEncoderPosition = 0;

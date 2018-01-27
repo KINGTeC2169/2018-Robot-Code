@@ -22,6 +22,6 @@ public class IntakeIn extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+
     }
 }

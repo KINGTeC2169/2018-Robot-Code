@@ -22,6 +22,6 @@ public class ElevatorToScaleMid extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+
     }
 }

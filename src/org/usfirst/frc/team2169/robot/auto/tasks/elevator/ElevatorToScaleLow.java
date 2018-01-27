@@ -22,6 +22,6 @@ public class ElevatorToScaleLow extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+
     }
 }

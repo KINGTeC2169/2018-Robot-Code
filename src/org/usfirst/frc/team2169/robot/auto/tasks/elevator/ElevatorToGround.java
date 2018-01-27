@@ -22,6 +22,6 @@ public class ElevatorToGround extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+
     }
 }

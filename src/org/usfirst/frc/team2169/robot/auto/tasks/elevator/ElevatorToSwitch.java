@@ -22,6 +22,6 @@ public class ElevatorToSwitch extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+
     }
 }

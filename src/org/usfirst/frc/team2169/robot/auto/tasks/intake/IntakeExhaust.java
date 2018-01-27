@@ -22,6 +22,6 @@ public class IntakeExhaust extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+
     }
 }

@@ -22,6 +22,6 @@ public class IntakeIdle extends Task {
 	}
 	
     protected void end() {
-    	cancelTasks();
+    	
     }
 }

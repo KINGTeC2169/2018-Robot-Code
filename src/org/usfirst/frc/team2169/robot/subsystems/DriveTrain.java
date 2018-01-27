@@ -1,9 +1,11 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
+import org.usfirst.frc.team2169.robot.Constants;
 import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.DriveMode;
+import org.usfirst.frc.team2169.robot.RobotStates.DriveOverride;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.subsystems.Subsystem;
@@ -81,37 +83,98 @@ public class DriveTrain extends Subsystem{
 			//Drive without Override
 			case NONE: default:
 				
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: No Override, Standard Driving", false);
+				}
+				
 				//Acceleration Handler with Squared controls
 				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
 				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
 				
 				//Shift without override
 				shift(false);
+				
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.NONE;
+				
 				break;
 			
 			//Drive with Override
 			case OVERRIDE:
 		
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Override Mode", false);
+				}
+				
 				//Drive with Override
 				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
 				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
 				
 				//Shift with override
 				shift(true);
+				
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.OVERRIDE;
+				
 				break;
-		
+
 			//Hang
 			case HANG:
-				break;
-		
+
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Hang Mode", false);
+				}
+				
+				//Set Wheels to Hang Power
+				left.set(ControlMode.PercentOutput, Constants.climbPower);
+				
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.HANG;		
+
 			//Single-Run Go into Drive Mode
 			case WANTS_TO_DRIVE:
-				wantedClimbHander(false);
+				
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
+				}
+				
+				//Set Talon Modes for Driving
+				rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				
+				//Dogshifter Retracted
+				ptoShift.set(Value.kReverse);
+				RobotStates.ptoActive = false;
+
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.WANTS_TO_DRIVE;
+				
 				break;
 			
 			//Single-Run Go into Hang Mode
 			case WANTS_TO_HANG:
-				wantedClimbHander(true);
+
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Wants To Hang Mode", false);
+				}
+				
+				//Set Talon Modes for Driving
+				right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				
+				//Dogshifter Extended
+				ptoShift.set(Value.kForward);
+				RobotStates.ptoActive = true;
+
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.WANTS_TO_HANG;
+				
 				break;
 	
 			}
@@ -121,27 +184,14 @@ public class DriveTrain extends Subsystem{
 	void wantedClimbHander(boolean climb) {
 		if(climb){
 			
-			//Set Right Talons as slaves of Left Master
-			right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-			rightSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-			rightSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 			
-			//Dogshifter Extended
-			ptoShift.set(Value.kForward);
-			RobotStates.ptoActive = true;
 
 		}
 			
 		else if(!climb){
 			
 			//Set Right Slaves as slaves of Right Master
-			rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-			rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 			
-			//Dogshifter Retracted
-			ptoShift.set(Value.kReverse);
-			RobotStates.ptoActive = false;
-
 		}
 	}
 	
