@@ -17,6 +17,7 @@ public class RobotStates {
 	
 		public static RunningMode runningMode;
 		
+	//DriveMode Handler
 		public static enum DriveMode{
 			
 			LOW, HIGH, SHIFTING
@@ -24,7 +25,17 @@ public class RobotStates {
 		}
 		
 		public static DriveMode driveMode;
+		public static boolean ptoActive;
 	
+	//DriveOverride Handler
+		public static enum DriveOverride{
+			
+			WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE, HANG, NONE
+			
+		}
+	
+		public static DriveOverride driveOverride;
+		
 	//Intake Mode Handler
 		public static enum IntakeMode{
 			

@@ -11,19 +11,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SelfTest extends CommandGroup {
 	
-	ElevatorToGround elevatorToGround;
+	ElevatorToGround elevatorToGround0;
 	FollowPath follow1;
 	
 	void configure () {
 		
-		elevatorToGround.addTaskToCancel(follow1);
+		elevatorToGround0.addTaskToCancel(follow1);
 		
 	}
 	
     public SelfTest() {
     	
-    addSequential(elevatorToGround);
-    elevatorToGround.cancel();
+    addSequential(elevatorToGround0);
+    elevatorToGround0.cancel();
     	
     }
 

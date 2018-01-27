@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Superstructure {
 	
-	public static AHRS navX;
+	AHRS navX;
 	CANCycleHandler canHandler;
-	public static DriveTrain drive;
-	static Compressor comp;
-	public static Intake intake;
-	public static ElevatorArm liftArm;
+	DriveTrain drive;
+	Compressor comp;
+	Intake intake;
+	ElevatorArm liftArm;
 	
 	public Superstructure(){
 		
@@ -49,9 +49,9 @@ public class Superstructure {
 		
 	}
 	
-	public void teleOpLoop() {
+	public void subsystemLooper() {
 
-		drive.drive();
+		drive.driveHandler();
 		intake.intakeHandler();
 		liftArm.elevatorHandler();
 		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);

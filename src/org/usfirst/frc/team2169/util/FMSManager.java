@@ -14,33 +14,33 @@ public class FMSManager {
 	}
 		
 		@SuppressWarnings("deprecation")
-		double batteryVoltage() {
+		public double batteryVoltage() {
 			return fms.getBatteryVoltage();
 		}
 		@SuppressWarnings("deprecation")
-		boolean browningOut() {
+		public boolean browningOut() {
 			return fms.isBrownedOut();
 		}
-		boolean fmsActive() {
+		public boolean fmsActive() {
 			return fms.isFMSAttached();
 		}
-		Alliance alliance() {
+		public Alliance alliance() {
 			return fms.getAlliance();
 		}
-		String allianceName() {
+		public String allianceName() {
 			return fms.getAlliance().toString();
 		}
-		boolean isDriverStationAttached() {
+		public boolean isDriverStationAttached() {
 			return fms.isDSAttached();
 		}
-		double matchTime() {
+		public double matchTime() {
 			return fms.getMatchTime();
 		}
-		double remainingTimeAuto() {
+		public double remainingTimeAuto() {
 			return 15 - fms.getMatchTime();
 		}
-		double remainingTimeTeleOp() {
-			return 150 - fms.getMatchTime();
+		public double remainingTimeTeleOp() {
+			return 200 - fms.getMatchTime();
 		}
 
 }

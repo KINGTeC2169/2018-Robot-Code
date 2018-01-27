@@ -1,14 +1,44 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
+import org.usfirst.frc.team2169.robot.ActuatorMap;
+import org.usfirst.frc.team2169.robot.ControlMap;
+import org.usfirst.frc.team2169.robot.RobotWantedStates;
+
+import edu.wpi.first.wpilibj.Solenoid;
+
 public class Hanger extends Subsystem{
 
+    private static Hanger hInstance = null;
+
+    public static Hanger getInstance() {
+        if (hInstance == null) {
+            hInstance = new Hanger();
+        }
+        return hInstance;
+    }
 	
-	//There are so many unknowns with this mechanism that I haven't added any of it's enums or RobotStates because 
-	//I honestly have no idea what it is going to look like.
+	Solenoid platformRelease;
 	
-	//Just hold off until the design process comes along further.
+	public Hanger() {
+		platformRelease = new Solenoid(ActuatorMap.platformReleasePiston);
+		platformRelease.set(false);
+	}
 	
+	public void platformHandler() {
 	
+		ControlMap.getWantedPlatform();
+		if(RobotWantedStates.platformRelease){
+			releasePlatform(true);
+		}
+		else {
+			releasePlatform(false);
+		}
+		
+	}
+	
+	public void releasePlatform(boolean releaseState) {
+		platformRelease.set(releaseState);
+	}
 	
 	@Override
 	public void pushToDashboard() {

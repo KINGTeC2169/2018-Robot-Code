@@ -7,13 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 
 public class FollowPath extends Task {
 
 	PathfinderObject path;
-	Encoder leftEnc;
-	Encoder rightEnc;
 	
     public FollowPath(Waypoint[] points, TalonSRX left_, TalonSRX right_, AHRS gyro_) {
     
