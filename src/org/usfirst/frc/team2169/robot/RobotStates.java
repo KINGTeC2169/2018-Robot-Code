@@ -68,5 +68,6 @@ public class RobotStates {
 			public static double getElevatorHeight() {
 				return (elevatorHeight/Constants.maxElevatorHeight);
 			}
+			public static boolean elevatorInPosition;
 	
 }

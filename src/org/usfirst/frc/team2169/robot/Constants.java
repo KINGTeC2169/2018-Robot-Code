@@ -4,15 +4,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Constants {
 	
-	//Arm Motion Magic Data
-	public static final int armSlotIdx = 0;
-	public static final int armPIDLoopIdx = 0;
-	public static final int armTimeoutMs = 10;
-	public static final double armF = .2;
-	public static final double armP = .2;	
-	public static final double armI = 0;
-	public static final double armD = 0;
-	
 	//Auto Names
 	public static final String defaultAutoName = "Default Auto";
 	public static final String secondAutoName = "Auto 2";
@@ -44,7 +35,17 @@ public class Constants {
 		
 	//Climb Speed
 	public static final double climbPower = .75;
-		
+	
+	//Arm Motion Magic Data
+	public static final int liftSlotIdx = 0;
+	public static final int liftPIDLoopIdx = 0;
+	public static final int liftTimeoutMs = 10;
+	public static final double liftF = .2;
+	public static final double liftP = .2;	
+	public static final double liftI = 0;
+	public static final double liftD = 0;
+	public static final int liftAllowedError = 2;
+	
 	//Macro Encoder Positions go here
 	public static final double groundElevatorEncoderPosition = 0;
 	public static final double switchElevatorEncoderPosition = 50;
