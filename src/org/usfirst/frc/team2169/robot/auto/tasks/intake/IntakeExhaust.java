@@ -18,7 +18,7 @@ public class IntakeExhaust extends Task {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 	
     protected void end() {

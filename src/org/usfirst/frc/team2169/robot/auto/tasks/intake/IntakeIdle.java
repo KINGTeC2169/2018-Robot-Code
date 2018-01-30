@@ -18,7 +18,7 @@ public class IntakeIdle extends Task {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return true;
 	}
 	
     protected void end() {
