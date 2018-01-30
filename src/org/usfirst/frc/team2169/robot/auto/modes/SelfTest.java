@@ -9,7 +9,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SelfTest extends CommandGroup {
 	
+	void configure () {
+		
+	}
+	
     public SelfTest() {
+    	
     	
     }
 

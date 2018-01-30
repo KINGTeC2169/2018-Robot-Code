@@ -3,7 +3,7 @@ package org.usfirst.frc.team2169.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Constants {
-
+	
 	//Auto Names
 	public static final String defaultAutoName = "Default Auto";
 	public static final String secondAutoName = "Auto 2";
@@ -33,6 +33,30 @@ public class Constants {
 		public static final int camera3Width = 640;
 		public static final int camera3Height = 480;	
 		
+	//Climb Speed
+	public static final double climbPower = .75;
+	
+	//Arm Motion Magic Data
+	public static final int liftSlotIdx = 0;
+	public static final int liftPIDLoopIdx = 0;
+	public static final int liftTimeoutMs = 10;
+	public static final double liftF = .2;
+	public static final double liftP = .2;	
+	public static final double liftI = 0;
+	public static final double liftD = 0;
+	public static final int liftAllowedError = 2;
+	
+	//Macro Encoder Positions go here
+	public static final double groundElevatorEncoderPosition = 0;
+	public static final double switchElevatorEncoderPosition = 50;
+	public static final double scaleLowElevatorEncoderPosition = 100;
+	public static final double scaleMidElevatorEncoderPosition = 150;
+	public static final double scaleHighElevatorEncoderPosition = 200;
+	public static final double hangElevatorEncoderPosition = 175;
+		
+	//Elevator PID
+	
+	
 	//Robot Contants go here
 	public static final double wheelBaseWidth = 5;
 	public static final double wheelDiameter = 5;
@@ -73,8 +97,6 @@ public class Constants {
 	public static final double pathfinderI = 0;
 	public static final double pathfinderD = 0;
 	public static final double pathfinderVR = 0;
-	
-	
 	
 	
 }

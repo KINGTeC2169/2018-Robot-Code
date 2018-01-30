@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2169.robot;
 
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
+import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveOverride;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedIntakeMode;
 
@@ -36,6 +37,11 @@ public class ControlMap {
 		static int intakeAxis = 3;
 		static int clamp = 7;
 	
+		//Climb Keys
+		static int climbPrimary = 8;
+		static int climbOperator = 9;
+		static int releasePlatform = 10;
+		
 		//Deadbands
 		static double elevatorDeadband = .2;
 		static double armDeadband = .2;
@@ -179,6 +185,50 @@ public class ControlMap {
 		
 	public static void operatorUnsafeAction() {
 		operator.setRumble(RumbleType.kLeftRumble, 1);
+	}
+
+	static boolean driversWantToHang() {
+		return (primaryLeft.getRawButton(climbPrimary) || primaryLeft.getRawButton(climbPrimary)) 
+		&& operator.getRawButton(climbOperator);
+	}
+	
+	public static void getWantedDriveOverride() {
+		
+		//Drivers Want to Hang
+		if(driversWantToHang()) {
+			if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.WANTS_TO_HANG 
+					|| RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.HANG;
+			}
+			
+			else {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_HANG;
+			}
+		}
+		//Drivers Want to Drive
+		else {
+			//Coming from Climbing
+			if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.WANTS_TO_HANG 
+					|| RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_DRIVE;
+			}
+			else if(primaryDriverOverride()){
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.OVERRIDE;
+			}
+			else {
+				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.NONE;
+			}
+		}
+		
+	}
+
+	public static void getWantedPlatform() {
+		if(Robot.fms.remainingTimeTeleOp() <= 30 && operator.getRawButton(releasePlatform)) {
+			
+			RobotWantedStates.platformRelease = true;
+			
+		}
+		
 	}
 
 

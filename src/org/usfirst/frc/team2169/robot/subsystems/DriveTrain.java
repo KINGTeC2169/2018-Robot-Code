@@ -1,9 +1,11 @@
 package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
+import org.usfirst.frc.team2169.robot.Constants;
 import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.DriveMode;
+import org.usfirst.frc.team2169.robot.RobotStates.DriveOverride;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedDriveMode;
 import org.usfirst.frc.team2169.robot.subsystems.Subsystem;
@@ -13,23 +15,34 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class DriveTrain extends Subsystem{
+	
+    private static DriveTrain dInstance = null;
+
+    public static DriveTrain getInstance() {
+        if (dInstance == null) {
+            dInstance = new DriveTrain();
+        }
+        return dInstance;
+    }
 	
 	//Define null objects up here
 	//Public because autonomous needs to access actuators
 	//Static because there is only one of each subsystem
 	public TalonSRX left;
-	public TalonSRX leftSlave1;
-	public TalonSRX leftSlave2;
+	TalonSRX leftSlave1;
+	TalonSRX leftSlave2;
 	public TalonSRX right;
-	public TalonSRX rightSlave1;
-	public TalonSRX rightSlave2;
-	public DoubleSolenoid shifter;
-	
+	TalonSRX rightSlave1;
+	TalonSRX rightSlave2;
+	DoubleSolenoid shifter;
+    DoubleSolenoid ptoShift;
+    
 	public DriveTrain(){
-		
+
 		//Create the objects and set properties
 		left = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
 		leftSlave1 = new TalonSRX(ActuatorMap.leftSlave1DriveTalon);
@@ -38,14 +51,10 @@ public class DriveTrain extends Subsystem{
 		rightSlave1 = new TalonSRX(ActuatorMap.rightSlave1DriveTalon);
 		rightSlave2 = new TalonSRX(ActuatorMap.rightSlave2DriveTalon);
 		
-		//Left Slave Talons
-		leftSlave1.set(ControlMode.Follower, left.getDeviceID());
-		leftSlave2.set(ControlMode.Follower, left.getDeviceID());
-
-		//Right Slave Talons
-		rightSlave1.set(ControlMode.Follower, right.getDeviceID());
-		rightSlave2.set(ControlMode.Follower, right.getDeviceID());
-
+		leftSlave1.setInverted(true);
+		leftSlave2.setInverted(true);
+		right.setInverted(true);
+		
 		//Set Current Limits
 
 		/* Commented out because they throw errors if there aren't feedback devices plugged in.
@@ -57,41 +66,134 @@ public class DriveTrain extends Subsystem{
 		rightSlave2.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
 		*/
 		
+		//Shifting Solenoids
+		shifter = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.dtSpeedShiftForward, ActuatorMap.dtSpeedShiftReverse);
+		ptoShift = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.ptoShiftForward, ActuatorMap.ptoShiftReverse);
+		
+		
 	}
 	
 	
-	public void drive() {
+	public void driveHandler() {
 		
-		//Override Active
-		if(ControlMap.primaryDriverOverride()) {
+		ControlMap.getWantedDriveOverride();
+		
+		switch(RobotWantedStates.wantedDriveOverride) {
+		
+			//Drive without Override
+			case NONE: default:
+				
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: No Override, Standard Driving", false);
+				}
+				
+				//Acceleration Handler with Squared controls
+				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
+				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
+				
+				//Shift without override
+				shift(false);
+				
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.NONE;
+				
+				break;
+			
+			//Drive with Override
+			case OVERRIDE:
+		
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Override Mode", false);
+				}
+				
+				//Drive with Override
+				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
+				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
+				
+				//Shift with override
+				shift(true);
+				
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.OVERRIDE;
+				
+				break;
 
-			if(RobotStates.debugMode) {
-				DriverStation.reportError("DriveTrain Class: Master Override Active!", false);	
-			}
+			//Hang
+			case HANG:
+
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Hang Mode", false);
+				}
+				
+				//Set Wheels to Hang Power
+				left.set(ControlMode.PercentOutput, Constants.climbPower);
+				
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.HANG;		
+
+			//Single-Run Go into Drive Mode
+			case WANTS_TO_DRIVE:
+				
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
+				}
+				
+				//Set Talon Modes for Driving
+				rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				
+				//Dogshifter Retracted
+				ptoShift.set(Value.kReverse);
+				RobotStates.ptoActive = false;
+
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.WANTS_TO_DRIVE;
+				
+				break;
 			
-			//Raw stick output with Squared controls
-			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
-			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
-			
-			//Shift with override
-			shift(true);
+			//Single-Run Go into Hang Mode
+			case WANTS_TO_HANG:
+
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Wants To Hang Mode", false);
+				}
+				
+				//Set Talon Modes for Driving
+				right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				
+				//Dogshifter Extended
+				ptoShift.set(Value.kForward);
+				RobotStates.ptoActive = true;
+
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.WANTS_TO_HANG;
+				
+				break;
 	
-		}	
+			}
 
-		//Override Not Active
-		else {
+		}
+	
+	void wantedClimbHander(boolean climb) {
+		if(climb){
 			
-			//Acceleration Handler with Squared controls
-			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
-			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
 			
-			//Shift without override
-			shift(false);
+
+		}
+			
+		else if(!climb){
+			
+			//Set Right Slaves as slaves of Right Master
 			
 		}
-		
 	}
-	
 	
 	void shift(boolean override) {
 		//If the override is active, switch to the requested Drive Mode
@@ -172,6 +274,7 @@ public class DriveTrain extends Subsystem{
 		
 		}
 	}
+	
 	
 	@Override
 	public void pushToDashboard() {

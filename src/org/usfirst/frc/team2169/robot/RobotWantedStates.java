@@ -13,7 +13,7 @@ public class RobotWantedStates {
 			
 		}
 	
-		public static WantedRunningMode wantedrunningMode;
+		public static WantedRunningMode wantedRunningMode;
 	
 	//Drive Mode Handler
 		public static enum WantedDriveMode{
@@ -23,7 +23,17 @@ public class RobotWantedStates {
 		}
 		
 		public static WantedDriveMode wantedDriveMode;
+		public static boolean wantedPTOActive;
 	
+	//DriveOverride Handler
+		public static enum WantedDriveOverride{
+			
+			WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE, HANG, NONE
+			
+		}
+	
+		public static WantedDriveOverride wantedDriveOverride;
+		public static boolean platformRelease;
 		
 	//Intake Mode Handler
 		public static enum WantedIntakeMode{
@@ -53,4 +63,5 @@ public class RobotWantedStates {
 		}
 		
 		public static WantedElevatorPos wantedElevatorPos;
+		
 }

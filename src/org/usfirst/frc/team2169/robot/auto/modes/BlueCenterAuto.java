@@ -20,11 +20,11 @@ public class BlueCenterAuto extends CommandGroup {
 	}
 	
     public BlueCenterAuto() {
-
+    	
     	if(selectedAuto == 0) {
     		
     		if(RobotStates.fieldSetup.equals("LR")) {
-    			//Default Auto for LR Setup
+    			
     		}
     		
     		else if(RobotStates.fieldSetup.equals("LL")) {

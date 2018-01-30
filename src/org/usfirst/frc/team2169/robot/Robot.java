@@ -62,6 +62,8 @@ public class Robot extends IterativeRobot {
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
+		superStructure.subsystemLooper();
+		
 		
 		
 	}
@@ -78,7 +80,7 @@ public class Robot extends IterativeRobot {
 		try{
 			
 			shuffle.teleOp(m_ds.isFMSAttached());
-			superStructure.teleOpLoop();
+			superStructure.subsystemLooper();
 			
 			//Put Tele-Op Methods here
 			
@@ -86,8 +88,6 @@ public class Robot extends IterativeRobot {
 		catch(Exception e){
 			DriverStation.reportError(e.toString(), true);
 		}
-
-		superStructure.teleOpLoop();
 		
 		//test.start();
 		

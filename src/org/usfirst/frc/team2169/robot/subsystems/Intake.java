@@ -6,33 +6,40 @@ import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotStates.IntakeMode;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends Subsystem{
-
-	//TODO Add support for Arm and Elevator Lift
-	//Needs support for:
-	//Macros (preset positions) that can be configured from Constants.java
-	//Manual Macro override for Operator 
-	//Public getter for exact arm position
-	//Support for arm position and elevator positions enums
-		//These macros should be in ranges because they will be used for rough CG calculations 
-		//by the DriveTrain class to determine acceleration limits to prevent tipping.
 	
+    private static Intake iInstance = null;
+
+    public static Intake getInstance() {
+        if (iInstance == null) {
+            iInstance = new Intake();
+        }
+        return iInstance;
+    }
 	
 	TalonSRX left;
 	TalonSRX right;
-	Solenoid clamp; 
+	DoubleSolenoid clamp;
 	
 	public Intake() {
-		
-		//Lift Motors Setup
+	
 		left = new TalonSRX(ActuatorMap.leftIntakeID);
 		right = new TalonSRX(ActuatorMap.rightIntakeID);
 		right.setInverted(true);
+		clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward, ActuatorMap.clampPortReverse);
+	}
+	
+	void intake(double power) {
+		left.set(ControlMode.PercentOutput, power);
+		right.set(ControlMode.PercentOutput, power);
+		
 	}
 	
 	public void intakeHandler() {
@@ -48,6 +55,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Idle", false);
 				}
+				intake(0);
 				RobotStates.intakeMode = IntakeMode.IDLE;
 				break;
 				
@@ -56,6 +64,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Intaking", false);
 				}
+				intake(-1);
 				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			
@@ -64,6 +73,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Exhaust", false);
 				}
+				intake(1);
 				RobotStates.intakeMode = IntakeMode.EXHAUST;
 				break;
 
@@ -72,9 +82,10 @@ public class Intake extends Subsystem{
 			if(RobotWantedStates.intakeClamp) {
 				
 				//Retract Piston
-				//if(RobotStates.debugMode) {
+				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Clamped", false);
-				//}
+				}
+				clamp.set(Value.kReverse);
 				RobotStates.intakeClamp = true;
 				
 			}
@@ -82,9 +93,10 @@ public class Intake extends Subsystem{
 			else if(!RobotWantedStates.intakeClamp) {
 				
 				//Extend Pistons
-				//if(RobotStates.debugMode) {
+				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Unclamped", false);
-				//}
+				}
+				clamp.set(Value.kForward);
 				RobotStates.intakeClamp = false;
 				
 			}
