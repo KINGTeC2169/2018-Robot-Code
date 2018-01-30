@@ -32,10 +32,10 @@ public class DriveTrain extends Subsystem{
 	//Define null objects up here
 	//Public because autonomous needs to access actuators
 	//Static because there is only one of each subsystem
-	TalonSRX left;
+	public TalonSRX left;
 	TalonSRX leftSlave1;
 	TalonSRX leftSlave2;
-	TalonSRX right;
+	public TalonSRX right;
 	TalonSRX rightSlave1;
 	TalonSRX rightSlave2;
 	DoubleSolenoid shifter;

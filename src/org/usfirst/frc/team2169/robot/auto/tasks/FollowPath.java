@@ -3,18 +3,15 @@ package org.usfirst.frc.team2169.robot.auto.tasks;
 import org.usfirst.frc.team2169.util.PathfinderObject;
 import jaci.pathfinder.Waypoint;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class FollowPath extends Task {
 
 	PathfinderObject path;
 	
-    public FollowPath(Waypoint[] points, TalonSRX left_, TalonSRX right_, AHRS gyro_) {
+    public FollowPath(Waypoint[] points) {
     
-    	path = new PathfinderObject(points, left_, right_, gyro_);
+    	path = new PathfinderObject(points);
     	
     	DriverStation.reportWarning("Path Created", false);
     }

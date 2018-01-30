@@ -16,7 +16,16 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Superstructure {
 	
-	AHRS navX;
+    private static Superstructure sInstance = null;
+
+    public static Superstructure getInstance() {
+        if (sInstance == null) {
+            sInstance = new Superstructure();
+        }
+        return sInstance;
+    }
+	
+	public AHRS navX;
 	CANCycleHandler canHandler;
 	DriveTrain drive;
 	Compressor comp;

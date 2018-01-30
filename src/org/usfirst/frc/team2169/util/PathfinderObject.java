@@ -5,6 +5,8 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 import org.usfirst.frc.team2169.robot.Constants;
+import org.usfirst.frc.team2169.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team2169.robot.subsystems.Superstructure;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -22,13 +24,13 @@ public class PathfinderObject {
 	
 	public boolean isFinished = false;
 	
-	public PathfinderObject(Waypoint[] importedPoints, TalonSRX leftTalon_, TalonSRX rightTalon_, AHRS gyro_){
+	public PathfinderObject(Waypoint[] importedPoints){
 		points = importedPoints;
-		leftTalon = leftTalon_;
-		rightTalon = rightTalon_;
+		leftTalon = DriveTrain.getInstance().left;
+		rightTalon = DriveTrain.getInstance().right;
 		leftID = leftTalon.getDeviceID();
 		rightID = rightTalon.getDeviceID();
-		gyro = gyro_;
+		gyro = Superstructure.getInstance().navX;
 	}
 
 	EncoderFollower leftFollower;
@@ -45,7 +47,7 @@ public class PathfinderObject {
 	TankModifier modifier = new TankModifier(trajectory);
 
 	// Generate the Left and Right trajectories using the original trajectory
-	// as the centre
+	// as the center
 	modifier.modify(Constants.wheelBaseWidth);
 	Trajectory left  = modifier.getLeftTrajectory();
 	Trajectory right = modifier.getRightTrajectory();
