@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2169.robot.auto.canCycles.cycles;
+package org.usfirst.frc.team2169.robot.canCycles.cycles;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

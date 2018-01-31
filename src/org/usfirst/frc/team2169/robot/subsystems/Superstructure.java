@@ -6,8 +6,7 @@ import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedArmPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedIntakeMode;
 //import org.usfirst.frc.team2169.robot.ActuatorMap;
-
-import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
+import org.usfirst.frc.team2169.robot.canCycles.CANCycleHandler;
 
 import com.kauailabs.navx.frc.AHRS;
 

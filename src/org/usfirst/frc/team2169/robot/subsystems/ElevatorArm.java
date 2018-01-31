@@ -5,9 +5,9 @@ import org.usfirst.frc.team2169.robot.Constants;
 import org.usfirst.frc.team2169.robot.ControlMap;
 import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
-import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
 import org.usfirst.frc.team2169.robot.RobotStates.ArmPos;
 import org.usfirst.frc.team2169.robot.RobotStates.ElevatorPos;
+import org.usfirst.frc.team2169.robot.canCycles.CANCycleHandler;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
