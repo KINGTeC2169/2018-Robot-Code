@@ -6,6 +6,7 @@ import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedArmPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import org.usfirst.frc.team2169.robot.RobotWantedStates.WantedIntakeMode;
 //import org.usfirst.frc.team2169.robot.ActuatorMap;
+
 import org.usfirst.frc.team2169.robot.auto.canCycles.CANCycleHandler;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -30,6 +31,7 @@ public class Superstructure {
 	DriveTrain drive;
 	Compressor comp;
 	Intake intake;
+	Platform platform;
 	ElevatorArm liftArm;
 	
 	public Superstructure(){
@@ -37,6 +39,7 @@ public class Superstructure {
 		//comp = new Compressor(ActuatorMap.compressorPCMPort);
 		drive = new DriveTrain();
 		intake = new Intake();
+		platform = new Platform();
 		liftArm = new ElevatorArm();
 		navX = new AHRS(SPI.Port.kMXP, (byte)200);
 		canHandler = new CANCycleHandler();
@@ -61,8 +64,10 @@ public class Superstructure {
 	public void subsystemLooper() {
 
 		drive.driveHandler();
+		platform.platformHandler();
 		intake.intakeHandler();
 		liftArm.elevatorHandler();
+		
 		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 		
 	}

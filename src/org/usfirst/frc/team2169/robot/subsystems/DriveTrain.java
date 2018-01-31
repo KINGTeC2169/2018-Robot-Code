@@ -15,7 +15,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class DriveTrain extends Subsystem{
@@ -134,27 +133,10 @@ public class DriveTrain extends Subsystem{
 				//Set Robot State
 				RobotStates.driveOverride = DriveOverride.HANG;		
 
-			//Single-Run Go into Drive Mode
-			case WANTS_TO_DRIVE:
-				
-				//Debugging Information
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
-				}
-				
-				//Set Talon Modes for Driving
-				rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-				rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-				
-				//Dogshifter Retracted
-				ptoShift.set(Value.kReverse);
-				RobotStates.ptoActive = false;
-
-				//Set Robot State
-				RobotStates.driveOverride = DriveOverride.WANTS_TO_DRIVE;
-				
 				break;
 			
+				
+				
 			//Single-Run Go into Hang Mode
 			case WANTS_TO_HANG:
 
@@ -169,7 +151,7 @@ public class DriveTrain extends Subsystem{
 				rightSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 				
 				//Dogshifter Extended
-				ptoShift.set(Value.kForward);
+				//ptoShift.set(Value.kForward);
 				RobotStates.ptoActive = true;
 
 				//Set Robot State
@@ -177,9 +159,31 @@ public class DriveTrain extends Subsystem{
 				
 				break;
 	
-			}
+				
+			//Single-Run Go into Drive Mode
+			case WANTS_TO_DRIVE:
+				
+				//Debugging Information
+				if(RobotStates.debugMode) {
+					DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
+				}
+				
+				//Set Talon Modes for Driving
+				rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				
+				//Dogshifter Retracted
+				//ptoShift.set(Value.kReverse);
+				RobotStates.ptoActive = false;
 
+				//Set Robot State
+				RobotStates.driveOverride = DriveOverride.WANTS_TO_DRIVE;
+				
+				break;
+	
 		}
+		
+	}
 	
 	void wantedClimbHander(boolean climb) {
 		if(climb){

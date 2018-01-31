@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class Intake extends Subsystem{
@@ -85,8 +84,8 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Clamped", false);
 				}
-				clamp.set(Value.kReverse);
-				RobotStates.intakeClamp = true;
+				//clamp.set(Value.kReverse);
+				//RobotStates.intakeClamp = true;
 				
 			}
 			
@@ -96,8 +95,8 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Unclamped", false);
 				}
-				clamp.set(Value.kForward);
-				RobotStates.intakeClamp = false;
+				//clamp.set(Value.kForward);
+				//RobotStates.intakeClamp = false;
 				
 			}
 		

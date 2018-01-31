@@ -2,26 +2,29 @@ package org.usfirst.frc.team2169.robot.subsystems;
 
 import org.usfirst.frc.team2169.robot.ActuatorMap;
 import org.usfirst.frc.team2169.robot.ControlMap;
+import org.usfirst.frc.team2169.robot.RobotStates;
 import org.usfirst.frc.team2169.robot.RobotWantedStates;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 
-public class Hanger extends Subsystem{
+public class Platform extends Subsystem{
 
-    private static Hanger hInstance = null;
+    private static Platform hInstance = null;
 
-    public static Hanger getInstance() {
+    public static Platform getInstance() {
         if (hInstance == null) {
-            hInstance = new Hanger();
+            hInstance = new Platform();
         }
         return hInstance;
     }
 	
 	Solenoid platformRelease;
 	
-	public Hanger() {
+	public Platform() {
 		platformRelease = new Solenoid(ActuatorMap.platformReleasePiston);
 		platformRelease.set(false);
+		RobotWantedStates.platformRelease = false;
 	}
 	
 	public void platformHandler() {
@@ -38,6 +41,9 @@ public class Hanger extends Subsystem{
 	
 	public void releasePlatform(boolean releaseState) {
 		platformRelease.set(releaseState);
+		if(releaseState && RobotStates.debugMode) {
+			DriverStation.reportWarning("Hanger: Platform realased", false);
+		}
 	}
 	
 	@Override

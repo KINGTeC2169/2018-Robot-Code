@@ -18,7 +18,8 @@ public class ControlMap {
 		
 	//Operator Controls
 		
-		//Operator Master Override
+		//Master Overrides
+		static int primaryOverride = 3;
 		static int operatorOverride = 10;
 		
 		//Axis Constants
@@ -38,9 +39,9 @@ public class ControlMap {
 		static int clamp = 7;
 	
 		//Climb Keys
-		static int climbPrimary = 8;
-		static int climbOperator = 9;
-		static int releasePlatform = 10;
+		static int climbPrimary = 1;
+		static int climbOperator = 2;
+		static int releasePlatform = 1;
 		
 		//Deadbands
 		static double elevatorDeadband = .2;
@@ -54,8 +55,8 @@ public class ControlMap {
 		//Joystick Creater
 		public static void init() {
 			
-			primaryLeft = new Joystick(1);
-			primaryRight = new Joystick(2);
+			primaryLeft = new Joystick(0);
+			primaryRight = new Joystick(0);
 			operator = new Joystick(0);
 			
 		}
@@ -146,7 +147,7 @@ public class ControlMap {
 	
 	//Primary Driver Speed-Cap/Shifting Override Handler
 	public static boolean primaryDriverOverride() {
-		if(primaryLeft.getRawButton(1) || primaryRight.getRawButton(1)) {
+		if(primaryLeft.getRawButton(primaryOverride) || primaryRight.getRawButton(primaryOverride)) {
 			return true;
 		}
 		return false;
@@ -223,7 +224,7 @@ public class ControlMap {
 	}
 
 	public static void getWantedPlatform() {
-		if(Robot.fms.remainingTimeTeleOp() <= 30 && operator.getRawButton(releasePlatform)) {
+		if(/*Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {
 			
 			RobotWantedStates.platformRelease = true;
 			
