@@ -1,5 +1,7 @@
 package com.team2169.robot;
 
+import com.team2169.util.TalonMaker.TalonConfig;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Constants {
@@ -36,15 +38,19 @@ public class Constants {
 	//Climb Speed
 	public static final double climbPower = .75;
 	
-	//Arm Motion Magic Data
-	public static final int liftSlotIdx = 0;
-	public static final int liftPIDLoopIdx = 0;
-	public static final int liftTimeoutMs = 10;
-	public static final double liftF = .2;
-	public static final double liftP = .2;	
-	public static final double liftI = 0;
-	public static final double liftD = 0;
-	public static final int liftAllowedError = 2;
+	public static TalonConfig liftData = new TalonConfig();
+	public static void setLiftDataFromConstants() {
+		liftData.slotIDx = 0;
+		liftData.pidLoopIDx = 0;
+		liftData.timeoutMs = 10;
+		liftData.allowedError = 2;
+		liftData.p = .2;
+		liftData.i = 0;
+		liftData.d = 0;
+		liftData.f = .2;
+		
+	}
+	
 	
 	//Macro Encoder Positions go here
 	public static final double groundElevatorEncoderPosition = 0;

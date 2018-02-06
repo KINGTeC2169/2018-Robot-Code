@@ -1,8 +1,6 @@
 package com.team2169.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.Constants;
@@ -12,6 +10,7 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.RobotStates.ElevatorPos;
 import com.team2169.robot.canCycles.CANCycleHandler;
+import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -38,37 +37,11 @@ public class ElevatorArm extends Subsystem{
 		lift = new TalonSRX(ActuatorMap.liftMasterID);
 		liftSlave = new TalonSRX(ActuatorMap.liftSlaveID);
 		liftSlave.set(ControlMode.Follower, ActuatorMap.liftMasterID);
-		lift.getLastError();
-			//Elevator Height Configuration
-			/* first choose the sensor */
-			lift.configSelectedFeedbackSensor(FeedbackDevice.Analog, Constants.liftPIDLoopIdx, Constants.liftTimeoutMs);
-			lift.setSensorPhase(true);
-			lift.setInverted(false);
-	
-			/* Set relevant frame periods to be at least as fast as periodic rate */
-			lift.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.liftTimeoutMs);
-			lift.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.liftTimeoutMs);
-	
-			/* set the peak and nominal outputs */
-			lift.configNominalOutputForward(0, Constants.liftTimeoutMs);
-			lift.configNominalOutputReverse(0, Constants.liftTimeoutMs);
-			lift.configPeakOutputForward(1, Constants.liftTimeoutMs);
-			lift.configPeakOutputReverse(-1, Constants.liftTimeoutMs);
-	
-			/* set closed loop gains in slot0 - see documentation */
-			lift.selectProfileSlot(Constants.liftSlotIdx, Constants.liftPIDLoopIdx);
-			lift.config_kF(0, Constants.liftF, Constants.liftTimeoutMs);
-			lift.config_kP(0, Constants.liftP, Constants.liftTimeoutMs);
-			lift.config_kI(0, Constants.liftI, Constants.liftTimeoutMs);
-			lift.config_kD(0, Constants.liftD, Constants.liftTimeoutMs);
-			
-			/* set acceleration and vcruise velocity - see documentation */
-			lift.configMotionCruiseVelocity(15000, Constants.liftTimeoutMs);
-			lift.configMotionAcceleration(6000, Constants.liftTimeoutMs);
-			
-			/* zero the sensor */
-			lift.setSelectedSensorPosition(0, Constants.liftPIDLoopIdx, Constants.liftTimeoutMs);
+		Constants.setLiftDataFromConstants();
 
+		//Prep Lift for Motion Profiling
+		lift = TalonMaker.prepTalonForMotionProfiling(lift, Constants.liftData);
+		
 		//Arm Motors Setup
 		arm = new TalonSRX(ActuatorMap.armMasterID);
 		armSlave = new TalonSRX(ActuatorMap.armSlaveID);
@@ -81,7 +54,8 @@ public class ElevatorArm extends Subsystem{
 	
 	public void getFinishedState() {
 	
-		if(lift.getClosedLoopError(Constants.liftPIDLoopIdx) < Constants.liftAllowedError || lift.getClosedLoopError(Constants.liftPIDLoopIdx) > -Constants.liftAllowedError) {
+		if(lift.getClosedLoopError(Constants.liftData.pidLoopIDx) < Constants.liftData.allowedError || 
+				lift.getClosedLoopError(Constants.liftData.pidLoopIDx) > -Constants.liftData.allowedError) {
 			RobotStates.elevatorInPosition = true;
 		}
 		RobotStates.elevatorInPosition = false;
@@ -236,7 +210,7 @@ public class ElevatorArm extends Subsystem{
 		}
 
 			//Return Elevator Height from yo-yo sensor
-			RobotStates.elevatorHeight = lift.getSelectedSensorPosition(Constants.liftSlotIdx);
+			RobotStates.elevatorHeight = lift.getSelectedSensorPosition(Constants.liftData.slotIDx);
 			getFinishedState();
 			
 	}
