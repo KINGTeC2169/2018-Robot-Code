@@ -49,6 +49,12 @@ public class DriveTrain extends Subsystem{
 		rightSlave1 = new TalonSRX(ActuatorMap.rightSlave1DriveTalon);
 		rightSlave2 = new TalonSRX(ActuatorMap.rightSlave2DriveTalon);
 		
+		leftSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+		leftSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+		
+		rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+		rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+		
 		leftSlave1.setInverted(true);
 		leftSlave2.setInverted(true);
 		right.setInverted(true);
