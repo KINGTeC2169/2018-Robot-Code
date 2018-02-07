@@ -55,24 +55,23 @@ public class DriveTrain extends Subsystem{
 		rightSlaveFol.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 		rightSlaveRev.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);    
 		
-		leftSlaveRev.setInverted(true);
-		right.setInverted(true);
-		rightSlaveFol.setInverted(true);
+		rightSlaveRev.setInverted(true);
+		left.setInverted(true);
+		leftSlaveFol.setInverted(true);
 		
 		//Set Current Limits
 
-		/* Commented out because they throw errors if there aren't feedback devices plugged in.
 		left.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		leftSlave1.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		leftSlave2.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		leftSlaveRev.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		leftSlaveFol.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
 		right.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		rightSlave1.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		rightSlave2.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		*/
+		rightSlaveRev.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightSlaveFol.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+
 		
 		//Shifting Solenoids
-		shifter = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.dtSpeedShiftForward, ActuatorMap.dtSpeedShiftReverse);
-		ptoShift = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.ptoShiftForward, ActuatorMap.ptoShiftReverse);
+		//shifter = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.dtSpeedShiftForward, ActuatorMap.dtSpeedShiftReverse);
+		//ptoShift = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.ptoShiftForward, ActuatorMap.ptoShiftReverse);
 		
 		
 	}

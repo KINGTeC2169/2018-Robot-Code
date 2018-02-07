@@ -14,18 +14,17 @@ public class ActuatorMap {
 			public static final int rightMasterDriveTalon = 5;
 	
 			//Lift TalonSRX IDs
-			public static final int liftMasterID = 6;
-			public static final int liftSlaveID = 7;
-			public static final int armMasterID = 8;
-			public static final int armSlaveID = 9;
+			public static final int liftMasterID = 9;
+			public static final int liftSlaveID = 8;
+			public static final int armID = 10;
 			
 			//Intake TalonSRX IDs
-			public static final int leftIntakeID = 10;
-			public static final int rightIntakeID = 11;
+			public static final int leftIntakeID = 6;
+			public static final int rightIntakeID = 7;
 		
 		//Pnuematics
 			//Compressor
-			public static final int compressorPCMPort = 0;
+			public static final int compressorPCMPort = 12;
 			
 			//Intake Piston
 			public static final int clampPortForward = 1;

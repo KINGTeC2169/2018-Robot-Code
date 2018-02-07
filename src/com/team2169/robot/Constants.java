@@ -74,7 +74,7 @@ public class Constants {
 	public static final DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kReverse;
 	
 	//Current Limits
-	public static final int maxDriveTrainCurrent = 40;
+	public static final int maxDriveTrainCurrent = 30;
 	
 	//Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 50;

@@ -43,9 +43,8 @@ public class ElevatorArm extends Subsystem{
 		lift = TalonMaker.prepTalonForMotionProfiling(lift, Constants.liftData);
 		
 		//Arm Motors Setup
-		arm = new TalonSRX(ActuatorMap.armMasterID);
-		armSlave = new TalonSRX(ActuatorMap.armSlaveID);
-		armSlave.set(ControlMode.Follower, ActuatorMap.armMasterID);
+		arm = new TalonSRX(ActuatorMap.armID);
+		
 	}
 	
 	void elevatorToPos(double pos) {

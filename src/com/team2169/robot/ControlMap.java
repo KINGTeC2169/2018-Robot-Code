@@ -57,8 +57,8 @@ public class ControlMap {
 		public static void init() {
 			
 			primaryLeft = new Joystick(0);
-			primaryRight = new Joystick(0);
-			operator = new Joystick(0);
+			primaryRight = new Joystick(1);
+			operator = new Joystick(2);
 			
 		}
 		
