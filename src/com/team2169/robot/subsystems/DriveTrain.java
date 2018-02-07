@@ -31,11 +31,11 @@ public class DriveTrain extends Subsystem{
 	//Public because autonomous needs to access actuators
 	//Static because there is only one of each subsystem
 	public TalonSRX left;
-	TalonSRX leftSlave1;
-	TalonSRX leftSlave2;
+	TalonSRX leftSlaveRev;
+	TalonSRX leftSlaveFol;
 	public TalonSRX right;
-	TalonSRX rightSlave1;
-	TalonSRX rightSlave2;
+	TalonSRX rightSlaveFol;
+	TalonSRX rightSlaveRev;
 	DoubleSolenoid shifter;
     DoubleSolenoid ptoShift;
     
@@ -43,21 +43,21 @@ public class DriveTrain extends Subsystem{
 
 		//Create the objects and set properties
 		left = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
-		leftSlave1 = new TalonSRX(ActuatorMap.leftSlave1DriveTalon);
-		leftSlave2 = new TalonSRX(ActuatorMap.leftSlave2DriveTalon);
+		leftSlaveRev = new TalonSRX(ActuatorMap.leftSlaveRev);
+		leftSlaveFol = new TalonSRX(ActuatorMap.leftSlaveFol);
 		right = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
-		rightSlave1 = new TalonSRX(ActuatorMap.rightSlave1DriveTalon);
-		rightSlave2 = new TalonSRX(ActuatorMap.rightSlave2DriveTalon);
+		rightSlaveFol = new TalonSRX(ActuatorMap.rightSlaveFol);
+		rightSlaveRev = new TalonSRX(ActuatorMap.rightSlaveRev);
 		
-		leftSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-		leftSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+		leftSlaveRev.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+		leftSlaveFol.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 		
-		rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-		rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+		rightSlaveFol.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+		rightSlaveRev.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);    
 		
-		leftSlave1.setInverted(true);
-		leftSlave2.setInverted(true);
+		leftSlaveRev.setInverted(true);
 		right.setInverted(true);
+		rightSlaveFol.setInverted(true);
 		
 		//Set Current Limits
 
@@ -152,8 +152,8 @@ public class DriveTrain extends Subsystem{
 				
 				//Set Talon Modes for Driving
 				right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-				rightSlave1.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-				rightSlave2.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightSlaveFol.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightSlaveRev.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 				
 				//Dogshifter Extended
 				//ptoShift.set(Value.kForward);
@@ -174,8 +174,8 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Talon Modes for Driving
-				rightSlave1.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-				rightSlave2.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightSlaveFol.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightSlaveRev.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 				
 				//Dogshifter Retracted
 				//ptoShift.set(Value.kReverse);

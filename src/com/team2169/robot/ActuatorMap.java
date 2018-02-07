@@ -7,11 +7,11 @@ public class ActuatorMap {
 		//TalonSRX Ports
 			//DriveTrain TalonSRX Ports
 			public static final int leftMasterDriveTalon = 0;
-			public static final int leftSlave1DriveTalon = 1;
-			public static final int leftSlave2DriveTalon = 2;
-			public static final int rightMasterDriveTalon = 3;
-			public static final int rightSlave1DriveTalon = 4;
-			public static final int rightSlave2DriveTalon = 5;
+			public static final int leftSlaveRev = 1;
+			public static final int leftSlaveFol = 2;
+			public static final int rightSlaveFol = 3;
+			public static final int rightSlaveRev = 4;
+			public static final int rightMasterDriveTalon = 5;
 	
 			//Lift TalonSRX IDs
 			public static final int liftMasterID = 6;
