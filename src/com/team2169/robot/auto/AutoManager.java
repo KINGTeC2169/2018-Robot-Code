@@ -107,13 +107,17 @@ public class AutoManager {
 		mode = modeChooser.getSelected().intValue();
 		
 		SmartDashboard.putString("Field Setup", RobotStates.fieldSetup.toString());
+		auto.start();
 
 	}
 	
 	public void autoLooping() {
 
+		auto.looper();
+		
 	}
 	
+	//You're gonna want to minimize this
 	public void setAutoMode() {
 		switch(RobotStates.fieldSetup) {
 		
