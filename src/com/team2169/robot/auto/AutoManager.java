@@ -4,6 +4,7 @@ import com.team2169.robot.Constants;
 import com.team2169.robot.Robot;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.FieldSetup;
+import com.team2169.robot.RobotStates.StartingPosition;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.SelfTest;
@@ -96,15 +97,31 @@ public class AutoManager {
 			RobotStates.fieldSetup = FieldSetup.FAIL;
 		}
 		
+		//Set RobotPosition based on SmartDash chooser
+		if(position == -1) {
+			RobotStates.startingPosition = StartingPosition.LEFT;
+		}
+		else if(position == 0) {
+			RobotStates.startingPosition = StartingPosition.CENTER;
+		}
+		else if(position == 1) {
+			RobotStates.startingPosition = StartingPosition.RIGHT;
+		}
+		else {
+			//Default to Center because TODO come up with a reason to start in the middle
+			RobotStates.startingPosition = StartingPosition.CENTER;
+		}
+		
+		
 	}
 	
 	
 	public void runAuto() {
 		
-		determineField();
 		selfTestActive = selfTestChooser.getSelected().intValue();
 		position = positionChooser.getSelected().intValue();
 		mode = modeChooser.getSelected().intValue();
+		determineField();
 		
 		SmartDashboard.putString("Field Setup", RobotStates.fieldSetup.toString());
 		auto.start();
@@ -119,6 +136,12 @@ public class AutoManager {
 	
 	//You're gonna want to minimize this
 	public void setAutoMode() {
+		
+		if(selfTestActive == 1) {
+			auto = new SelfTest();
+		}
+		else {
+		
 		switch(RobotStates.fieldSetup) {
 		
 		//FAIL Case
@@ -239,6 +262,7 @@ public class AutoManager {
 			
 			break;
 		
+		}
 		
 		}
 	}
