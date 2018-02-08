@@ -64,9 +64,9 @@ public class Constants {
 	
 	
 	//Robot Contants go here
-	public static final double wheelBaseWidth = 5;
-	public static final double wheelDiameter = 5;
-	public static final int ticksPerRotation = 1250;
+	public static final double wheelBaseWidth = 25;
+	public static final double wheelDiameter = 6;
+	public static final int ticksPerRotation = 4096;
 	public static final double maxElevatorHeight = 1250;
 
 	//SolenoidStates
@@ -82,10 +82,10 @@ public class Constants {
 	
 	//Pathfinder
 	
-	public static final double timeStep= 0.05; //Seconds
-	public static final double maxVelocity = 1.7; //m/s
-	public static final double maxAcceleration = 2.0;  //m/s/s
-	public static final double maxJerk = 60.0; //m/s/s/s
+	public static final double timeStep= 0.1; //Seconds
+	public static final double maxVelocity = 5; //m/s
+	public static final double maxAcceleration = 0.12;  //m/s/s
+	public static final double maxJerk = 0.006; //m/s/s/s
 	
 	//Pathfinder PID
 	
@@ -98,11 +98,11 @@ public class Constants {
 	//   trajectory configuration (it translates m/s to a -1 to 1 scale that your motors can read)
 	// The fifth argument is your acceleration gain. Tweak this if you want to get to a higher or lower speed quicker
 
-	public static final double accelerationGain = 0;
-	public static final double pathfinderP = 0;
+	public static final double accelerationGain = 0.05;
+	public static final double pathfinderP = 0.1;
 	public static final double pathfinderI = 0;
 	public static final double pathfinderD = 0;
-	public static final double pathfinderVR = 0;
+	public static final double pathfinderVR = 1;
 	
 	
 }
