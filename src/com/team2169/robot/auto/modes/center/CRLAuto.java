@@ -5,6 +5,28 @@ import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 
 public class CRLAuto extends AutoMode {
+/*
+
+	
+       +-------+         +-------+
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
+       +-------+         +-------+
+       	
+       +-------+         +-------+
+       |       |         |-------|
+       |       |         |-------|
+       |	   |         |-------|
+       +-------+         +-------+
+
+                 +-----+      
+                 |     |      
+                 |     |      
+                 |     |      
+                 +-----+      
+	 
+*/
 
     public CRLAuto() {
     	

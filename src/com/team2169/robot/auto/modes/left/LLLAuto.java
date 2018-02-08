@@ -4,9 +4,31 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class CLRAuto extends AutoMode {
+public class LLLAuto extends AutoMode {	
+/*
+	
+	
+       +-------+         +-------+
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
+       +-------+         +-------+
 
-    public CLRAuto() {
+       +-------+         +-------+
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
+       +-------+         +-------+
+
++----+
+|    |
+|    |
+|    |
++----+
+	 
+*/
+	
+    public LLLAuto() {
     	
     	RobotStates.runningMode = RunningMode.AUTO;
     	//This is where you put tasks    	

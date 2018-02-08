@@ -1,17 +1,17 @@
-package com.team2169.robot.auto.modes.center;
+package com.team2169.robot.auto.modes.right;
 
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class CLRAuto extends AutoMode {
+public class RLLAuto extends AutoMode {	
 /*
 	
 	
        +-------+         +-------+
-       |       |         |-------|
-       |       |         |-------|
-       |	   |         |-------|
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
        +-------+         +-------+
 
        +-------+         +-------+
@@ -20,15 +20,15 @@ public class CLRAuto extends AutoMode {
        |-------|         |       |
        +-------+         +-------+
 
-                 +-----+      
-                 |     |      
-                 |     |      
-                 |     |      
-                 +-----+      
-
+                                   +-----+
+                                   |     |
+                                   |     |
+                                   |     |
+                                   +-----+
+	 
 */
-
-    public CLRAuto() {
+	
+    public RLLAuto() {
     	
     	RobotStates.runningMode = RunningMode.AUTO;
     	//This is where you put tasks    	

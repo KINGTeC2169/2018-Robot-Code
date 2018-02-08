@@ -4,8 +4,30 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class CLLAuto extends AutoMode {
+public class CLLAuto extends AutoMode {	
+/*
+	
+	
+       +-------+         +-------+
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
+       +-------+         +-------+
 
+       +-------+         +-------+
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
+       +-------+         +-------+
+   
+                 +-----+      
+                 |     |      
+                 |     |      
+                 |     |      
+                 +-----+      
+	 
+*/
+	
     public CLLAuto() {
     	
     	RobotStates.runningMode = RunningMode.AUTO;
