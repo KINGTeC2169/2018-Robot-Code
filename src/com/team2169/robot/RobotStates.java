@@ -6,7 +6,21 @@ public class RobotStates {
 	
 	//FMS Handler
 		public static boolean isFMSConnected;
-		public static String fieldSetup;
+		
+		public static enum FieldSetup {
+			LL, LR, RL, RR, FAIL
+		}
+		
+		public static FieldSetup fieldSetup;
+		
+	//Field Positions
+		
+		public static enum StartingPosition {
+			
+			LEFT, CENTER, RIGHT
+			
+		}
+		public static StartingPosition startingPosition;
 		
 	//RunningMode Handler
 		public static enum RunningMode{

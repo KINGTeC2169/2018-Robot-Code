@@ -42,5 +42,8 @@ public class FMSManager {
 		public double remainingTimeTeleOp() {
 			return 200 - fms.getMatchTime();
 		}
+		public String getGameMessage() {
+			return fms.getGameSpecificMessage();
+		}
 
 }

@@ -48,7 +48,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 
-		RobotStates.fieldSetup = auto.determineField(m_ds.getGameSpecificMessage());
 		RobotStates.runningMode = RunningMode.AUTO;
 		auto.runAuto();
 		
