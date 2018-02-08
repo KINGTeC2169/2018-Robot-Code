@@ -1,13 +1,11 @@
  package com.team2169.robot.auto;
 
 import com.team2169.robot.Constants;
+import com.team2169.robot.Robot;
 import com.team2169.robot.RobotStates;
-import com.team2169.robot.auto.modes.BlueCenterAuto;
-import com.team2169.robot.auto.modes.BlueLeftAuto;
-import com.team2169.robot.auto.modes.BlueRightAuto;
-import com.team2169.robot.auto.modes.RedCenterAuto;
-import com.team2169.robot.auto.modes.RedLeftAuto;
-import com.team2169.robot.auto.modes.RedRightAuto;
+import com.team2169.robot.RobotStates.FieldSetup;
+import com.team2169.robot.auto.modes.AutoMode;
+import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.SelfTest;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -22,39 +20,32 @@ public class AutoManager {
 	
 	//Alliance IDs
 	
-		int alliance;
 		int position;
 		int mode;
+		int selfTestActive;
 		public static String autoName;
+		AutoMode auto;
 		
 	//Sendable Chooser Declarations
-		
-		public static SendableChooser<Integer> allianceChooser;
+
+		public static SendableChooser<Integer> selfTestChooser;
 		public static SendableChooser<Integer> positionChooser;
 		public static SendableChooser<Integer> modeChooser;
 		
 	//Command Declarations
 		
-		BlueLeftAuto bLAuto;
-		BlueCenterAuto bCAuto;
-		BlueRightAuto bRAuto;
-		RedLeftAuto rLAuto;
-		RedCenterAuto rCAuto;
-		RedRightAuto rRAuto;
 		SelfTest selfTest;
 	
 		
 	public AutoManager() {
 		
-		
 		positionChooser = new SendableChooser<Integer>();
-		allianceChooser = new SendableChooser<Integer>();
+		selfTestChooser = new SendableChooser<Integer>();
 		modeChooser= new SendableChooser<Integer>();
 		
 		//Alliance Choosers
-		allianceChooser.addDefault("Self-Test", 0);
-		allianceChooser.addObject("Blue Alliance", 1);
-		allianceChooser.addObject("Red Alliance", 2);
+		selfTestChooser.addDefault("Normal", 0);
+		selfTestChooser.addObject("Self-Test", 1);
 		
 	//Position Choosers
 		positionChooser.addDefault("Left", -1);
@@ -66,267 +57,74 @@ public class AutoManager {
 		modeChooser.addObject(Constants.secondAutoName, 1);
 		modeChooser.addObject(Constants.thirdAutoName, 2);
 
-	SmartDashboard.putData("Alliance Selector", allianceChooser);
+	SmartDashboard.putData("Self-Test Selector", selfTestChooser);
 	SmartDashboard.putData("Field Position Selector", positionChooser);
 	SmartDashboard.putData("Auto Mode Selector", modeChooser);
 
 	}
 	
-	public String determineField(String gameMessage_) {
+	void determineField() {
 	
+		String gameMessage_ = Robot.fms.getGameMessage();
+		
 		if(gameMessage_.equals("LRL") || gameMessage_.equals("LRR")) {
-			return "LR";
+			RobotStates.fieldSetup = FieldSetup.LR;
 		}
 		else if(gameMessage_.equals("LLL") || gameMessage_.equals("LLR")) {
-			return "LL";
+			RobotStates.fieldSetup = FieldSetup.LL;
 		}
 		else if(gameMessage_.equals("RLL") || gameMessage_.equals("RLR")) {
-			return "RL";
+			RobotStates.fieldSetup = FieldSetup.RL;
 		}
 		else if(gameMessage_.equals("RRL") || gameMessage_.equals("RRR")) {
-			return "RR";
+			RobotStates.fieldSetup = FieldSetup.RR;
 		}
 		else {
 			DriverStation.reportError("Failure to recieve Field Data", true);
-			return null;
+			RobotStates.fieldSetup = FieldSetup.FAIL;
 		}
 		
 	}
 	
+	
 	public void runAuto() {
-
-		alliance = allianceChooser.getSelected().intValue();
+		
+		determineField();
+		selfTestActive = selfTestChooser.getSelected().intValue();
 		position = positionChooser.getSelected().intValue();
 		mode = modeChooser.getSelected().intValue();
 		
-		SmartDashboard.putString("Field Setup", RobotStates.fieldSetup);
+		SmartDashboard.putString("Field Setup", RobotStates.fieldSetup.toString());
 
-		//Self Test
-		if(alliance == 0) {
-			
-			
-			selfTest = new SelfTest();
-			autoName = "Self Test";
-			selfTest.start();
-			System.out.println("Auto Complete");
-		}
-		
-		//Blue Alliance
-		else if(alliance == 1) {
-			
-			
-			autoName = "Blue";
-			
-			
-			if(position == -1) {
-			
-				//Blue Left Auto
-				bLAuto = new BlueLeftAuto();
-				autoName += " Left";
-				
-				bLAuto.selectMode(mode);
-				autoName += getModeName(mode);
-				System.out.println(autoName + " Selected");
-				System.out.println("Starting " + autoName);
-				bLAuto.start();
-				System.out.println("Auto Complete");
-			
-			}
-			
-			else if(position == 0) {
-				
-				//Blue Center Auto
-				bCAuto = new BlueCenterAuto();
-				autoName += " Center";
-				
-				bCAuto.selectMode(mode);
-				autoName += getModeName(mode);
-				System.out.println(autoName + " Selected");
-				System.out.println("Starting " + autoName);
-				bCAuto.start();
-				System.out.println("Auto Complete");
-				
-			}
-			
-			else if(position == 1) {
-			
-				//Blue Right Auto
-				bRAuto = new BlueRightAuto();
-				autoName += " Right";
-				
-				bRAuto.selectMode(mode);
-				autoName += getModeName(mode);
-				System.out.println(autoName + " Selected");
-				System.out.println("Starting " + autoName);
-				bRAuto.start();
-				System.out.println("Auto Complete");
-			
-			}
-			else {
-				
-				//Failure
-				System.out.println("ERROR: Sendable Chooser has failed to select position");
-				
-			}
-			
-		}
-		
-		//Red Alliance
-		else if(alliance == 2) {
-
-			autoName = "Red";
-			
-			if(position == -1) {
-				
-				//Red Left Auto
-				rLAuto = new RedLeftAuto();
-				autoName += " Left";
-				autoName += getModeName(mode);
-				rLAuto.selectMode(mode);
-				System.out.println(autoName + " Selected");
-				System.out.println("Starting " + autoName);
-				rLAuto.start();
-				System.out.println("Auto Complete");
-			
-			}
-			
-			else if(position == 0) {
-				
-				//Red Center Auto
-				rCAuto = new RedCenterAuto();
-				autoName += " Center";
-				autoName += getModeName(mode);
-				rCAuto.selectMode(mode);
-				System.out.println(autoName + " Selected");
-				System.out.println("Starting " + autoName);
-				rCAuto.start();
-				System.out.println("Auto Complete");
-				
-				
-			}
-			
-			else if(position == 1) {
-			
-				//Red Right Auto
-				rRAuto = new RedRightAuto();
-				autoName += " Right";
-				autoName += getModeName(mode);
-				rRAuto.selectMode(mode);				
-				System.out.println(autoName + " Selected");
-				System.out.println("Starting " + autoName);
-				rRAuto.start();
-				System.out.println("Auto Complete");
-			}
-			else {
-				
-				//Failure
-				System.out.println("ERROR: Sendable Chooser has failed to select position");
-				
-			}
-			
-		}
-		else {
-			
-			//Failure
-			System.out.println("ERROR: Sendable Chooser has failed to select alliance");
-	
-		}	
-		
-		
-		
-		
 	}
 	
 	public void autoLooping() {
-		
-		if(alliance == 0) {
-			selfTest.looper();
-		}
-		
-		else if(alliance == 1) {
-			
-			if(position == -1) {
-			
-				//Blue Left Auto Looper
-				bLAuto.looper();
-			
-			}
-			
-			else if(position == 0) {
-				
-				//Blue Center Auto Looper
-				bCAuto.looper();
-				
-			}
-			
-			else if(position == 1) {
-			
-				//Blue Right Auto Looper
-				bRAuto.looper();
-			
-			}
-			else {
-				
-				//Failure
-				
-			}
-			
-		}
-		
-		else if(alliance == 2) {
 
-			if(position == -1) {
-				
-				//Red Left Auto Looper
-				rLAuto.looper();
-			
-			}
-			
-			else if(position == 0) {
-				
-				//Red Center Auto Looper
-				rCAuto.looper();
-				
-				
-			}
-			
-			else if(position == 1) {
-			
-				//Red Right Auto Looper
-				rRAuto.looper();
-			}	
-			else {
-				
-				//Failure
-				
-			}
-			
-		}
-		else {
-			
-			//Failure
-			
-		}
-		
-		
 	}
-
-	public String getModeName(int mode) {
-		
-		if(mode == 0) {
-			return " " + Constants.defaultAutoName;
-		}
-		
-		else if(mode == 1) {
-			return " "+ Constants.secondAutoName;
-		}
-		
-		else if(mode == 2) {
-			return " "+Constants.thirdAutoName;
-		}
-		
-		else {
-			return null;
+	
+	public void setAutoMode() {
+		switch(RobotStates.fieldSetup) {
+		case FAIL: default:
+			auto = new FailureAuto();
+			break;
+		case LL:
+			switch(RobotStates.startingPosition) {
+			case CENTER: 
+				break;
+			case LEFT:
+				break;
+			case RIGHT:
+				break;	
+			default:
+				auto = new FailureAuto();
+			}
+			break;
+		case LR:
+			break;
+		case RL:
+			break;
+		case RR:
+			break;
 		}
 	}
 	
