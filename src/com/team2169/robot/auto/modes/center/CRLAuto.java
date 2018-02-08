@@ -29,7 +29,7 @@ public class CRLAuto extends AutoMode {
 */
 
     public CRLAuto() {
-    	
+
     	RobotStates.runningMode = RunningMode.AUTO;
     	//This is where you put tasks    	
     	

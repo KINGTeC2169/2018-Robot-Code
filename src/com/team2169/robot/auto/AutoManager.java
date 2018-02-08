@@ -82,15 +82,23 @@ public class AutoManager {
 		
 		if(gameMessage_.equals("LRL") || gameMessage_.equals("LRR")) {
 			RobotStates.fieldSetup = FieldSetup.LR;
+			SmartDashboard.putString("Switch State:", "LEFT");
+			SmartDashboard.putString("Scale State:", "RIGHT");
 		}
 		else if(gameMessage_.equals("LLL") || gameMessage_.equals("LLR")) {
 			RobotStates.fieldSetup = FieldSetup.LL;
+			SmartDashboard.putString("Switch State:", "LEFT");
+			SmartDashboard.putString("Scale State:", "LEFT");
 		}
 		else if(gameMessage_.equals("RLL") || gameMessage_.equals("RLR")) {
 			RobotStates.fieldSetup = FieldSetup.RL;
+			SmartDashboard.putString("Switch State:", "RIGHT");
+			SmartDashboard.putString("Scale State:", "LEFT");
 		}
 		else if(gameMessage_.equals("RRL") || gameMessage_.equals("RRR")) {
 			RobotStates.fieldSetup = FieldSetup.RR;
+			SmartDashboard.putString("Switch State:", "RIGHT");
+			SmartDashboard.putString("Scale State:", "RIGHT");
 		}
 		else {
 			DriverStation.reportError("Failure to recieve Field Data", true);
@@ -112,6 +120,10 @@ public class AutoManager {
 			RobotStates.startingPosition = StartingPosition.CENTER;
 		}
 		
+		setAutoMode();
+		
+
+		SmartDashboard.putString("Robot Location:", RobotStates.startingPosition.toString());
 		
 	}
 	
@@ -120,10 +132,10 @@ public class AutoManager {
 		
 		selfTestActive = selfTestChooser.getSelected().intValue();
 		position = positionChooser.getSelected().intValue();
-		mode = modeChooser.getSelected().intValue();
+		
 		determineField();
 		
-		SmartDashboard.putString("Field Setup", RobotStates.fieldSetup.toString());
+		
 		auto.start();
 
 	}
@@ -133,7 +145,7 @@ public class AutoManager {
 		auto.looper();
 		
 	}
-	
+		
 	//You're gonna want to minimize this
 	public void setAutoMode() {
 		
