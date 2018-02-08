@@ -1,6 +1,7 @@
 package com.team2169.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.Constants;
@@ -15,6 +16,7 @@ import com.team2169.util.FlyByWireHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem{
 	
@@ -48,6 +50,9 @@ public class DriveTrain extends Subsystem{
 		right = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
 		rightSlaveFol = new TalonSRX(ActuatorMap.rightSlaveFol);
 		rightSlaveRev = new TalonSRX(ActuatorMap.rightSlaveRev);
+		
+		left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+		right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		
 		leftSlaveRev.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 		leftSlaveFol.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
@@ -286,7 +291,8 @@ public class DriveTrain extends Subsystem{
 	
 	@Override
 	public void pushToDashboard() {
-		
+		SmartDashboard.putNumber("leftEnc", left.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("rightEnc", right.getSelectedSensorPosition(0));
 		//Put any SmartDash info here.
 		
 	}

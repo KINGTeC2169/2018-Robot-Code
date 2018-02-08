@@ -64,7 +64,7 @@ public class Superstructure {
 		platform.platformHandler();
 		intake.intakeHandler();
 		liftArm.elevatorHandler();
-		
+		drive.pushToDashboard();
 		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 		
 	}
