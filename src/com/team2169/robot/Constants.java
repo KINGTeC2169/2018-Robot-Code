@@ -51,6 +51,17 @@ public class Constants {
 		
 	}
 	
+	public static TalonConfig leftDriveData = new TalonConfig();
+	public static TalonConfig rightDriveData = new TalonConfig();
+	public static void setDriveMotorDataFromConstants() {
+		leftDriveData.slotIDx = 0;
+		leftDriveData.pidLoopIDx = 0;
+		leftDriveData.timeoutMs = 10;
+		rightDriveData.slotIDx = 0;
+		rightDriveData.pidLoopIDx = 0;
+		rightDriveData.timeoutMs = 10;
+	}
+	
 	
 	//Macro Encoder Positions go here
 	public static final double groundElevatorEncoderPosition = 0;
@@ -82,10 +93,6 @@ public class Constants {
 	
 	//Pathfinder
 	
-	public static final double timeStep= 0.1; //Seconds
-	public static final double maxVelocity = 5; //m/s
-	public static final double maxAcceleration = 0.12;  //m/s/s
-	public static final double maxJerk = 0.006; //m/s/s/s
 	
 	//Pathfinder PID
 	
@@ -104,5 +111,11 @@ public class Constants {
 	public static final double pathfinderD = 0;
 	public static final double pathfinderVR = 1;
 	
+	//Path Generation Only
+	public static final double timeStep= 0.1; //Seconds
+	public static final double maxVelocity = 5; //m/s
+	public static final double maxAcceleration = 0.12;  //m/s/s
+	public static final double maxJerk = 0.006; //m/s/s/s
+		
 	
 }

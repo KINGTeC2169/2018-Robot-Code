@@ -63,8 +63,8 @@ public class PathfinderObject {
 	leftFollower = new EncoderFollower(left);
 	rightFollower = new EncoderFollower(right);
 	
-	leftFollower.configureEncoder(0 /*Encoder values*/, Constants.ticksPerRotation, Constants.wheelDiameter);
-	rightFollower.configureEncoder(0 /*Encoder values*/, Constants.ticksPerRotation, Constants.wheelDiameter);
+	leftFollower.configureEncoder(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
+	rightFollower.configureEncoder(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
 	
 	//Configure Pathfinder PID
 	leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD, Constants.pathfinderVR / Constants.maxVelocity, Constants.accelerationGain);
@@ -73,8 +73,8 @@ public class PathfinderObject {
 	}
 	
 	public void pathfinderLooper() {
-		double l = leftFollower.calculate(/*Add Encoder Values Max*/ 0);
-		double r = rightFollower.calculate(/*Add Encoder Values Max*/ 0);
+		double l = leftFollower.calculate(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
+		double r = rightFollower.calculate(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
 
 		double gyro_heading = gyro.getYaw();    // Assuming the gyro is giving a value in degrees
 		double desired_heading = Pathfinder.r2d(leftFollower.getHeading());  // Should also be in degrees
