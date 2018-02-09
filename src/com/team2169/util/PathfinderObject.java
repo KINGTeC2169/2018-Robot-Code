@@ -67,7 +67,7 @@ public class PathfinderObject {
 	rightFollower.configureEncoder(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
 	
 	//Configure Pathfinder PID
-	leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD, Constants.pathfinderVR / Constants.maxVelocity, Constants.accelerationGain);
+	leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD, 1 / Constants.maxVelocity, Constants.accelerationGain);
 	
 	
 	}

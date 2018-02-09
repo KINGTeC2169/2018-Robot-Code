@@ -25,8 +25,8 @@ public class ElevatorArm extends Subsystem{
         return eInstance;
     }
 	
-	TalonSRX lift;
-	TalonSRX liftSlave;
+	TalonSRX elevator;
+	TalonSRX elevatorSlave;
 	TalonSRX arm;
 	TalonSRX armSlave;
 	
@@ -34,29 +34,43 @@ public class ElevatorArm extends Subsystem{
 		
 		//Lift Motors Setup
 		RobotStates.elevatorInPosition = false;
-		lift = new TalonSRX(ActuatorMap.liftMasterID);
-		liftSlave = new TalonSRX(ActuatorMap.liftSlaveID);
-		liftSlave.set(ControlMode.Follower, ActuatorMap.liftMasterID);
-		Constants.setLiftDataFromConstants();
+		
+		//Define Lift Talons
+		elevator = new TalonSRX(ActuatorMap.elevatorMasterID);
+		elevatorSlave = new TalonSRX(ActuatorMap.elevatorSlaveID);
+		elevatorSlave.set(ControlMode.Follower, ActuatorMap.elevatorMasterID);
+		
+		//Define Arm Talon
+		arm = new TalonSRX(ActuatorMap.armID);
+		
+		//Set Data from Constants
+		Constants.setElevatorDataFromConstants();
+		Constants.setArmDataFromConstants();
 
 		//Prep Lift for Motion Profiling
-		lift = TalonMaker.prepTalonForMotionProfiling(lift, Constants.liftData);
+		elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
 		
-		//Arm Motors Setup
-		arm = new TalonSRX(ActuatorMap.armID);
+		//Prep Lift for Motion Profiling
+		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
+		
 		
 	}
 	
 	void elevatorToPos(double pos) {
-		lift.set(ControlMode.MotionMagic, pos);
+		elevator.set(ControlMode.MotionMagic, pos);
 	}
 	
-	public void getFinishedState() {
+	void armToPos(double pos) {
+		arm.set(ControlMode.MotionMagic, pos);
+	}
 	
-		if(lift.getClosedLoopError(Constants.liftData.pidLoopIDx) < Constants.liftData.allowedError || 
-				lift.getClosedLoopError(Constants.liftData.pidLoopIDx) > -Constants.liftData.allowedError) {
+	public void getElevatorFinishedState() {
+	
+		if(elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) < Constants.elevatorData.allowedError || 
+				elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) > -Constants.elevatorData.allowedError) {
 			RobotStates.elevatorInPosition = true;
 		}
+		
 		RobotStates.elevatorInPosition = false;
 	
 	}
@@ -89,7 +103,7 @@ public class ElevatorArm extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Elevator Override Active", false);
 				}	
-				lift.set(ControlMode.PercentOutput, ControlMap.elevatorOverrideValue());	
+				elevator.set(ControlMode.PercentOutput, ControlMap.elevatorOverrideValue());	
 			}
 			
 		}
@@ -209,8 +223,8 @@ public class ElevatorArm extends Subsystem{
 		}
 
 			//Return Elevator Height from yo-yo sensor
-			RobotStates.elevatorHeight = lift.getSelectedSensorPosition(Constants.liftData.slotIDx);
-			getFinishedState();
+			RobotStates.elevatorHeight = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
+			getElevatorFinishedState();
 			
 	}
 
@@ -221,6 +235,9 @@ public class ElevatorArm extends Subsystem{
 
 	@Override
 	public void zeroSensors() {
+		
+		elevator.setSelectedSensorPosition(0, Constants.elevatorData.slotIDx, Constants.elevatorData.timeoutMs);
+		arm.setSelectedSensorPosition(0, Constants.armData.slotIDx, Constants.armData.timeoutMs);
 		
 	}
 

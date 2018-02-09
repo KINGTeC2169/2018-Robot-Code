@@ -13,9 +13,9 @@ public class ActuatorMap {
 			public static final int rightSlaveRev = 4;
 			public static final int rightMasterDriveTalon = 5;
 	
-			//Lift TalonSRX IDs
-			public static final int liftMasterID = 9;
-			public static final int liftSlaveID = 8;
+			//Elevator TalonSRX IDs
+			public static final int elevatorMasterID = 9;
+			public static final int elevatorSlaveID = 8;
 			public static final int armID = 10;
 			
 			//Intake TalonSRX IDs

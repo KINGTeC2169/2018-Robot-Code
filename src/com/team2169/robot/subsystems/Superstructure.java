@@ -33,7 +33,6 @@ public class Superstructure {
 	
 	public Superstructure(){
 		
-		//comp = new Compressor(ActuatorMap.compressorPCMPort);
 		drive = new DriveTrain();
 		intake = new Intake();
 		platform = new Platform();
@@ -44,17 +43,22 @@ public class Superstructure {
 	}
 
 	public void robotInit() {
-
+		
+		
 		if(RobotStates.debugMode) {
 			DriverStation.reportWarning("Starting Superstructure Init", false);
 		}
+		//Zero Sensors
+		zeroAllSensors();
+		
+		//Set WantedStates
 		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
 		RobotWantedStates.wantedArmPos = WantedArmPos.FULLY_RETRACTED;
 		RobotWantedStates.wantedElevatorPos = WantedElevatorPos.GROUND;
+		
 		if(RobotStates.debugMode) {
 			DriverStation.reportWarning("Superstructure Init Finished", false);
 		}
-		//comp.start();
 		
 	}
 	
@@ -74,5 +78,14 @@ public class Superstructure {
 	
 	//This is how you cancel a CANCycle
 	//CANCycleHandler.sampleCANCycle.cancel();
+
+	void zeroAllSensors() {
+		
+		drive.zeroSensors();
+		intake.zeroSensors();
+		platform.zeroSensors();
+		liftArm.zeroSensors();
+	
+	}
 	
 }

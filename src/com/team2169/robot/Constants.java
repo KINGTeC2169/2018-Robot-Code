@@ -38,16 +38,29 @@ public class Constants {
 	//Climb Speed
 	public static final double climbPower = .75;
 	
-	public static TalonConfig liftData = new TalonConfig();
-	public static void setLiftDataFromConstants() {
-		liftData.slotIDx = 0;
-		liftData.pidLoopIDx = 0;
-		liftData.timeoutMs = 10;
-		liftData.allowedError = 2;
-		liftData.p = .2;
-		liftData.i = 0;
-		liftData.d = 0;
-		liftData.f = .2;
+	public static TalonConfig elevatorData = new TalonConfig();
+	public static void setElevatorDataFromConstants() {
+		elevatorData.slotIDx = 0;
+		elevatorData.pidLoopIDx = 0;
+		elevatorData.timeoutMs = 10;
+		elevatorData.allowedError = 2;
+		elevatorData.p = .2;
+		elevatorData.i = 0;
+		elevatorData.d = 0;
+		elevatorData.f = .2;
+		
+	}
+	
+	public static TalonConfig armData = new TalonConfig();
+	public static void setArmDataFromConstants() {
+		armData.slotIDx = 0;
+		armData.pidLoopIDx = 0;
+		armData.timeoutMs = 10;
+		armData.allowedError = 2;
+		armData.p = .2;
+		armData.i = 0;
+		armData.d = 0;
+		armData.f = .2;
 		
 	}
 	
@@ -71,9 +84,6 @@ public class Constants {
 	public static final double scaleHighElevatorEncoderPosition = 200;
 	public static final double hangElevatorEncoderPosition = 175;
 		
-	//Elevator PID
-	
-	
 	//Robot Contants go here
 	public static final double wheelBaseWidth = 25;
 	public static final double wheelDiameter = 6;
@@ -90,32 +100,25 @@ public class Constants {
 	//Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 50;
 	
+	//Pathfinder Zone
+		
+		//Pathfinder Numbers to care about
+			
+			//Set Maximum Velocity in Units/Second
+			public static final double maxVelocity = 1.7; 
+			//Modify if robot isn't following path nicely
+			public static final double pathfinderD = 0;
+			//How quickly/slowly do you want to reach full speed
+			public static final double accelerationGain = 0.05;
 	
-	//Pathfinder
-	
-	
-	//Pathfinder PID
-	
-
-	//PID Configuration
-	// The first argument is the proportional gain. Usually this will be quite high
-	// The second argument is the integral gain. This is unused for motion profiling
-	// The third argument is the derivative gain. Tweak this if you are unhappy with the tracking of the trajectory
-	// The fourth argument is the velocity ratio. This is 1 over the maximum velocity you provided in the 
-	//   trajectory configuration (it translates m/s to a -1 to 1 scale that your motors can read)
-	// The fifth argument is your acceleration gain. Tweak this if you want to get to a higher or lower speed quicker
-
-	public static final double accelerationGain = 0.05;
-	public static final double pathfinderP = 0.1;
-	public static final double pathfinderI = 0;
-	public static final double pathfinderD = 0;
-	public static final double pathfinderVR = 1;
-	
-	//Path Generation Only
-	public static final double timeStep= 0.1; //Seconds
-	public static final double maxVelocity = 5; //m/s
-	public static final double maxAcceleration = 0.12;  //m/s/s
-	public static final double maxJerk = 0.006; //m/s/s/s
+		//Other Pathfinder PID Configuration
+		public static final double pathfinderP = 1;
+		public static final double pathfinderI = 0;
+		
+		//Path Generation Only
+		public static final double timeStep= 0.05; //Seconds
+		public static final double maxAcceleration = 2.0;  //m/s/s
+		public static final double maxJerk = 60; //m/s/s/s
 		
 	
 }
