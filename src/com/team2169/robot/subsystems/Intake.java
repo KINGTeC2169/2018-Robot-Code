@@ -7,7 +7,7 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.IntakeMode;
-
+import com.team2169.robot.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -24,14 +24,14 @@ public class Intake extends Subsystem{
 	
 	TalonSRX left;
 	TalonSRX right;
-	DoubleSolenoid clamp;
+	//DoubleSolenoid clamp;
 	
 	public Intake() {
 	
 		left = new TalonSRX(ActuatorMap.leftIntakeID);
 		right = new TalonSRX(ActuatorMap.rightIntakeID);
 		right.setInverted(true);
-		clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward, ActuatorMap.clampPortReverse);
+		//clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward, ActuatorMap.clampPortReverse);
 	}
 	
 	void intake(double power) {
@@ -62,7 +62,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Intaking", false);
 				}
-				intake(-1);
+				intake(-1 * Constants.intakeSpeed);
 				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			
@@ -71,7 +71,7 @@ public class Intake extends Subsystem{
 				if(RobotStates.debugMode) {
 					DriverStation.reportWarning("Intakes Exhaust", false);
 				}
-				intake(1);
+				intake(Constants.intakeSpeed);
 				RobotStates.intakeMode = IntakeMode.EXHAUST;
 				break;
 

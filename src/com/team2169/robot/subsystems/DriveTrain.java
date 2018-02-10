@@ -38,8 +38,8 @@ public class DriveTrain extends Subsystem{
 	public TalonSRX right;
 	TalonSRX rightSlaveFol;
 	TalonSRX rightSlaveRev;
-	DoubleSolenoid shifter;
-    DoubleSolenoid ptoShift;
+	//DoubleSolenoid shifter;
+    //DoubleSolenoid ptoShift;
     
 	public DriveTrain(){
 

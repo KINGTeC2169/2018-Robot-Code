@@ -12,6 +12,8 @@ import com.team2169.robot.Constants;
 import com.team2169.robot.subsystems.DriveTrain;
 import com.team2169.robot.subsystems.Superstructure;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class PathfinderObject {
 	
 	//Waypoints go here
@@ -37,18 +39,20 @@ public class PathfinderObject {
 	EncoderFollower rightFollower;
 	
 	public void calculatePath() {
+		
 		leftTalon.set(ControlMode.PercentOutput, 0);
 		rightTalon.set(ControlMode.PercentOutput, 0);
 		gyro.reset();
 	
 		
-		
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH,
+		System.out.println("Creating config");
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST,
 			Constants.timeStep, Constants.maxVelocity, Constants.maxAcceleration, Constants.maxJerk);
- 
+		System.out.println("config created");
+		System.out.println("generating path");
 	// Generate the trajectory
 	Trajectory trajectory = Pathfinder.generate(points, config);
-
+	System.out.println("path generated");
 	// Create the Modifier Object
 	TankModifier modifier = new TankModifier(trajectory);
 
@@ -91,6 +95,9 @@ public class PathfinderObject {
 		if(!rightFollower.isFinished()) {
 			rightTalon.set(ControlMode.PercentOutput, r - turn);
 		}
+		
+		SmartDashboard.putNumber("Left PathFinder Value", l + turn);
+		SmartDashboard.putNumber("Right PathFinder Value", r - turn);
 		
 		//Return if trajectories are both finished
 		if(leftFollower.isFinished() && rightFollower.isFinished()) {

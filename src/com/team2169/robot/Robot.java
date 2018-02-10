@@ -9,7 +9,6 @@ import com.team2169.util.ShuffleBoardManager;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -63,6 +62,17 @@ public class Robot extends IterativeRobot {
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
 		superStructure.subsystemLooper();
+		
+	}
+	
+	
+	@Override
+	public void teleopInit() {
+		superStructure.reinstance();
+		RobotStates.runningMode = RunningMode.TELEOP;
+		if(auto != null){
+			auto.endAuto();
+		}
 		
 	}
 	

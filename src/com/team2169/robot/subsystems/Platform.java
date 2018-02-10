@@ -19,11 +19,11 @@ public class Platform extends Subsystem{
         return hInstance;
     }
 	
-	Solenoid platformRelease;
+	//Solenoid platformRelease;
 	
 	public Platform() {
-		platformRelease = new Solenoid(ActuatorMap.platformReleasePiston);
-		platformRelease.set(false);
+		//platformRelease = new Solenoid(ActuatorMap.platformReleasePiston);
+		//platformRelease.set(false);
 		RobotWantedStates.platformRelease = false;
 	}
 	
@@ -40,7 +40,7 @@ public class Platform extends Subsystem{
 	}
 	
 	public void releasePlatform(boolean releaseState) {
-		platformRelease.set(releaseState);
+		//platformRelease.set(releaseState);
 		if(releaseState && RobotStates.debugMode) {
 			DriverStation.reportWarning("Hanger: Platform realased", false);
 		}

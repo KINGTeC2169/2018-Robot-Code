@@ -140,9 +140,15 @@ public class AutoManager {
 
 	}
 	
+	public void endAuto(){
+		if(auto != null){
+			auto.cancel();
+		}
+	}
+	
 	public void autoLooping() {
 
-		auto.looper();
+		//auto.looper();
 		
 	}
 		

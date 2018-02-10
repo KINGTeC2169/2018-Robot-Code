@@ -20,6 +20,7 @@ public class FollowPath extends Task {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
+    	DriverStation.reportWarning("calculating path", false);
     	path.calculatePath();
     	DriverStation.reportWarning("Path Calculated", false);
     		
@@ -27,6 +28,7 @@ public class FollowPath extends Task {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	DriverStation.reportError("Name Jeff", false);
     	path.pathfinderLooper();
     	
     }

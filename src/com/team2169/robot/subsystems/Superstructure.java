@@ -41,7 +41,12 @@ public class Superstructure {
 		canHandler = new CANCycleHandler();
 		
 	}
+	
+	public void reinstance(){
+		drive = new DriveTrain();
+	}
 
+	
 	public void robotInit() {
 		
 		

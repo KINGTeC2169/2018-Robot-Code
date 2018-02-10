@@ -21,7 +21,7 @@ public class ControlMap {
 		
 		//Master Overrides
 		static int primaryOverride = 3;
-		static int operatorOverride = 10;
+		static int operatorOverride = 1;
 		
 		//Axis Constants
 		static int armAxis = 1;
@@ -41,7 +41,7 @@ public class ControlMap {
 	
 		//Climb Keys
 		static int climbPrimary = 1;
-		static int climbOperator = 2;
+		static int climbOperator = 21;
 		static int releasePlatform = 1;
 		
 		//Deadbands

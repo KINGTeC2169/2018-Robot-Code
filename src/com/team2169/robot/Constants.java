@@ -35,6 +35,9 @@ public class Constants {
 		public static final int camera3Width = 640;
 		public static final int camera3Height = 480;	
 		
+	//intake constants
+	public static final double intakeSpeed = 0.75;
+		
 	//Climb Speed
 	public static final double climbPower = .75;
 	
@@ -57,7 +60,7 @@ public class Constants {
 		armData.pidLoopIDx = 0;
 		armData.timeoutMs = 10;
 		armData.allowedError = 2;
-		armData.p = .2;
+		armData.p = .200756;
 		armData.i = 0;
 		armData.d = 0;
 		armData.f = .2;
@@ -85,7 +88,7 @@ public class Constants {
 	public static final double hangElevatorEncoderPosition = 175;
 		
 	//Robot Contants go here
-	public static final double wheelBaseWidth = 25;
+	public static final double wheelBaseWidth = 26;
 	public static final double wheelDiameter = 6;
 	public static final int ticksPerRotation = 4096;
 	public static final double maxElevatorHeight = 1250;
@@ -95,7 +98,7 @@ public class Constants {
 	public static final DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kReverse;
 	
 	//Current Limits
-	public static final int maxDriveTrainCurrent = 30;
+	public static final int maxDriveTrainCurrent = 40;
 	
 	//Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 50;
@@ -105,14 +108,14 @@ public class Constants {
 		//Pathfinder Numbers to care about
 			
 			//Set Maximum Velocity in Units/Second
-			public static final double maxVelocity = 1.7; 
+			public static final double maxVelocity = 100; 
 			//Modify if robot isn't following path nicely
 			public static final double pathfinderD = 0;
 			//How quickly/slowly do you want to reach full speed
-			public static final double accelerationGain = 0.05;
+			public static final double accelerationGain = 0;
 	
 		//Other Pathfinder PID Configuration
-		public static final double pathfinderP = 1;
+		public static final double pathfinderP = 0.85;
 		public static final double pathfinderI = 0;
 		
 		//Path Generation Only

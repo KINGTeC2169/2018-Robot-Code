@@ -2,7 +2,7 @@ package com.team2169.robot;
 
 public class RobotStates {
 	
-	public static boolean debugMode = true;
+	public static boolean debugMode = false;
 	
 	//FMS Handler
 		public static boolean isFMSConnected;
