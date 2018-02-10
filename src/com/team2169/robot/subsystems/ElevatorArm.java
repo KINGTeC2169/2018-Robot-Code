@@ -33,6 +33,7 @@ public class ElevatorArm extends Subsystem{
 	public ElevatorArm() {
 		
 		//Lift Motors Setup
+		
 		RobotStates.elevatorInPosition = false;
 		
 		//Define Lift Talons
@@ -46,7 +47,8 @@ public class ElevatorArm extends Subsystem{
 		//Set Data from Constants
 		Constants.setElevatorDataFromConstants();
 		Constants.setArmDataFromConstants();
-
+		Constants.calculateMacros();
+		
 		//Prep Lift for Motion Profiling
 		elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
 		

@@ -8,7 +8,6 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.Constants;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class Intake extends Subsystem{

@@ -14,7 +14,6 @@ import com.team2169.robot.RobotWantedStates.WantedDriveMode;
 import com.team2169.robot.subsystems.Subsystem;
 import com.team2169.util.FlyByWireHandler;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

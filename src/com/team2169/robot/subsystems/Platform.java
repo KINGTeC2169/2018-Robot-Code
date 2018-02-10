@@ -1,12 +1,10 @@
 package com.team2169.robot.subsystems;
 
-import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class Platform extends Subsystem{
 

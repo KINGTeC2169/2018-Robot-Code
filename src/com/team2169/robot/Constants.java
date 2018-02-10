@@ -1,5 +1,6 @@
 package com.team2169.robot;
 
+import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker.TalonConfig;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -41,6 +42,16 @@ public class Constants {
 	//Climb Speed
 	public static final double climbPower = .75;
 	
+	//Take wanted value of intake wheels and subtract 8.
+	//Happens to work perfectly to set it to the height of the object you want to reach.
+	public static double groundElevatorEncoderInches = 0;
+	public static double switchElevatorEncoderInches = 18.75;
+	public static double scaleLowElevatorEncoderInches = 48;
+	public static double scaleMidElevatorEncoderInches = 60;
+	public static double scaleHighElevatorEncoderInches= 72;
+	public static double hangElevatorEncoderInches = 65;
+	
+	
 	public static TalonConfig elevatorData = new TalonConfig();
 	public static void setElevatorDataFromConstants() {
 		elevatorData.slotIDx = 0;
@@ -53,6 +64,8 @@ public class Constants {
 		elevatorData.f = .2;
 		
 	}
+	
+	public static final double elevatorWinchDiameter = 2.5;
 	
 	public static TalonConfig armData = new TalonConfig();
 	public static void setArmDataFromConstants() {
@@ -79,14 +92,23 @@ public class Constants {
 	}
 	
 	
-	//Macro Encoder Positions go here
-	public static final double groundElevatorEncoderPosition = 0;
-	public static final double switchElevatorEncoderPosition = 50;
-	public static final double scaleLowElevatorEncoderPosition = 100;
-	public static final double scaleMidElevatorEncoderPosition = 150;
-	public static final double scaleHighElevatorEncoderPosition = 200;
-	public static final double hangElevatorEncoderPosition = 175;
-		
+	//Default Values (in case something fails)
+	public static int groundElevatorEncoderPosition = 0;
+	public static int switchElevatorEncoderPosition = 9778;
+	public static int scaleLowElevatorEncoderPosition = 25033;
+	public static int scaleMidElevatorEncoderPosition = 31291;
+	public static int scaleHighElevatorEncoderPosition = 37549;
+	public static int hangElevatorEncoderPosition = 37549;
+
+	public static void calculateMacros() {
+		groundElevatorEncoderPosition = 0;
+		switchElevatorEncoderPosition = Converter.winchInchesToTicks(switchElevatorEncoderInches, elevatorWinchDiameter);
+		scaleLowElevatorEncoderPosition = Converter.winchInchesToTicks(scaleLowElevatorEncoderInches, elevatorWinchDiameter);
+		scaleMidElevatorEncoderPosition = Converter.winchInchesToTicks(scaleMidElevatorEncoderInches, elevatorWinchDiameter);
+		scaleHighElevatorEncoderPosition = Converter.winchInchesToTicks(scaleHighElevatorEncoderInches, elevatorWinchDiameter);
+		hangElevatorEncoderPosition = Converter.winchInchesToTicks(hangElevatorEncoderInches, elevatorWinchDiameter);;
+	}
+	
 	//Robot Contants go here
 	public static final double wheelBaseWidth = 26;
 	public static final double wheelDiameter = 6;
