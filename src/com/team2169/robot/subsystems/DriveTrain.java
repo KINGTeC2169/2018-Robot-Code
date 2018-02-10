@@ -51,18 +51,21 @@ public class DriveTrain extends Subsystem{
 		rightSlaveFol = new TalonSRX(ActuatorMap.rightSlaveFol);
 		rightSlaveRev = new TalonSRX(ActuatorMap.rightSlaveRev);
 		
+		
 		left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		
 		leftSlaveRev.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 		leftSlaveFol.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 		
+		left.setInverted(true);
+		leftSlaveFol.setInverted(true);
+		
 		rightSlaveFol.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 		rightSlaveRev.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);    
 		
 		rightSlaveRev.setInverted(true);
-		left.setInverted(true);
-		leftSlaveFol.setInverted(true);
+		
 		
 		//Set Current Limits
 

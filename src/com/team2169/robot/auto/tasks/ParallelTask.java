@@ -8,14 +8,12 @@ public class ParallelTask extends Task {
 	
 	Timer taskTime;
 	List<Task> masterTasks;
-	List<Task> slaveTasks;
 	double timeout;
 	boolean timeoutActive = false;
 	
-    public ParallelTask(List<Task> masterTasks_, List<Task> slaveTasks_, double timeout_) {
+    public ParallelTask(List<Task> masterTasks_, double timeout_) {
   
     	masterTasks = masterTasks_;
-    	slaveTasks = slaveTasks_;
     	timeout = timeout_;
     	taskTime = new Timer();
     	taskTime.start();
@@ -25,9 +23,6 @@ public class ParallelTask extends Task {
     // Called just before this Command runs the first time
     protected void initialize() {
     	for(Task t: masterTasks) {
-    		t.start();
-    	}
-    	for(Task t: slaveTasks) {
     		t.start();
     	}
     }
@@ -59,9 +54,6 @@ public class ParallelTask extends Task {
     }
     // Called once after isFinished returns true
     protected void end() {
-    	for(Task t: slaveTasks) {
-    		t.cancel();
-    	}
     	
     	if(timeoutActive) {
         	for(Task t: masterTasks) {
