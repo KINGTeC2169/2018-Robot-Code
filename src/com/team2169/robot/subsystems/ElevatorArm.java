@@ -13,6 +13,15 @@ public class ElevatorArm extends Subsystem{
 	private Arm arm;
 	private Elevator elevator;
 	
+    private static ElevatorArm eInstance = null;
+
+    public static ElevatorArm getInstance() {
+        if (eInstance == null) {
+            eInstance = new ElevatorArm();
+        }
+        return eInstance;
+    }
+	
 	public ElevatorArm() {
 		
 		arm = new Arm();

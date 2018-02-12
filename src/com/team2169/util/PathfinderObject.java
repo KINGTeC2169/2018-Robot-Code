@@ -77,6 +77,9 @@ public class PathfinderObject {
 	}
 	
 	public void pathfinderLooper() {
+		leftTalon.set(ControlMode.PercentOutput, 1);
+		rightTalon.set(ControlMode.PercentOutput, 1);
+		/*
 		double l = leftFollower.calculate(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 		double r = rightFollower.calculate(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
 
@@ -113,7 +116,7 @@ public class PathfinderObject {
 			isFinished = false;
 		
 		}
-		
+	*/	
 	}
 		public void pathfinderLooper(int leftEnc, int rightEnc) {
 			double l = leftFollower.calculate(leftEnc);

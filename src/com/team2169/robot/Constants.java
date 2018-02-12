@@ -133,20 +133,20 @@ public class Constants {
 		//Pathfinder Numbers to care about
 			
 			//Set Maximum Velocity in Units/Second
-			public static final double maxVelocity = 100; 
+			public static final double maxVelocity = 50; 
 			//Modify if robot isn't following path nicely
-			public static final double pathfinderD = .2;
+			public static final double pathfinderD = 0;
 			//How quickly/slowly do you want to reach full speed
-			public static final double accelerationGain = 0;
+			public static final double accelerationGain = .01;
 	
 		//Other Pathfinder PID Configuration
-		public static final double pathfinderP = 0.1;
+		public static final double pathfinderP = 0.01;
 		public static final double pathfinderI = 0;
 		
 		//Path Generation Only
-		public static final double timeStep= 0.05; //Seconds
-		public static final double maxAcceleration = 2.0;  //m/s/s
-		public static final double maxJerk = 60; //m/s/s/s
+		public static final double timeStep= 0.1; //Seconds
+		public static final double maxAcceleration = .2;  //m/s/s
+		public static final double maxJerk = .006; //m/s/s/s
 		
 	
 }

@@ -22,17 +22,17 @@ public class Superstructure {
     }
 	
 	public AHRS navX;
-	private DriveTrain drive;
+	public static DriveTrain drive;
 	private Intake intake;
 	private Platform platform;
 	private ElevatorArm liftArm;
 	
 	public Superstructure(){
 		
-		drive = new DriveTrain();
-		intake = new Intake();
-		platform = new Platform();
-		liftArm = new ElevatorArm();
+		drive = DriveTrain.getInstance();
+		intake = Intake.getInstance();
+		platform = Platform.getInstance();
+		liftArm = ElevatorArm.getInstance();
 		navX = new AHRS(SPI.Port.kMXP, (byte)200);
 		
 	}
