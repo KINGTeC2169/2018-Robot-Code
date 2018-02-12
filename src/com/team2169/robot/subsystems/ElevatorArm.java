@@ -74,6 +74,9 @@ public class ElevatorArm extends Subsystem{
 	@Override
 	public void stop() {
 		
+		elevator.stop();
+		arm.stop();
+		
 	}
 	
 }

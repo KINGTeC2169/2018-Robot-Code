@@ -15,7 +15,6 @@ public class Constants {
 	//USBCamera Specs
 		
 		//Camera1
-
 		public static final String camera1Name = "Test Camera";
 		public static final int camera1ID = 0;
 		public static final int camera1FPS = 8;
@@ -67,7 +66,7 @@ public class Constants {
 		
 	}
 
-	public static final double elevatorDrumReduction = 100;
+	public static final double elevatorDrumReduction = 17.53;
 	
 	public static final double elevatorWinchDiameter = 2.5;
 	

@@ -19,6 +19,7 @@ public class CameraManager {
 			        UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture(Constants.camera1Name, Constants.camera1ID);
 			        camera1.setResolution(Constants.camera1Width, Constants.camera1Height);
 			        camera1.setFPS(Constants.camera1FPS);
+			        camera1.setWhiteBalanceAuto();
 			        
 			    }).start();
 			}
@@ -28,10 +29,11 @@ public class CameraManager {
 				try {
 					new Thread(() -> {
 			
-				        UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(Constants.camera2Name, Constants.camera2ID);
-				        camera2.setResolution(Constants.camera2Width, Constants.camera2Height);
-				        camera2.setFPS(Constants.camera2FPS);
-	
+				        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(Constants.camera2Name, Constants.camera2ID);
+				        camera.setResolution(Constants.camera2Width, Constants.camera2Height);
+				        camera.setFPS(Constants.camera2FPS);
+				        camera.setWhiteBalanceAuto();
+				        
 				    }).start();
 				}
 				catch(Exception e) {
@@ -43,9 +45,10 @@ public class CameraManager {
 			    try {
 					new Thread(() -> {
 				    	
-				        UsbCamera camera3 = CameraServer.getInstance().startAutomaticCapture(Constants.camera3Name, Constants.camera3ID);
-				        camera3.setResolution(Constants.camera3Width, Constants.camera3Height);
-				        camera3.setFPS(Constants.camera3FPS);
+				        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(Constants.camera3Name, Constants.camera3ID);
+				        camera.setResolution(Constants.camera3Width, Constants.camera3Height);
+				        camera.setFPS(Constants.camera3FPS);
+				        camera.setWhiteBalanceAuto();
 				        
 				    }).start();
 			    }
