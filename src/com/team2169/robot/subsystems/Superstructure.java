@@ -6,9 +6,7 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotWantedStates.WantedArmPos;
 import com.team2169.robot.RobotWantedStates.WantedElevatorPos;
 import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
-import com.team2169.robot.canCycles.CANCycleHandler;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -24,12 +22,10 @@ public class Superstructure {
     }
 	
 	public AHRS navX;
-	CANCycleHandler canHandler;
-	DriveTrain drive;
-	Compressor comp;
-	Intake intake;
-	Platform platform;
-	ElevatorArm liftArm;
+	private DriveTrain drive;
+	private Intake intake;
+	private Platform platform;
+	private ElevatorArm liftArm;
 	
 	public Superstructure(){
 		
@@ -38,7 +34,6 @@ public class Superstructure {
 		platform = new Platform();
 		liftArm = new ElevatorArm();
 		navX = new AHRS(SPI.Port.kMXP, (byte)200);
-		canHandler = new CANCycleHandler();
 		
 	}
 	
@@ -58,7 +53,7 @@ public class Superstructure {
 		
 		//Set WantedStates
 		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-		RobotWantedStates.wantedArmPos = WantedArmPos.FULLY_RETRACTED;
+		RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
 		RobotWantedStates.wantedElevatorPos = WantedElevatorPos.GROUND;
 		
 		if(RobotStates.debugMode) {
@@ -72,7 +67,7 @@ public class Superstructure {
 		drive.driveHandler();
 		platform.platformHandler();
 		intake.intakeHandler();
-		liftArm.elevatorHandler();
+		liftArm.elevatorArmHandler();
 		drive.pushToDashboard();
 		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 		

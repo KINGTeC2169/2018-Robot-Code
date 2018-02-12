@@ -28,8 +28,8 @@ public class PathfinderObject {
 	
 	public PathfinderObject(Waypoint[] importedPoints){
 		points = importedPoints;
-		leftTalon = DriveTrain.getInstance().left;
-		rightTalon = DriveTrain.getInstance().right;
+		leftTalon = DriveTrain.getInstance().leftMaster;
+		rightTalon = DriveTrain.getInstance().rightMaster;
 		leftID = leftTalon.getDeviceID();
 		rightID = rightTalon.getDeviceID();
 		gyro = Superstructure.getInstance().navX;

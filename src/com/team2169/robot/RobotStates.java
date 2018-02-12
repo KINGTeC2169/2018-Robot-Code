@@ -64,24 +64,29 @@ public class RobotStates {
 	//Arm Position Handler
 		public static enum ArmPos{
 			
-			EXTENDED, FULLY_RETRACTED, PARTIALLY_RETRACTED
+			EXTENDED, RETRACTED,
 			
 		}
 		
 		public static ArmPos armPos;
-	
+		public static boolean armOverideMode = false;
+		public static boolean armInPosition;
+		
 	//Elevator Position Handler
-			public static enum ElevatorPos{
-				
-				HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
-				
-			}
+		public static enum ElevatorPos{
 			
-			public static ElevatorPos elevatorPos;
-			public static double elevatorHeight;
-			public static double getElevatorHeight() {
-				return (elevatorHeight/Constants.maxElevatorHeight);
-			}
-			public static boolean elevatorInPosition;
+			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
+			
+		}
+		
+		public static ElevatorPos elevatorPos;
+		public static double elevatorHeight;
+		public static double getElevatorHeight() {
+			return (elevatorHeight/Constants.maxElevatorHeight);
+		}
+		public static boolean elevatorInPosition;
+		public static boolean elevatorOverideMode = false;
+
+		
 	
 }

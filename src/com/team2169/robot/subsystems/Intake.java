@@ -21,8 +21,8 @@ public class Intake extends Subsystem{
         return iInstance;
     }
 	
-	TalonSRX left;
-	TalonSRX right;
+	private TalonSRX left;
+	private TalonSRX right;
 	//DoubleSolenoid clamp;
 	
 	public Intake() {

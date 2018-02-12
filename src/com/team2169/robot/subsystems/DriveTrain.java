@@ -31,50 +31,51 @@ public class DriveTrain extends Subsystem{
 	//Define null objects up here
 	//Public because autonomous needs to access actuators
 	//Static because there is only one of each subsystem
-	public TalonSRX left;
-	TalonSRX leftSlaveRev;
-	TalonSRX leftSlaveFol;
-	public TalonSRX right;
-	TalonSRX rightSlaveFol;
-	TalonSRX rightSlaveRev;
+	public TalonSRX leftMaster;
+	TalonSRX leftTop;
+	TalonSRX leftFront;
+	public TalonSRX rightMaster;
+	TalonSRX rightFront;
+	TalonSRX rightTop;
 	//DoubleSolenoid shifter;
     //DoubleSolenoid ptoShift;
     
 	public DriveTrain(){
 
 		//Create the objects and set properties
-		left = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
-		leftSlaveRev = new TalonSRX(ActuatorMap.leftSlaveRev);
-		leftSlaveFol = new TalonSRX(ActuatorMap.leftSlaveFol);
-		right = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
-		rightSlaveFol = new TalonSRX(ActuatorMap.rightSlaveFol);
-		rightSlaveRev = new TalonSRX(ActuatorMap.rightSlaveRev);
+		leftMaster = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
+		leftFront = new TalonSRX(ActuatorMap.leftFront);
+		leftTop = new TalonSRX(ActuatorMap.leftTop);
+		 
+		rightMaster = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
+		rightFront = new TalonSRX(ActuatorMap.rightFront);
+		rightTop = new TalonSRX(ActuatorMap.rightTop);
 		
 		
-		left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
-		right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		
-		leftSlaveRev.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-		leftSlaveFol.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+		leftTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+		leftFront.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 		
-		left.setInverted(true);
-		leftSlaveFol.setInverted(true);
+		leftMaster.setInverted(true);
+		leftFront.setInverted(true);
 		
-		rightSlaveFol.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-		rightSlaveRev.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);    
+		rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+		rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);    
 		
-		rightSlaveRev.setInverted(true);
+		rightTop.setInverted(true);
 		
 		
 		//Set Current Limits
-
-		left.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		leftSlaveRev.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		leftSlaveFol.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		right.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		rightSlaveRev.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-		rightSlaveFol.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-
+/*
+		leftMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		leftFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		leftTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+	*/	
 		
 		//Shifting Solenoids
 		//shifter = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.dtSpeedShiftForward, ActuatorMap.dtSpeedShiftReverse);
@@ -99,8 +100,8 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Acceleration Handler with Squared controls
-				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
-				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
+				leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
+				rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
 				
 				//Shift without override
 				shift(false);
@@ -119,8 +120,8 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Drive with Override
-				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
-				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
+				leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
+				rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
 				
 				//Shift with override
 				shift(true);
@@ -139,7 +140,7 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Wheels to Hang Power
-				left.set(ControlMode.PercentOutput, Constants.climbPower);
+				leftMaster.set(ControlMode.PercentOutput, Constants.climbPower);
 				
 				//Set Robot State
 				RobotStates.driveOverride = DriveOverride.HANG;		
@@ -157,9 +158,9 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Talon Modes for Driving
-				right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-				rightSlaveFol.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-				rightSlaveRev.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightMaster.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightFront.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+				rightTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 				
 				//Dogshifter Extended
 				//ptoShift.set(Value.kForward);
@@ -180,8 +181,8 @@ public class DriveTrain extends Subsystem{
 				}
 				
 				//Set Talon Modes for Driving
-				rightSlaveFol.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-				rightSlaveRev.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+				rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 				
 				//Dogshifter Retracted
 				//ptoShift.set(Value.kReverse);
@@ -293,8 +294,8 @@ public class DriveTrain extends Subsystem{
 	
 	@Override
 	public void pushToDashboard() {
-		SmartDashboard.putNumber("leftEnc", left.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("rightEnc", right.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("leftEnc", leftMaster.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("rightEnc", rightMaster.getSelectedSensorPosition(0));
 		//Put any SmartDash info here.
 		
 	}

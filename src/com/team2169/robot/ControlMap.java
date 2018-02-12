@@ -13,6 +13,7 @@ public class ControlMap {
 	
 	//Primary Controls
 	
+	
 		//Button Constants
 		static int shiftUp = 4;
 		static int shiftDown = 3;	
@@ -21,7 +22,6 @@ public class ControlMap {
 		
 		//Master Overrides
 		static int primaryOverride = 3;
-		static int operatorOverride = 1;
 		
 		//Axis Constants
 		static int armAxis = 1;
@@ -62,6 +62,10 @@ public class ControlMap {
 			
 		}
 		
+		//Control Settings
+		public static final double elevatorOverrideSetpointMovement = 6;
+		public static final double armOverrideSetpointMovement = 6;	
+		
 	//DriveTrain Control Sticks handler
 		public static double leftTankStick(boolean squared) {
 		
@@ -91,25 +95,30 @@ public class ControlMap {
 		}
 	}
 
+	public static void setWantedElevatorPos(WantedElevatorPos pos) {
+		RobotWantedStates.wantedElevatorPos = pos;
+		RobotStates.elevatorOverideMode = false;
+	}
+	
 	//Elevator WantedState handler
 	public static void getWantedElevatorPos(){
 		if(operator.getRawButton(liftGroundMacro) || operator.getRawButton(liftGroundMacro)) {
-			RobotWantedStates.wantedElevatorPos = WantedElevatorPos.GROUND;
+			setWantedElevatorPos(WantedElevatorPos.GROUND);
 		}
 		else if(operator.getRawButton(liftSwitchMacro) || operator.getRawButton(liftSwitchMacro))  {
-			RobotWantedStates.wantedElevatorPos = WantedElevatorPos.SWITCH;
+			setWantedElevatorPos(WantedElevatorPos.SWITCH);
 		}
 		else if(operator.getRawButton(liftScaleLowMacro) || operator.getRawButton(liftScaleLowMacro))  {
-			RobotWantedStates.wantedElevatorPos = WantedElevatorPos.SCALE_LOW;			
+			setWantedElevatorPos(WantedElevatorPos.SCALE_LOW);
 		}
 		else if(operator.getRawButton(liftScaleMidMacro) || operator.getRawButton(liftScaleMidMacro))  {
-			RobotWantedStates.wantedElevatorPos = WantedElevatorPos.SCALE_MID;			
+			setWantedElevatorPos(WantedElevatorPos.SCALE_MID);
 		}
 		else if(operator.getRawButton(liftScaleHighMacro) || operator.getRawButton(liftScaleHighMacro))  {
-			RobotWantedStates.wantedElevatorPos = WantedElevatorPos.SCALE_HIGH;				
+			setWantedElevatorPos(WantedElevatorPos.SCALE_HIGH);
 		}
 		else if(operator.getRawButton(liftHangMacro) || operator.getRawButton(liftHangMacro))  {
-			RobotWantedStates.wantedElevatorPos = WantedElevatorPos.HANG;				
+			setWantedElevatorPos(WantedElevatorPos.HANG);
 		}
 	}
 	
@@ -155,10 +164,6 @@ public class ControlMap {
 	}
 	
 	//Operator Override Handlers
-		public static boolean operatorOverrideActive() {
-			return operator.getRawButton(operatorOverride);
-		}
-		
 		public static double armOverrideValue() {
 			return operator.getRawAxis(armAxis);
 		}
@@ -167,21 +172,19 @@ public class ControlMap {
 			return operator.getRawAxis(elevatorAxis);
 		}
 	
-		public static boolean isArmOverrideActive() {
+		public static void isArmOverrideActive() {
 
 		if(operator.getRawAxis(armAxis) > armDeadband || operator.getRawAxis(armAxis) < -armDeadband) {
-			return true;
+			RobotStates.armOverideMode = true;
 		}
-		return false;
 		
 	}
 	
-		public static boolean isElevatorOverrideActive() {
+		public static void isElevatorOverrideActive() {
 		
 		if(operator.getRawAxis(elevatorAxis) > elevatorDeadband || operator.getRawAxis(elevatorAxis) < -elevatorDeadband) {
-			return true;
+			RobotStates.elevatorOverideMode = true;
 		}
-		return false;
 		
 	}
 		
@@ -230,6 +233,14 @@ public class ControlMap {
 			RobotWantedStates.platformRelease = true;
 			
 		}
+		
+	}
+
+	public static void getElevatorArmControls() {
+		
+		isArmOverrideActive();
+		isElevatorOverrideActive();
+		getWantedElevatorPos();
 		
 	}
 

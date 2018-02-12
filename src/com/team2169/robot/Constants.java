@@ -51,6 +51,8 @@ public class Constants {
 	public static double scaleHighElevatorEncoderInches= 72;
 	public static double hangElevatorEncoderInches = 65;
 	
+	public static int extendedArmEncoderPosition = 0;
+	public static int retractedArmEncoderPosition = 0;
 	
 	public static TalonConfig elevatorData = new TalonConfig();
 	public static void setElevatorDataFromConstants() {
@@ -64,6 +66,8 @@ public class Constants {
 		elevatorData.f = .2;
 		
 	}
+
+	public static final double elevatorDrumReduction = 100;
 	
 	public static final double elevatorWinchDiameter = 2.5;
 	
@@ -120,10 +124,10 @@ public class Constants {
 	public static final DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kReverse;
 	
 	//Current Limits
-	public static final int maxDriveTrainCurrent = 40;
+	public static final int maxDriveTrainCurrent = 30;
 	
 	//Current Limit Timeouts
-	public static final int driveTrainCurrentTimeout = 50;
+	public static final int driveTrainCurrentTimeout = 5;
 	
 	//Pathfinder Zone
 		
