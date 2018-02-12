@@ -1,5 +1,6 @@
 package com.team2169.robot.canCycles;
 
+import com.team2169.robot.canCycles.cycles.DropAndExhaust;
 import com.team2169.robot.canCycles.cycles.SampleCANCycle;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -7,6 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class CANCycleHandler {
 	
 	public static SampleCANCycle sampleCANCycle;
+	public static DropAndExhaust dropAndExhaust;
 	
 	public CANCycleHandler() {
 		sampleCANCycle = new SampleCANCycle();

@@ -2,14 +2,15 @@ package com.team2169.robot.auto.modes;
 
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
-import com.team2169.robot.auto.tasks.TimeTask;
+import com.team2169.robot.auto.Paths;
+import com.team2169.robot.auto.tasks.FollowPath;
 
 public class SelfTest extends AutoMode {
 	
     public SelfTest() {
     	
-    	addSequential(new TimeTask(5, "Waiting To Start"));
-    	//addSequential(new FollowPath(Paths.example));
+    	//addSequential(new TimeTask(5, "Waiting To Start"));
+    	addSequential(new FollowPath(Paths.example));
     	
     }
 
@@ -29,3 +30,4 @@ public class SelfTest extends AutoMode {
     	//SmartDashboard.putString("Running Auto: ", AutoManager.autoName);
     }
 }
+		

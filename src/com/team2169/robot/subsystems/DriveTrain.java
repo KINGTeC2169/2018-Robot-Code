@@ -311,6 +311,8 @@ public class DriveTrain extends Subsystem{
 	public void stop() {
 		
 		//Code to make all moving parts halt goes here.
+		leftMaster.set(ControlMode.Disabled, 1);
+		rightMaster.set(ControlMode.Disabled, 1);
 		
 	}
 

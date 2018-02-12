@@ -128,11 +128,13 @@ public class PathfinderObject {
 			//If left wheel trajectory isn't finished, set new power.
 			if(!leftFollower.isFinished()) {
 				leftTalon.set(ControlMode.PercentOutput,l + turn);
+				SmartDashboard.putNumber("leftPathfinder", l + turn);
 			}
 
 			//If right wheel trajectory isn't finished, set new power.
 			if(!rightFollower.isFinished()) {
 				rightTalon.set(ControlMode.PercentOutput,r - turn);
+				SmartDashboard.putNumber("rightPathfinder", r - turn);
 			}
 			
 			//Return if trajectories are both finished
