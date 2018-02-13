@@ -1,5 +1,6 @@
 package com.team2169.util;
 
+import com.team2169.robot.Constants;
 import com.team2169.robot.Robot;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,27 +8,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @SuppressWarnings("deprecation")
 public class ShuffleBoardManager {
 
-	NetworkTable dash = NetworkTable.getTable("SmartDashboard");
+	static NetworkTable dash = NetworkTable.getTable("SmartDashboard");
 
-	public void setDouble(String key, double D){
+	public static void setDouble(String key, double D){
 		dash.putDouble(key, D);
 	}
 
-	public void getDouble(String key){
-		dash.getNumber(key, 0);
+	public static double getDouble(String key){
+		return dash.getNumber(key, -1);
 	}
 	
+	public static void getPathfinderConstants() {
+		Constants.accelerationGain = getDouble("accelerationGain");
+		Constants.timeStep = getDouble("timeStep");
+		Constants.maxVelocity = getDouble("maxVelocity");
+		Constants.maxAcceleration = getDouble("maxAcceleration");
+		Constants.maxJerk = getDouble("maxAcceleration");
+		Constants.pathfinderP = getDouble("pathfinderP");
+		Constants.pathfinderI = getDouble("pathfinderI");
+		Constants.pathfinderD = getDouble("pathfinderD");
+	}
 	
 	public void init(boolean fms) {	
-		setDouble("maxVelocity", 0);
-		setDouble("pathFinderD", 0);
-		setDouble("accelerationGain", 0);
-		setDouble("timeStep", 0);
-		setDouble("pathfinderP", 0);
-		setDouble("pathfinderI", 0);
-		setDouble("maxAcceleration", 0);
-		setDouble("maxJerk", 0);
-		
+	
+		setDouble("accelerationGain", Constants.accelerationGain);
+		setDouble("timeStep", Constants.timeStep);
+		setDouble("maxVelocity", Constants.maxVelocity);
+		setDouble("maxAcceleration", Constants.maxAcceleration);
+		setDouble("maxJerk", Constants.maxJerk);
+		setDouble("pathfinderP", Constants.pathfinderP);
+		setDouble("pathfinderI", Constants.pathfinderI);
+		setDouble("pathfinderD", Constants.pathfinderD);
 		
 		
 		if(fms) {

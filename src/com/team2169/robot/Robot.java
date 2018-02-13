@@ -49,6 +49,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		RobotStates.runningMode = RunningMode.AUTO;
+		ShuffleBoardManager.getPathfinderConstants();
 		auto.runAuto();
 		
 	}
