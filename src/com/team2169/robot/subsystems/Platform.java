@@ -4,8 +4,6 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 public class Platform extends Subsystem{
 
     private static Platform hInstance = null;
@@ -30,18 +28,17 @@ public class Platform extends Subsystem{
 		ControlMap.getWantedPlatform();
 		if(RobotWantedStates.platformRelease){
 			releasePlatform(true);
+			RobotStates.platformRelease = true;
 		}
 		else {
 			releasePlatform(false);
+			RobotStates.platformRelease = false;
 		}
 		
 	}
 	
 	public void releasePlatform(boolean releaseState) {
 		//platformRelease.set(releaseState);
-		if(releaseState && RobotStates.debugMode) {
-			DriverStation.reportWarning("Hanger: Platform realased", false);
-		}
 	}
 	
 	@Override

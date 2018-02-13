@@ -7,8 +7,8 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.IntakeMode;
+import com.team2169.util.DebugPrinter;
 import com.team2169.robot.Constants;
-import edu.wpi.first.wpilibj.DriverStation;
 
 public class Intake extends Subsystem{
 	
@@ -48,28 +48,22 @@ public class Intake extends Subsystem{
 			switch(RobotWantedStates.wantedIntakeMode){
 			
 			case IDLE: default:
+				
 				//Stop Intakes
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("Intakes Idle", false);
-				}
 				intake(0);
 				RobotStates.intakeMode = IntakeMode.IDLE;
 				break;
 				
 			case INTAKE:
-				//Run Intakes Normally
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("Intakes Intaking", false);
-				}
+				
+				//Run Intakes
 				intake(-1 * Constants.intakeSpeed);
 				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			
 			case EXHAUST:
+
 				//Run Intakes Backwards
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("Intakes Exhaust", false);
-				}
 				intake(Constants.intakeSpeed);
 				RobotStates.intakeMode = IntakeMode.EXHAUST;
 				break;
@@ -79,22 +73,16 @@ public class Intake extends Subsystem{
 			if(RobotWantedStates.intakeClamp) {
 				
 				//Retract Piston
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("Intakes Clamped", false);
-				}
 				//clamp.set(Value.kReverse);
-				//RobotStates.intakeClamp = true;
+				RobotStates.intakeClamp = true;
 				
 			}
 			
 			else if(!RobotWantedStates.intakeClamp) {
 				
 				//Extend Pistons
-				if(RobotStates.debugMode) {
-					DriverStation.reportWarning("Intakes Unclamped", false);
-				}
 				//clamp.set(Value.kForward);
-				//RobotStates.intakeClamp = false;
+				RobotStates.intakeClamp = false;
 				
 			}
 		
@@ -102,7 +90,10 @@ public class Intake extends Subsystem{
 
 	@Override
 	public void pushToDashboard() {
-		// TODO Auto-generated method stub
+		
+		if(RobotStates.debugMode) {
+			DebugPrinter.intakeDebug();
+		}
 		
 	}
 

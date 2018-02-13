@@ -11,8 +11,6 @@ import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 public class Arm {
 	
 	//Create Talons
@@ -52,11 +50,6 @@ public class Arm {
 			
 			//CANCycle for Ground Position
 			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Arm Macro: Ground", false);
-			}
-			
 			//Actuate the Motor
 			armToPos(Constants.extendedArmEncoderPosition);
 			
@@ -67,11 +60,6 @@ public class Arm {
 		case HANG:
 		
 			//CANCycle Hang Position
-			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Arm Macro: Hang", false);
-			}
 			
 			//Actuate the Motor
 			armToPos(Constants.retractedArmEncoderPosition);
@@ -84,11 +72,6 @@ public class Arm {
 			
 			//CANCycle for (High) Position
 			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Arm Macro: Scale High", false);
-			}
-			
 			//Actuate the Motor
 			armToPos(Constants.retractedArmEncoderPosition);
 			
@@ -100,11 +83,6 @@ public class Arm {
 			
 			//CANCycle for Scale (Mid) Position
 
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Arm Macro: Scale Mid", false);
-			}
-			
 			//Actuate the Motor
 			armToPos(Constants.retractedArmEncoderPosition);
 			
@@ -116,11 +94,6 @@ public class Arm {
 			
 			//CANCycle for Scale (Low) Position
 			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Arm Macro: Scale Low", false);
-			}
-			
 			//Actuate the Motor
 			armToPos(Constants.retractedArmEncoderPosition);
 			
@@ -129,11 +102,8 @@ public class Arm {
 			break;
 
 		case SWITCH:
-	
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Arm Macro: Switch", false);
-			}
+			
+			//CANCycle for Switch Position
 			
 			//Actuate the Motor
 			armToPos(Constants.retractedArmEncoderPosition);

@@ -5,6 +5,7 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.subsystems.elevatorArm.Arm;
 import com.team2169.robot.subsystems.elevatorArm.Elevator;
+import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -69,6 +70,11 @@ public class ElevatorArm extends Subsystem{
 	
 	@Override
 	public void pushToDashboard() {
+		
+		if(RobotStates.debugMode) {
+			DebugPrinter.armDebug();
+			DebugPrinter.elevatorDebug();
+		}
 		
 	}
 

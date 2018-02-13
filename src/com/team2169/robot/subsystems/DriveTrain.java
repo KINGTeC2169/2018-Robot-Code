@@ -12,6 +12,7 @@ import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveOverride;
 import com.team2169.robot.RobotWantedStates.WantedDriveMode;
 import com.team2169.robot.subsystems.Subsystem;
+import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -294,9 +295,13 @@ public class DriveTrain extends Subsystem{
 	
 	@Override
 	public void pushToDashboard() {
-		SmartDashboard.putNumber("leftEnc", leftMaster.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("rightEnc", rightMaster.getSelectedSensorPosition(0));
+
 		//Put any SmartDash info here.
+		DebugPrinter.driveTrainDebug();
+		SmartDashboard.putNumber("Left Encoder Value: ", 
+				leftMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
+		SmartDashboard.putNumber("Right Encoder Value: ",
+				rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
 		
 	}
 

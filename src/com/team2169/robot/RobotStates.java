@@ -86,6 +86,7 @@ public class RobotStates {
 		}
 		public static boolean elevatorInPosition;
 		public static boolean elevatorOverideMode = false;
+		public static boolean platformRelease;
 
 		
 	

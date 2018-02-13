@@ -11,8 +11,6 @@ import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
 import com.team2169.robot.RobotStates.ElevatorPos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 public class Elevator {
 
 	//Create Talons
@@ -54,12 +52,7 @@ public class Elevator {
 		case GROUND:
 			
 			//CANCycle for Ground Position
-			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Elevator Macro: Ground", false);
-			}
-			
+		
 			//Actuate the Motor
 			elevatorToPos(Constants.groundElevatorEncoderPosition);
 			
@@ -70,11 +63,6 @@ public class Elevator {
 		case HANG:
 		
 			//CANCycle Hang Position
-			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Elevator Macro: Hang", false);
-			}
 			
 			//Actuate the Motor
 			elevatorToPos(Constants.hangElevatorEncoderPosition);
@@ -87,11 +75,6 @@ public class Elevator {
 			
 			//CANCycle for (High) Position
 			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Elevator Macro: Scale High", false);
-			}
-			
 			//Actuate the Motor
 			elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
 			
@@ -103,11 +86,6 @@ public class Elevator {
 			
 			//CANCycle for Scale (Mid) Position
 
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Elevator Macro: Scale Mid", false);
-			}
-			
 			//Actuate the Motor
 			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
 			
@@ -119,11 +97,6 @@ public class Elevator {
 			
 			//CANCycle for Scale (Low) Position
 			
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Elevator Macro: Scale Low", false);
-			}
-			
 			//Actuate the Motor
 			elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
 
@@ -133,10 +106,7 @@ public class Elevator {
 			
 		case SWITCH:
 	
-			//If DebugMode, print info
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Running Elevator Macro: Switch", false);
-			}
+			//CANCycle for Switch			
 			
 			//Actuate the Motor
 			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
