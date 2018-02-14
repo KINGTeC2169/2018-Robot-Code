@@ -10,10 +10,11 @@ public class DropAndExhaust extends CommandGroup {
 	//Define Subsystems
 	
     public DropAndExhaust() {
-    	
+
     	addSequential(new ArmDeploy());
     	addSequential(new IntakeExhaust(.25));
     	//Put Sequentials and Parallels here
+    	
     }
     
     
