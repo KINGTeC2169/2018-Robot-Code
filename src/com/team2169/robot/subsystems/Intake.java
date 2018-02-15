@@ -8,6 +8,7 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.util.DebugPrinter;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -24,40 +25,56 @@ public class Intake extends Subsystem{
         }
         return iInstance;
     }
-	
+    
+	Ultrasonic ultra;
 	private TalonSRX left;
 	private TalonSRX right;
 	DoubleSolenoid clamp;
 	
 	public Intake() {
-	
+		ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
 		left = new TalonSRX(ActuatorMap.leftIntakeID);
 		right = new TalonSRX(ActuatorMap.rightIntakeID);
 		right.setInverted(true);
 		clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward, ActuatorMap.clampPortReverse);
+		ultra.setAutomaticMode(true);
 	}
 	
 	public void intakeManual(double power) {
 		left.set(ControlMode.PercentOutput, power);
 		right.set(ControlMode.PercentOutput, power);	
 	}
+	public double getBlockDistance(){
+		return ultra.getRangeInches();
+	}
 	
 	public void intakeHandler() {
 		
+			RobotStates.ultraWithinRange = (getBlockDistance() <= Constants.maxUltraTriggerDistance && getBlockDistance() >= Constants.minUltraTriggerDistance);
 			//Handle Intake State
 			switch(RobotWantedStates.wantedIntakeMode){
 			
 			case IDLE: default:
 				
 				//Stop Intakes
+<<<<<<< Updated upstream
 				intakeManual(0);
+=======
+				
+				intakeManual(0, true);
+>>>>>>> Stashed changes
 				RobotStates.intakeMode = IntakeMode.IDLE;
 				break;
 				
 			case INTAKE:
 				
 				//Run Intakes
+<<<<<<< Updated upstream
 				intakeManual(-Constants.intakeSpeed);
+=======
+				
+				intakeManual(-Constants.intakeSpeed, true);
+>>>>>>> Stashed changes
 				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			

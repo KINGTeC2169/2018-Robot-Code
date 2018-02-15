@@ -42,6 +42,8 @@ public class ActuatorMap {
 			public static final int platformReleasePiston = 0;
 			
 		//Analog Inputs
+			public static final int intakeUltrasonicInputPort = 0;
+			public static final int intakeUltrasonicOutputPort = 1;
 			public static final int elevatorHeightSensorPort = 0;
 			
 

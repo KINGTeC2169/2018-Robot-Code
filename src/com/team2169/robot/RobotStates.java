@@ -67,7 +67,8 @@ public class RobotStates {
 	    public static IntakeClamp intakeClamp;
 	    
 	    public static boolean intakeClampOverride;
-	    
+	//Robot block held state
+	    public static boolean ultraWithinRange;  
 	//Arm Position Handler
 		public static enum ArmPos{
 			

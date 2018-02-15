@@ -36,6 +36,8 @@ public class Constants {
 		public static final int camera3Height = 480;	
 		
 	//intake constants
+	public static final double minUltraTriggerDistance = 0;
+	public static final double maxUltraTriggerDistance = 8;
 	public static final double intakeSpeed = 0.75;
 		
 	//Climb Speed
