@@ -2,9 +2,7 @@ package com.team2169.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
-import com.team2169.robot.RobotWantedStates.WantedDriveMode;
-import com.team2169.robot.RobotWantedStates.WantedDriveOverride;
-import com.team2169.robot.RobotWantedStates.WantedElevatorPos;
+import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -12,7 +10,6 @@ import edu.wpi.first.wpilibj.Joystick;
 public class ControlMap {
 	
 	//Primary Controls
-	
 	
 		//Button Constants
 		static int shiftUp = 4;
@@ -24,19 +21,23 @@ public class ControlMap {
 		static int primaryOverride = 3;
 		
 		//Axis Constants
-		static int armAxis = 1;
-		static int elevatorAxis = 5;
+		static int armOverrideButton = 2;
+		static int elevatorOverrideButton = 3;
+		
+		static int clampButton = 10;
+		static int neutralButton = 11;
+		static int dropButton = 12;
 		
 		//Elevator Macro Keys
-		static int liftGroundMacro = 1;
-		static int liftSwitchMacro = 2;
-		static int liftScaleLowMacro = 3;
-		static int liftScaleMidMacro = 4;
-		static int liftScaleHighMacro = 5;
-		static int liftHangMacro = 6;
+		static int macroGround = 1;
+		static int macroSwitch = 2;
+		static int macroScaleLow = 3;
+		static int macroScaleMid = 4;
+		static int macroScaleHigh = 5;
+		static int macroHang = 6;
 		
 		//Intake Keys
-		static int intakeAxis = 3;
+		static int operatorAxis = 3;
 		static int clamp = 7;
 	
 		//Climb Keys
@@ -62,6 +63,11 @@ public class ControlMap {
 			
 		}
 		
+		static enum OperatorStickState{
+			INTAKE, ARM, ELEVATOR
+		}
+		static OperatorStickState operatorStickState;
+		
 		//Control Settings
 		public static final double elevatorOverrideSetpointMovement = 6;
 		public static final double armOverrideSetpointMovement = 6;	
@@ -85,165 +91,155 @@ public class ControlMap {
 		
 		}
 		
-	//DriveTrain Shifting WantedState handler
-	public static void getWantedShift(){
-		if(primaryLeft.getRawButton(shiftUp) || primaryLeft.getRawButton(shiftUp)) {
-			RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_HIGH;
+		public static boolean shiftUp() {
+			return (primaryLeft.getRawButton(shiftUp) || primaryRight.getRawButton(shiftUp));
 		}
-		else if(primaryLeft.getRawButton(shiftDown) || primaryRight.getRawButton(shiftDown)){
-			RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_LOW;
+		
+		public static boolean shiftDown() {
+			return (primaryLeft.getRawButton(shiftDown) || primaryRight.getRawButton(shiftDown));
 		}
-	}
-
-	public static void setWantedElevatorPos(WantedElevatorPos pos) {
-		RobotWantedStates.wantedElevatorPos = pos;
-		RobotStates.elevatorOverideMode = false;
-	}
 	
-	//Elevator WantedState handler
-	public static void getWantedElevatorPos(){
-		if(operator.getRawButton(liftGroundMacro) || operator.getRawButton(liftGroundMacro)) {
-			setWantedElevatorPos(WantedElevatorPos.GROUND);
+		//Primary Driver Speed-Cap/Shifting Override Handler
+		public static boolean primaryDriverOverride() {
+			if(primaryLeft.getRawButton(primaryOverride) || primaryRight.getRawButton(primaryOverride)) {
+				return true;
+			}
+			return false;
 		}
-		else if(operator.getRawButton(liftSwitchMacro) || operator.getRawButton(liftSwitchMacro))  {
-			setWantedElevatorPos(WantedElevatorPos.SWITCH);
+
+
+	//Macro Buttons
+
+		//Ground Macro
+		public static boolean groundMacroPressed() {
+			return operator.getRawButton(macroGround);
 		}
-		else if(operator.getRawButton(liftScaleLowMacro) || operator.getRawButton(liftScaleLowMacro))  {
-			setWantedElevatorPos(WantedElevatorPos.SCALE_LOW);
+		
+		//Switch Macro
+		public static boolean switchMacroPressed() {
+			return operator.getRawButton(macroSwitch);
 		}
-		else if(operator.getRawButton(liftScaleMidMacro) || operator.getRawButton(liftScaleMidMacro))  {
-			setWantedElevatorPos(WantedElevatorPos.SCALE_MID);
+		
+		//Scale Low Macro
+		public static boolean scaleLowMacroPressed() {
+			return operator.getRawButton(macroScaleLow);
 		}
-		else if(operator.getRawButton(liftScaleHighMacro) || operator.getRawButton(liftScaleHighMacro))  {
-			setWantedElevatorPos(WantedElevatorPos.SCALE_HIGH);
+		
+		//Scale Mid Macro
+		public static boolean scaleMidMacroPressed() {
+			return operator.getRawButton(macroScaleMid);
 		}
-		else if(operator.getRawButton(liftHangMacro) || operator.getRawButton(liftHangMacro))  {
-			setWantedElevatorPos(WantedElevatorPos.HANG);
+		
+		//Scale High Macro
+		public static boolean scaleHighMacroPressed() {
+			return operator.getRawButton(macroScaleHigh);
 		}
+		
+		//Hang Macro
+		public static boolean hangMacroPressed() {
+			return operator.getRawButton(macroHang);
+		}
+		
+
+	
+	public static void getOperatorStickState() {
+		
+		if(operator.getRawButton(elevatorOverrideButton)) {
+			operatorStickState = OperatorStickState.ELEVATOR;
+			RobotStates.elevatorOverideMode = true;
+		}
+		else if(operator.getRawButton(armOverrideButton)){
+			operatorStickState = OperatorStickState.ARM;
+			RobotStates.armOverideMode = true;
+		}
+		else {
+			operatorStickState = OperatorStickState.INTAKE;
+		}
+		
 	}
 	
 	//Intake WantedState handler
-	public static void getWantedIntake(){
+	public static void getWantedIntakeState(){
 
 		//Intake Wheel States
-		if(operator.getRawAxis(intakeAxis) < -.2) {
-			RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;
-		}
-		else if(operator.getRawAxis(intakeAxis) > .2){
-			RobotWantedStates.wantedIntakeMode = WantedIntakeMode.EXHAUST;
-		}
-		else{
-			RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-		}
+			if(operatorStickState == OperatorStickState.INTAKE) {
+			
+				//Intake Wheel States
+				if(operator.getRawAxis(operatorAxis) < -.2) {
+					
+					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;
+				
+				}
+				else if(operator.getRawAxis(operatorAxis) > .2){
+					
+					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.EXHAUST;
+				
+				}
+				else{
+					
+					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
+				
+				}
+				
+			}
+			
+			//Intake stick is busy at the moment, shut off intake
+			else {
+				
+				RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
+			
+			}
 		
 		//Intake Clamp States
 		
-		//Clamp Button pressed and Is Clamping
-		if(operator.getRawButtonPressed(clamp)) {
-			
-			if(!RobotWantedStates.intakeClamp) {
-				RobotWantedStates.intakeClamp = true;
-			}
-			else if(RobotWantedStates.intakeClamp) {
-				RobotWantedStates.intakeClamp = false;
-			}
-			else {
-				//Something failed
-				RobotWantedStates.intakeClamp = false;
-			}
-			
-		}
-	}
+			if(operator.getRawButtonPressed(clampButton)) {
 	
-	//Primary Driver Speed-Cap/Shifting Override Handler
-	public static boolean primaryDriverOverride() {
-		if(primaryLeft.getRawButton(primaryOverride) || primaryRight.getRawButton(primaryOverride)) {
-			return true;
-		}
-		return false;
+				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
+				
+			}
+			
+			else if(operator.getRawButtonPressed(neutralButton)) {
+	
+				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
+				
+			}
+			
+			else if(operator.getRawButtonPressed(dropButton)) {
+	
+				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
+				
+			}
 	}
 	
 	//Operator Override Handlers
-		public static double armOverrideValue() {
-			return operator.getRawAxis(armAxis);
-		}
 		
-		public static double elevatorOverrideValue() {
-			return operator.getRawAxis(elevatorAxis);
+		public static double getOperatorOverrideValue() {
+			return operator.getRawAxis(operatorAxis);
 		}
-	
-		public static void isArmOverrideActive() {
+			
+		public static void operatorUnsafeAction() {
+			operator.setRumble(RumbleType.kLeftRumble, 1);
+		}
 
-		if(operator.getRawAxis(armAxis) > armDeadband || operator.getRawAxis(armAxis) < -armDeadband) {
-			RobotStates.armOverideMode = true;
+	//Hanging Logic
+		
+		public static boolean driversWantToHang() {
+			
+			return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary)) 
+			&& operator.getRawButton(climbOperator);
+		
 		}
 		
-	}
 	
-		public static void isElevatorOverrideActive() {
-		
-		if(operator.getRawAxis(elevatorAxis) > elevatorDeadband || operator.getRawAxis(elevatorAxis) < -elevatorDeadband) {
-			RobotStates.elevatorOverideMode = true;
-		}
-		
-	}
-		
-	public static void operatorUnsafeAction() {
-		operator.setRumble(RumbleType.kLeftRumble, 1);
-	}
-
-	static boolean driversWantToHang() {
-		return (primaryLeft.getRawButton(climbPrimary) || primaryLeft.getRawButton(climbPrimary)) 
-		&& operator.getRawButton(climbOperator);
-	}
-	
-	public static void getWantedDriveOverride() {
-		
-		//Drivers Want to Hang
-		if(driversWantToHang()) {
-			if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.WANTS_TO_HANG 
-					|| RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
-				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.HANG;
+		public static void getWantedPlatform() {
+			
+			if(/*Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {
+				
+				RobotWantedStates.platformRelease = true;
+				
 			}
 			
-			else {
-				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_HANG;
-			}
 		}
-		//Drivers Want to Drive
-		else {
-			//Coming from Climbing
-			if(RobotWantedStates.wantedDriveOverride == WantedDriveOverride.WANTS_TO_HANG 
-					|| RobotWantedStates.wantedDriveOverride == WantedDriveOverride.HANG) {
-				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_DRIVE;
-			}
-			else if(primaryDriverOverride()){
-				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.OVERRIDE;
-			}
-			else {
-				RobotWantedStates.wantedDriveOverride = WantedDriveOverride.NONE;
-			}
-		}
-		
-	}
-
-	public static void getWantedPlatform() {
-		if(/*Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {
-			
-			RobotWantedStates.platformRelease = true;
-			
-		}
-		
-	}
-
-	public static void getElevatorArmControls() {
-		
-		isArmOverrideActive();
-		isElevatorOverrideActive();
-		getWantedElevatorPos();
-		
-	}
-
 
 	}
 

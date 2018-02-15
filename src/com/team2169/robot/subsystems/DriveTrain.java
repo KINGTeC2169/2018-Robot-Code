@@ -11,6 +11,7 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveOverride;
 import com.team2169.robot.RobotWantedStates.WantedDriveMode;
+import com.team2169.robot.StateManager;
 import com.team2169.robot.subsystems.Subsystem;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
@@ -88,7 +89,7 @@ public class DriveTrain extends Subsystem{
 	
 	public void driveHandler() {
 		
-		ControlMap.getWantedDriveOverride();
+		StateManager.getWantedDriveOverride();
 		
 		switch(RobotWantedStates.wantedDriveOverride) {
 		
@@ -215,7 +216,7 @@ public class DriveTrain extends Subsystem{
 	void shift(boolean override) {
 		//If the override is active, switch to the requested Drive Mode
 		
-		ControlMap.getWantedShift();
+		StateManager.getWantedShiftState();
 		
 		//If Master Override is Active
 		if(override) {

@@ -69,7 +69,6 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void teleopInit() {
-		superStructure.reinstance();
 		RobotStates.runningMode = RunningMode.TELEOP;
 		if(auto != null){
 			auto.endAuto();

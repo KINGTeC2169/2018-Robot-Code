@@ -59,7 +59,7 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .2;
+		elevatorData.p = .25;
 		elevatorData.i = 0;
 		elevatorData.d = 0;
 		elevatorData.f = .2;

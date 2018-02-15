@@ -41,9 +41,14 @@ public class RobotWantedStates {
 			INTAKE, EXHAUST, IDLE
 			
 		}
-		
-		public static boolean intakeClamp;
 		public static WantedIntakeMode wantedIntakeMode;
+		
+		public static enum WantedIntakeClamp{
+			
+			CLAMP, NEUTRAL, DROP
+			
+		}
+		public static WantedIntakeClamp wantedIntakeClamp;
 	
 
 	//Arm Position Handler
@@ -63,5 +68,14 @@ public class RobotWantedStates {
 		}
 		
 		public static WantedElevatorPos wantedElevatorPos;
+
+		//Macro Handler	
+		public static enum WantedMacro{
+			
+			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
+			
+		}
+		public static WantedMacro wantedMacro;
+		
 		
 }

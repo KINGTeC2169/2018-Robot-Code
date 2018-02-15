@@ -7,8 +7,6 @@ import com.team2169.robot.subsystems.elevatorArm.Arm;
 import com.team2169.robot.subsystems.elevatorArm.Elevator;
 import com.team2169.util.DebugPrinter;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 public class ElevatorArm extends Subsystem{
 	
 	private Arm arm;
@@ -37,14 +35,10 @@ public class ElevatorArm extends Subsystem{
 	
 	public void elevatorArmHandler() {
 		
-		ControlMap.getElevatorArmControls();
-		
 		//Arm Handler
 		if(RobotStates.armOverideMode) {
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Arm Override Active", false);
-			}				
-			arm.armOverrideLooper(ControlMap.armOverrideValue());
+			
+			arm.armOverrideLooper(ControlMap.getOperatorOverrideValue());
 
 		}
 		else {
@@ -55,10 +49,7 @@ public class ElevatorArm extends Subsystem{
 
 		//Elevator Handler		
 		if(RobotStates.elevatorOverideMode) {
-			if(RobotStates.debugMode) {
-				DriverStation.reportWarning("Elevator Override Active", false);
-			}	
-			elevator.elevatorOverrideLooper(ControlMap.elevatorOverrideValue());
+			elevator.elevatorOverrideLooper(ControlMap.getOperatorOverrideValue());
 		}		
 		else {
 		

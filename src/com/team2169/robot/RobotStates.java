@@ -56,18 +56,22 @@ public class RobotStates {
 			INTAKE, EXHAUST, IDLE
 			
 		}
-		
-		public static boolean intakeClamp;
 		public static IntakeMode intakeMode;
-	
-
+		
+		public static enum IntakeClamp{
+			
+			CLAMP, NEUTRAL, DROP
+		}
+	    public static IntakeClamp intakeClamp;
+	    
+	    public static boolean intakeClampOverride;
+	    
 	//Arm Position Handler
 		public static enum ArmPos{
 			
-			EXTENDED, RETRACTED,
+			EXTENDED, RETRACTED, OVERRIDE
 			
 		}
-		
 		public static ArmPos armPos;
 		public static boolean armOverideMode = false;
 		public static boolean armInPosition;
@@ -75,7 +79,7 @@ public class RobotStates {
 	//Elevator Position Handler
 		public static enum ElevatorPos{
 			
-			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
+			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE
 			
 		}
 		
@@ -87,6 +91,8 @@ public class RobotStates {
 		public static boolean elevatorInPosition;
 		public static boolean elevatorOverideMode = false;
 		public static boolean platformRelease;
+
+		
 
 		
 	

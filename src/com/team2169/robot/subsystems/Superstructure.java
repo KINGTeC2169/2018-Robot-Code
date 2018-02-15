@@ -1,6 +1,7 @@
 package com.team2169.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotWantedStates.WantedArmPos;
@@ -37,11 +38,6 @@ public class Superstructure {
 		
 	}
 	
-	public void reinstance(){
-		drive = new DriveTrain();
-	}
-
-	
 	public void robotInit() {
 		
 		
@@ -63,7 +59,8 @@ public class Superstructure {
 	}
 	
 	public void subsystemLooper() {
-
+		
+		ControlMap.getOperatorStickState();
 		drive.driveHandler();
 		platform.platformHandler();
 		intake.intakeHandler();
