@@ -1,8 +1,8 @@
 package com.team2169.robot.canCycles.cycles;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import com.team2169.robot.canCycles.CanCycle;
 
-public class SampleCANCycle extends CommandGroup {
+public class SampleCANCycle extends CanCycle {
 	
 	//Define Subsystems
 	

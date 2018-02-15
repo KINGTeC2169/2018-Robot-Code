@@ -16,13 +16,13 @@ public class DebugPrinter {
 	public static void elevatorDebug() {
 		DriverStation.reportWarning("Elevator Position: " + RobotStates.elevatorHeight, false);
 		DriverStation.reportWarning("Elevator State: " + RobotStates.elevatorPos.name(), false);
-		DriverStation.reportWarning("Elevator Override Mode: " + RobotStates.elevatorOverideMode, false);
+		DriverStation.reportWarning("Elevator Override Mode: " + RobotStates.elevatorOverrideMode, false);
 		DriverStation.reportWarning("Elevator In Position: " + RobotStates.elevatorInPosition, false);
 	}
 	
 	public static void armDebug() {
 		DriverStation.reportWarning("Arm State: " + RobotStates.armPos.name(), false);
-		DriverStation.reportWarning("Arm Override Mode: " + RobotStates.armOverideMode, false);
+		DriverStation.reportWarning("Arm Override Mode: " + RobotStates.armOverrideMode, false);
 		DriverStation.reportWarning("Arm In Position: " + RobotStates.armInPosition, false);
 	}
 	

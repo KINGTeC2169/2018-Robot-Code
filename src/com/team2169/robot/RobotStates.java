@@ -49,6 +49,8 @@ public class RobotStates {
 		}
 	
 		public static DriveOverride driveOverride;
+
+		public static boolean canCycleMode;
 		
 	//Intake Mode Handler
 		public static enum IntakeMode{
@@ -73,7 +75,7 @@ public class RobotStates {
 			
 		}
 		public static ArmPos armPos;
-		public static boolean armOverideMode = false;
+		public static boolean armOverrideMode = false;
 		public static boolean armInPosition;
 		
 	//Elevator Position Handler
@@ -89,11 +91,7 @@ public class RobotStates {
 			return (elevatorHeight/Constants.maxElevatorHeight);
 		}
 		public static boolean elevatorInPosition;
-		public static boolean elevatorOverideMode = false;
+		public static boolean elevatorOverrideMode = false;
 		public static boolean platformRelease;
 
-		
-
-		
-	
 }

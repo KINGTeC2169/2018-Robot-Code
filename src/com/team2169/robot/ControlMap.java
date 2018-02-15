@@ -2,9 +2,6 @@ package com.team2169.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
-import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
-import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
-
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlMap {
@@ -46,8 +43,7 @@ public class ControlMap {
 		static int releasePlatform = 1;
 		
 		//Deadbands
-		static double elevatorDeadband = .2;
-		static double armDeadband = .2;
+		static double operatorDeadband = .2;
 		
 		//Create Joystick Objects
 		static Joystick primaryLeft;
@@ -74,21 +70,17 @@ public class ControlMap {
 		
 	//DriveTrain Control Sticks handler
 		public static double leftTankStick(boolean squared) {
-		
 			if(squared) {
 				return primaryLeft.getRawAxis(1)*Math.abs(primaryLeft.getRawAxis(1));	
 			}
 			return primaryLeft.getRawAxis(1);
-			
 		}
 		
 		public static double rightTankStick(boolean squared) {
-		
 			if(squared) {
 				return primaryRight.getRawAxis(1)*Math.abs(primaryRight.getRawAxis(1));	
 			}
 			return primaryRight.getRawAxis(1);
-		
 		}
 		
 		public static boolean shiftUp() {
@@ -109,7 +101,6 @@ public class ControlMap {
 
 
 	//Macro Buttons
-
 		//Ground Macro
 		public static boolean groundMacroPressed() {
 			return operator.getRawButton(macroGround);
@@ -140,80 +131,37 @@ public class ControlMap {
 			return operator.getRawButton(macroHang);
 		}
 		
+	//Intake State Buttons
+		public static boolean clampButtonPressed() {
+			return operator.getRawButton(clampButton);
+		}
+		
+		public static boolean neutralButtonPressed() {
+			return operator.getRawButton(neutralButton);
+		}
+		
+		public static boolean dropButtonPressed() {
+			return operator.getRawButton(dropButton);
+		}
 
 	
 	public static void getOperatorStickState() {
 		
 		if(operator.getRawButton(elevatorOverrideButton)) {
 			operatorStickState = OperatorStickState.ELEVATOR;
-			RobotStates.elevatorOverideMode = true;
 		}
 		else if(operator.getRawButton(armOverrideButton)){
 			operatorStickState = OperatorStickState.ARM;
-			RobotStates.armOverideMode = true;
 		}
 		else {
 			operatorStickState = OperatorStickState.INTAKE;
+			RobotStates.elevatorOverrideMode = false;
+			RobotStates.armOverrideMode = false;
 		}
-		
-	}
-	
-	//Intake WantedState handler
-	public static void getWantedIntakeState(){
-
-		//Intake Wheel States
-			if(operatorStickState == OperatorStickState.INTAKE) {
-			
-				//Intake Wheel States
-				if(operator.getRawAxis(operatorAxis) < -.2) {
-					
-					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;
-				
-				}
-				else if(operator.getRawAxis(operatorAxis) > .2){
-					
-					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.EXHAUST;
-				
-				}
-				else{
-					
-					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-				
-				}
-				
-			}
-			
-			//Intake stick is busy at the moment, shut off intake
-			else {
-				
-				RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-			
-			}
-		
-		//Intake Clamp States
-		
-			if(operator.getRawButtonPressed(clampButton)) {
-	
-				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
-				
-			}
-			
-			else if(operator.getRawButtonPressed(neutralButton)) {
-	
-				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
-				
-			}
-			
-			else if(operator.getRawButtonPressed(dropButton)) {
-	
-				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
-				
-			}
 	}
 	
 	//Operator Override Handlers
-		
-		public static double getOperatorOverrideValue() {
+		public static double getOperatorStickValue() {
 			return operator.getRawAxis(operatorAxis);
 		}
 			
@@ -222,24 +170,15 @@ public class ControlMap {
 		}
 
 	//Hanging Logic
-		
 		public static boolean driversWantToHang() {
-			
 			return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary)) 
-			&& operator.getRawButton(climbOperator);
-		
+			&& operator.getRawButton(climbOperator);	
 		}
-		
 	
 		public static void getWantedPlatform() {
-			
-			if(/*Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {
-				
+			if(/*Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {				
 				RobotWantedStates.platformRelease = true;
-				
 			}
-			
 		}
-
 	}
 

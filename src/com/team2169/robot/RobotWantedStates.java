@@ -54,27 +54,20 @@ public class RobotWantedStates {
 	//Arm Position Handler
 		public static enum WantedArmPos{
 			
-			EXTENDED, RETRACTED
+			EXTENDED, RETRACTED, OVERRIDE
 			
 		}
 		
 		public static WantedArmPos wantedArmPos;
 	
 	//Elevator Position Handler
-		public static enum WantedElevatorPos{
+		public static enum WantedMacro{
 			
-			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
+			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE
 			
 		}
 		
-		public static WantedElevatorPos wantedElevatorPos;
-
-		//Macro Handler	
-		public static enum WantedMacro{
-			
-			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND
-			
-		}
+		public static WantedMacro wantedElevatorPos;
 		public static WantedMacro wantedMacro;
 		
 		

@@ -46,6 +46,15 @@ public class Arm {
 		
 		//set robot's actual state to WantedState's value
 		switch(RobotWantedStates.wantedElevatorPos){
+		
+		case OVERRIDE: default:
+			//Override
+			armOverrideLooper(ControlMap.getOperatorStickValue());
+			
+			//Set RobotStates
+			RobotStates.armPos = ArmPos.OVERRIDE;
+			break;
+		
 		case GROUND:
 			
 			//CANCycle for Ground Position
@@ -111,10 +120,6 @@ public class Arm {
 			//Set RobotStates
 			RobotStates.armPos = ArmPos.RETRACTED;
 			break;
-			
-		default:
-			break;
-
 		}
 	
 	}

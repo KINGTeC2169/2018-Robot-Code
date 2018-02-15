@@ -31,24 +31,20 @@ public class Elevator {
 		//Apply Talon Settings
 		elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
 	}
-
-	private void elevatorToPos(int pos) {
-		elevator.set(ControlMode.MotionProfile, pos);
-		RobotStates.elevatorHeight = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
-		getElevatorFinishedState();
-	}
-	
-	public void elevatorOverrideLooper(double joystickValue) {
-		setpoint = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
-		setpoint += Converter.inchesToTicks(ControlMap.elevatorOverrideSetpointMovement * joystickValue * Constants.elevatorDrumReduction);
-		elevatorToPos(setpoint);
-	}
 	
 	public void elevatorMacroLooper() {
 
 		
 		//set robot's actual state to WantedState's value
 		switch(RobotWantedStates.wantedElevatorPos){
+		
+		case OVERRIDE: default:
+			elevatorOverrideLooper(ControlMap.getOperatorStickValue());
+			
+			//Set RobotStates
+			RobotStates.elevatorPos = ElevatorPos.OVERRIDE;
+			break;
+		
 		case GROUND:
 			
 			//CANCycle for Ground Position
@@ -114,14 +110,23 @@ public class Elevator {
 			//Set Robot States
 			RobotStates.elevatorPos = ElevatorPos.SWITCH;
 			break;
-			
-		default:
-			break;
 
 		}
 	
 	}
 
+	private void elevatorToPos(int pos) {
+		elevator.set(ControlMode.MotionProfile, pos);
+		RobotStates.elevatorHeight = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
+		getElevatorFinishedState();
+	}
+	
+	public void elevatorOverrideLooper(double joystickValue) {
+		setpoint = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
+		setpoint += Converter.inchesToTicks(ControlMap.elevatorOverrideSetpointMovement * joystickValue * Constants.elevatorDrumReduction);
+		elevatorToPos(setpoint);
+	}
+	
 	public void getElevatorFinishedState() {
 		
 		if(elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) < Constants.elevatorData.allowedError || 

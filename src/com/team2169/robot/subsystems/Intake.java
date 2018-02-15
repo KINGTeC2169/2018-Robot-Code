@@ -3,7 +3,6 @@ package com.team2169.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
-import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.IntakeClamp;
@@ -51,9 +50,6 @@ public class Intake extends Subsystem{
 	}
 	
 	public void intakeHandler() {
-		
-			//Get WantedState from ControlMap
-			ControlMap.getWantedIntakeState();
 		
 			//Handle Intake State
 			switch(RobotWantedStates.wantedIntakeMode){

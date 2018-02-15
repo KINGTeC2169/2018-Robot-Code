@@ -36,9 +36,9 @@ public class ElevatorArm extends Subsystem{
 	public void elevatorArmHandler() {
 		
 		//Arm Handler
-		if(RobotStates.armOverideMode) {
+		if(RobotStates.armOverrideMode) {
 			
-			arm.armOverrideLooper(ControlMap.getOperatorOverrideValue());
+			arm.armOverrideLooper(ControlMap.getOperatorStickValue());
 
 		}
 		else {
@@ -48,8 +48,8 @@ public class ElevatorArm extends Subsystem{
 		}
 
 		//Elevator Handler		
-		if(RobotStates.elevatorOverideMode) {
-			elevator.elevatorOverrideLooper(ControlMap.getOperatorOverrideValue());
+		if(RobotStates.elevatorOverrideMode) {
+			elevator.elevatorOverrideLooper(ControlMap.getOperatorStickValue());
 		}		
 		else {
 		
