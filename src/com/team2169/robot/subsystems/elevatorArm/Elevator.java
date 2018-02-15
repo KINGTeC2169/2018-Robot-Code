@@ -38,78 +38,78 @@ public class Elevator {
 		//set robot's actual state to WantedState's value
 		switch(RobotWantedStates.wantedElevatorPos){
 		
-		case OVERRIDE: default:
-			elevatorOverrideLooper(ControlMap.getOperatorStickValue());
+			case OVERRIDE: default:
+				elevatorOverrideLooper(ControlMap.getOperatorStickValue());
+				
+				//Set RobotStates
+				RobotStates.elevatorPos = ElevatorPos.OVERRIDE;
+				break;
 			
-			//Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.OVERRIDE;
-			break;
-		
-		case GROUND:
+			case GROUND:
+				
+				//CANCycle for Ground Position
 			
-			//CANCycle for Ground Position
-		
-			//Actuate the Motor
-			elevatorToPos(Constants.groundElevatorEncoderPosition);
+				//Actuate the Motor
+				elevatorToPos(Constants.groundElevatorEncoderPosition);
+				
+				//Set RobotStates
+				RobotStates.elevatorPos = ElevatorPos.GROUND;
+				break;
+				
+			case HANG:
 			
-			//Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.GROUND;
-			break;
+				//CANCycle Hang Position
+				
+				//Actuate the Motor
+				elevatorToPos(Constants.hangElevatorEncoderPosition);
+				
+				//Set RobotStates
+				RobotStates.elevatorPos = ElevatorPos.HANG;
+				break;
 			
-		case HANG:
-		
-			//CANCycle Hang Position
+			case SCALE_HIGH:
+				
+				//CANCycle for (High) Position
+				
+				//Actuate the Motor
+				elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
+				
+				//Set Robot States
+				RobotStates.elevatorPos = ElevatorPos.SCALE_HIGH;
+				break;
 			
-			//Actuate the Motor
-			elevatorToPos(Constants.hangElevatorEncoderPosition);
-			
-			//Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.HANG;
-			break;
-		
-		case SCALE_HIGH:
-			
-			//CANCycle for (High) Position
-			
-			//Actuate the Motor
-			elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
-			
-			//Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SCALE_HIGH;
-			break;
-		
-		case SCALE_MID:
-			
-			//CANCycle for Scale (Mid) Position
-
-			//Actuate the Motor
-			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
-			
-			//Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SCALE_MID;
-			break;
-			
-		case SCALE_LOW:
-			
-			//CANCycle for Scale (Low) Position
-			
-			//Actuate the Motor
-			elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
-
-			//Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SCALE_LOW;
-			break;
-			
-		case SWITCH:
+			case SCALE_MID:
+				
+				//CANCycle for Scale (Mid) Position
 	
-			//CANCycle for Switch			
-			
-			//Actuate the Motor
-			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
-			
-			//Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SWITCH;
-			break;
+				//Actuate the Motor
+				elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
+				
+				//Set Robot States
+				RobotStates.elevatorPos = ElevatorPos.SCALE_MID;
+				break;
+				
+			case SCALE_LOW:
+				
+				//CANCycle for Scale (Low) Position
+				
+				//Actuate the Motor
+				elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
+	
+				//Set Robot States
+				RobotStates.elevatorPos = ElevatorPos.SCALE_LOW;
+				break;
+				
+			case SWITCH:
+		
+				//CANCycle for Switch			
+				
+				//Actuate the Motor
+				elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
+				
+				//Set Robot States
+				RobotStates.elevatorPos = ElevatorPos.SWITCH;
+				break;
 
 		}
 	

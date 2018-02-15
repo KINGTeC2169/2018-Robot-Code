@@ -37,16 +37,9 @@ public class Intake extends Subsystem{
 		clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward, ActuatorMap.clampPortReverse);
 	}
 	
-	public void intakeManual(double power, boolean active) {
-		if(active) {
-			left.set(ControlMode.PercentOutput, power);
-			right.set(ControlMode.PercentOutput, power);	
-		}
-		else {
-			left.set(ControlMode.PercentOutput, 0);
-			right.set(ControlMode.PercentOutput, 0);	
-		}
-		
+	public void intakeManual(double power) {
+		left.set(ControlMode.PercentOutput, power);
+		right.set(ControlMode.PercentOutput, power);	
 	}
 	
 	public void intakeHandler() {
@@ -57,21 +50,21 @@ public class Intake extends Subsystem{
 			case IDLE: default:
 				
 				//Stop Intakes
-				intakeManual(0, true);
+				intakeManual(0);
 				RobotStates.intakeMode = IntakeMode.IDLE;
 				break;
 				
 			case INTAKE:
 				
 				//Run Intakes
-				intakeManual(-Constants.intakeSpeed, true);
+				intakeManual(-Constants.intakeSpeed);
 				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			
 			case EXHAUST:
 
 				//Run Intakes Backwards
-				intakeManual(Constants.intakeSpeed, true);
+				intakeManual(Constants.intakeSpeed);
 				RobotStates.intakeMode = IntakeMode.EXHAUST;
 				break;
 

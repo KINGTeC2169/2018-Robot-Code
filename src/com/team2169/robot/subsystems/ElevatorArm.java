@@ -1,7 +1,6 @@
 package com.team2169.robot.subsystems;
 
 import com.team2169.robot.Constants;
-import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.subsystems.elevatorArm.Arm;
 import com.team2169.robot.subsystems.elevatorArm.Elevator;
@@ -36,26 +35,10 @@ public class ElevatorArm extends Subsystem{
 	public void elevatorArmHandler() {
 		
 		//Arm Handler
-		if(RobotStates.armOverrideMode) {
-			
-			arm.armOverrideLooper(ControlMap.getOperatorStickValue());
-
-		}
-		else {
+		arm.armMacroLooper();
 		
-			arm.armMacroLooper();
-			
-		}
-
-		//Elevator Handler		
-		if(RobotStates.elevatorOverrideMode) {
-			elevator.elevatorOverrideLooper(ControlMap.getOperatorStickValue());
-		}		
-		else {
-		
-			elevator.elevatorMacroLooper();
-			
-		}
+		//Elevator Handler
+		elevator.elevatorMacroLooper();
 
 	}
 	

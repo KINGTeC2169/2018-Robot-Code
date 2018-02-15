@@ -18,29 +18,29 @@ public class ControlMap {
 		static int primaryOverride = 3;
 		
 		//Axis Constants
-		static int armOverrideButton = 2;
-		static int elevatorOverrideButton = 3;
+		static int armOverrideButton = 3;
+		static int elevatorOverrideButton = 2;
 		
-		static int clampButton = 10;
-		static int neutralButton = 11;
-		static int dropButton = 12;
+		static int bClampButton = 5;
+		static int bNeutralButton = 3;
+		static int bDropButton = 4;
+		static int bDropAndExhaustButton = 1;
 		
 		//Elevator Macro Keys
-		static int macroGround = 1;
-		static int macroSwitch = 2;
-		static int macroScaleLow = 3;
-		static int macroScaleMid = 4;
-		static int macroScaleHigh = 5;
-		static int macroHang = 6;
+		static int bMacroGround = 11;
+		static int bMacroSwitch = 9;
+		static int bMacroScaleLow = 7;
+		static int bMacroScaleMid = 12;
+		static int bMacroScaleHigh = 10;
+		static int bMacroHang = 8;
 		
 		//Intake Keys
-		static int operatorAxis = 3;
-		static int clamp = 7;
+		static int operatorAxis = 1;
 	
 		//Climb Keys
-		static int climbPrimary = 1;
-		static int climbOperator = 21;
-		static int releasePlatform = 1;
+		static int climbPrimary = 10;
+		static int climbOperator = 10;
+		static int releasePlatform = 11;
 		
 		//Deadbands
 		static double operatorDeadband = .2;
@@ -49,6 +49,7 @@ public class ControlMap {
 		static Joystick primaryLeft;
 		static Joystick primaryRight;
 		static Joystick operator;
+		static Joystick buttonBoard;
 		
 		//Joystick Creater
 		public static void init() {
@@ -56,6 +57,7 @@ public class ControlMap {
 			primaryLeft = new Joystick(0);
 			primaryRight = new Joystick(1);
 			operator = new Joystick(2);
+			buttonBoard = new Joystick(3);
 			
 		}
 		
@@ -103,45 +105,49 @@ public class ControlMap {
 	//Macro Buttons
 		//Ground Macro
 		public static boolean groundMacroPressed() {
-			return operator.getRawButton(macroGround);
+			return buttonBoard.getRawButton(bMacroGround);
 		}
 		
 		//Switch Macro
 		public static boolean switchMacroPressed() {
-			return operator.getRawButton(macroSwitch);
+			return buttonBoard.getRawButton(bMacroSwitch);
 		}
 		
 		//Scale Low Macro
 		public static boolean scaleLowMacroPressed() {
-			return operator.getRawButton(macroScaleLow);
+			return buttonBoard.getRawButton(bMacroScaleLow);
 		}
 		
 		//Scale Mid Macro
 		public static boolean scaleMidMacroPressed() {
-			return operator.getRawButton(macroScaleMid);
+			return buttonBoard.getRawButton(bMacroScaleMid);
 		}
 		
 		//Scale High Macro
 		public static boolean scaleHighMacroPressed() {
-			return operator.getRawButton(macroScaleHigh);
+			return buttonBoard.getRawButton(bMacroScaleHigh);
 		}
 		
 		//Hang Macro
 		public static boolean hangMacroPressed() {
-			return operator.getRawButton(macroHang);
+			return buttonBoard.getRawButton(bMacroHang);
 		}
 		
 	//Intake State Buttons
 		public static boolean clampButtonPressed() {
-			return operator.getRawButton(clampButton);
+			return buttonBoard.getRawButton(bClampButton);
 		}
 		
 		public static boolean neutralButtonPressed() {
-			return operator.getRawButton(neutralButton);
+			return buttonBoard.getRawButton(bNeutralButton);
 		}
 		
 		public static boolean dropButtonPressed() {
-			return operator.getRawButton(dropButton);
+			return buttonBoard.getRawButton(bDropButton);
+		}
+		
+		public static boolean dropAndExhaustButton() {
+			return buttonBoard.getRawButtonPressed(bDropAndExhaustButton);
 		}
 
 	
@@ -149,14 +155,14 @@ public class ControlMap {
 		
 		if(operator.getRawButton(elevatorOverrideButton)) {
 			operatorStickState = OperatorStickState.ELEVATOR;
+			RobotStates.elevatorOverrideMode = true;
 		}
 		else if(operator.getRawButton(armOverrideButton)){
 			operatorStickState = OperatorStickState.ARM;
+			RobotStates.armOverrideMode = true;
 		}
 		else {
 			operatorStickState = OperatorStickState.INTAKE;
-			RobotStates.elevatorOverrideMode = false;
-			RobotStates.armOverrideMode = false;
 		}
 	}
 	

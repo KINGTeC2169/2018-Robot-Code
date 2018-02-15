@@ -8,17 +8,28 @@ import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
 import com.team2169.robot.RobotWantedStates.WantedMacro;
 import com.team2169.robot.canCycles.CANCycleHandler;
-
 public class StateManager {
 	
 	public static void teleOpStateLooper() {
 		ControlMap.getOperatorStickState();
+		getCANCycles();
 		getWantedMacroState();
 		getWantedDriveOverride();
 		getWantedShiftState();
 		getWantedIntakeState();
 		getWantedElevatorState();
 		getWantedArmState();
+	}
+	
+	static void getCANCycles() {
+		
+		if(ControlMap.dropAndExhaustButton()) {
+			CANCycleHandler.dropAndExhaust.start();
+			RobotStates.elevatorOverrideMode = false;
+			RobotStates.armOverrideMode = false;
+			RobotStates.intakeClampOverride = false;
+		}
+		
 	}
 	
 	//Local MacroSetter
@@ -146,7 +157,6 @@ public class StateManager {
 		//Intake Wheel States
 			//Driver has taken control of mechanism, follow their controls.
 			if(ControlMap.operatorStickState == OperatorStickState.ELEVATOR) {				
-				RobotStates.elevatorOverrideMode = true;
 				CANCycleHandler.cancelArmElevatorCycles();
 				RobotWantedStates.wantedElevatorPos = WantedMacro.OVERRIDE;					
 			}
