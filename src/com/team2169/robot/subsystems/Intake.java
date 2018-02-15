@@ -57,24 +57,20 @@ public class Intake extends Subsystem{
 			case IDLE: default:
 				
 				//Stop Intakes
-<<<<<<< Updated upstream
 				intakeManual(0);
-=======
 				
-				intakeManual(0, true);
->>>>>>> Stashed changes
+				
 				RobotStates.intakeMode = IntakeMode.IDLE;
+				
 				break;
 				
 			case INTAKE:
 				
 				//Run Intakes
-<<<<<<< Updated upstream
+
 				intakeManual(-Constants.intakeSpeed);
-=======
 				
-				intakeManual(-Constants.intakeSpeed, true);
->>>>>>> Stashed changes
+
 				RobotStates.intakeMode = IntakeMode.INTAKE;
 				break;
 			
