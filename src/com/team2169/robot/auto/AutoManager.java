@@ -83,7 +83,7 @@ public class AutoManager {
 	void determineField() {
 	
 		//String gameMessage_ = Robot.fms.getGameMessage();
-		String gameMessage_= null;
+		String gameMessage_= "fail";
 		try {
 			gameMessage_ = GameInfo.getGameSpecificMessage_WeekZero();
 		} catch (IOException e) {
