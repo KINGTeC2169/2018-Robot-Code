@@ -27,12 +27,21 @@ public class ControlMap {
 		static int bDropAndExhaustButton = 1;
 		
 		//Elevator Macro Keys
+		static int bMacroGround = 6;
+		static int bMacroSwitch = 7;
+		static int bMacroScaleLow = 8;
+		static int bMacroScaleMid = 9;
+		static int bMacroScaleHigh = 10;
+		static int bMacroHang = 11;
+		
+		/*
 		static int bMacroGround = 11;
 		static int bMacroSwitch = 9;
 		static int bMacroScaleLow = 7;
 		static int bMacroScaleMid = 12;
 		static int bMacroScaleHigh = 10;
 		static int bMacroHang = 8;
+		*/
 		
 		//Intake Keys
 		static int operatorAxis = 1;

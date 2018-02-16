@@ -8,15 +8,10 @@ public class ParallelTask extends Task {
 	
 	Timer taskTime;
 	List<Task> masterTasks;
-	double timeout;
-	boolean timeoutActive = false;
 	
-    public ParallelTask(List<Task> masterTasks_, double timeout_) {
+    public ParallelTask(List<Task> masterTasks_) {
   
     	masterTasks = masterTasks_;
-    	timeout = timeout_;
-    	taskTime = new Timer();
-    	taskTime.start();
     	
     }
     
@@ -34,36 +29,29 @@ public class ParallelTask extends Task {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+		for(Task t: masterTasks) {
+			if(t.isRunning()) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-    	//Check Timeout
-    	if(taskTime.get() >= timeout) {
-    		timeoutActive = true;
-    		return true;
-    	}
-    	
-    	//Timeout Clear, see if Master Tasks are finished
-    	else {
-    		for(Task t: masterTasks) {
-    			if(t.isRunning()) {
-    				return false;
-    			}
-    		}
-    		return true;
-    	}
-    
-    }
     // Called once after isFinished returns true
     protected void end() {
     	
-    	if(timeoutActive) {
-        	for(Task t: masterTasks) {
-        		t.cancel();
-        	}
+		for(Task t: masterTasks) {
+    		t.cancel();
     	}
-    }
+	}
+    
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+		
+    	for(Task t: masterTasks) {
+    		t.cancel();
+    	}
     }
 }

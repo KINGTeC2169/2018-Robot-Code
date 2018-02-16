@@ -4,7 +4,6 @@
 import java.io.IOException;
 
 import com.team2169.robot.Constants;
-import com.team2169.robot.Robot;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.FieldSetup;
 import com.team2169.robot.RobotStates.StartingPosition;
