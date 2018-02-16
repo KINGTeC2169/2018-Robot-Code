@@ -35,11 +35,11 @@ public class PathfinderObject {
 		gyro = Superstructure.getInstance().navX;
 	}
 
-	EncoderFollower leftFollower;
-	EncoderFollower rightFollower;
+	public EncoderFollower leftFollower;
+	public EncoderFollower rightFollower;
+	
 	
 	public void calculatePath() {
-		
 		leftTalon.set(ControlMode.PercentOutput, 0);
 		rightTalon.set(ControlMode.PercentOutput, 0);
 		gyro.reset();
@@ -75,7 +75,8 @@ public class PathfinderObject {
 		
 		double l = leftFollower.calculate(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 		double r = rightFollower.calculate(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-
+		
+		
 		double gyro_heading = gyro.getAngle();    // Assuming the gyro is giving a value in degrees
 		double desired_heading = Pathfinder.r2d(leftFollower.getHeading());  // Should also be in degrees
 
@@ -94,6 +95,9 @@ public class PathfinderObject {
 		
 		SmartDashboard.putNumber("Left PathFinder Value", l + turn);
 		SmartDashboard.putNumber("Right PathFinder Value", r - turn);
+		
+		SmartDashboard.putNumber("Left Pathfinder Position", leftFollower.getSegment().position );
+		SmartDashboard.putNumber("Right Pathfinder Position", rightFollower.getSegment().position);
 		
 		//Return if trajectories are both finished
 		if(leftFollower.isFinished() && rightFollower.isFinished()) {
