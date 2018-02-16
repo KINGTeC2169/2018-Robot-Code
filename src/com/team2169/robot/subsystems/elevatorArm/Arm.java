@@ -45,92 +45,41 @@ public class Arm {
 	public void armMacroLooper() {
 
 		if(RobotWantedStates.wantedArmPos == WantedArmPos.OVERRIDE) {
-			armOverrideLooper(ControlMap.getOperatorStickValue());
-			
-			//Set RobotStates
-			RobotStates.armPos = ArmPos.OVERRIDE;
+
 		
 		}
 		
 		else if(RobotWantedStates.wantedArmPos == WantedArmPos.HOLD_POSITION) {
 		
-			armOverrideLooper(0);
-			
-			RobotStates.armPos = ArmPos.HOLD_POSITION;
+
 			
 		}
 		
 		else {
 
 			//set robot's actual state to WantedState's value
-			switch(RobotWantedStates.wantedElevatorPos){
+			switch(RobotWantedStates.wantedArmPos){
+			case EXTENDED:
+				armToPos(Constants.extendedArmEncoderPosition);
+				RobotStates.armPos = ArmPos.EXTENDED;
+				break;
+			case HOLD_POSITION:
+				armOverrideLooper(0);
+				RobotStates.armPos = ArmPos.HOLD_POSITION;
+				break;
+			case OVERRIDE: default:
+				armOverrideLooper(ControlMap.getOperatorStickValue());
+				
+				//Set RobotStates
+				RobotStates.armPos = ArmPos.OVERRIDE;
+				break;
+			case RETRACTED:
+				armToPos(Constants.retractedArmEncoderPosition);
+				RobotStates.armPos = ArmPos.RETRACTED;
+				break;
 
-				case GROUND: default:
-					
-					//CANCycle for Ground Position
-					
-					//Actuate the Motor
-					armToPos(Constants.extendedArmEncoderPosition);
-					
-					//Set RobotStates
-					RobotStates.armPos = ArmPos.EXTENDED;
-					break;
-					
-				case HANG:
-				
-					//CANCycle Hang Position
-					
-					//Actuate the Motor
-					armToPos(Constants.retractedArmEncoderPosition);
-					
-					//Set RobotStates
-					RobotStates.armPos = ArmPos.RETRACTED;
-					break;
-				
-				case SCALE_HIGH:
-					
-					//CANCycle for (High) Position
-					
-					//Actuate the Motor
-					armToPos(Constants.retractedArmEncoderPosition);
-					
-					//Set RobotStates
-					RobotStates.armPos = ArmPos.RETRACTED;
-					break;
-					
-				case SCALE_MID:
-					
-					//CANCycle for Scale (Mid) Position
-		
-					//Actuate the Motor
-					armToPos(Constants.retractedArmEncoderPosition);
-					
-					//Set RobotStates
-					RobotStates.armPos = ArmPos.RETRACTED;
-					break;
-					
-				case SCALE_LOW:
-					
-					//CANCycle for Scale (Low) Position
-					
-					//Actuate the Motor
-					armToPos(Constants.retractedArmEncoderPosition);
-					
-					//Set RobotStates
-					RobotStates.armPos = ArmPos.RETRACTED;
-					break;
-		
-				case SWITCH:
-					
-					//CANCycle for Switch Position
-					
-					//Actuate the Motor
-					armToPos(Constants.retractedArmEncoderPosition);
-					
-					//Set RobotStates
-					RobotStates.armPos = ArmPos.RETRACTED;
-					break;
-				}
+			
+			}
 	
 		}
 				
