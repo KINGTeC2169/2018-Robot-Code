@@ -72,7 +72,7 @@ public class RobotStates {
 	//Arm Position Handler
 		public static enum ArmPos{
 			
-			EXTENDED, RETRACTED, OVERRIDE
+			EXTENDED, RETRACTED, OVERRIDE, HOLD_POSITION
 			
 		}
 		public static ArmPos armPos;
@@ -82,7 +82,7 @@ public class RobotStates {
 	//Elevator Position Handler
 		public static enum ElevatorPos{
 			
-			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE
+			HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
 			
 		}
 		

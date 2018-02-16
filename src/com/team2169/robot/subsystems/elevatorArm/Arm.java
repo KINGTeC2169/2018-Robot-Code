@@ -52,6 +52,14 @@ public class Arm {
 		
 		}
 		
+		else if(RobotWantedStates.wantedArmPos == WantedArmPos.HOLD_POSITION) {
+		
+			armOverrideLooper(0);
+			
+			RobotStates.armPos = ArmPos.HOLD_POSITION;
+			
+		}
+		
 		else {
 
 			//set robot's actual state to WantedState's value

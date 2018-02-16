@@ -201,15 +201,15 @@ public class StateManager {
 				RobotWantedStates.wantedElevatorPos = WantedMacro.OVERRIDE;					
 			}
 			
-			//Robot is in a CanCycle, don't interfere unless overriden
-			else if(RobotStates.canCycleMode) {
-				;
+			else if(RobotStates.elevatorOverrideMode){
+				RobotWantedStates.wantedElevatorPos = WantedMacro.HOLD_POSITION;
 			}
 			
-			//No CanCycle or Driver Override, do the default Macro action
-			else if(!RobotStates.elevatorOverrideMode){									
+			//Robot is in a CanCycle, don't interfere unless overriden
+			if(!RobotStates.canCycleMode && !RobotStates.elevatorOverrideMode) {			
 				RobotWantedStates.wantedElevatorPos = RobotWantedStates.wantedMacro;
 			}
+
 	}
 	
 	//Wanted Operator Arm Handler
@@ -224,10 +224,12 @@ public class StateManager {
 				
 			}
 			
-			//Robot is in a CanCycle, don't interfere unless overriden
-			if(!RobotStates.canCycleMode) {
+			else if(RobotStates.armOverrideMode){
+				RobotWantedStates.wantedArmPos = WantedArmPos.HOLD_POSITION;
+			}
 			
-				SmartDashboard.putBoolean("Running Macroer", true);
+			//Robot is in a CanCycle, don't interfere unless overriden
+			if(!RobotStates.canCycleMode && !RobotStates.armOverrideMode) {
 				
 			//No CanCycle or Driver Override, do the default Macro action
 				
@@ -252,9 +254,6 @@ public class StateManager {
 					break;
 				
 				}
-			}
-			else {
-				SmartDashboard.putBoolean("Running Macroer", false);
 			}
 			
 			}

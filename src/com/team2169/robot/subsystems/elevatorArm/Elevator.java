@@ -45,6 +45,15 @@ public class Elevator {
 				RobotStates.elevatorPos = ElevatorPos.OVERRIDE;
 				break;
 			
+				
+			case HOLD_POSITION:
+				
+				elevatorOverrideLooper(0);
+				
+				//Set RobotStates
+				RobotStates.elevatorPos = ElevatorPos.HOLD_POSITION;
+				break;
+				
 			case GROUND:
 				
 				//CANCycle for Ground Position
