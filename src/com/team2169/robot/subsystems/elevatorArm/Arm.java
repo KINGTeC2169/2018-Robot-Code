@@ -8,7 +8,6 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.ArmPos;
-import com.team2169.robot.RobotWantedStates.WantedArmPos;
 import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
 
@@ -43,47 +42,33 @@ public class Arm {
 	}
 	
 	public void armMacroLooper() {
-
-		if(RobotWantedStates.wantedArmPos == WantedArmPos.OVERRIDE) {
+		
+		//set robot's actual state to WantedState's value
+		switch(RobotWantedStates.wantedArmPos){
+		case EXTENDED:
+			armToPos(Constants.extendedArmEncoderPosition);
+			RobotStates.armPos = ArmPos.EXTENDED;
+			break;
+		case HOLD_POSITION:
+			armOverrideLooper(0);
+			RobotStates.armPos = ArmPos.HOLD_POSITION;
+			break;
+		case OVERRIDE: default:
+			armOverrideLooper(ControlMap.getOperatorStickValue());
+			
+			//Set RobotStates
+			RobotStates.armPos = ArmPos.OVERRIDE;
+			break;
+		case RETRACTED:
+			armToPos(Constants.retractedArmEncoderPosition);
+			RobotStates.armPos = ArmPos.RETRACTED;
+			break;
 
 		
 		}
-		
-		else if(RobotWantedStates.wantedArmPos == WantedArmPos.HOLD_POSITION) {
-		
-
-			
-		}
-		
-		else {
-
-			//set robot's actual state to WantedState's value
-			switch(RobotWantedStates.wantedArmPos){
-			case EXTENDED:
-				armToPos(Constants.extendedArmEncoderPosition);
-				RobotStates.armPos = ArmPos.EXTENDED;
-				break;
-			case HOLD_POSITION:
-				armOverrideLooper(0);
-				RobotStates.armPos = ArmPos.HOLD_POSITION;
-				break;
-			case OVERRIDE: default:
-				armOverrideLooper(ControlMap.getOperatorStickValue());
-				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.OVERRIDE;
-				break;
-			case RETRACTED:
-				armToPos(Constants.retractedArmEncoderPosition);
-				RobotStates.armPos = ArmPos.RETRACTED;
-				break;
-
-			
-			}
 	
-		}
-				
 	}
+				
 	
 	public void getFinishedState() {
 		

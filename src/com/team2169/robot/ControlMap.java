@@ -43,6 +43,8 @@ public class ControlMap {
 		static int bMacroHang = 8;
 		*/
 		
+		private static final int wantsUltrasonic = 1;
+		
 		//Intake Keys
 		static int operatorAxis = 1;
 	
@@ -77,7 +79,8 @@ public class ControlMap {
 		
 		//Control Settings
 		public static final double elevatorOverrideSetpointMovement = 6;
-		public static final double armOverrideSetpointMovement = 6;	
+		public static final double armOverrideSetpointMovement = 6;
+			
 		
 	//DriveTrain Control Sticks handler
 		public static double leftTankStick(boolean squared) {
@@ -194,6 +197,10 @@ public class ControlMap {
 			if(/*Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {				
 				RobotWantedStates.platformRelease = true;
 			}
+		}
+
+		public static boolean operatorWantsUltrasonic() {
+			return operator.getRawButton(wantsUltrasonic);
 		}
 	}
 

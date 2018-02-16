@@ -69,6 +69,8 @@ public class RobotStates {
 	    public static boolean intakeClampOverride;
 	//Robot block held state
 	    public static boolean ultraWithinRange;  
+	    public static boolean operatorWantsUltrasonic;
+	    
 	//Arm Position Handler
 		public static enum ArmPos{
 			
@@ -94,5 +96,7 @@ public class RobotStates {
 		public static boolean elevatorInPosition;
 		public static boolean elevatorOverrideMode = false;
 		public static boolean platformRelease;
+
+		
 
 }

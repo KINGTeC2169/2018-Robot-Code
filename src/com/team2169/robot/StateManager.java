@@ -131,15 +131,21 @@ public class StateManager {
 				else if(!RobotStates.canCycleMode){						
 					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;					
 				}					
-				else {
-					;
-				}
+
 			}
 			
 			//Intake stick is busy at the moment, shut off intake
 			else {					
 				RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
 			}
+			
+			if(ControlMap.operatorWantsUltrasonic()) {
+				RobotStates.operatorWantsUltrasonic = true;
+			}
+			else {
+				RobotStates.operatorWantsUltrasonic = false;
+			}
+			
 
 			//Intake Clamp States
 			
