@@ -51,6 +51,7 @@ public class Superstructure {
 		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
 		RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
 		RobotWantedStates.wantedElevatorPos = WantedMacro.GROUND;
+		StateManager.stateInit();
 		
 		if(RobotStates.debugMode) {
 			DriverStation.reportWarning("Superstructure Init Finished", false);

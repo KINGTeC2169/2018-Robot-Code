@@ -2,6 +2,7 @@ package com.team2169.robot;
 
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoManager;
+import com.team2169.robot.canCycles.CANCycleHandler;
 import com.team2169.robot.subsystems.Superstructure;
 import com.team2169.util.CameraManager;
 import com.team2169.util.FMSManager;
@@ -28,13 +29,13 @@ public class Robot extends IterativeRobot {
 		camera = new CameraManager();
 		fms = new FMSManager(m_ds);
 		auto = new AutoManager();
+		CANCycleHandler.createCycles();
 		superStructure = new Superstructure();
 		shuffle = new ShuffleBoardManager();
 		///camera.startCameraServer(true, true, true);
 		SmartDashboard.putBoolean("isRunning", false);
 		ControlMap.init();
 		superStructure.robotInit();
-		
 		
 	}
 	
@@ -88,7 +89,7 @@ public class Robot extends IterativeRobot {
 		try{
 			
 			shuffle.teleOp(m_ds.isFMSAttached());
-			superStructure.subsystemLooper();
+			
 			
 			//Put Tele-Op Methods here
 			
@@ -96,7 +97,7 @@ public class Robot extends IterativeRobot {
 		catch(Exception e){
 			DriverStation.reportError(e.toString(), true);
 		}
-		
+		superStructure.subsystemLooper();
 		//test.start();
 		
 		//superStructure.teleOpLoop();

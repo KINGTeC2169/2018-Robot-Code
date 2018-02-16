@@ -8,7 +8,13 @@ import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
 import com.team2169.robot.RobotWantedStates.WantedMacro;
 import com.team2169.robot.canCycles.CANCycleHandler;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StateManager {
+	
+	public static void stateInit() {
+		setWantedMacro(WantedMacro.GROUND);
+	}
 	
 	public static void teleOpStateLooper() {
 		ControlMap.getOperatorStickState();
@@ -43,6 +49,7 @@ public class StateManager {
 	
 	//MacroButton/State Getter
 	static void getWantedMacroState(){
+			SmartDashboard.putBoolean("Task Running", CANCycleHandler.dropAndExhaust.isRunning());
 			if(ControlMap.groundMacroPressed()) {
 				setWantedMacro(WantedMacro.GROUND);
 			}
@@ -115,11 +122,11 @@ public class StateManager {
 				//Intake Wheel States
 				if(ControlMap.getOperatorStickValue() < -ControlMap.operatorDeadband) {						
 					CANCycleHandler.cancelArmElevatorCycles();
-					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;	
+					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.EXHAUST;	
 				}
 				else if(ControlMap.getOperatorStickValue() > ControlMap.operatorDeadband){						
 					CANCycleHandler.cancelArmElevatorCycles();
-					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.EXHAUST;
+					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;
 				}
 				else if(!RobotStates.canCycleMode){						
 					RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;					
@@ -158,6 +165,8 @@ public class StateManager {
 			//Driver has taken control of mechanism, follow their controls.
 			if(ControlMap.operatorStickState == OperatorStickState.ELEVATOR) {				
 				CANCycleHandler.cancelArmElevatorCycles();
+				RobotStates.armOverrideMode = false;
+				RobotStates.elevatorOverrideMode = true;
 				RobotWantedStates.wantedElevatorPos = WantedMacro.OVERRIDE;					
 			}
 			
@@ -179,6 +188,7 @@ public class StateManager {
 			//Driver has taken control of mechanism, follow their controls.
 			if(ControlMap.operatorStickState == OperatorStickState.ARM) {
 				RobotStates.armOverrideMode = true;
+				RobotStates.elevatorOverrideMode = false;
 				CANCycleHandler.cancelArmElevatorCycles();
 				RobotWantedStates.wantedArmPos = WantedArmPos.OVERRIDE;
 				

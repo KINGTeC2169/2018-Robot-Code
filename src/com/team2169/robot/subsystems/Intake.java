@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
+import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.util.DebugPrinter;
@@ -37,6 +38,7 @@ public class Intake extends Subsystem{
 		right = new TalonSRX(ActuatorMap.rightIntakeID);
 		right.setInverted(true);
 		clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward, ActuatorMap.clampPortReverse);
+		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
 		ultra.setAutomaticMode(true);
 	}
 	
@@ -108,6 +110,9 @@ public class Intake extends Subsystem{
 				break;
 
 			}	
+			
+			pushToDashboard();
+			
 		}
 
 	@Override

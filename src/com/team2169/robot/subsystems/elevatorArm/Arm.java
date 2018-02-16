@@ -8,6 +8,7 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.ArmPos;
+import com.team2169.robot.RobotWantedStates.WantedArmPos;
 import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
 
@@ -43,85 +44,88 @@ public class Arm {
 	
 	public void armMacroLooper() {
 
+		if(RobotWantedStates.wantedArmPos == WantedArmPos.OVERRIDE) {
+			armOverrideLooper(ControlMap.getOperatorStickValue());
+			
+			//Set RobotStates
+			RobotStates.armPos = ArmPos.OVERRIDE;
 		
-		//set robot's actual state to WantedState's value
-		switch(RobotWantedStates.wantedElevatorPos){
+		}
 		
-			case OVERRIDE: default:
-				//Override
-				armOverrideLooper(ControlMap.getOperatorStickValue());
+		else {
+
+			//set robot's actual state to WantedState's value
+			switch(RobotWantedStates.wantedElevatorPos){
+
+				case GROUND: default:
+					
+					//CANCycle for Ground Position
+					
+					//Actuate the Motor
+					armToPos(Constants.extendedArmEncoderPosition);
+					
+					//Set RobotStates
+					RobotStates.armPos = ArmPos.EXTENDED;
+					break;
+					
+				case HANG:
 				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.OVERRIDE;
-				break;
-			
-			case GROUND:
+					//CANCycle Hang Position
+					
+					//Actuate the Motor
+					armToPos(Constants.retractedArmEncoderPosition);
+					
+					//Set RobotStates
+					RobotStates.armPos = ArmPos.RETRACTED;
+					break;
 				
-				//CANCycle for Ground Position
-				
-				//Actuate the Motor
-				armToPos(Constants.extendedArmEncoderPosition);
-				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.EXTENDED;
-				break;
-				
-			case HANG:
-			
-				//CANCycle Hang Position
-				
-				//Actuate the Motor
-				armToPos(Constants.retractedArmEncoderPosition);
-				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.RETRACTED;
-				break;
-			
-			case SCALE_HIGH:
-				
-				//CANCycle for (High) Position
-				
-				//Actuate the Motor
-				armToPos(Constants.retractedArmEncoderPosition);
-				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.RETRACTED;
-				break;
-				
-			case SCALE_MID:
-				
-				//CANCycle for Scale (Mid) Position
+				case SCALE_HIGH:
+					
+					//CANCycle for (High) Position
+					
+					//Actuate the Motor
+					armToPos(Constants.retractedArmEncoderPosition);
+					
+					//Set RobotStates
+					RobotStates.armPos = ArmPos.RETRACTED;
+					break;
+					
+				case SCALE_MID:
+					
+					//CANCycle for Scale (Mid) Position
+		
+					//Actuate the Motor
+					armToPos(Constants.retractedArmEncoderPosition);
+					
+					//Set RobotStates
+					RobotStates.armPos = ArmPos.RETRACTED;
+					break;
+					
+				case SCALE_LOW:
+					
+					//CANCycle for Scale (Low) Position
+					
+					//Actuate the Motor
+					armToPos(Constants.retractedArmEncoderPosition);
+					
+					//Set RobotStates
+					RobotStates.armPos = ArmPos.RETRACTED;
+					break;
+		
+				case SWITCH:
+					
+					//CANCycle for Switch Position
+					
+					//Actuate the Motor
+					armToPos(Constants.retractedArmEncoderPosition);
+					
+					//Set RobotStates
+					RobotStates.armPos = ArmPos.RETRACTED;
+					break;
+				}
 	
-				//Actuate the Motor
-				armToPos(Constants.retractedArmEncoderPosition);
+		}
 				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.RETRACTED;
-				break;
-				
-			case SCALE_LOW:
-				
-				//CANCycle for Scale (Low) Position
-				
-				//Actuate the Motor
-				armToPos(Constants.retractedArmEncoderPosition);
-				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.RETRACTED;
-				break;
-	
-			case SWITCH:
-				
-				//CANCycle for Switch Position
-				
-				//Actuate the Motor
-				armToPos(Constants.retractedArmEncoderPosition);
-				
-				//Set RobotStates
-				RobotStates.armPos = ArmPos.RETRACTED;
-				break;
-			}
-		
 	}
 	
 	public void getFinishedState() {

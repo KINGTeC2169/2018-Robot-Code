@@ -2,6 +2,7 @@ package com.team2169.robot.canCycles;
 
 import java.util.List;
 
+import com.team2169.robot.RobotStates;
 import com.team2169.robot.canCycles.cycles.DropAndExhaust;
 import com.team2169.robot.canCycles.cycles.SampleCANCycle;
 
@@ -15,11 +16,9 @@ public class CANCycleHandler {
 	static List<CommandGroup> allTasks;
 	
 	
-	public CANCycleHandler() {
+	public static void createCycles() {
 		sampleCANCycle = new SampleCANCycle();
 		dropAndExhaust = new DropAndExhaust();
-		elevatorTasks.add(dropAndExhaust);
-		allTasks.add(dropAndExhaust);
 	}
 	
 	public static void startCycle(CommandGroup command) {
@@ -32,12 +31,11 @@ public class CANCycleHandler {
 	
 	public static void cancelArmElevatorCycles() {
 		//Do This for all Arm/Elevator CANCycles
-		for(CommandGroup cycle: elevatorTasks) {
-			if(cycle.isRunning()) {
-				cycle.cancel();			
-			}
+		if(dropAndExhaust.isRunning()) {
+			dropAndExhaust.cancel();			
 		}
-		
+		RobotStates.canCycleMode = false;
+	
 	}
 	
 	public static void cancelAllCycles() {
