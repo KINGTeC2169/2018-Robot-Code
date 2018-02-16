@@ -27,7 +27,6 @@ public class Intake extends Subsystem{
         return iInstance;
     }
     
-    boolean ultraWithinRange;
 	Ultrasonic ultra;
 	private TalonSRX left;
 	private TalonSRX right;
@@ -53,9 +52,9 @@ public class Intake extends Subsystem{
 	
 	public void intakeHandler() {
 		
-			ultraWithinRange = (getBlockDistance() <= Constants.maxUltraTriggerDistance && getBlockDistance() >= Constants.minUltraTriggerDistance);
+			RobotStates.ultraWithinRange = (getBlockDistance() <= Constants.maxUltraTriggerDistance && getBlockDistance() >= Constants.minUltraTriggerDistance);
 
-			if(RobotStates.operatorWantsUltrasonic && ultraWithinRange) {
+			if(RobotStates.operatorWantsUltrasonic && RobotStates.ultraWithinRange) {
 				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
 			}
 			

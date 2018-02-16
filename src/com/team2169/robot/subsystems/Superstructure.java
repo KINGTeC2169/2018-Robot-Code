@@ -61,7 +61,6 @@ public class Superstructure {
 	
 	public void subsystemLooper() {
 		
-		StateManager.teleOpStateLooper();
 		drive.driveHandler();
 		platform.platformHandler();
 		intake.intakeHandler();
