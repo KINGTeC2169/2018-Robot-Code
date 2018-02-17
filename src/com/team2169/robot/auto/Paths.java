@@ -10,8 +10,22 @@ public class Paths {
 			new Waypoint(0, 0, 0) // Waypoint @ x=0, y=0, exit angle=0 radians
 	};
 
-	public static class LeftPaths {
-
+	public static class LLLPaths {
+		public static Waypoint[] startToScale = new Waypoint[] {
+				new Waypoint(49, 20.5, 0), // Starting Point
+				new Waypoint(49, 190, 0),
+				new Waypoint(83, 300, 0)
+		};
+		
+		public static Waypoint[] scaleToBlock = new Waypoint[] {
+				new Waypoint(83, 300, 0),  // Starting Point 
+				new Waypoint(83, 300, Pathfinder.d2r(180)), 
+				new Waypoint(93.83, 223.56, Pathfinder.d2r(180)) 
+		};
+		
+		public static Waypoint[] blockToSwitch = new Waypoint[] {
+				new Waypoint(93.83, 223.56, Pathfinder.d2r(180)), // Starting Point
+				new Waypoint(93.83, 213.56, Pathfinder.d2r(180)), // Final Point
+		};
 	}
-
 }

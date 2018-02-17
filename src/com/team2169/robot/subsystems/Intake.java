@@ -12,7 +12,6 @@ import com.team2169.util.DebugPrinter;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import com.team2169.robot.Constants;

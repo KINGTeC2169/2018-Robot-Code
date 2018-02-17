@@ -109,9 +109,9 @@ public class DriveTrain extends Subsystem {
 			}
 
 			// Acceleration Handler with Squared controls
-			leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * FlyByWireHandler.getSafeSpeed());
+			leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
 			rightMaster.set(ControlMode.PercentOutput,
-					ControlMap.rightTankStick(true) * FlyByWireHandler.getSafeSpeed());
+					ControlMap.rightTankStick(true));
 
 			// Shift without override
 			shift(false);

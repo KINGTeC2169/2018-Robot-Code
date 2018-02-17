@@ -51,7 +51,7 @@ public class ControlMap {
 	static int releasePlatform = 11;
 
 	// Deadbands
-	static double operatorDeadband = .2;
+	static double operatorDeadband = .65;
 
 	// Create Joystick Objects
 	static Joystick primaryLeft;

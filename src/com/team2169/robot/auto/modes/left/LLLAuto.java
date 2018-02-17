@@ -14,6 +14,7 @@ import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
+import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClamp;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
@@ -48,7 +49,7 @@ public class LLLAuto extends AutoMode {
     	
     	RobotStates.runningMode = RunningMode.AUTO;
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
-                new FollowPath(Paths.example),
+                new FollowPath(Paths.LLLPaths.startToScale),
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
                 		new ArmRetract(),
@@ -66,7 +67,7 @@ public class LLLAuto extends AutoMode {
     	})), 10);
     	addSequential(new DropAndExhaust(), 1.5);
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
-                new FollowPath(Paths.example),
+                new FollowPath(Paths.LLLPaths.scaleToBlock),
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
                 		new ArmRetract(),
@@ -84,6 +85,14 @@ public class LLLAuto extends AutoMode {
                 }), 75, 100)
                 
     	})), 10);
+    	addSequential(new ParallelTask(Arrays.asList(new Task[] {
+                new FollowPath(Paths.LLLPaths.blockToSwitch),
+                new IntakeClamp(),
+                new IntakeIdle(),
+                new ElevatorToSwitch()
+                
+    	})), 10);
+    	addSequential(new DropAndExhaust());
     	
     }
 
