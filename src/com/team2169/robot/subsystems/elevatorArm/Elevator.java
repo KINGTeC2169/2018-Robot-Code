@@ -125,7 +125,7 @@ public class Elevator {
 	}
 
 	private void elevatorToPos(int pos) {
-		elevator.set(ControlMode.MotionProfile, pos);
+		elevator.set(ControlMode.Position, pos);
 		RobotStates.elevatorHeight = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
 		getElevatorFinishedState();
 	}

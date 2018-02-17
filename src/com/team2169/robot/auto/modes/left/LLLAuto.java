@@ -45,7 +45,7 @@ public class LLLAuto extends AutoMode {
                 new ElevatorToGround(),
                 new ArmRetract(),
                 new IntakeIdle()
-                })), 10);
+    	})), 10);
     	
     }
     

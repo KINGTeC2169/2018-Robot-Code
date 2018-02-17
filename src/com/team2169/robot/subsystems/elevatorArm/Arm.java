@@ -32,7 +32,7 @@ public class Arm {
 
 	//
 	private void armToPos(int pos) {
-		arm.set(ControlMode.MotionProfile, pos);
+		arm.set(ControlMode.Position, pos);
 	}
 	
 	public void armOverrideLooper(double joystickValue) {

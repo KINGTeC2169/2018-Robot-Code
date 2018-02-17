@@ -97,6 +97,12 @@ public class RobotStates {
 		public static boolean elevatorOverrideMode = false;
 		public static boolean platformRelease;
 
+		public static enum PathfinderState{
+			
+			STOPPED, CALCULATING_PATH, LOOPING, INITIALIZING
+			
+		}
+		public static PathfinderState pathfinderState;
 		
 
 }

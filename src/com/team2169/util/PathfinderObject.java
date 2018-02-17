@@ -2,13 +2,15 @@ package com.team2169.util;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.followers.EncoderFollower;
+import jaci.pathfinder.followers.KTEncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.Constants;
+import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotStates.PathfinderState;
 import com.team2169.robot.subsystems.DriveTrain;
 import com.team2169.robot.subsystems.Superstructure;
 
@@ -33,13 +35,15 @@ public class PathfinderObject {
 		leftID = leftTalon.getDeviceID();
 		rightID = rightTalon.getDeviceID();
 		gyro = Superstructure.getInstance().navX;
+		RobotStates.pathfinderState = PathfinderState.INITIALIZING;
 	}
 
-	public EncoderFollower leftFollower;
-	public EncoderFollower rightFollower;
-	
+	public KTEncoderFollower leftFollower;
+	public KTEncoderFollower rightFollower;
 	
 	public void calculatePath() {
+
+		RobotStates.pathfinderState = PathfinderState.CALCULATING_PATH;
 		leftTalon.set(ControlMode.PercentOutput, 0);
 		rightTalon.set(ControlMode.PercentOutput, 0);
 		gyro.reset();
@@ -60,8 +64,8 @@ public class PathfinderObject {
 		Trajectory right = modifier.getRightTrajectory();
 		
 		//Make Encoder Followers
-		leftFollower = new EncoderFollower(left);
-		rightFollower = new EncoderFollower(right);
+		leftFollower = new KTEncoderFollower(left);
+		rightFollower = new KTEncoderFollower(right);
 		
 		leftFollower.configureEncoder(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
 		rightFollower.configureEncoder(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
@@ -93,25 +97,34 @@ public class PathfinderObject {
 			rightTalon.set(ControlMode.PercentOutput, r - turn);
 		}
 		
+		SmartDashboard.putNumber("Pathfinder Left Percentage", leftFollower.getCompletionPercentage());
+		SmartDashboard.putNumber("Pathfinder Right Percentage", rightFollower.getCompletionPercentage());
+		
 		SmartDashboard.putNumber("Left PathFinder Value", l + turn);
 		SmartDashboard.putNumber("Right PathFinder Value", r - turn);
-		
-		SmartDashboard.putNumber("Left Pathfinder Position", leftFollower.getSegment().position );
-		SmartDashboard.putNumber("Right Pathfinder Position", rightFollower.getSegment().position);
 		
 		//Return if trajectories are both finished
 		if(leftFollower.isFinished() && rightFollower.isFinished()) {
 			
+			RobotStates.pathfinderState = PathfinderState.STOPPED;
 			isFinished = true;
 		
 		}
 		
 		else {
 		
-			isFinished = false;
+			RobotStates.pathfinderState = PathfinderState.LOOPING;
 		
 		}
 		
+	}
+	
+	public boolean isPercentComplete(double percent) {
+		percent = percent/100;
+		if(leftFollower.getCompletionPercentage() >= percent && leftFollower.getCompletionPercentage() >= percent) {
+			return true;
+		}
+		return false;
 	}
 
 	public void pathfinderLooper(int leftEnc, int rightEnc) {
@@ -141,6 +154,7 @@ public class PathfinderObject {
 		if(leftFollower.isFinished() && rightFollower.isFinished()) {
 			
 			isFinished = true;
+			RobotStates.pathfinderState = PathfinderState.LOOPING;
 		
 		}
 

@@ -1,9 +1,8 @@
  package com.team2169.robot.auto;
 
 
-import java.io.IOException;
-
 import com.team2169.robot.Constants;
+import com.team2169.robot.Robot;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.FieldSetup;
 import com.team2169.robot.RobotStates.StartingPosition;
@@ -22,7 +21,7 @@ import com.team2169.robot.auto.modes.right.RLLAuto;
 import com.team2169.robot.auto.modes.right.RLRAuto;
 import com.team2169.robot.auto.modes.right.RRLAuto;
 import com.team2169.robot.auto.modes.right.RRRAuto;
-import com.team2169.util.GameInfo;
+//import com.team2169.util.GameInfo;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -81,14 +80,14 @@ public class AutoManager {
 	
 	void determineField() {
 	
-		//String gameMessage_ = Robot.fms.getGameMessage();
-		String gameMessage_= "fail";
+		String gameMessage_ = Robot.fms.getGameMessage();
+		/*String gameMessage_= "fail";
 		try {
 			gameMessage_ = GameInfo.getGameSpecificMessage_WeekZero();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		*/
 		if(gameMessage_.equals("LRL") || gameMessage_.equals("LRR")) {
 			RobotStates.fieldSetup = FieldSetup.LR;
 			SmartDashboard.putString("Switch State:", "LEFT");
