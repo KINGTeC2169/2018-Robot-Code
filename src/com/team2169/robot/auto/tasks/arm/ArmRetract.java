@@ -9,20 +9,20 @@ public class ArmRetract extends Task {
 
 	public ArmRetract() {
 
-    }
+	}
 
-    protected void initialize() {
+	protected void initialize() {
 
-    	RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
-    	
-    }
+		RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return RobotStates.armInPosition;
 	}
-	
-    protected void end() {
 
-    }
+	protected void end() {
+
+	}
 }

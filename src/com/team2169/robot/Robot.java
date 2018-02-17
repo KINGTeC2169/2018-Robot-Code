@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
 public class Robot extends IterativeRobot {
 
 	static AutoManager auto;
@@ -21,10 +20,10 @@ public class Robot extends IterativeRobot {
 	public static FMSManager fms;
 	static ShuffleBoardManager shuffle;
 	static CameraManager camera;
-	
+
 	@Override
 	public void robotInit() {
-		
+
 		RobotStates.runningMode = RunningMode.IDLE;
 		camera = new CameraManager();
 		fms = new FMSManager(m_ds);
@@ -32,18 +31,18 @@ public class Robot extends IterativeRobot {
 		CANCycleHandler.createCycles();
 		superStructure = new Superstructure();
 		shuffle = new ShuffleBoardManager();
-		///camera.startCameraServer(true, true, true);
+		/// camera.startCameraServer(true, true, true);
 		SmartDashboard.putBoolean("isRunning", false);
 		ControlMap.init();
 		superStructure.robotInit();
-		
+
 	}
-	
+
 	public void disabledPeriodic() {
-		
+
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.init(m_ds.isFMSAttached());
-		
+
 	}
 
 	@Override
@@ -52,66 +51,59 @@ public class Robot extends IterativeRobot {
 		RobotStates.runningMode = RunningMode.AUTO;
 		ShuffleBoardManager.getPathfinderConstants();
 		auto.runAuto();
-		
+
 	}
-	
+
 	@Override
 	public void autonomousPeriodic() {
-		
+
 		Scheduler.getInstance().run();
-		
+
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
 		superStructure.subsystemLooper();
-		
+
 	}
-	
-	
+
 	@Override
 	public void teleopInit() {
 		RobotStates.runningMode = RunningMode.TELEOP;
-		if(auto != null){
+		if (auto != null) {
 			auto.endAuto();
 		}
-		
+
 	}
-	
-	
+
 	@Override
 	public void teleopPeriodic() {
-		
+
 		Scheduler.getInstance().run();
-		
+
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		RobotStates.runningMode = RunningMode.TELEOP;
-		
-		try{
-			
+
+		try {
+
 			StateManager.teleOpStateLooper();
 			shuffle.teleOp(m_ds.isFMSAttached());
 			superStructure.subsystemLooper();
-			
-		}
-		catch(Exception e){
+
+		} catch (Exception e) {
 			DriverStation.reportError(e.toString(), true);
 		}
-	
-		
+
 	}
 
 	@Override
 	public void disabledInit() {
-	
-		//Stop all subsystems here	
-		
+
+		// Stop all subsystems here
+
 	}
-	
-	
+
 	@Override
 	public void testPeriodic() {
 	}
-	
-	
-}
 
+}

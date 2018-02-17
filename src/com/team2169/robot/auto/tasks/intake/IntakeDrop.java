@@ -10,18 +10,18 @@ public class IntakeDrop extends Task {
 
 	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return true;
 	}
-	
-    protected void end() {
-    	
-    }
+
+	protected void end() {
+
+	}
 }

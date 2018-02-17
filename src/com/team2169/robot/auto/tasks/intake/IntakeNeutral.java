@@ -10,18 +10,18 @@ public class IntakeNeutral extends Task {
 
 	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return true;
 	}
-	
-    protected void end() {
-    	
-    }
+
+	protected void end() {
+
+	}
 }

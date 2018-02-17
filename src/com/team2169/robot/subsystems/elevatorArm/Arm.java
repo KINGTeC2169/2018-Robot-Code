@@ -12,39 +12,39 @@ import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
 
 public class Arm {
-	
-	//Create Talons
+
+	// Create Talons
 	private TalonSRX arm;
 	private int setpoint;
-	
+
 	public Arm() {
-		
-		//Define Lift Talons
+
+		// Define Lift Talons
 		arm = new TalonSRX(ActuatorMap.armID);
-		
-		//Pull Constants Data for Arm
+
+		// Pull Constants Data for Arm
 		Constants.setArmDataFromConstants();
-		
-		//Apply Talon Settings
+
+		// Apply Talon Settings
 		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
-		
+
 	}
 
 	//
 	private void armToPos(int pos) {
 		arm.set(ControlMode.Position, pos);
 	}
-	
+
 	public void armOverrideLooper(double joystickValue) {
 		setpoint = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 		setpoint += Converter.inchesToTicks(ControlMap.armOverrideSetpointMovement * joystickValue);
 		armToPos(setpoint);
 	}
-	
+
 	public void armMacroLooper() {
-		
-		//set robot's actual state to WantedState's value
-		switch(RobotWantedStates.wantedArmPos){
+
+		// set robot's actual state to WantedState's value
+		switch (RobotWantedStates.wantedArmPos) {
 		case EXTENDED:
 			armToPos(Constants.extendedArmEncoderPosition);
 			RobotStates.armPos = ArmPos.EXTENDED;
@@ -53,10 +53,11 @@ public class Arm {
 			armOverrideLooper(0);
 			RobotStates.armPos = ArmPos.HOLD_POSITION;
 			break;
-		case OVERRIDE: default:
+		case OVERRIDE:
+		default:
 			armOverrideLooper(ControlMap.getOperatorStickValue());
-			
-			//Set RobotStates
+
+			// Set RobotStates
 			RobotStates.armPos = ArmPos.OVERRIDE;
 			break;
 		case RETRACTED:
@@ -64,27 +65,25 @@ public class Arm {
 			RobotStates.armPos = ArmPos.RETRACTED;
 			break;
 
-		
 		}
-	
+
 	}
-				
-	
+
 	public void getFinishedState() {
-		
-		if(arm.getClosedLoopError(Constants.armData.pidLoopIDx) < Constants.armData.allowedError || 
-				arm.getClosedLoopError(Constants.armData.pidLoopIDx) > -Constants.armData.allowedError) {
+
+		if (arm.getClosedLoopError(Constants.armData.pidLoopIDx) < Constants.armData.allowedError
+				|| arm.getClosedLoopError(Constants.armData.pidLoopIDx) > -Constants.armData.allowedError) {
 			RobotStates.armInPosition = true;
 		}
-		
+
 		RobotStates.armInPosition = false;
-	
+
 	}
-	
+
 	public void zeroSensors() {
 		arm.setSelectedSensorPosition(0, Constants.armData.slotIDx, Constants.armData.timeoutMs);
 	}
-	
+
 	public void stop() {
 		arm.set(ControlMode.PercentOutput, 0);
 	}

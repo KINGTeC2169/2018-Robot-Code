@@ -1,4 +1,5 @@
 package com.team2169.util;
+
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -17,18 +18,18 @@ import com.team2169.robot.subsystems.Superstructure;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PathfinderObject {
-	
-	//Waypoints go here
+
+	// Waypoints go here
 	Waypoint[] points;
 	TalonSRX leftTalon;
 	TalonSRX rightTalon;
 	int leftID;
 	int rightID;
 	AHRS gyro;
-	
+
 	public boolean isFinished = false;
-	
-	public PathfinderObject(Waypoint[] importedPoints){
+
+	public PathfinderObject(Waypoint[] importedPoints) {
 		points = importedPoints;
 		leftTalon = DriveTrain.getInstance().leftMaster;
 		rightTalon = DriveTrain.getInstance().rightMaster;
@@ -40,126 +41,127 @@ public class PathfinderObject {
 
 	public KTEncoderFollower leftFollower;
 	public KTEncoderFollower rightFollower;
-	
+
 	public void calculatePath() {
 
 		RobotStates.pathfinderState = PathfinderState.CALCULATING_PATH;
 		leftTalon.set(ControlMode.PercentOutput, 0);
 		rightTalon.set(ControlMode.PercentOutput, 0);
 		gyro.reset();
-		
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST,
-			Constants.timeStep, Constants.maxVelocity, Constants.maxAcceleration, Constants.maxJerk);
-		
+
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_FAST, Constants.timeStep, Constants.maxVelocity, Constants.maxAcceleration,
+				Constants.maxJerk);
+
 		// Generate the trajectory
 		Trajectory trajectory = Pathfinder.generate(points, config);
-		
+
 		// Create the Modifier Object
 		TankModifier modifier = new TankModifier(trajectory);
-	
+
 		// Generate the Left and Right trajectories using the original trajectory
 		// as the center
 		modifier.modify(Constants.wheelBaseWidth);
-		Trajectory left  = modifier.getLeftTrajectory();
+		Trajectory left = modifier.getLeftTrajectory();
 		Trajectory right = modifier.getRightTrajectory();
-		
-		//Make Encoder Followers
+
+		// Make Encoder Followers
 		leftFollower = new KTEncoderFollower(left);
 		rightFollower = new KTEncoderFollower(right);
-		
-		leftFollower.configureEncoder(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
-		rightFollower.configureEncoder(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx), Constants.ticksPerRotation, Constants.wheelDiameter);
-		
-		//Configure Pathfinder PID
-		leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD, 1 / Constants.maxVelocity, Constants.accelerationGain);
-	
+
+		leftFollower.configureEncoder(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx),
+				Constants.ticksPerRotation, Constants.wheelDiameter);
+		rightFollower.configureEncoder(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx),
+				Constants.ticksPerRotation, Constants.wheelDiameter);
+
+		// Configure Pathfinder PID
+		leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
+				1 / Constants.maxVelocity, Constants.accelerationGain);
+
 	}
-	
+
 	public void pathfinderLooper() {
-		
+
 		double l = leftFollower.calculate(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 		double r = rightFollower.calculate(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-		
-		
-		double gyro_heading = gyro.getAngle();    // Assuming the gyro is giving a value in degrees
-		double desired_heading = Pathfinder.r2d(leftFollower.getHeading());  // Should also be in degrees
+
+		double gyro_heading = gyro.getAngle(); // Assuming the gyro is giving a value in degrees
+		double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-		double turn = 0.8 * (-1.0/80.0) * angleDifference;
+		double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
 
-		//If left wheel trajectory isn't finished, set new power.
-		if(!leftFollower.isFinished()) {
-			leftTalon.set(ControlMode.PercentOutput,l + turn);
+		// If left wheel trajectory isn't finished, set new power.
+		if (!leftFollower.isFinished()) {
+			leftTalon.set(ControlMode.PercentOutput, l + turn);
 		}
 
-		//If right wheel trajectory isn't finished, set new power.
-		if(!rightFollower.isFinished()) {
+		// If right wheel trajectory isn't finished, set new power.
+		if (!rightFollower.isFinished()) {
 			rightTalon.set(ControlMode.PercentOutput, r - turn);
 		}
-		
+
 		SmartDashboard.putNumber("Pathfinder Left Percentage", leftFollower.getCompletionPercentage());
 		SmartDashboard.putNumber("Pathfinder Right Percentage", rightFollower.getCompletionPercentage());
-		
+
 		SmartDashboard.putNumber("Left PathFinder Value", l + turn);
 		SmartDashboard.putNumber("Right PathFinder Value", r - turn);
-		
-		//Return if trajectories are both finished
-		if(leftFollower.isFinished() && rightFollower.isFinished()) {
-			
+
+		// Return if trajectories are both finished
+		if (leftFollower.isFinished() && rightFollower.isFinished()) {
+
 			RobotStates.pathfinderState = PathfinderState.STOPPED;
 			isFinished = true;
-		
+
 		}
-		
+
 		else {
-		
+
 			RobotStates.pathfinderState = PathfinderState.LOOPING;
-		
+
 		}
-		
+
 	}
-	
+
 	public boolean isPercentComplete(double percent) {
-		percent = percent/100;
-		if(leftFollower.getCompletionPercentage() >= percent && leftFollower.getCompletionPercentage() >= percent) {
+		percent = percent / 100;
+		if (leftFollower.getCompletionPercentage() >= percent && leftFollower.getCompletionPercentage() >= percent) {
 			return true;
 		}
 		return false;
 	}
 
 	public void pathfinderLooper(int leftEnc, int rightEnc) {
-		
+
 		double l = leftFollower.calculate(leftEnc);
 		double r = rightFollower.calculate(rightEnc);
 
-		double gyro_heading = gyro.getYaw();    // Assuming the gyro is giving a value in degrees
-		double desired_heading = Pathfinder.r2d(leftFollower.getHeading());  // Should also be in degrees
+		double gyro_heading = gyro.getYaw(); // Assuming the gyro is giving a value in degrees
+		double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-		double turn = 0.8 * (-1.0/80.0) * angleDifference;
+		double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
 
-		//If left wheel trajectory isn't finished, set new power.
-		if(!leftFollower.isFinished()) {
-			leftTalon.set(ControlMode.PercentOutput,l + turn);
+		// If left wheel trajectory isn't finished, set new power.
+		if (!leftFollower.isFinished()) {
+			leftTalon.set(ControlMode.PercentOutput, l + turn);
 			SmartDashboard.putNumber("leftPathfinder", l + turn);
 		}
 
-		//If right wheel trajectory isn't finished, set new power.
-		if(!rightFollower.isFinished()) {
-			rightTalon.set(ControlMode.PercentOutput,r - turn);
+		// If right wheel trajectory isn't finished, set new power.
+		if (!rightFollower.isFinished()) {
+			rightTalon.set(ControlMode.PercentOutput, r - turn);
 			SmartDashboard.putNumber("rightPathfinder", r - turn);
 		}
-		
-		//Return if trajectories are both finished
-		if(leftFollower.isFinished() && rightFollower.isFinished()) {
-			
+
+		// Return if trajectories are both finished
+		if (leftFollower.isFinished() && rightFollower.isFinished()) {
+
 			isFinished = true;
 			RobotStates.pathfinderState = PathfinderState.LOOPING;
-		
+
 		}
 
 	}
-	
-	
-}
 
+}

@@ -9,20 +9,20 @@ public class ElevatorToScaleHigh extends Task {
 
 	public ElevatorToScaleHigh() {
 
-    }
+	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedElevatorPos = WantedMacro.SCALE_HIGH;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedElevatorPos = WantedMacro.SCALE_HIGH;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return RobotStates.elevatorInPosition;
 	}
-	
-    protected void end() {
 
-    }
+	protected void end() {
+
+	}
 }

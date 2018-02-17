@@ -48,19 +48,17 @@ public class LLLAuto extends AutoMode {
     	})), 10);
     	
     }
-    
-    //Put looping checks/code in here
-    public void looper() {
-    	
-    	smartDashPush();
-    	
-    }
-    
-    //Smartdashboard output
-    public void smartDashPush() {
-    	
-    	
-    	
-    }
-    
+
+	// Put looping checks/code in here
+	public void looper() {
+
+		smartDashPush();
+
+	}
+
+	// Smartdashboard output
+	public void smartDashPush() {
+
+	}
+
 }

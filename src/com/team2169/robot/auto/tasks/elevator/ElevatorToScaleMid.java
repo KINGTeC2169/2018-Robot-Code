@@ -9,20 +9,20 @@ public class ElevatorToScaleMid extends Task {
 
 	public ElevatorToScaleMid() {
 
-    }
+	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedElevatorPos = WantedMacro.SCALE_MID;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedElevatorPos = WantedMacro.SCALE_MID;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return RobotStates.elevatorInPosition;
 	}
-	
-    protected void end() {
 
-    }
+	protected void end() {
+
+	}
 }

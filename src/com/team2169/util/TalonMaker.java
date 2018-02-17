@@ -5,9 +5,9 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class TalonMaker {
-	
-	public static class TalonConfig{
-	
+
+	public static class TalonConfig {
+
 		public int timeoutMs = 10;
 		public int pidLoopIDx = 0;
 		public int slotIDx = 0;
@@ -17,19 +17,19 @@ public class TalonMaker {
 		public double d;
 		public double f;
 		public int allowedError;
-		
+
 		public void setPIDF(double P, double I, double D, double F) {
 			p = P;
 			i = I;
 			d = D;
 			f = F;
 		}
-		
+
 	}
 
 	public static TalonSRX prepTalonForMotionProfiling(TalonSRX talon_, TalonConfig config) {
-	
-		//Elevator Height Configuration
+
+		// Elevator Height Configuration
 		/* first choose the sensor */
 		talon_.configSelectedFeedbackSensor(FeedbackDevice.Analog, config.pidLoopIDx, config.timeoutMs);
 		talon_.setSensorPhase(true);
@@ -51,16 +51,16 @@ public class TalonMaker {
 		talon_.config_kP(config.slotIDx, config.p, config.timeoutMs);
 		talon_.config_kI(config.slotIDx, config.i, config.timeoutMs);
 		talon_.config_kD(config.slotIDx, config.d, config.timeoutMs);
-		
+
 		/* set acceleration and vcruise velocity - see documentation */
 		talon_.configMotionCruiseVelocity(15000, config.timeoutMs);
 		talon_.configMotionAcceleration(6000, config.timeoutMs);
-		
+
 		/* zero the sensor */
 		talon_.setSelectedSensorPosition(0, config.pidLoopIDx, config.timeoutMs);
-		
+
 		return talon_;
-		
+
 	}
-	
+
 }

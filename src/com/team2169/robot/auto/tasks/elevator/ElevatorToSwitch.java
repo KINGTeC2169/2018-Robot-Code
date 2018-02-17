@@ -9,20 +9,20 @@ public class ElevatorToSwitch extends Task {
 
 	public ElevatorToSwitch() {
 
-    }
+	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedElevatorPos = WantedMacro.SWITCH;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedElevatorPos = WantedMacro.SWITCH;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return RobotStates.elevatorInPosition;
 	}
-	
-    protected void end() {
 
-    }
+	protected void end() {
+
+	}
 }

@@ -8,20 +8,20 @@ public class IntakeIdle extends Task {
 
 	public IntakeIdle() {
 
-    }
+	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return true;
 	}
-	
-    protected void end() {
-    	
-    }
+
+	protected void end() {
+
+	}
 }

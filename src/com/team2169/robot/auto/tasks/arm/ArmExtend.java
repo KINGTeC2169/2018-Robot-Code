@@ -9,20 +9,20 @@ public class ArmExtend extends Task {
 
 	public ArmExtend() {
 
-    }
+	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
+	protected void initialize() {
 
-    }
+		RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return RobotStates.armInPosition;
 	}
-	
-    protected void end() {
 
-    }
+	protected void end() {
+
+	}
 }

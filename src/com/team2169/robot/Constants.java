@@ -6,56 +6,58 @@ import com.team2169.util.TalonMaker.TalonConfig;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Constants {
-	
-	//Auto Names
+
+	// Auto Names
 	public static final String defaultAutoName = "Default Auto";
 	public static final String secondAutoName = "Auto 2";
-	public static final String thirdAutoName  = "Auto 3";
-	
-	//USBCamera Specs
-		
-		//Camera1
-		public static final String camera1Name = "Test Camera";
-		public static final int camera1ID = 0;
-		public static final int camera1FPS = 8;
-		public static final int camera1Width = 640;
-		public static final int camera1Height = 480;
-	
-		//Camera2
-		public static final String camera2Name = "Camera 2 Name";
-		public static final int camera2ID = 1;
-		public static final int camera2FPS = 0;
-		public static final int camera2Width = 640;
-		public static final int camera2Height = 480;
-	
-		//Camera3
-		public static final String camera3Name = "Camera 1 Name";
-		public static final int camera3ID = 2;
-		public static final int camera3FPS = 0;
-		public static final int camera3Width = 640;
-		public static final int camera3Height = 480;	
-		
-	//intake constants
+	public static final String thirdAutoName = "Auto 3";
+
+	// USBCamera Specs
+
+	// Camera1
+	public static final String camera1Name = "Test Camera";
+	public static final int camera1ID = 0;
+	public static final int camera1FPS = 8;
+	public static final int camera1Width = 640;
+	public static final int camera1Height = 480;
+
+	// Camera2
+	public static final String camera2Name = "Camera 2 Name";
+	public static final int camera2ID = 1;
+	public static final int camera2FPS = 0;
+	public static final int camera2Width = 640;
+	public static final int camera2Height = 480;
+
+	// Camera3
+	public static final String camera3Name = "Camera 1 Name";
+	public static final int camera3ID = 2;
+	public static final int camera3FPS = 0;
+	public static final int camera3Width = 640;
+	public static final int camera3Height = 480;
+
+	// intake constants
 	public static final double minUltraTriggerDistance = 0;
 	public static final double maxUltraTriggerDistance = 8;
 	public static final double intakeSpeed = 0.75;
-		
-	//Climb Speed
+
+	// Climb Speed
 	public static final double climbPower = .75;
-	
-	//Take wanted value of intake wheels and subtract 8.
-	//Happens to work perfectly to set it to the height of the object you want to reach.
+
+	// Take wanted value of intake wheels and subtract 8.
+	// Happens to work perfectly to set it to the height of the object you want to
+	// reach.
 	public static double groundElevatorEncoderInches = 0;
 	public static double switchElevatorEncoderInches = 18.75;
 	public static double scaleLowElevatorEncoderInches = 48;
 	public static double scaleMidElevatorEncoderInches = 60;
-	public static double scaleHighElevatorEncoderInches= 72;
+	public static double scaleHighElevatorEncoderInches = 72;
 	public static double hangElevatorEncoderInches = 65;
-	
+
 	public static int extendedArmEncoderPosition = 0;
 	public static int retractedArmEncoderPosition = 0;
-	
+
 	public static TalonConfig elevatorData = new TalonConfig();
+
 	public static void setElevatorDataFromConstants() {
 		elevatorData.slotIDx = 0;
 		elevatorData.pidLoopIDx = 0;
@@ -65,14 +67,15 @@ public class Constants {
 		elevatorData.i = 0;
 		elevatorData.d = 0;
 		elevatorData.f = .2;
-		
+
 	}
 
 	public static final double elevatorDrumReduction = 17.53;
-	
+
 	public static final double elevatorWinchDiameter = 2.5;
-	
+
 	public static TalonConfig armData = new TalonConfig();
+
 	public static void setArmDataFromConstants() {
 		armData.slotIDx = 0;
 		armData.pidLoopIDx = 0;
@@ -82,11 +85,12 @@ public class Constants {
 		armData.i = 0;
 		armData.d = 0;
 		armData.f = .2;
-		
+
 	}
-	
+
 	public static TalonConfig leftDriveData = new TalonConfig();
 	public static TalonConfig rightDriveData = new TalonConfig();
+
 	public static void setDriveMotorDataFromConstants() {
 		leftDriveData.slotIDx = 0;
 		leftDriveData.pidLoopIDx = 0;
@@ -95,9 +99,8 @@ public class Constants {
 		rightDriveData.pidLoopIDx = 0;
 		rightDriveData.timeoutMs = 10;
 	}
-	
-	
-	//Default Values (in case something fails)
+
+	// Default Values (in case something fails)
 	public static int groundElevatorEncoderPosition = 0;
 	public static int switchElevatorEncoderPosition = 9778;
 	public static int scaleLowElevatorEncoderPosition = 25033;
@@ -107,48 +110,52 @@ public class Constants {
 
 	public static void calculateMacros() {
 		groundElevatorEncoderPosition = 0;
-		switchElevatorEncoderPosition = Converter.winchInchesToTicks(switchElevatorEncoderInches, elevatorWinchDiameter);
-		scaleLowElevatorEncoderPosition = Converter.winchInchesToTicks(scaleLowElevatorEncoderInches, elevatorWinchDiameter);
-		scaleMidElevatorEncoderPosition = Converter.winchInchesToTicks(scaleMidElevatorEncoderInches, elevatorWinchDiameter);
-		scaleHighElevatorEncoderPosition = Converter.winchInchesToTicks(scaleHighElevatorEncoderInches, elevatorWinchDiameter);
-		hangElevatorEncoderPosition = Converter.winchInchesToTicks(hangElevatorEncoderInches, elevatorWinchDiameter);;
+		switchElevatorEncoderPosition = Converter.winchInchesToTicks(switchElevatorEncoderInches,
+				elevatorWinchDiameter);
+		scaleLowElevatorEncoderPosition = Converter.winchInchesToTicks(scaleLowElevatorEncoderInches,
+				elevatorWinchDiameter);
+		scaleMidElevatorEncoderPosition = Converter.winchInchesToTicks(scaleMidElevatorEncoderInches,
+				elevatorWinchDiameter);
+		scaleHighElevatorEncoderPosition = Converter.winchInchesToTicks(scaleHighElevatorEncoderInches,
+				elevatorWinchDiameter);
+		hangElevatorEncoderPosition = Converter.winchInchesToTicks(hangElevatorEncoderInches, elevatorWinchDiameter);
+		;
 	}
-	
-	//Robot Contants go here
+
+	// Robot Contants go here
 	public static final double wheelBaseWidth = 26;
 	public static final double wheelDiameter = 6;
 	public static final int ticksPerRotation = 4096;
-	public static final double maxElevatorHeight = 1250;
+	public static final double maxElevatorHeight = 37549;
 
-	//SolenoidStates
+	// SolenoidStates
 	public static final DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kForward;
 	public static final DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kReverse;
-	
-	//Current Limits
+
+	// Current Limits
 	public static final int maxDriveTrainCurrent = 30;
-	
-	//Current Limit Timeouts
+
+	// Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 5;
-	
-	//Pathfinder Zone
-		
-		//Pathfinder Numbers to care about
-			
-			//Set Maximum Velocity in Units/Second
-			public static double maxVelocity = 50; 
-			//Modify if robot isn't following path nicely
-			public static double pathfinderD = 0;
-			//How quickly/slowly do you want to reach full speed
-			public static double accelerationGain = .01;
-	
-		//Other Pathfinder PID Configuration
-		public static double pathfinderP = 0.01;
-		public static double pathfinderI = 0;
-		
-		//Path Generation Only
-		public static double timeStep= 0.1; //Seconds
-		public static double maxAcceleration = .2;  //m/s/s
-		public static double maxJerk = .006; //m/s/s/s
-		
-	
+
+	// Pathfinder Zone
+
+	// Pathfinder Numbers to care about
+
+	// Set Maximum Velocity in Units/Second
+	public static double maxVelocity = 50;
+	// Modify if robot isn't following path nicely
+	public static double pathfinderD = 0;
+	// How quickly/slowly do you want to reach full speed
+	public static double accelerationGain = .01;
+
+	// Other Pathfinder PID Configuration
+	public static double pathfinderP = 0.01;
+	public static double pathfinderI = 0;
+
+	// Path Generation Only
+	public static double timeStep = 0.1; // Seconds
+	public static double maxAcceleration = .2; // m/s/s
+	public static double maxJerk = .006; // m/s/s/s
+
 }

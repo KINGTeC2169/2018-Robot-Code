@@ -10,14 +10,14 @@ public class ShuffleBoardManager {
 
 	static NetworkTable dash = NetworkTable.getTable("SmartDashboard");
 
-	public static void setDouble(String key, double D){
+	public static void setDouble(String key, double D) {
 		dash.putDouble(key, D);
 	}
 
-	public static double getDouble(String key){
+	public static double getDouble(String key) {
 		return dash.getNumber(key, -1);
 	}
-	
+
 	public static void getPathfinderConstants() {
 		Constants.accelerationGain = getDouble("accelerationGain");
 		Constants.timeStep = getDouble("timeStep");
@@ -28,9 +28,9 @@ public class ShuffleBoardManager {
 		Constants.pathfinderI = getDouble("pathfinderI");
 		Constants.pathfinderD = getDouble("pathfinderD");
 	}
-	
-	public void init(boolean fms) {	
-	
+
+	public void init(boolean fms) {
+
 		setDouble("accelerationGain", Constants.accelerationGain);
 		setDouble("timeStep", Constants.timeStep);
 		setDouble("maxVelocity", Constants.maxVelocity);
@@ -39,68 +39,63 @@ public class ShuffleBoardManager {
 		setDouble("pathfinderP", Constants.pathfinderP);
 		setDouble("pathfinderI", Constants.pathfinderI);
 		setDouble("pathfinderD", Constants.pathfinderD);
-		
-		
-		if(fms) {
-			//FMS Is Attached
+
+		if (fms) {
+			// FMS Is Attached
 			connected();
 			SmartDashboard.putNumber("Battery Voltage", Robot.fms.batteryVoltage());
-		}
-		else {
-			//FMS Is Not Attached
+		} else {
+			// FMS Is Not Attached
 			connected();
 			SmartDashboard.putNumber("Battery Voltage", Robot.fms.batteryVoltage());
 		}
 
 	}
-	
+
 	public void auto(boolean fms) {
-	
-		if(fms) {
-			//FMS Is Attached
+
+		if (fms) {
+			// FMS Is Attached
 			batteryData();
 			connected();
 			SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
-		}
-		else {
-			//FMS Is Not Attached
+		} else {
+			// FMS Is Not Attached
 			batteryData();
 			connected();
 			SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
 		}
 	}
-	
+
 	public void teleOp(boolean fms) {
-		
-		if(fms) {
-			//FMS Is Attached
+
+		if (fms) {
+			// FMS Is Attached
+			batteryData();
+			connected();
+			SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
+		} else {
+			// FMS Is Not Attached
 			batteryData();
 			connected();
 			SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
 		}
-		else {
-			//FMS Is Not Attached
-			batteryData();
-			connected();
-			SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
-		}
-		
+
 	}
-	
-		//Local Methods
-		void batteryData() {
-			
-			SmartDashboard.putNumber("Battery Voltage", Robot.fms.batteryVoltage());
-			SmartDashboard.putBoolean("BrownOut Alert", !Robot.fms.browningOut());
-			
-			
-		}
-		
-		void connected() {
-		
-			SmartDashboard.putBoolean("FMS Connected", Robot.fms.fmsActive());
-			SmartDashboard.putBoolean("DS Connected", Robot.fms.isDriverStationAttached());
-		
-		}
-	
+
+	// Local Methods
+	void batteryData() {
+
+		SmartDashboard.putNumber("Battery Voltage", Robot.fms.batteryVoltage());
+		SmartDashboard.putBoolean("BrownOut Alert", !Robot.fms.browningOut());
+
+	}
+
+	void connected() {
+
+		SmartDashboard.putBoolean("FMS Connected", Robot.fms.fmsActive());
+		SmartDashboard.putBoolean("DS Connected", Robot.fms.isDriverStationAttached());
+
+	}
+
 }

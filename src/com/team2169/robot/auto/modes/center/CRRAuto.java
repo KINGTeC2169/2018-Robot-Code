@@ -28,25 +28,23 @@ public class CRRAuto extends AutoMode {
 
 */
 
-    public CRRAuto() {
-    	
-    	RobotStates.runningMode = RunningMode.AUTO;
-    	//This is where you put tasks    	
-    	
-    }
-    
-    //Put looping checks/code in here
-    public void looper() {
-    	
-    	smartDashPush();
-    	
-    }
-    
-    //Smartdashboard output
-    public void smartDashPush() {
-    	
-    	
-    	
-    }
-    
+	public CRRAuto() {
+
+		RobotStates.runningMode = RunningMode.AUTO;
+		// This is where you put tasks
+
+	}
+
+	// Put looping checks/code in here
+	public void looper() {
+
+		smartDashPush();
+
+	}
+
+	// Smartdashboard output
+	public void smartDashPush() {
+
+	}
+
 }

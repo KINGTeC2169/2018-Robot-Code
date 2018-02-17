@@ -9,20 +9,20 @@ public class ElevatorToGround extends Task {
 
 	public ElevatorToGround() {
 
-    }
+	}
 
-    protected void initialize() {
-    	
-    	RobotWantedStates.wantedElevatorPos = WantedMacro.GROUND;
-    	
-    }
+	protected void initialize() {
+
+		RobotWantedStates.wantedElevatorPos = WantedMacro.GROUND;
+
+	}
 
 	@Override
 	protected boolean isFinished() {
 		return RobotStates.elevatorInPosition;
 	}
-	
-    protected void end() {
 
-    }
+	protected void end() {
+
+	}
 }
