@@ -106,11 +106,16 @@ public class PathfinderObject {
 
 		SmartDashboard.putNumber("Left PathFinder Value", l + turn);
 		SmartDashboard.putNumber("Right PathFinder Value", r - turn);
+		
+		RobotStates.leftPathCompletionPercent = leftFollower.getCompletionPercentage();
+		RobotStates.rightPathCompletionPercent = rightFollower.getCompletionPercentage();
 
 		// Return if trajectories are both finished
 		if (leftFollower.isFinished() && rightFollower.isFinished()) {
 
 			RobotStates.pathfinderState = PathfinderState.STOPPED;
+			RobotStates.leftPathCompletionPercent = 1;
+			RobotStates.rightPathCompletionPercent = 1;
 			isFinished = true;
 
 		}

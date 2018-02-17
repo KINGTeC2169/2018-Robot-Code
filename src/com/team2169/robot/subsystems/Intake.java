@@ -12,6 +12,7 @@ import com.team2169.util.DebugPrinter;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import com.team2169.robot.Constants;
@@ -30,14 +31,17 @@ public class Intake extends Subsystem {
 	Ultrasonic ultra;
 	private TalonSRX left;
 	private TalonSRX right;
-	DoubleSolenoid clamp;
+	DoubleSolenoid dropSolenoid;
+	DoubleSolenoid clampSolenoid;
 
 	public Intake() {
 		ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
 		left = new TalonSRX(ActuatorMap.leftIntakeID);
 		right = new TalonSRX(ActuatorMap.rightIntakeID);
 		right.setInverted(true);
-		clamp = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.clampPortForward,
+		dropSolenoid = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dropPortForward,
+				ActuatorMap.dropPortReverse);
+		clampSolenoid = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.clampPortForward,
 				ActuatorMap.clampPortReverse);
 		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
 		ultra.setAutomaticMode(true);
@@ -99,21 +103,24 @@ public class Intake extends Subsystem {
 		default:
 
 			// Set Clamp to Neutral
-			clamp.set(Value.kOff);
+			clampSolenoid.set(Value.kReverse);
+			dropSolenoid.set(Value.kReverse);
 			RobotStates.intakeClamp = IntakeClamp.NEUTRAL;
 			break;
 
 		case CLAMP:
 
 			// Set Clamp to Clamped
-			clamp.set(Value.kForward);
+			clampSolenoid.set(Value.kForward);
+			dropSolenoid.set(Value.kReverse);
 			RobotStates.intakeClamp = IntakeClamp.CLAMP;
 			break;
 
 		case DROP:
 
 			// Set Clamp to Drop
-			clamp.set(Value.kReverse);
+			clampSolenoid.set(Value.kReverse);
+			dropSolenoid.set(Value.kForward);
 			RobotStates.intakeClamp = IntakeClamp.DROP;
 			break;
 

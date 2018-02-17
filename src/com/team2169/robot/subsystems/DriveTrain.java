@@ -85,9 +85,9 @@ public class DriveTrain extends Subsystem {
 		 */
 
 		// Shifting Solenoids
-		shifter = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.dtSpeedShiftForward,
+		shifter = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dtSpeedShiftForward,
 				ActuatorMap.dtSpeedShiftReverse);
-		ptoShift = new DoubleSolenoid(ActuatorMap.compressorPCMPort, ActuatorMap.ptoShiftForward,
+		ptoShift = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.ptoShiftForward,
 				ActuatorMap.ptoShiftReverse);
 
 		RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_LOW;

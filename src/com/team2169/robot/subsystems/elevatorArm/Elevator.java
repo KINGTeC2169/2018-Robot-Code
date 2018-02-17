@@ -39,7 +39,7 @@ public class Elevator {
 
 		case OVERRIDE:
 		default:
-			elevatorOverrideLooper(ControlMap.getOperatorStickValue());
+			elevatorManual(ControlMap.getOperatorStickValue());
 
 			// Set RobotStates
 			RobotStates.elevatorPos = ElevatorPos.OVERRIDE;
@@ -123,6 +123,10 @@ public class Elevator {
 
 	}
 
+	private void elevatorManual(double power) {
+		elevator.set(ControlMode.PercentOutput, power);
+	}
+	
 	private void elevatorToPos(int pos) {
 		elevator.set(ControlMode.Position, pos);
 		RobotStates.elevatorHeight = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);

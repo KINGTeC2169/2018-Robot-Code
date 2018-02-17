@@ -24,19 +24,21 @@ public class ActuatorMap {
 
 	// Pnuematics
 	// Compressor
-	public static final int compressorPCMPort = 12;
+	public static final int PCMPort = 12;
 
 	// Intake Piston
-	public static final int clampPortForward = 1;
-	public static final int clampPortReverse = 2;
+	public static final int clampPortForward = 4;
+	public static final int clampPortReverse = 5;
+	public static final int dropPortForward = 6;
+	public static final int dropPortReverse = 7;
 
 	// Drive Train Shifting
-	public static final int dtSpeedShiftForward = 3;
-	public static final int dtSpeedShiftReverse = 4;
+	public static final int dtSpeedShiftForward = 1;
+	public static final int dtSpeedShiftReverse = 0;
 
 	// PTO Ports
-	public static final int ptoShiftForward = 5;
-	public static final int ptoShiftReverse = 6;
+	public static final int ptoShiftForward = 2;
+	public static final int ptoShiftReverse = 3;
 
 	// Hanger Ports
 	public static final int platformReleasePiston = 0;
