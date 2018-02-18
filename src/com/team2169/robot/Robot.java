@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot {
 		CANCycleHandler.createCycles();
 		superStructure = new Superstructure();
 		shuffle = new ShuffleBoardManager();
-		/// camera.startCameraServer(true, true, true);
+		// camera.startCameraServer(true, true, true);
 		SmartDashboard.putBoolean("isRunning", false);
 		ControlMap.init();
 		superStructure.robotInit();

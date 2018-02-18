@@ -9,13 +9,13 @@ public class ControlMap {
 	// Primary Controls
 
 	// Button Constants
-	static int shiftUp = 4;
-	static int shiftDown = 3;
+	static int shiftUp = 3;
+	static int shiftDown = 2;
 
 	// Operator Controls
 
 	// Master Overrides
-	static int primaryOverride = 3;
+	static int primaryOverride = 1;
 
 	// Axis Constants
 	static int armOverrideButton = 3;

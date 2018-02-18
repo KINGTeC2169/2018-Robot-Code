@@ -17,6 +17,7 @@ public class TalonMaker {
 		public double d;
 		public double f;
 		public int allowedError;
+		public boolean sensorPhase;
 
 		public void setPIDF(double P, double I, double D, double F) {
 			p = P;
@@ -31,8 +32,8 @@ public class TalonMaker {
 
 		// Elevator Height Configuration
 		/* first choose the sensor */
-		talon_.configSelectedFeedbackSensor(FeedbackDevice.Analog, config.pidLoopIDx, config.timeoutMs);
-		talon_.setSensorPhase(true);
+		talon_.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, config.pidLoopIDx, config.timeoutMs);
+		talon_.setSensorPhase(config.sensorPhase);
 		talon_.setInverted(false);
 
 		/* Set relevant frame periods to be at least as fast as periodic rate */
@@ -51,10 +52,6 @@ public class TalonMaker {
 		talon_.config_kP(config.slotIDx, config.p, config.timeoutMs);
 		talon_.config_kI(config.slotIDx, config.i, config.timeoutMs);
 		talon_.config_kD(config.slotIDx, config.d, config.timeoutMs);
-
-		/* set acceleration and vcruise velocity - see documentation */
-		talon_.configMotionCruiseVelocity(15000, config.timeoutMs);
-		talon_.configMotionAcceleration(6000, config.timeoutMs);
 
 		/* zero the sensor */
 		talon_.setSelectedSensorPosition(0, config.pidLoopIDx, config.timeoutMs);

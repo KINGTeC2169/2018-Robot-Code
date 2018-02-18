@@ -2,6 +2,7 @@ package com.team2169.util;
 
 import com.team2169.robot.Constants;
 import com.team2169.robot.Robot;
+
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -97,5 +98,4 @@ public class ShuffleBoardManager {
 		SmartDashboard.putBoolean("DS Connected", Robot.fms.isDriverStationAttached());
 
 	}
-
 }

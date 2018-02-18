@@ -162,7 +162,7 @@ public class StateManager {
 			switch (RobotWantedStates.wantedMacro) {
 			case GROUND:
 			default:
-				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
+				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
 				break;
 			case HANG:
 				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;

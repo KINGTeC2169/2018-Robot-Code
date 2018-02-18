@@ -63,10 +63,11 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .25;
+		elevatorData.p = .75;
 		elevatorData.i = 0;
-		elevatorData.d = 0;
+		elevatorData.d = .5;
 		elevatorData.f = .2;
+		elevatorData.sensorPhase = false;
 
 	}
 
@@ -119,7 +120,6 @@ public class Constants {
 		scaleHighElevatorEncoderPosition = Converter.winchInchesToTicks(scaleHighElevatorEncoderInches,
 				elevatorWinchDiameter);
 		hangElevatorEncoderPosition = Converter.winchInchesToTicks(hangElevatorEncoderInches, elevatorWinchDiameter);
-		;
 	}
 
 	// Robot Contants go here

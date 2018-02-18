@@ -7,8 +7,10 @@ import com.team2169.robot.Constants;
 import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.team2169.robot.RobotStates.ElevatorPos;
 
 public class Elevator {
@@ -16,7 +18,6 @@ public class Elevator {
 	// Create Talons
 	private TalonSRX elevator;
 	private TalonSRX elevatorSlave;
-	private int setpoint;
 
 	public Elevator() {
 
@@ -27,6 +28,7 @@ public class Elevator {
 
 		// Pull Constants Data for Elevator
 		Constants.setElevatorDataFromConstants();
+		
 
 		// Apply Talon Settings
 		elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
@@ -113,13 +115,15 @@ public class Elevator {
 			// CANCycle for Switch
 
 			// Actuate the Motor
-			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
+			elevatorToPos(10000/*Constants.scaleMidElevatorEncoderPosition*/);
 
 			// Set Robot States
 			RobotStates.elevatorPos = ElevatorPos.SWITCH;
 			break;
 
 		}
+		
+		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
 
 	}
 
@@ -128,16 +132,15 @@ public class Elevator {
 	}
 	
 	private void elevatorToPos(int pos) {
+		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
 		elevator.set(ControlMode.Position, pos);
-		RobotStates.elevatorHeight = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
 		getElevatorFinishedState();
 	}
 
 	public void elevatorOverrideLooper(double joystickValue) {
-		setpoint = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
-		setpoint += Converter.inchesToTicks(
-				ControlMap.elevatorOverrideSetpointMovement * joystickValue * Constants.elevatorDrumReduction);
-		elevatorToPos(setpoint);
+			
+		elevator.set(ControlMode.PercentOutput, joystickValue);
+		
 	}
 
 	public void getElevatorFinishedState() {
