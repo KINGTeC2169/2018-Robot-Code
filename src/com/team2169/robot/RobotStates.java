@@ -70,6 +70,10 @@ public class RobotStates {
 	//Robot block held state
 	    public static boolean ultraWithinRange;  
 	    public static boolean operatorWantsUltrasonic;
+	    public static boolean blockHeld;
+	    
+	//Arduino 
+	    public static boolean arduinoConnected;
 	    
 	//Arm Position Handler
 		public static enum ArmPos{

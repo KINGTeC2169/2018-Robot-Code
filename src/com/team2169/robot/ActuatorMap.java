@@ -42,12 +42,16 @@ public class ActuatorMap {
 
 	// Hanger Ports
 	public static final int platformReleasePiston = 0;
+	
+	//Arduino Ports
+	public static final int prepArduinoDIOPort = 4;
+	public static final int arduinoComPort = 0;
 
 	// Analog Inputs
 	public static final int intakeUltrasonicInputPort = 0;
 	public static final int intakeUltrasonicOutputPort = 1;
 	public static final int elevatorHeightSensorPort = 0;
-	public static final int elevatorBottomLimitID = 0;
-	public static final int elevatorTopLimitID = 0;
+	public static final int elevatorBottomLimitID = 2;
+	public static final int elevatorTopLimitID = 3;
 
 }

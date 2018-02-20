@@ -42,7 +42,14 @@ public class Constants {
 
 	// Climb Speed
 	public static final double climbPower = .75;
-
+	
+	//Arduino
+	public static final int arduinoMainSignal = 32; // 32 for kingTecRandom		64 for Rainbow		96 for stripes
+	public static final int arduinoBlockHeldSignal = 128;
+	public static final int arduinoBlockPlacedSignal = 160;
+	public static final int arduinoReadyToClimbSignal = 192;
+	
+	
 	// Take wanted value of intake wheels and subtract 8.
 	// Happens to work perfectly to set it to the height of the object you want to
 	// reach.
