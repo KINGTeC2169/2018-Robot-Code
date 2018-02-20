@@ -17,8 +17,8 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClamp;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
-import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeNeutral;
+import com.team2169.robot.auto.tasks.intake.IntakeUntilHeld;
 import com.team2169.robot.canCycles.cycles.DropAndExhaust;
 
 public class LLLAuto extends AutoMode {	
@@ -79,8 +79,7 @@ public class LLLAuto extends AutoMode {
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
                 		new ArmExtend(),
-                		new IntakeIn(false),
-                		new IntakeNeutral()
+                		new IntakeUntilHeld()
                 		
                 }), 75, 100)
                 

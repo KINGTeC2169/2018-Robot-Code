@@ -65,8 +65,15 @@ public class LLRAuto extends AutoMode {
                 
     	})), 10);
     	addSequential(new DropAndExhaust(), 1.25);
+   
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
     			new FollowPath(Paths.LLRPaths.switchToBlock),
+    			new NestedPathTask(Arrays.asList(new Task[]{
+    					
+    					new ArmRetract(),
+    					new ElevatorToGround()
+    					
+    			}), 0, 49),
     			new NestedPathTask(Arrays.asList(new Task[]{
     					
     					new ArmExtend(),
