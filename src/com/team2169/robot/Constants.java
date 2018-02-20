@@ -137,7 +137,10 @@ public class Constants {
 
 	// Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 5;
-
+	
+	public static final int elevatorUpperLimit = 0;
+	public static final int elevatorLowerLimit = 0;
+	
 	// Pathfinder Zone
 
 	// Pathfinder Numbers to care about

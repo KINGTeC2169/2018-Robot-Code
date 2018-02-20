@@ -14,13 +14,13 @@ public class ActuatorMap {
 	public static final int rightMasterDriveTalon = 5;
 
 	// Elevator TalonSRX IDs
-	public static final int elevatorMasterID = 9;
-	public static final int elevatorSlaveID = 10;
+	public static final int elevatorMasterID = 7;
+	public static final int elevatorSlaveID = 6;
 	public static final int armID = 8;
 
 	// Intake TalonSRX IDs
-	public static final int leftIntakeID = 6;
-	public static final int rightIntakeID = 7;
+	public static final int leftIntakeID = 10;
+	public static final int rightIntakeID = 9;
 
 	// Pnuematics
 	// Compressor
@@ -47,5 +47,7 @@ public class ActuatorMap {
 	public static final int intakeUltrasonicInputPort = 0;
 	public static final int intakeUltrasonicOutputPort = 1;
 	public static final int elevatorHeightSensorPort = 0;
+	public static final int elevatorBottomLimitID = 0;
+	public static final int elevatorTopLimitID = 0;
 
 }

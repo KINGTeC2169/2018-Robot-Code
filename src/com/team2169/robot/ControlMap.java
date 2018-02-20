@@ -18,13 +18,13 @@ public class ControlMap {
 	static int primaryOverride = 1;
 
 	// Axis Constants
-	static int armOverrideButton = 3;
-	static int elevatorOverrideButton = 2;
+	static int armOverrideButton = 2;
+	static int elevatorOverrideButton = 1;
 
-	static int bClampButton = 5;
-	static int bNeutralButton = 3;
-	static int bDropButton = 4;
-	static int bDropAndExhaustButton = 1;
+	static int clampButton = 5;
+	static int dropButton = 3;
+	private static int neutralButton = 4;
+	static int dropAndExhaustButton = 6;
 
 	// Elevator Macro Keys
 	/*
@@ -47,8 +47,8 @@ public class ControlMap {
 
 	// Climb Keys
 	static int climbPrimary = 10;
-	static int climbOperator = 10;
-	static int releasePlatform = 11;
+	static int climbOperator = 100;
+	static int releasePlatform = 110;
 
 	// Deadbands
 	static double operatorDeadband = .65;
@@ -65,7 +65,7 @@ public class ControlMap {
 		primaryLeft = new Joystick(0);
 		primaryRight = new Joystick(1);
 		operator = new Joystick(2);
-		buttonBoard = new Joystick(3);
+		buttonBoard = new Joystick(2);
 
 	}
 
@@ -74,6 +74,7 @@ public class ControlMap {
 	}
 
 	static OperatorStickState operatorStickState;
+	
 
 	// Control Settings
 	public static final double elevatorOverrideSetpointMovement = 6;
@@ -143,19 +144,20 @@ public class ControlMap {
 
 	// Intake State Buttons
 	public static boolean clampButtonPressed() {
-		return buttonBoard.getRawButton(bClampButton);
-	}
-
-	public static boolean neutralButtonPressed() {
-		return buttonBoard.getRawButton(bNeutralButton);
+		return operator.getRawButtonPressed(clampButton);
 	}
 
 	public static boolean dropButtonPressed() {
-		return buttonBoard.getRawButton(bDropButton);
+		return operator.getRawButtonPressed(dropButton);
 	}
 
 	public static boolean dropAndExhaustButton() {
-		return buttonBoard.getRawButtonPressed(bDropAndExhaustButton);
+		return operator.getRawButtonPressed(dropAndExhaustButton);
+	}
+	
+	public static boolean neutralButtonPressed() {
+		// TODO Auto-generated method stub
+		return operator.getRawButton(neutralButton);
 	}
 
 	public static void getOperatorStickState() {
@@ -195,4 +197,5 @@ public class ControlMap {
 	public static boolean operatorWantsUltrasonic() {
 		return operator.getRawButton(wantsUltrasonic);
 	}
+
 }

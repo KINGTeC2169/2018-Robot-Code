@@ -9,6 +9,7 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.util.TalonMaker;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.team2169.robot.RobotStates.ElevatorPos;
@@ -18,7 +19,9 @@ public class Elevator {
 	// Create Talons
 	private TalonSRX elevator;
 	private TalonSRX elevatorSlave;
-
+	private AnalogInput topLimit;
+	private AnalogInput bottomLimit;
+	
 	public Elevator() {
 
 		// Define Lift Talons
@@ -26,6 +29,9 @@ public class Elevator {
 		elevatorSlave = new TalonSRX(ActuatorMap.elevatorSlaveID);
 		elevatorSlave.set(ControlMode.Follower, ActuatorMap.elevatorMasterID);
 
+		topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
+		bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
+		
 		// Pull Constants Data for Elevator
 		Constants.setElevatorDataFromConstants();
 		
@@ -36,6 +42,7 @@ public class Elevator {
 
 	public void elevatorMacroLooper() {
 
+		getLimits();
 		// set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedElevatorPos) {
 
@@ -141,6 +148,26 @@ public class Elevator {
 			
 		elevator.set(ControlMode.PercentOutput, joystickValue);
 		
+	}
+	
+	void getLimits() {
+		
+		//Upper Limit Switch Active
+		if (topLimit.getValue() > Constants.elevatorUpperLimit) {
+			elevator.configPeakOutputReverse(0, Constants.elevatorData.timeoutMs);
+		}
+		else {
+			elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs);
+		}
+		
+		//Lower Limit Switch Active
+		if(bottomLimit.getValue() > Constants.elevatorLowerLimit) {
+			elevator.configPeakOutputForward(0, Constants.elevatorData.timeoutMs);
+		}
+		
+		else {
+			elevator.configPeakOutputReverse(1, Constants.elevatorData.timeoutMs);
+		}
 	}
 
 	public void getElevatorFinishedState() {

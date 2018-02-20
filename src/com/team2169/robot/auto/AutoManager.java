@@ -128,7 +128,9 @@ public class AutoManager {
 	}
 
 	public void endAuto() {
-		auto.cancel();
+		if (auto != null) {
+			auto.cancel();
+		}
 	}
 
 	public void autoLooping() {
