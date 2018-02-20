@@ -56,6 +56,7 @@ public class TalonMaker {
 		/* zero the sensor */
 		talon_.setSelectedSensorPosition(0, config.pidLoopIDx, config.timeoutMs);
 
+		/* return the updated Talon*/
 		return talon_;
 
 	}
