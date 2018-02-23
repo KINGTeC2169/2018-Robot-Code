@@ -47,6 +47,8 @@ public class ElevatorArm extends Subsystem {
 	@Override
 	public void pushToDashboard() {
 
+		arm.pushEncPos();
+		
 		if (RobotStates.debugMode) {
 			DebugPrinter.armDebug();
 			DebugPrinter.elevatorDebug();

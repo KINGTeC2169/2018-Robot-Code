@@ -60,7 +60,7 @@ public class Constants {
 	public static double scaleHighElevatorEncoderInches = 72;
 	public static double hangElevatorEncoderInches = 65;
 
-	public static int extendedArmEncoderPosition = 0;
+	public static int extendedArmEncoderPosition = 1000;
 	public static int retractedArmEncoderPosition = 0;
 
 	public static TalonConfig elevatorData = new TalonConfig();
@@ -89,10 +89,11 @@ public class Constants {
 		armData.pidLoopIDx = 0;
 		armData.timeoutMs = 10;
 		armData.allowedError = 2;
-		armData.p = .200756;
+		armData.p = .56;
 		armData.i = 0;
-		armData.d = 0;
+		armData.d = .15;
 		armData.f = .2;
+		elevatorData.sensorPhase = false;
 
 	}
 

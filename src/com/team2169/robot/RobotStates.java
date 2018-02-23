@@ -82,7 +82,8 @@ public class RobotStates {
 			
 		}
 		public static ArmPos armPos;
-		public static boolean armOverrideMode = false;
+		public static boolean armStickMode = false;
+		public static boolean armButtonMode = false;
 		public static boolean armInPosition;
 		
 	//Elevator Position Handler
