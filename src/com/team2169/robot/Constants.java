@@ -141,7 +141,7 @@ public class Constants {
 	public static final DoubleSolenoid.Value lowGear = DoubleSolenoid.Value.kReverse;
 
 	// Current Limits
-	public static final int maxDriveTrainCurrent = 30;
+	public static final int maxDriveTrainCurrent = 40;
 
 	// Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 5;
@@ -154,19 +154,19 @@ public class Constants {
 	// Pathfinder Numbers to care about
 
 	// Set Maximum Velocity in Units/Second
-	public static double maxVelocity = 50;
+	public static double maxVelocity = 0.5;
 	// Modify if robot isn't following path nicely
 	public static double pathfinderD = 0;
 	// How quickly/slowly do you want to reach full speed
-	public static double accelerationGain = .01;
+	public static double accelerationGain = 0;
 
 	// Other Pathfinder PID Configuration
-	public static double pathfinderP = 0.01;
+	public static double pathfinderP = 0.001;
 	public static double pathfinderI = 0;
 
 	// Path Generation Only
-	public static double timeStep = 0.1; // Seconds
-	public static double maxAcceleration = .2; // m/s/s
-	public static double maxJerk = .006; // m/s/s/s
+	public static double timeStep = 0.05; // Seconds
+	public static double maxAcceleration = 0.05; // m/s/s
+	public static double maxJerk = 0.05; // m/s/s/s
 
 }

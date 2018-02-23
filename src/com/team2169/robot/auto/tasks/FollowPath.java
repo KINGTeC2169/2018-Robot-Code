@@ -51,5 +51,6 @@ public class FollowPath extends Task {
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		DriveTrain.getInstance().stop();
+		path.Stop();
 	}
 }

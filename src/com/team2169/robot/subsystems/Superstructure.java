@@ -41,6 +41,12 @@ public class Superstructure {
 		comp = new Compressor(ActuatorMap.PCMPort);
 
 	}
+	public void reinstance(){
+		drive = DriveTrain.getInstance();
+		intake = Intake.getInstance();
+		platform = Platform.getInstance();
+		liftArm = ElevatorArm.getInstance();
+	}
 
 	public void robotInit() {
 
@@ -65,7 +71,8 @@ public class Superstructure {
 	}
 
 	public void subsystemLooper() {
-
+		
+		drive.pushToDashboard();
 		drive.driveHandler();
 		platform.platformHandler();
 		intake.intakeHandler();

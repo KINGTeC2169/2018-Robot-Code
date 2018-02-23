@@ -26,6 +26,7 @@ public class PathfinderObject {
 	int leftID;
 	int rightID;
 	AHRS gyro;
+	
 
 	public boolean isFinished = false;
 
@@ -48,6 +49,7 @@ public class PathfinderObject {
 		leftTalon.set(ControlMode.PercentOutput, 0);
 		rightTalon.set(ControlMode.PercentOutput, 0);
 		gyro.reset();
+	
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_FAST, Constants.timeStep, Constants.maxVelocity, Constants.maxAcceleration,
@@ -75,9 +77,10 @@ public class PathfinderObject {
 				Constants.ticksPerRotation, Constants.wheelDiameter);
 
 		// Configure Pathfinder PID
+		
 		leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
 				1 / Constants.maxVelocity, Constants.accelerationGain);
-
+		
 	}
 
 	public void pathfinderLooper() {
@@ -89,7 +92,7 @@ public class PathfinderObject {
 		double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-		double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
+		double turn = 0.3 * (-1.0 / 80.0) * angleDifference;
 
 		// If left wheel trajectory isn't finished, set new power.
 		if (!leftFollower.isFinished()) {
@@ -104,14 +107,17 @@ public class PathfinderObject {
 		SmartDashboard.putNumber("Pathfinder Left Percentage", leftFollower.getCompletionPercentage());
 		SmartDashboard.putNumber("Pathfinder Right Percentage", rightFollower.getCompletionPercentage());
 
-		SmartDashboard.putNumber("Left PathFinder Value", l + turn);
-		SmartDashboard.putNumber("Right PathFinder Value", r - turn);
+		SmartDashboard.putNumber("Left PathFinder Value + turn", l + turn);
+		SmartDashboard.putNumber("Right PathFinder Value - turn", r - turn);
+		SmartDashboard.putNumber("Left PathFinder Value", l);
+		SmartDashboard.putNumber("Right PathFinder Value", r);
+		SmartDashboard.putNumber("Pathfinder Turn", turn);
 		
 		RobotStates.leftPathCompletionPercent = leftFollower.getCompletionPercentage();
 		RobotStates.rightPathCompletionPercent = rightFollower.getCompletionPercentage();
 
 		// Return if trajectories are both finished
-		if (leftFollower.isFinished() && rightFollower.isFinished()) {
+		if (leftFollower.isFinished() && rightFollower.isFinished() || isFinished ) {
 
 			RobotStates.pathfinderState = PathfinderState.STOPPED;
 			RobotStates.leftPathCompletionPercent = 1;
@@ -126,6 +132,10 @@ public class PathfinderObject {
 
 		}
 
+	}
+	
+	public void Stop(){
+		isFinished = true;
 	}
 
 	public boolean isPercentComplete(double percent) {

@@ -20,6 +20,7 @@ public class ElevatorArm extends Subsystem {
 		return eInstance;
 	}
 
+
 	public ElevatorArm() {
 
 		arm = new Arm();

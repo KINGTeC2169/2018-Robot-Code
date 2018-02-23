@@ -14,7 +14,6 @@ public class Platform extends Subsystem {
 		}
 		return hInstance;
 	}
-
 	// Solenoid platformRelease;
 
 	public Platform() {

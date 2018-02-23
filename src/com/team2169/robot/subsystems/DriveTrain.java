@@ -30,6 +30,7 @@ public class DriveTrain extends Subsystem {
 		}
 		return dInstance;
 	}
+	
 
 	// Define null objects up here
 	// Public because autonomous needs to access actuators
@@ -69,20 +70,20 @@ public class DriveTrain extends Subsystem {
 		rightTop.setInverted(true);
 
 		// Set Current Limits
-		/*
-		 * leftMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 * Constants.driveTrainCurrentTimeout);
-		 * leftFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 * Constants.driveTrainCurrentTimeout);
-		 * leftTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 * Constants.driveTrainCurrentTimeout);
-		 * rightMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 * Constants.driveTrainCurrentTimeout);
-		 * rightFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 * Constants.driveTrainCurrentTimeout);
-		 * rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 * Constants.driveTrainCurrentTimeout);
-		 */
+		
+		 leftMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
+		 Constants.driveTrainCurrentTimeout);
+		 leftFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
+		 Constants.driveTrainCurrentTimeout);
+		 leftTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
+		 Constants.driveTrainCurrentTimeout);
+		 rightMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
+		 Constants.driveTrainCurrentTimeout);
+		 rightFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
+		 Constants.driveTrainCurrentTimeout);
+		 rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
+		 Constants.driveTrainCurrentTimeout);
+		 
 
 		// Shifting Solenoids
 		shifter = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dtSpeedShiftForward,
@@ -293,10 +294,23 @@ public class DriveTrain extends Subsystem {
 		// Put any SmartDash info here.
 		DebugPrinter.driveTrainDebug();
 		SmartDashboard.putNumber("Left Encoder Value: ",
-				leftMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
+				leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 		SmartDashboard.putNumber("Right Encoder Value: ",
 				rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-
+		
+		SmartDashboard.putNumber("RightTop", rightTop.getOutputCurrent());
+		SmartDashboard.putNumber("RightMaster", rightMaster.getOutputCurrent());
+		SmartDashboard.putNumber("RightFront", rightFront.getOutputCurrent());
+		SmartDashboard.putNumber("RightToVolts", rightTop.getMotorOutputVoltage());
+		SmartDashboard.putNumber("RightMasterVolts", rightMaster.getMotorOutputVoltage());
+		SmartDashboard.putNumber("RightFrontVolts", rightFront.getMotorOutputVoltage());
+		
+		SmartDashboard.putNumber("LeftTop", leftTop.getOutputCurrent());
+		SmartDashboard.putNumber("LeftMaster", leftTop.getOutputCurrent());
+		SmartDashboard.putNumber("LeftFront", leftTop.getOutputCurrent());
+		SmartDashboard.putNumber("LeftTopVolts", leftTop.getMotorOutputVoltage());
+		SmartDashboard.putNumber("LeftMasterVolts", leftTop.getMotorOutputVoltage());
+		SmartDashboard.putNumber("LeftFrontVolts", leftTop.getMotorOutputVoltage());
 	}
 
 	@Override
