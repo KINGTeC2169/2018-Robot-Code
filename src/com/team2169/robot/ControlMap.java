@@ -191,8 +191,8 @@ public class ControlMap {
 
 	// Hanging Logic
 	public static boolean driversWantToHang() {
-		return /*(primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary))
-				&&*/ operator.getRawButton(climbOperator);
+		return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary))
+				&& operator.getRawButton(climbOperator);
 	}
 
 	public static void getWantedPlatform() {
