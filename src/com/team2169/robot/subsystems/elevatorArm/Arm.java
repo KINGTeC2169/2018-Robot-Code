@@ -8,15 +8,15 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.ArmPos;
-import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 
 	// Create Talons
 	private TalonSRX arm;
-	private int setpoint;
-
+	
 	public Arm() {
 
 		// Define Lift Talons
@@ -30,19 +30,20 @@ public class Arm {
 
 	}
 
-	//
+	public void pushEncPos() {
+		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
+	}
+	
 	private void armToPos(int pos) {
 		arm.set(ControlMode.Position, pos);
 	}
 
 	public void armOverrideLooper(double joystickValue) {
-		setpoint = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
-		setpoint += Converter.inchesToTicks(ControlMap.armOverrideSetpointMovement * joystickValue);
-		armToPos(setpoint);
+		arm.set(ControlMode.Position, arm.getSelectedSensorPosition(Constants.armData.slotIDx));
 	}
 
 	public void armMacroLooper() {
-
+		
 		// set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedArmPos) {
 		case EXTENDED:
@@ -83,6 +84,7 @@ public class Arm {
 	public void zeroSensors() {
 		arm.setSelectedSensorPosition(0, Constants.armData.slotIDx, Constants.armData.timeoutMs);
 	}
+	
 
 	public void stop() {
 		arm.set(ControlMode.PercentOutput, 0);

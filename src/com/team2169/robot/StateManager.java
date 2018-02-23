@@ -33,7 +33,8 @@ public class StateManager {
 		if (ControlMap.dropAndExhaustButton()) {
 			CANCycleHandler.dropAndExhaust.start();
 			RobotStates.elevatorOverrideMode = false;
-			RobotStates.armOverrideMode = false;
+			RobotStates.armStickMode = false;
+			RobotStates.armButtonMode = false;
 			RobotStates.intakeClampOverride = false;
 		}
 
@@ -44,7 +45,8 @@ public class StateManager {
 		RobotWantedStates.wantedMacro = pos;
 		CANCycleHandler.cancelArmElevatorCycles();
 		RobotStates.elevatorOverrideMode = false;
-		RobotStates.armOverrideMode = false;
+		RobotStates.armStickMode = false;
+		RobotStates.armButtonMode = false;
 		RobotStates.intakeClampOverride = false;
 	}
 
@@ -157,7 +159,7 @@ public class StateManager {
 			RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
 			RobotStates.intakeClampOverride = true;
 		}
-
+		
 		if (!RobotStates.intakeClampOverride && !RobotStates.canCycleMode) {
 			switch (RobotWantedStates.wantedMacro) {
 			case GROUND:
@@ -211,19 +213,33 @@ public class StateManager {
 
 		// Intake Wheel States
 		// Driver has taken control of mechanism, follow their controls.
+		
 		if (ControlMap.operatorStickState == OperatorStickState.ARM) {
-			RobotStates.armOverrideMode = true;
+			RobotStates.armStickMode = true;
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = WantedArmPos.OVERRIDE;
-
+		}
+		
+		else if(ControlMap.armExtendPressed()) {			
+			RobotStates.armButtonMode = true;
+			RobotStates.armStickMode = false;
+			CANCycleHandler.cancelArmElevatorCycles();
+			RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;			
+		}
+		
+		else if(ControlMap.armRetractPressed()) {
+			RobotStates.armButtonMode = true;
+			RobotStates.armStickMode = false;
+			CANCycleHandler.cancelArmElevatorCycles();
+			RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
 		}
 
-		else if (RobotStates.armOverrideMode) {
+		else if (RobotStates.armStickMode) {
 			RobotWantedStates.wantedArmPos = WantedArmPos.HOLD_POSITION;
 		}
 
 		// Robot is in a CanCycle, don't interfere unless overriden
-		if (!RobotStates.canCycleMode && !RobotStates.armOverrideMode) {
+		if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {
 
 			// No CanCycle or Driver Override, do the default Macro action
 

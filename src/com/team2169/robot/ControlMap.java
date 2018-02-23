@@ -1,7 +1,6 @@
 package com.team2169.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlMap {
@@ -111,6 +110,14 @@ public class ControlMap {
 		return false;
 	}
 
+	public static boolean armExtendPressed() {
+		return operator.getPOV() == 0;
+	}
+	
+	public static boolean armRetractPressed() {
+		return operator.getPOV() == 180;
+	}
+	
 	// Macro Buttons
 	// Ground Macro
 	public static boolean groundMacroPressed() {
@@ -167,7 +174,7 @@ public class ControlMap {
 			RobotStates.elevatorOverrideMode = true;
 		} else if (operator.getRawButton(armOverrideButton)) {
 			operatorStickState = OperatorStickState.ARM;
-			RobotStates.armOverrideMode = true;
+			RobotStates.armStickMode = true;
 		} else {
 			operatorStickState = OperatorStickState.INTAKE;
 		}
