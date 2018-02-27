@@ -4,7 +4,6 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.Paths;
 import com.team2169.robot.auto.tasks.FollowPath;
-import com.team2169.robot.subsystems.Superstructure;
 
 public class SelfTest extends AutoMode {
 	

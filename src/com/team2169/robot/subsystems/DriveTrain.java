@@ -84,7 +84,8 @@ public class DriveTrain extends Subsystem {
 		 rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
 		 Constants.driveTrainCurrentTimeout);
 		 
-
+		 enableRamping();
+		 
 		// Shifting Solenoids
 		shifter = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dtSpeedShiftForward,
 				ActuatorMap.dtSpeedShiftReverse);
@@ -96,6 +97,20 @@ public class DriveTrain extends Subsystem {
 
 	}
 
+	void enableRamping(){
+		leftMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
+		leftMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
+		rightMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
+		rightMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
+	}
+	
+	void disableRamping(){
+		leftMaster.configOpenloopRamp(0, 0);
+		leftMaster.configClosedloopRamp(0, 0);
+		rightMaster.configOpenloopRamp(0, 0);
+		rightMaster.configClosedloopRamp(0, 0);
+	}
+	
 	public void driveHandler() {
 
 		switch (RobotWantedStates.wantedDriveOverride) {
