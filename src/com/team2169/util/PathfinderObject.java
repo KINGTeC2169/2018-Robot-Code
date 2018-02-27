@@ -8,7 +8,6 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.Constants;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.PathfinderState;
@@ -26,7 +25,6 @@ public class PathfinderObject {
 	TalonSRX rightTalon;
 	int leftID;
 	int rightID;
-	AHRS gyro;
 
 	public boolean isFinished = false;
 
@@ -36,7 +34,7 @@ public class PathfinderObject {
 		rightTalon = DriveTrain.getInstance().rightMaster;
 		leftID = leftTalon.getDeviceID();
 		rightID = rightTalon.getDeviceID();
-		gyro = Superstructure.getInstance().navX;
+		isFinished = false;
 		RobotStates.pathfinderState = PathfinderState.INITIALIZING;
 	}
 
@@ -44,12 +42,12 @@ public class PathfinderObject {
 	public KTEncoderFollower rightFollower;
 
 	public void calculatePath() {
-
+		isFinished = false;
 		if (RobotState.isAutonomous()) {
 			RobotStates.pathfinderState = PathfinderState.CALCULATING_PATH;
 			leftTalon.set(ControlMode.PercentOutput, 0);
 			rightTalon.set(ControlMode.PercentOutput, 0);
-			gyro.reset();
+
 
 			Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 					Trajectory.Config.SAMPLES_FAST, Constants.timeStep, Constants.maxVelocity,
@@ -79,35 +77,31 @@ public class PathfinderObject {
 			// Configure Pathfinder PID
 			leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
 					1 / Constants.maxVelocity, Constants.accelerationGain);
+			
 
 		}
 	}
 
 	public void pathfinderLooper() {
-
+		Superstructure.getInstance().subsystemLooper();
 		if (RobotState.isAutonomous()) {
 			double l = leftFollower.calculate(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 			double r = rightFollower.calculate(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
 
-			double gyro_heading = gyro.getAngle(); // Assuming the gyro is giving a value in degrees
+			double gyro_heading = RobotStates.GyroAngle; // Assuming the gyro is giving a value in degrees
 			double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-			double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
+			double turn = 0.3 * (-1.0 / 80.0) * angleDifference;
 
 			// If left wheel trajectory isn't finished, set new power.
-			if (!leftFollower.isFinished()) {
+			if (!leftFollower.isFinished() && !rightFollower.isFinished()) {
 				leftTalon.set(ControlMode.PercentOutput, l + turn);
-			}
-
-			// If right wheel trajectory isn't finished, set new power.
-			if (!rightFollower.isFinished()) {
 				rightTalon.set(ControlMode.PercentOutput, r - turn);
 			}
 
 			SmartDashboard.putNumber("Pathfinder Left Percentage", leftFollower.getCompletionPercentage());
 			SmartDashboard.putNumber("Pathfinder Right Percentage", rightFollower.getCompletionPercentage());
-
 			SmartDashboard.putNumber("Left PathFinder Value + turn", l + turn);
 			SmartDashboard.putNumber("Right PathFinder Value - turn", r - turn);
 			SmartDashboard.putNumber("Left PathFinder Value", l);
@@ -156,7 +150,7 @@ public class PathfinderObject {
 			double l = leftFollower.calculate(leftEnc);
 			double r = rightFollower.calculate(rightEnc);
 
-			double gyro_heading = gyro.getYaw(); // Assuming the gyro is giving a value in degrees
+			double gyro_heading = RobotStates.GyroAngle; // Assuming the gyro is giving a value in degrees
 			double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);

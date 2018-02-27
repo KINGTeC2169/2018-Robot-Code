@@ -52,6 +52,9 @@ public class RobotStates {
 
 		public static boolean canCycleMode;
 		
+	//Gyro angle
+		public static double GyroAngle;
+		
 	//Intake Mode Handler
 		public static enum IntakeMode{
 			

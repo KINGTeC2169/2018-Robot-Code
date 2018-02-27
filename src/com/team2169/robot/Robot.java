@@ -48,10 +48,12 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-
+		
+		superStructure.resetGyro();
 		RobotStates.runningMode = RunningMode.AUTO;
 		ShuffleBoardManager.getPathfinderConstants();
 		auto.runAuto();
+		
 
 	}
 
@@ -59,11 +61,10 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 
 		Scheduler.getInstance().run();
-
+		superStructure.subsystemLooper();
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
-		superStructure.subsystemLooper();
 
 	}
 
@@ -99,7 +100,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledInit() {
-
+		auto.endAuto();
 		// Stop all subsystems here
 
 	}

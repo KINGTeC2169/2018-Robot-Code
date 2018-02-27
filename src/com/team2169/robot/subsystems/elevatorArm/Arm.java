@@ -30,8 +30,9 @@ public class Arm {
 
 	}
 
-	public void pushEncPos() {
+	public void pushToDashboard() {
 		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
+		SmartDashboard.putNumber("ARM_CURRENT", arm.getOutputCurrent());
 	}
 	
 	private void armToPos(int pos) {
@@ -39,7 +40,10 @@ public class Arm {
 	}
 
 	public void armOverrideLooper(double joystickValue) {
-		arm.set(ControlMode.Position, arm.getSelectedSensorPosition(Constants.armData.slotIDx));
+		arm.set(ControlMode.Position, arm.getSelectedSensorPosition(Constants.armData.slotIDx)); 
+	}
+	public void armSetOverrideLooper(double joystickValue){
+		arm.set(ControlMode.PercentOutput, joystickValue);
 	}
 
 	public void armMacroLooper() {
@@ -56,7 +60,7 @@ public class Arm {
 			break;
 		case OVERRIDE:
 		default:
-			armOverrideLooper(ControlMap.getOperatorStickValue());
+			armSetOverrideLooper(ControlMap.getOperatorStickValue());
 
 			// Set RobotStates
 			RobotStates.armPos = ArmPos.OVERRIDE;

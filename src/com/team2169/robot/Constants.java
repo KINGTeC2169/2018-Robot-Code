@@ -60,8 +60,8 @@ public class Constants {
 	public static double scaleHighElevatorEncoderInches = 72;
 	public static double hangElevatorEncoderInches = 65;
 
-	public static int extendedArmEncoderPosition = 1000;
-	public static int retractedArmEncoderPosition = 0;
+	public static int extendedArmEncoderPosition = 0;
+	public static int retractedArmEncoderPosition = 750;
 
 	public static TalonConfig elevatorData = new TalonConfig();
 
@@ -165,7 +165,7 @@ public class Constants {
 	public static double pathfinderI = 0;
 
 	// Path Generation Only
-	public static double timeStep = 0.05; // Seconds
+	public static double timeStep = 0.15; // Seconds
 	public static double maxAcceleration = 0.05; // m/s/s
 	public static double maxJerk = 0.05; // m/s/s/s
 

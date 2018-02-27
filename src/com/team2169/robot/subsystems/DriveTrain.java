@@ -111,8 +111,11 @@ public class DriveTrain extends Subsystem {
 
 			// Acceleration Handler with Squared controls
 			leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
-			rightMaster.set(ControlMode.PercentOutput,
-					ControlMap.rightTankStick(true));
+			rightMaster.set(ControlMode.PercentOutput,ControlMap.rightTankStick(true));
+			leftTop.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * 0.91);
+			rightTop.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * 0.91);
+			
+			
 
 			// Shift without override
 			shift(false);
@@ -133,7 +136,8 @@ public class DriveTrain extends Subsystem {
 			// Drive with Override
 			leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
 			rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
-
+			leftTop.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * 0.91);
+			rightTop.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * 0.91);
 			// Shift with override
 			shift(true);
 

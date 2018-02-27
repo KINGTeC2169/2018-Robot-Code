@@ -1,6 +1,6 @@
 package com.team2169.util;
 
-import com.team2169.robot.Constants;
+//import com.team2169.robot.Constants;
 import com.team2169.robot.Robot;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -20,26 +20,26 @@ public class ShuffleBoardManager {
 	}
 
 	public static void getPathfinderConstants() {
-		Constants.accelerationGain = getDouble("accelerationGain");
-		Constants.timeStep = getDouble("timeStep");
-		Constants.maxVelocity = getDouble("maxVelocity");
-		Constants.maxAcceleration = getDouble("maxAcceleration");
-		Constants.maxJerk = getDouble("maxAcceleration");
-		Constants.pathfinderP = getDouble("pathfinderP");
-		Constants.pathfinderI = getDouble("pathfinderI");
-		Constants.pathfinderD = getDouble("pathfinderD");
+		//Constants.accelerationGain = getDouble("accelerationGain");
+		//Constants.timeStep = getDouble("timeStep");
+		//Constants.maxVelocity = getDouble("maxVelocity");
+		//Constants.maxAcceleration = getDouble("maxAcceleration");
+		//Constants.maxJerk = getDouble("maxAcceleration");
+		//Constants.pathfinderP = getDouble("pathfinderP");
+		//Constants.pathfinderI = getDouble("pathfinderI");
+		//Constants.pathfinderD = getDouble("pathfinderD");
 	}
 
 	public void init(boolean fms) {
 
-		setDouble("accelerationGain", Constants.accelerationGain);
+		/*setDouble("accelerationGain", Constants.accelerationGain);
 		setDouble("timeStep", Constants.timeStep);
 		setDouble("maxVelocity", Constants.maxVelocity);
 		setDouble("maxAcceleration", Constants.maxAcceleration);
 		setDouble("maxJerk", Constants.maxJerk);
 		setDouble("pathfinderP", Constants.pathfinderP);
 		setDouble("pathfinderI", Constants.pathfinderI);
-		setDouble("pathfinderD", Constants.pathfinderD);
+		setDouble("pathfinderD", Constants.pathfinderD);*/
 
 		if (fms) {
 			// FMS Is Attached

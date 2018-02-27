@@ -35,6 +35,7 @@ public class FollowPath extends Task {
 		path.pathfinderLooper();
 
 	}
+	
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
@@ -52,5 +53,6 @@ public class FollowPath extends Task {
 	protected void interrupted() {
 		DriveTrain.getInstance().stop();
 		path.Stop();
+
 	}
 }

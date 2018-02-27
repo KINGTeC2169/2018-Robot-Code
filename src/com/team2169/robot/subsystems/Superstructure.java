@@ -12,6 +12,7 @@ import com.team2169.robot.StateManager;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Superstructure {
 
@@ -37,7 +38,7 @@ public class Superstructure {
 		intake = Intake.getInstance();
 		platform = Platform.getInstance();
 		liftArm = ElevatorArm.getInstance();
-		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
+		navX = new AHRS(SPI.Port.kMXP, (byte)200);
 		comp = new Compressor(ActuatorMap.PCMPort);
 
 	}
@@ -69,8 +70,14 @@ public class Superstructure {
 		comp.start();
 
 	}
+	public void resetGyro(){
+		navX.reset();
+		
+	}
 
 	public void subsystemLooper() {
+		RobotStates.GyroAngle = navX.getAngle();
+		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 		
 		drive.pushToDashboard();
 		drive.driveHandler();
@@ -78,7 +85,7 @@ public class Superstructure {
 		intake.intakeHandler();
 		liftArm.elevatorArmHandler();
 		drive.pushToDashboard();
-		// CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
+		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 
 	}
 
