@@ -20,14 +20,14 @@ public class Converter {
 
 	public static int winchInchesToTicks(double inches, double drumDiameterIN) {
 
-		double val = (inches * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
+		double val = (inches * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
 		return (int) Math.round(val);
 
 	}
 
 	public static int winchFeetToTicks(double feet, double drumDiameterIN) {
 
-		double val = (feet * 12 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
+		double val = (feet * 12 * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
 		return (int) Math.round(val);
 
 	}
