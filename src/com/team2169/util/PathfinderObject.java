@@ -98,6 +98,7 @@ public class PathfinderObject {
 			if (!leftFollower.isFinished() && !rightFollower.isFinished()) {
 				leftTalon.set(ControlMode.PercentOutput, l + turn);
 				rightTalon.set(ControlMode.PercentOutput, r - turn);
+
 			}
 
 			SmartDashboard.putNumber("Pathfinder Left Percentage", leftFollower.getCompletionPercentage());
@@ -115,13 +116,12 @@ public class PathfinderObject {
 			if (leftFollower.isFinished() && rightFollower.isFinished()) {
 				RobotStates.leftPathCompletionPercent = leftFollower.getCompletionPercentage();
 				RobotStates.rightPathCompletionPercent = rightFollower.getCompletionPercentage();
-
-				if (isFinished) {
-					RobotStates.pathfinderState = PathfinderState.STOPPED;
-					RobotStates.leftPathCompletionPercent = 1;
-					RobotStates.rightPathCompletionPercent = 1;
-					isFinished = true;
-				}
+				RobotStates.pathfinderState = PathfinderState.STOPPED;
+				RobotStates.leftPathCompletionPercent = 1;
+				RobotStates.rightPathCompletionPercent = 1;
+				isFinished = true;
+				leftTalon.set(ControlMode.PercentOutput,  0);
+				rightTalon.set(ControlMode.PercentOutput, 0);
 
 			} else {
 

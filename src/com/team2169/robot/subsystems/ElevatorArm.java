@@ -29,7 +29,7 @@ public class ElevatorArm extends Subsystem {
 		RobotStates.elevatorInPosition = false;
 
 		// Calulcate Latest Macro Positions
-		Constants.calculateMacros();
+		//Constants.calculateMacros();
 
 	}
 

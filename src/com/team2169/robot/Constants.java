@@ -61,7 +61,7 @@ public class Constants {
 	public static double hangElevatorEncoderInches = 65;
 
 	public static int extendedArmEncoderPosition = 0;
-	public static int retractedArmEncoderPosition = 750;
+	public static int retractedArmEncoderPosition = -950;
 
 	public static TalonConfig elevatorData = new TalonConfig();
 
@@ -118,16 +118,6 @@ public class Constants {
 	public static int hangElevatorEncoderPosition = 37549;
 
 	public static void calculateMacros() {
-		groundElevatorEncoderPosition = 0;
-		switchElevatorEncoderPosition = Converter.winchInchesToTicks(switchElevatorEncoderInches,
-				elevatorWinchDiameter);
-		scaleLowElevatorEncoderPosition = Converter.winchInchesToTicks(scaleLowElevatorEncoderInches,
-				elevatorWinchDiameter);
-		scaleMidElevatorEncoderPosition = Converter.winchInchesToTicks(scaleMidElevatorEncoderInches,
-				elevatorWinchDiameter);
-		scaleHighElevatorEncoderPosition = Converter.winchInchesToTicks(scaleHighElevatorEncoderInches,
-				elevatorWinchDiameter);
-		hangElevatorEncoderPosition = Converter.winchInchesToTicks(hangElevatorEncoderInches, elevatorWinchDiameter);
 	}
 
 	// Robot Contants go here

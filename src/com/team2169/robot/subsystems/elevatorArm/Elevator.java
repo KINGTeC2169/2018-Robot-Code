@@ -27,7 +27,6 @@ public class Elevator {
 		elevator = new TalonSRX(ActuatorMap.elevatorMasterID);
 		elevatorSlave = new TalonSRX(ActuatorMap.elevatorSlaveID);
 		elevatorSlave.set(ControlMode.Follower, ActuatorMap.elevatorMasterID);
-
 		//topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
 		//bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
 		
@@ -121,7 +120,7 @@ public class Elevator {
 			// CANCycle for Switch
 
 			// Actuate the Motor
-			elevatorToPos(10000/*Constants.scaleMidElevatorEncoderPosition*/);
+			elevatorToPos(2500);
 
 			// Set Robot States
 			RobotStates.elevatorPos = ElevatorPos.SWITCH;
