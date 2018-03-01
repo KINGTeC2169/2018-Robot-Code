@@ -70,10 +70,10 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .75;
+		elevatorData.p = .9;
 		elevatorData.i = 0;
-		elevatorData.d = .5;
-		elevatorData.f = .2;
+		elevatorData.d = .3;
+		elevatorData.f = 0;
 		elevatorData.sensorPhase = false;
 
 	}

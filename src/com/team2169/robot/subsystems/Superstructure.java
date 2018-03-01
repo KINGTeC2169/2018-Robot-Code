@@ -74,14 +74,17 @@ public class Superstructure {
 		navX.reset();
 		
 	}
+	public void updateGyro(){
+		RobotStates.GyroAngle = navX.getAngle();
+		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
+	}
 
 	public void subsystemLooper() {
 		RobotStates.GyroAngle = navX.getAngle();
 		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
-		
 		drive.pushToDashboard();
 		drive.driveHandler();
-		platform.platformHandler();
+		//platform.platformHandler();
 		intake.intakeHandler();
 		liftArm.elevatorArmHandler();
 		drive.pushToDashboard();

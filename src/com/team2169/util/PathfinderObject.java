@@ -12,7 +12,7 @@ import com.team2169.robot.Constants;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.PathfinderState;
 import com.team2169.robot.subsystems.DriveTrain;
-import com.team2169.robot.subsystems.Superstructure;
+
 
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,8 +23,8 @@ public class PathfinderObject {
 	Waypoint[] points;
 	TalonSRX leftTalon;
 	TalonSRX rightTalon;
-	int leftID;
-	int rightID;
+	//int leftID;
+	//int rightID;
 
 	public boolean isFinished = false;
 
@@ -32,8 +32,8 @@ public class PathfinderObject {
 		points = importedPoints;
 		leftTalon = DriveTrain.getInstance().leftMaster;
 		rightTalon = DriveTrain.getInstance().rightMaster;
-		leftID = leftTalon.getDeviceID();
-		rightID = rightTalon.getDeviceID();
+		//leftID = leftTalon.getDeviceID();
+		//rightID = rightTalon.getDeviceID();
 		isFinished = false;
 		RobotStates.pathfinderState = PathfinderState.INITIALIZING;
 	}
@@ -83,7 +83,7 @@ public class PathfinderObject {
 	}
 
 	public void pathfinderLooper() {
-		Superstructure.getInstance().subsystemLooper();
+		
 		if (RobotState.isAutonomous()) {
 			double l = leftFollower.calculate(leftTalon.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 			double r = rightFollower.calculate(rightTalon.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
@@ -92,7 +92,7 @@ public class PathfinderObject {
 			double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
 
 			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-			double turn = 0.3 * (-1.0 / 80.0) * angleDifference;
+			double turn = 0.5 * (-1.0 / 80.0) * angleDifference;
 
 			// If left wheel trajectory isn't finished, set new power.
 			if (!leftFollower.isFinished() && !rightFollower.isFinished()) {

@@ -3,19 +3,16 @@ package com.team2169.robot.auto.tasks;
 import jaci.pathfinder.Waypoint;
 
 import com.team2169.robot.subsystems.DriveTrain;
-import com.team2169.util.PathfinderObject;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class FollowPath extends Task {
 
-	PathfinderObject path;
 	public double RightPos;
 	public double LeftPos;
-
 	public FollowPath(Waypoint[] points) {
 
-		path = new PathfinderObject(points);
+		DriveTrain.getInstance().SetWaypoint(points);
 
 		DriverStation.reportWarning("Path Created", false);
 	}
@@ -23,7 +20,7 @@ public class FollowPath extends Task {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		DriverStation.reportWarning("calculating path", false);
-		path.calculatePath();
+		DriveTrain.getInstance().calculatePath();
 		DriverStation.reportWarning("Path Calculated", false);
 
 	}
@@ -32,14 +29,14 @@ public class FollowPath extends Task {
 	protected void execute() {
 
 		DriverStation.reportError("Executing path", false);
-		path.pathfinderLooper();
+		DriveTrain.getInstance().pathfinderLooper();
 
 	}
 	
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return path.isFinished;
+		return DriveTrain.getInstance().isPathFinished;
 	}
 
 	// Called once after isFinished returns true
@@ -52,7 +49,6 @@ public class FollowPath extends Task {
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		DriveTrain.getInstance().stop();
-		path.Stop();
-
+		DriveTrain.getInstance().stopPath();
 	}
 }

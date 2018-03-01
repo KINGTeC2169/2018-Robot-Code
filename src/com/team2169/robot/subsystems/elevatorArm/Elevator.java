@@ -120,7 +120,7 @@ public class Elevator {
 			// CANCycle for Switch
 
 			// Actuate the Motor
-			elevatorToPos(2500);
+			elevatorToPos(1000);
 
 			// Set Robot States
 			RobotStates.elevatorPos = ElevatorPos.SWITCH;
