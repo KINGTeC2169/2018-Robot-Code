@@ -32,20 +32,21 @@ public class Superstructure {
 	private Platform platform;
 	private ElevatorArm liftArm;
 	private Compressor comp;
-	
+
 	private int gyroContCount = 0;
-	
+
 	public Superstructure() {
 
 		drive = DriveTrain.getInstance();
 		intake = Intake.getInstance();
 		platform = Platform.getInstance();
 		liftArm = ElevatorArm.getInstance();
-		navX = new AHRS(SPI.Port.kMXP, (byte)200);
+		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 		comp = new Compressor(ActuatorMap.PCMPort);
 
 	}
-	public void reinstance(){
+
+	public void reinstance() {
 		drive = DriveTrain.getInstance();
 		intake = Intake.getInstance();
 		platform = Platform.getInstance();
@@ -69,23 +70,26 @@ public class Superstructure {
 		if (RobotStates.debugMode) {
 			DriverStation.reportWarning("Superstructure Init Finished", false);
 		}
-		
+
 		comp.start();
 
 	}
-	public void resetGyro(){
+
+	public void resetGyro() {
 		navX.reset();
-		
+
 	}
-	public void updateGyro(){
+
+	public void updateGyro() {
 		RobotStates.GyroAngle = navX.getAngle();
 		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 	}
-	public void updateGyroContinuosly(){
-		if (gyroContCount == 5){
+
+	public void updateGyroContinuosly() {
+		if (gyroContCount == 5) {
 			updateGyro();
 			gyroContCount = 0;
-		} 
+		}
 		gyroContCount++;
 	}
 
@@ -94,13 +98,13 @@ public class Superstructure {
 		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 		drive.pushToDashboard();
 		drive.driveHandler();
-		//platform.platformHandler();
-		//intake.intakeHandler();
-		//liftArm.elevatorArmHandler();
+		// platform.platformHandler();
+		// intake.intakeHandler();
+		// liftArm.elevatorArmHandler();
 		DebugPrinter.elevatorDebug();
 		drive.pushToDashboard();
-		
-		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
+
+		// CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 
 	}
 

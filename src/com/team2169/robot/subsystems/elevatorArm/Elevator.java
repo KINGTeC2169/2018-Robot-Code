@@ -19,21 +19,20 @@ public class Elevator {
 	private TalonSRX elevator;
 	private TalonSRX elevatorSlave;
 	private int position;
-	//private AnalogInput topLimit;
-	//private AnalogInput bottomLimit;
-	
+	// private AnalogInput topLimit;
+	// private AnalogInput bottomLimit;
+
 	public Elevator() {
 
 		// Define Lift Talons
 		elevator = new TalonSRX(ActuatorMap.elevatorMasterID);
 		elevatorSlave = new TalonSRX(ActuatorMap.elevatorSlaveID);
 		elevatorSlave.set(ControlMode.Follower, ActuatorMap.elevatorMasterID);
-		//topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
-		//bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
-		
+		// topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
+		// bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
+
 		// Pull Constants Data for Elevator
 		Constants.setElevatorDataFromConstants();
-		
 
 		// Apply Talon Settings
 		elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
@@ -41,7 +40,7 @@ public class Elevator {
 
 	public void elevatorMacroLooper() {
 
-		//getLimits();
+		// getLimits();
 		// set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedElevatorPos) {
 
@@ -129,15 +128,16 @@ public class Elevator {
 
 		}
 		SmartDashboard.putNumber("output to motor", elevator.getMotorOutputPercent());
-	
-		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
+
+		SmartDashboard.putNumber("Elevator Setpoint",
+				elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
 
 	}
 
 	private void elevatorManual(double power) {
 		elevator.set(ControlMode.PercentOutput, power);
 	}
-	
+
 	private void elevatorToPos(int pos) {
 		elevator.set(ControlMode.Position, pos);
 		position = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
@@ -148,27 +148,22 @@ public class Elevator {
 	public void holdInPosition() {
 		elevator.set(ControlMode.Position, position);
 	}
-	
-	/*void getLimits() {
-		
-		//Upper Limit Switch Active
-		if (topLimit.getValue() > Constants.elevatorUpperLimit) {
-			elevator.configPeakOutputReverse(0, Constants.elevatorData.timeoutMs);
-		}
-		else {
-			elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs);
-		}
-		
-		//Lower Limit Switch Active
-		if(bottomLimit.getValue() > Constants.elevatorLowerLimit) {
-			elevator.configPeakOutputForward(0, Constants.elevatorData.timeoutMs);
-		}
-		
-		else {
-			elevator.configPeakOutputReverse(1, Constants.elevatorData.timeoutMs);
-		}
-	}
-*/
+
+	/*
+	 * void getLimits() {
+	 * 
+	 * //Upper Limit Switch Active if (topLimit.getValue() >
+	 * Constants.elevatorUpperLimit) { elevator.configPeakOutputReverse(0,
+	 * Constants.elevatorData.timeoutMs); } else {
+	 * elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs); }
+	 * 
+	 * //Lower Limit Switch Active if(bottomLimit.getValue() >
+	 * Constants.elevatorLowerLimit) { elevator.configPeakOutputForward(0,
+	 * Constants.elevatorData.timeoutMs); }
+	 * 
+	 * else { elevator.configPeakOutputReverse(1, Constants.elevatorData.timeoutMs);
+	 * } }
+	 */
 	private void getElevatorFinishedState() {
 
 		if (elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) < Constants.elevatorData.allowedError

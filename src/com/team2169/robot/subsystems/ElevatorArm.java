@@ -8,7 +8,7 @@ import com.team2169.util.DebugPrinter;
 public class ElevatorArm extends Subsystem {
 
 	private Arm arm;
-	
+
 	private Elevator elevator;
 
 	private static ElevatorArm eInstance = null;
@@ -20,7 +20,6 @@ public class ElevatorArm extends Subsystem {
 		return eInstance;
 	}
 
-
 	public ElevatorArm() {
 
 		arm = new Arm();
@@ -29,7 +28,7 @@ public class ElevatorArm extends Subsystem {
 		RobotStates.elevatorInPosition = false;
 
 		// Calulcate Latest Macro Positions
-		//Constants.calculateMacros();
+		// Constants.calculateMacros();
 
 	}
 
@@ -49,7 +48,7 @@ public class ElevatorArm extends Subsystem {
 	public void pushToDashboard() {
 
 		arm.pushToDashboard();
-		
+
 		if (RobotStates.debugMode) {
 			DebugPrinter.armDebug();
 			DebugPrinter.elevatorDebug();

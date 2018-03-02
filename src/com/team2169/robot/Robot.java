@@ -8,7 +8,6 @@ import com.team2169.util.CameraManager;
 import com.team2169.util.FMSManager;
 import com.team2169.util.ShuffleBoardManager;
 
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -51,9 +50,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().removeAll();
 		superStructure.resetGyro();
 		RobotStates.runningMode = RunningMode.AUTO;
-		//ShuffleBoardManager.getPathfinderConstants();
+		// ShuffleBoardManager.getPathfinderConstants();
 		auto.runAuto();
-		
 
 	}
 
@@ -61,7 +59,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 
 		Scheduler.getInstance().run();
-		
+
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
@@ -76,7 +74,6 @@ public class Robot extends IterativeRobot {
 		}
 		superStructure.reinstance();
 		Scheduler.getInstance().removeAll();
-		
 
 	}
 

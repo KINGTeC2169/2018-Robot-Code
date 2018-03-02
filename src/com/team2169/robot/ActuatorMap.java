@@ -42,8 +42,8 @@ public class ActuatorMap {
 
 	// Hanger Ports
 	public static final int platformReleasePiston = 0;
-	
-	//Arduino Ports
+
+	// Arduino Ports
 	public static final int prepArduinoDIOPort = 4;
 	public static final int arduinoComPort = 0;
 

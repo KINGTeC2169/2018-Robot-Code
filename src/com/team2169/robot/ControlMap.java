@@ -73,7 +73,6 @@ public class ControlMap {
 	}
 
 	static OperatorStickState operatorStickState;
-	
 
 	// Control Settings
 	public static final double elevatorOverrideSetpointMovement = 6;
@@ -113,11 +112,11 @@ public class ControlMap {
 	public static boolean armExtendPressed() {
 		return operator.getPOV() == 0;
 	}
-	
+
 	public static boolean armRetractPressed() {
 		return operator.getPOV() == 180;
 	}
-	
+
 	// Macro Buttons
 	// Ground Macro
 	public static boolean groundMacroPressed() {
@@ -161,7 +160,7 @@ public class ControlMap {
 	public static boolean dropAndExhaustButton() {
 		return operator.getRawButtonPressed(dropAndExhaustButton);
 	}
-	
+
 	public static boolean neutralButtonPressed() {
 		// TODO Auto-generated method stub
 		return operator.getRawButton(neutralButton);

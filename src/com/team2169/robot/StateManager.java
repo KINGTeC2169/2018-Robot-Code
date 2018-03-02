@@ -159,7 +159,7 @@ public class StateManager {
 			RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
 			RobotStates.intakeClampOverride = true;
 		}
-		
+
 		if (!RobotStates.intakeClampOverride && !RobotStates.canCycleMode) {
 			switch (RobotWantedStates.wantedMacro) {
 			case GROUND:
@@ -213,21 +213,21 @@ public class StateManager {
 
 		// Intake Wheel States
 		// Driver has taken control of mechanism, follow their controls.
-		
+
 		if (ControlMap.operatorStickState == OperatorStickState.ARM) {
 			RobotStates.armStickMode = true;
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = WantedArmPos.OVERRIDE;
 		}
-		
-		else if(ControlMap.armExtendPressed()) {			
+
+		else if (ControlMap.armExtendPressed()) {
 			RobotStates.armButtonMode = true;
 			RobotStates.armStickMode = false;
 			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;			
+			RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 		}
-		
-		else if(ControlMap.armRetractPressed()) {
+
+		else if (ControlMap.armRetractPressed()) {
 			RobotStates.armButtonMode = true;
 			RobotStates.armStickMode = false;
 			CANCycleHandler.cancelArmElevatorCycles();

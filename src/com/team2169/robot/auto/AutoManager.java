@@ -75,8 +75,8 @@ public class AutoManager {
 
 	void determineField() {
 
-		 String gameMessage_ = Robot.fms.getGameMessage();
-		 
+		String gameMessage_ = Robot.fms.getGameMessage();
+
 		if (gameMessage_.equals("LRL") || gameMessage_.equals("LRR")) {
 			RobotStates.fieldSetup = FieldSetup.LR;
 			SmartDashboard.putString("Switch State:", "LEFT");

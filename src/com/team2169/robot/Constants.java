@@ -41,14 +41,13 @@ public class Constants {
 
 	// Climb Speed
 	public static final double climbPower = .75;
-	
-	//Arduino
-	public static final int arduinoMainSignal = 32; // 32 for kingTecRandom		64 for Rainbow		96 for stripes
+
+	// Arduino
+	public static final int arduinoMainSignal = 32; // 32 for kingTecRandom 64 for Rainbow 96 for stripes
 	public static final int arduinoBlockHeldSignal = 128;
 	public static final int arduinoBlockPlacedSignal = 160;
 	public static final int arduinoReadyToClimbSignal = 192;
-	
-	
+
 	// Take wanted value of intake wheels and subtract 8.
 	// Happens to work perfectly to set it to the height of the object you want to
 	// reach.
@@ -110,12 +109,13 @@ public class Constants {
 
 	// Default Values (in case something fails)
 	public static int groundElevatorEncoderPosition = 0;
-	public static int switchElevatorEncoderPosition = 9778/2;
-	public static int scaleLowElevatorEncoderPosition = 25033/2;
-	public static int scaleMidElevatorEncoderPosition = 31291/2;
-	public static int scaleHighElevatorEncoderPosition = 37549/2;
-	public static int hangElevatorEncoderPosition = 37549/2;
-	//THESE ARE INCORECT LIFT ONLY OPERATES FROM 0 - 19000
+	public static int switchElevatorEncoderPosition = 9778 / 2;
+	public static int scaleLowElevatorEncoderPosition = 25033 / 2;
+	public static int scaleMidElevatorEncoderPosition = 31291 / 2;
+	public static int scaleHighElevatorEncoderPosition = 37549 / 2;
+	public static int hangElevatorEncoderPosition = 37549 / 2;
+
+	// THESE ARE INCORECT LIFT ONLY OPERATES FROM 0 - 19000
 	public static void calculateMacros() {
 	}
 
@@ -123,7 +123,7 @@ public class Constants {
 	public static final double wheelBaseWidth = 26;
 	public static final double wheelDiameter = 6;
 	public static final int ticksPerRotation = 4096;
-	public static final double maxElevatorHeight = 37549/2;
+	public static final double maxElevatorHeight = 37549 / 2;
 
 	// SolenoidStates
 	public static final DoubleSolenoid.Value highGear = DoubleSolenoid.Value.kForward;
@@ -134,11 +134,11 @@ public class Constants {
 
 	// Current Limit Timeouts
 	public static final int driveTrainCurrentTimeout = 5;
-	
+
 	public static final int elevatorUpperLimit = 0;
 	public static final int elevatorLowerLimit = 0;
 	public static final double driveTrainRampRate = .25;
-	
+
 	// Pathfinder Zone
 
 	// Pathfinder Numbers to care about

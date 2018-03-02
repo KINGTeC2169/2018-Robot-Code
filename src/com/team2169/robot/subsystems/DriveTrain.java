@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
-	
+
 	private static DriveTrain dInstance = null;
 
 	public static DriveTrain getInstance() {
@@ -38,7 +38,6 @@ public class DriveTrain extends Subsystem {
 		}
 		return dInstance;
 	}
-	
 
 	// Define null objects up here
 	// Public because autonomous needs to access actuators
@@ -51,8 +50,8 @@ public class DriveTrain extends Subsystem {
 	TalonSRX rightTop;
 	DoubleSolenoid shifter;
 	DoubleSolenoid ptoShift;
-	
-	//define pathfinder variables
+
+	// define pathfinder variables
 	public KTEncoderFollower leftFollower;
 	public KTEncoderFollower rightFollower;
 	public boolean isPathFinished = false;
@@ -84,47 +83,40 @@ public class DriveTrain extends Subsystem {
 		rightTop.setInverted(true);
 
 		// Set Current Limits
-		
-		 leftMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 Constants.driveTrainCurrentTimeout);
-		 leftFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 Constants.driveTrainCurrentTimeout);
-		 leftTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 Constants.driveTrainCurrentTimeout);
-		 rightMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 Constants.driveTrainCurrentTimeout);
-		 rightFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 Constants.driveTrainCurrentTimeout);
-		 rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent,
-		 Constants.driveTrainCurrentTimeout);
-		 
-		 enableRamping();
-		 
+
+		leftMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		leftFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		leftTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+		rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+
+		enableRamping();
+
 		// Shifting Solenoids
 		shifter = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dtSpeedShiftForward,
 				ActuatorMap.dtSpeedShiftReverse);
-		ptoShift = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.ptoShiftForward,
-				ActuatorMap.ptoShiftReverse);
+		ptoShift = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.ptoShiftForward, ActuatorMap.ptoShiftReverse);
 
 		RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_LOW;
 		RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_DRIVE;
 
 	}
 
-	void enableRamping(){
+	void enableRamping() {
 		leftMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
 		leftMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
 		rightMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
 		rightMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
 	}
-	
-	void disableRamping(){
+
+	void disableRamping() {
 		leftMaster.configOpenloopRamp(0, 0);
 		leftMaster.configClosedloopRamp(0, 0);
 		rightMaster.configOpenloopRamp(0, 0);
 		rightMaster.configClosedloopRamp(0, 0);
 	}
-	
+
 	public void driveHandler() {
 
 		switch (RobotWantedStates.wantedDriveOverride) {
@@ -140,11 +132,9 @@ public class DriveTrain extends Subsystem {
 
 			// Acceleration Handler with Squared controls
 			leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
-			rightMaster.set(ControlMode.PercentOutput,ControlMap.rightTankStick(true));
+			rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
 			leftTop.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * 0.91);
 			rightTop.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * 0.91);
-			
-			
 
 			// Shift without override
 			shift(false);
@@ -237,7 +227,6 @@ public class DriveTrain extends Subsystem {
 		}
 
 	}
-	
 
 	void wantedClimbHander(boolean climb) {
 		if (climb) {
@@ -331,14 +320,14 @@ public class DriveTrain extends Subsystem {
 				leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 		SmartDashboard.putNumber("Right Encoder Value: ",
 				rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-		
+
 		SmartDashboard.putNumber("RightTop", rightTop.getOutputCurrent());
 		SmartDashboard.putNumber("RightMaster", rightMaster.getOutputCurrent());
 		SmartDashboard.putNumber("RightFront", rightFront.getOutputCurrent());
 		SmartDashboard.putNumber("RightToVolts", rightTop.getMotorOutputVoltage());
 		SmartDashboard.putNumber("RightMasterVolts", rightMaster.getMotorOutputVoltage());
 		SmartDashboard.putNumber("RightFrontVolts", rightFront.getMotorOutputVoltage());
-		
+
 		SmartDashboard.putNumber("LeftTop", leftTop.getOutputCurrent());
 		SmartDashboard.putNumber("LeftMaster", leftTop.getOutputCurrent());
 		SmartDashboard.putNumber("LeftFront", leftTop.getOutputCurrent());
@@ -360,19 +349,21 @@ public class DriveTrain extends Subsystem {
 		leftMaster.set(ControlMode.Disabled, 1);
 		rightMaster.set(ControlMode.Disabled, 1);
 	}
-	public void stopPath(){
+
+	public void stopPath() {
 		isPathFinished = true;
 	}
-	public void SetWaypoint(Waypoint[] _points){
+
+	public void SetWaypoint(Waypoint[] _points) {
 		points = _points;
 	}
-	public void calculatePath(){
+
+	public void calculatePath() {
 		isPathFinished = false;
 		if (RobotState.isAutonomous()) {
 			RobotStates.pathfinderState = PathfinderState.CALCULATING_PATH;
 			leftMaster.set(ControlMode.Disabled, 1);
 			rightMaster.set(ControlMode.Disabled, 1);
-
 
 			Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 					Trajectory.Config.SAMPLES_FAST, Constants.timeStep, Constants.maxVelocity,
@@ -406,8 +397,9 @@ public class DriveTrain extends Subsystem {
 					1 / Constants.maxVelocity, Constants.accelerationGain);
 		}
 	}
+
 	public void pathfinderLooper() {
-		
+
 		if (RobotState.isAutonomous()) {
 			double l = leftFollower.calculate(leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 			double r = rightFollower.calculate(rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
@@ -454,5 +446,5 @@ public class DriveTrain extends Subsystem {
 
 		}
 	}
-	
+
 }

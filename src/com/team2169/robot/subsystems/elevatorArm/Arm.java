@@ -17,7 +17,7 @@ public class Arm {
 	// Create Talons
 	private TalonSRX arm;
 	private int position = Constants.retractedArmEncoderPosition;
-	
+
 	public Arm() {
 
 		// Define Lift Talons
@@ -35,24 +35,24 @@ public class Arm {
 		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
 		SmartDashboard.putNumber("ARM_CURRENT", arm.getOutputCurrent());
 	}
-	
+
 	private void armToPos(int pos) {
 		arm.set(ControlMode.Position, pos);
 		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 		getFinishedState();
 	}
-	
-	private void armSetOverrideLooper(double joystickValue){
+
+	private void armSetOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.PercentOutput, joystickValue);
 		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 	}
-	
+
 	private void holdInPosition() {
 		arm.set(ControlMode.Position, position);
 	}
 
 	public void armMacroLooper() {
-		
+
 		// set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedArmPos) {
 		case EXTENDED:
@@ -93,7 +93,6 @@ public class Arm {
 	public void zeroSensors() {
 		arm.setSelectedSensorPosition(0, Constants.armData.slotIDx, Constants.armData.timeoutMs);
 	}
-	
 
 	public void stop() {
 		arm.set(ControlMode.PercentOutput, 0);
