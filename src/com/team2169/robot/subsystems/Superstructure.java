@@ -1,18 +1,16 @@
 package com.team2169.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotStates.ArmPos;
+import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.robot.RobotWantedStates.WantedArmPos;
-import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
 import com.team2169.robot.RobotWantedStates.WantedMacro;
 import com.team2169.robot.StateManager;
 import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Superstructure {
@@ -26,7 +24,6 @@ public class Superstructure {
 		return sInstance;
 	}
 
-	public AHRS navX;
 	public static DriveTrain drive;
 	private Intake intake;
 	private Platform platform;
@@ -41,7 +38,6 @@ public class Superstructure {
 		intake = Intake.getInstance();
 		platform = Platform.getInstance();
 		liftArm = ElevatorArm.getInstance();
-		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 		comp = new Compressor(ActuatorMap.PCMPort);
 
 	}
@@ -62,8 +58,8 @@ public class Superstructure {
 		zeroAllSensors();
 
 		// Set WantedStates
-		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-		RobotWantedStates.wantedArmPos = WantedArmPos.OVERRIDE;
+		RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+		RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
 		RobotWantedStates.wantedElevatorPos = WantedMacro.GROUND;
 		StateManager.stateInit();
 
@@ -75,13 +71,7 @@ public class Superstructure {
 
 	}
 
-	public void resetGyro() {
-		navX.reset();
-
-	}
-
 	public void updateGyro() {
-		RobotStates.GyroAngle = navX.getAngle();
 		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 	}
 
@@ -94,7 +84,6 @@ public class Superstructure {
 	}
 
 	public void subsystemLooper() {
-		RobotStates.GyroAngle = navX.getAngle();
 		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 		drive.pushToDashboard();
 		drive.driveHandler();
@@ -114,7 +103,7 @@ public class Superstructure {
 	// This is how you cancel a CANCycle
 	// CANCycleHandler.sampleCANCycle.cancel();
 
-	void zeroAllSensors() {
+	public void zeroAllSensors() {
 
 		drive.zeroSensors();
 		intake.zeroSensors();

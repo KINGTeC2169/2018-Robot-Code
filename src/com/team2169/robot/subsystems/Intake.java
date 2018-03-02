@@ -1,13 +1,10 @@
 package com.team2169.robot.subsystems;
 
-//import java.util.Arrays;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.util.DebugPrinter;
@@ -46,7 +43,7 @@ public class Intake extends Subsystem {
 				ActuatorMap.dropPortReverse);
 		clampSolenoid = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.clampPortForward,
 				ActuatorMap.clampPortReverse);
-		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
+		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 		ultra.setAutomaticMode(true);
 	}
 
@@ -69,7 +66,7 @@ public class Intake extends Subsystem {
 				&& getBlockDistance() >= Constants.minUltraTriggerDistance);
 
 		if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraWithinRange) {
-			RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
+			RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 		}
 
 		// Handle Intake State

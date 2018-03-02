@@ -11,7 +11,7 @@ import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.team2169.robot.RobotStates.ElevatorPos;
+import com.team2169.robot.RobotStates.Macro;
 
 public class Elevator {
 
@@ -49,7 +49,7 @@ public class Elevator {
 			elevatorManual(ControlMap.getOperatorStickValue());
 
 			// Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.OVERRIDE;
+			RobotStates.elevatorPos = Macro.OVERRIDE;
 			break;
 
 		case HOLD_POSITION:
@@ -57,7 +57,7 @@ public class Elevator {
 			holdInPosition();
 
 			// Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.HOLD_POSITION;
+			RobotStates.elevatorPos = Macro.HOLD_POSITION;
 			break;
 
 		case GROUND:
@@ -68,7 +68,7 @@ public class Elevator {
 			elevatorToPos(Constants.groundElevatorEncoderPosition);
 
 			// Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.GROUND;
+			RobotStates.elevatorPos = Macro.GROUND;
 			break;
 
 		case HANG:
@@ -79,7 +79,7 @@ public class Elevator {
 			elevatorToPos(Constants.hangElevatorEncoderPosition);
 
 			// Set RobotStates
-			RobotStates.elevatorPos = ElevatorPos.HANG;
+			RobotStates.elevatorPos = Macro.HANG;
 			break;
 
 		case SCALE_HIGH:
@@ -90,7 +90,7 @@ public class Elevator {
 			elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
 
 			// Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SCALE_HIGH;
+			RobotStates.elevatorPos = Macro.SCALE_HIGH;
 			break;
 
 		case SCALE_MID:
@@ -101,7 +101,7 @@ public class Elevator {
 			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
 
 			// Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SCALE_MID;
+			RobotStates.elevatorPos = Macro.SCALE_MID;
 			break;
 
 		case SCALE_LOW:
@@ -112,7 +112,7 @@ public class Elevator {
 			elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
 
 			// Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SCALE_LOW;
+			RobotStates.elevatorPos = Macro.SCALE_LOW;
 			break;
 
 		case SWITCH:
@@ -123,7 +123,7 @@ public class Elevator {
 			elevatorToPos(Constants.switchElevatorEncoderPosition);
 
 			// Set Robot States
-			RobotStates.elevatorPos = ElevatorPos.SWITCH;
+			RobotStates.elevatorPos = Macro.SWITCH;
 			break;
 
 		}

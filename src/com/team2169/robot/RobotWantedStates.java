@@ -1,74 +1,44 @@
 package com.team2169.robot;
 
+import com.team2169.robot.RobotStates.ArmPos;
+import com.team2169.robot.RobotStates.DriveMode;
+import com.team2169.robot.RobotStates.DriveType;
+import com.team2169.robot.RobotStates.IntakeClamp;
+import com.team2169.robot.RobotStates.IntakeMode;
+import com.team2169.robot.RobotStates.Macro;
+import com.team2169.robot.RobotStates.RunningMode;
+
 public class RobotWantedStates {
 
 	// FMS Handler
 	public static boolean isFMSConnected;
 	public static String fieldSetup;
 
-	// RunningMode Handler
-	public static enum WantedRunningMode {
 
-		IDLE, AUTO, TELEOP, LIMP
-
-	}
-
-	public static WantedRunningMode wantedRunningMode;
+	public static RunningMode wantedRunningMode;
 
 	// Drive Mode Handler
-	public static enum WantedDriveMode {
 
-		LOW, HIGH, SHIFT_TO_HIGH, SHIFT_TO_LOW
 
-	}
-
-	public static WantedDriveMode wantedDriveMode;
+	public static DriveMode wantedDriveMode;
 	public static boolean wantedPTOActive;
 
 	// DriveOverride Handler
-	public static enum WantedDriveOverride {
-
-		WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE, HANG, NONE
-
-	}
-
-	public static WantedDriveOverride wantedDriveOverride;
+	public static DriveType wantedDriveType;
 	public static boolean platformRelease;
 
-	// Intake Mode Handler
-	public static enum WantedIntakeMode {
 
-		INTAKE, EXHAUST, IDLE
+	public static IntakeMode wantedIntakeMode;
 
-	}
-
-	public static WantedIntakeMode wantedIntakeMode;
-
-	public static enum WantedIntakeClamp {
-
-		CLAMP, NEUTRAL, DROP
-
-	}
-
-	public static WantedIntakeClamp wantedIntakeClamp;
+	public static IntakeClamp wantedIntakeClamp;
 
 	// Arm Position Handler
-	public static enum WantedArmPos {
 
-		EXTENDED, RETRACTED, OVERRIDE, HOLD_POSITION
 
-	}
-
-	public static WantedArmPos wantedArmPos;
+	public static ArmPos wantedArmPos;
 
 	// Elevator Position Handler
-	public static enum WantedMacro {
-
-		HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
-
-	}
-
-	public static WantedMacro wantedElevatorPos;
-	public static WantedMacro wantedMacro;
+	public static Macro wantedElevatorPos;
+	public static Macro wantedMacro;
 
 }

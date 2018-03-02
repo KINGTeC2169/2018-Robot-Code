@@ -35,7 +35,7 @@ public class RobotStates {
 	// DriveMode Handler
 	public static enum DriveMode {
 
-		LOW, HIGH, SHIFTING
+		LOW, HIGH, SHIFTING, SHIFT_TO_LOW, SHIFT_TO_HIGH
 
 	}
 
@@ -43,13 +43,13 @@ public class RobotStates {
 	public static boolean ptoActive;
 
 	// DriveOverride Handler
-	public static enum DriveOverride {
+	public static enum DriveType {
 
-		WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE, HANG, NONE
+		WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE_DRIVING, HANG, NORMAL_DRIVING, AUTO
 
 	}
 
-	public static DriveOverride driveOverride;
+	public static DriveType driveType;
 
 	public static boolean canCycleMode;
 
@@ -94,13 +94,14 @@ public class RobotStates {
 	public static boolean armInPosition;
 
 	// Elevator Position Handler
-	public static enum ElevatorPos {
+	public static enum Macro {
 
 		HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
 
 	}
 
-	public static ElevatorPos elevatorPos;
+
+	public static Macro elevatorPos;
 	public static double elevatorHeight = 0;
 
 	public static double getElevatorHeight() {

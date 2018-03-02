@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		Scheduler.getInstance().removeAll();
-		superStructure.resetGyro();
+		superStructure.zeroAllSensors();
 		RobotStates.runningMode = RunningMode.AUTO;
 		// ShuffleBoardManager.getPathfinderConstants();
 		auto.runAuto();
