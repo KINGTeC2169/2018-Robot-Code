@@ -8,6 +8,7 @@ import com.team2169.robot.RobotWantedStates.WantedArmPos;
 import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
 import com.team2169.robot.RobotWantedStates.WantedMacro;
 import com.team2169.robot.StateManager;
+import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -31,7 +32,9 @@ public class Superstructure {
 	private Platform platform;
 	private ElevatorArm liftArm;
 	private Compressor comp;
-
+	
+	private int gyroContCount = 0;
+	
 	public Superstructure() {
 
 		drive = DriveTrain.getInstance();
@@ -78,6 +81,13 @@ public class Superstructure {
 		RobotStates.GyroAngle = navX.getAngle();
 		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 	}
+	public void updateGyroContinuosly(){
+		if (gyroContCount == 5){
+			updateGyro();
+			gyroContCount = 0;
+		} 
+		gyroContCount++;
+	}
 
 	public void subsystemLooper() {
 		RobotStates.GyroAngle = navX.getAngle();
@@ -85,9 +95,11 @@ public class Superstructure {
 		drive.pushToDashboard();
 		drive.driveHandler();
 		//platform.platformHandler();
-		intake.intakeHandler();
-		liftArm.elevatorArmHandler();
+		//intake.intakeHandler();
+		//liftArm.elevatorArmHandler();
+		DebugPrinter.elevatorDebug();
 		drive.pushToDashboard();
+		
 		//CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
 
 	}

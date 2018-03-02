@@ -9,6 +9,7 @@ import com.team2169.util.DebugPrinter;
 public class ElevatorArm extends Subsystem {
 
 	private Arm arm;
+	
 	private Elevator elevator;
 
 	private static ElevatorArm eInstance = null;

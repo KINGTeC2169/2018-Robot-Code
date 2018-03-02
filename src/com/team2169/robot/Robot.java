@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
-		superStructure.updateGyro();
+		superStructure.updateGyroContinuosly();
 	}
 
 	@Override

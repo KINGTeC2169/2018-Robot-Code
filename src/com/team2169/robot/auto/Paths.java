@@ -5,7 +5,7 @@ import jaci.pathfinder.Waypoint;
 
 public class Paths {
 	public static Waypoint[] example = new Waypoint[] {
-			new Waypoint(-400, -100, 0), 
+			new Waypoint(10, -10, 0), 
 			new Waypoint(0, 0, 0)
 	};
 

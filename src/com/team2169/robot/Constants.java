@@ -70,9 +70,9 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .9;
-		elevatorData.i = 0;
-		elevatorData.d = .3;
+		elevatorData.p = .1;
+		elevatorData.i = 0.001;
+		elevatorData.d = .002;
 		elevatorData.f = 0;
 		elevatorData.sensorPhase = false;
 
@@ -111,12 +111,12 @@ public class Constants {
 
 	// Default Values (in case something fails)
 	public static int groundElevatorEncoderPosition = 0;
-	public static int switchElevatorEncoderPosition = 9778;
-	public static int scaleLowElevatorEncoderPosition = 25033;
-	public static int scaleMidElevatorEncoderPosition = 31291;
-	public static int scaleHighElevatorEncoderPosition = 37549;
-	public static int hangElevatorEncoderPosition = 37549;
-
+	public static int switchElevatorEncoderPosition = 9778/2;
+	public static int scaleLowElevatorEncoderPosition = 25033/2;
+	public static int scaleMidElevatorEncoderPosition = 31291/2;
+	public static int scaleHighElevatorEncoderPosition = 37549/2;
+	public static int hangElevatorEncoderPosition = 37549/2;
+	//THESE ARE INCORECT LIFT ONLY OPERATES FROM 0 - 19000
 	public static void calculateMacros() {
 	}
 
@@ -145,7 +145,7 @@ public class Constants {
 	// Pathfinder Numbers to care about
 
 	// Set Maximum Velocity in Units/Second
-	public static double maxVelocity = 0.5;
+	public static double maxVelocity = 2;
 	// Modify if robot isn't following path nicely
 	public static double pathfinderD = 0;
 	// How quickly/slowly do you want to reach full speed
@@ -156,8 +156,8 @@ public class Constants {
 	public static double pathfinderI = 0;
 
 	// Path Generation Only
-	public static double timeStep = 0.15; // Seconds
-	public static double maxAcceleration = 0.05; // m/s/s
-	public static double maxJerk = 0.05; // m/s/s/s
+	public static double timeStep = 0.1; // Seconds
+	public static double maxAcceleration = 0.005; // m/s/s
+	public static double maxJerk = 0.005; // m/s/s/s
 
 }

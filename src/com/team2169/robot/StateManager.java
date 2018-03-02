@@ -164,7 +164,7 @@ public class StateManager {
 			switch (RobotWantedStates.wantedMacro) {
 			case GROUND:
 			default:
-				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.DROP;
+				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
 				break;
 			case HANG:
 				RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
@@ -249,19 +249,19 @@ public class StateManager {
 				RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 				break;
 			case HANG:
-				RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
+				RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 				break;
 			case SCALE_HIGH:
-				RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
+				RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 				break;
 			case SCALE_LOW:
-				RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
+				RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 				break;
 			case SCALE_MID:
-				RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
+				RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 				break;
 			case SWITCH:
-				RobotWantedStates.wantedArmPos = WantedArmPos.RETRACTED;
+				RobotWantedStates.wantedArmPos = WantedArmPos.EXTENDED;
 				break;
 
 			}

@@ -120,14 +120,15 @@ public class Elevator {
 			// CANCycle for Switch
 
 			// Actuate the Motor
-			elevatorToPos(1000);
+			elevatorToPos(Constants.switchElevatorEncoderPosition);
 
 			// Set Robot States
 			RobotStates.elevatorPos = ElevatorPos.SWITCH;
 			break;
 
 		}
-		
+		SmartDashboard.putNumber("output to motor", elevator.getMotorOutputPercent());
+	
 		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
 
 	}

@@ -402,6 +402,8 @@ public class DriveTrain extends Subsystem {
 			// Configure Pathfinder PID
 			leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
 					1 / Constants.maxVelocity, Constants.accelerationGain);
+			rightFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
+					1 / Constants.maxVelocity, Constants.accelerationGain);
 		}
 	}
 	public void pathfinderLooper() {
