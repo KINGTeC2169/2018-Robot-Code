@@ -45,12 +45,12 @@ public class Paths {
 			
 			public static Waypoint[] blockToSwitch = new Waypoint[] {
 					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)), // Starting Point
-					new Waypoint(83, 300, Pathfinder.d2r(180)), // Final Point
+					new Waypoint(83, 300, Pathfinder.d2r(0)),// Final Point
 			};
 			
 			public static Waypoint[] turnAndPlace = new Waypoint[] {
-					new Waypoint(93.83, 300, Pathfinder.d2r(180)), // Starting Point
-					new Waypoint(93.83, 300, Pathfinder.d2r(0)), // Final Point
+					new Waypoint(83, 300, Pathfinder.d2r(0)), // Starting Point
+					new Waypoint(83, 300, Pathfinder.d2r(0)), // Final Point
 			};
 		}
 		
@@ -58,6 +58,7 @@ public class Paths {
 		public static class LLRPaths {
 			public static Waypoint[] startToSwitch = new Waypoint[] {
 					new Waypoint(49, 20.5, 0),
+					new Waypoint(49, 130, 0),
 					new Waypoint(70.83, 169.44, Pathfinder.d2r(90))
 			};
 			
