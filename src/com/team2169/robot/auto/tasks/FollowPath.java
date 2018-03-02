@@ -10,6 +10,7 @@ public class FollowPath extends Task {
 
 	public double RightPos;
 	public double LeftPos;
+	DriveTrain drive = DriveTrain.getInstance();
 	public FollowPath(Waypoint[] points) {
 
 		DriveTrain.getInstance().SetWaypoint(points);

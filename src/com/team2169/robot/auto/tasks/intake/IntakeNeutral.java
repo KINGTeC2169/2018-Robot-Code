@@ -1,7 +1,7 @@
 package com.team2169.robot.auto.tasks.intake;
 
+import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeNeutral extends Task {
@@ -12,7 +12,7 @@ public class IntakeNeutral extends Task {
 
 	protected void initialize() {
 
-		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
+		RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
 
 	}
 

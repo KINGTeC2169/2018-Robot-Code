@@ -15,7 +15,7 @@ import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
-import com.team2169.robot.auto.tasks.intake.IntakeClamp;
+import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeNeutral;
 import com.team2169.robot.auto.tasks.intake.IntakeUntilHeld;
@@ -55,7 +55,7 @@ public class LLLAuto extends AutoMode {
                 		new ArmRetract(),
                 		new ElevatorToGround(),
                 		new IntakeIdle(),
-                		new IntakeClamp()
+                		new IntakeClampAction()
                 		
                 }), 0, 49),
                 new NestedPathTask(Arrays.asList(new Task[] {
@@ -86,7 +86,7 @@ public class LLLAuto extends AutoMode {
     	})), 10);
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
                 new FollowPath(Paths.LLLPaths.blockToSwitch),
-                new IntakeClamp(),
+                new IntakeClampAction(),
                 new IntakeIdle(),
                 new ElevatorToSwitch()
                 

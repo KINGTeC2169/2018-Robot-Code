@@ -1,18 +1,18 @@
 package com.team2169.robot.auto.tasks.intake;
 
+import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
 import com.team2169.robot.auto.tasks.Task;
 
-public class IntakeClamp extends Task {
+public class IntakeClampAction extends Task {
 
-	public IntakeClamp() {
+	public IntakeClampAction() {
 
 	}
 
 	protected void initialize() {
 
-		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
+		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 
 	}
 

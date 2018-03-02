@@ -1,16 +1,16 @@
 package com.team2169.robot.auto.tasks.intake;
 
 import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotStates.IntakeClamp;
+import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.robot.RobotWantedStates.WantedIntakeClamp;
-import com.team2169.robot.RobotWantedStates.WantedIntakeMode;
 import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeUntilHeld extends Task {
 	
 	public IntakeUntilHeld() {
-		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.INTAKE;
-		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.NEUTRAL;
+		RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
+		RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
 	}
 
 	protected void initialize() {
@@ -28,8 +28,8 @@ public class IntakeUntilHeld extends Task {
 	}
 
 	protected void end() {
-		RobotWantedStates.wantedIntakeMode = WantedIntakeMode.IDLE;
-		RobotWantedStates.wantedIntakeClamp = WantedIntakeClamp.CLAMP;
+		RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 	}
 
 	public void smartDashPush() {

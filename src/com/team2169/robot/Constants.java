@@ -139,24 +139,5 @@ public class Constants {
 	public static final int elevatorLowerLimit = 0;
 	public static final double driveTrainRampRate = .25;
 
-	// Pathfinder Zone
-
-	// Pathfinder Numbers to care about
-
-	// Set Maximum Velocity in Units/Second
-	public static double maxVelocity = 2;
-	// Modify if robot isn't following path nicely
-	public static double pathfinderD = 0;
-	// How quickly/slowly do you want to reach full speed
-	public static double accelerationGain = 0;
-
-	// Other Pathfinder PID Configuration
-	public static double pathfinderP = 0.001;
-	public static double pathfinderI = 0;
-
-	// Path Generation Only
-	public static double timeStep = 0.1; // Seconds
-	public static double maxAcceleration = 0.005; // m/s/s
-	public static double maxJerk = 0.005; // m/s/s/s
 
 }

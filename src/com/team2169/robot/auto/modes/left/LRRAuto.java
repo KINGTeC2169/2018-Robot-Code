@@ -14,7 +14,7 @@ import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
-import com.team2169.robot.auto.tasks.intake.IntakeClamp;
+import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeUntilHeld;
 import com.team2169.robot.canCycles.cycles.DropAndExhaust;
@@ -49,7 +49,7 @@ public class LRRAuto extends AutoMode {
 		addSequential(new ParallelTask(Arrays.asList(new Task[] {
             new FollowPath(Paths.LRRPaths.startToScale),
             new NestedPathTask(Arrays.asList(new Task[] {
-            		new IntakeClamp(),
+            		new IntakeClampAction(),
             		new ArmRetract(),
             		new ElevatorToGround(),
             		new IntakeIdle(),
