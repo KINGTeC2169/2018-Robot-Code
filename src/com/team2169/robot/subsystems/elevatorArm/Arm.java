@@ -39,16 +39,15 @@ public class Arm {
 	private void armToPos(int pos) {
 		arm.set(ControlMode.Position, pos);
 		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
+		getFinishedState();
 	}
-
-	public void armOverrideLooper(double joystickValue) {
-		arm.set(ControlMode.Position, arm.getSelectedSensorPosition(Constants.armData.slotIDx)); 
+	
+	private void armSetOverrideLooper(double joystickValue){
+		arm.set(ControlMode.PercentOutput, joystickValue);
 		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 	}
-	public void armSetOverrideLooper(double joystickValue){
-		arm.set(ControlMode.PercentOutput, joystickValue);
-	}
-	public void holdArmInPosition() {
+	
+	private void holdInPosition() {
 		arm.set(ControlMode.Position, position);
 	}
 
@@ -61,7 +60,7 @@ public class Arm {
 			RobotStates.armPos = ArmPos.EXTENDED;
 			break;
 		case HOLD_POSITION:
-			holdArmInPosition();
+			holdInPosition();
 			RobotStates.armPos = ArmPos.HOLD_POSITION;
 			break;
 		case OVERRIDE:

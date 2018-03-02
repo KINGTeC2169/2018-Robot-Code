@@ -18,6 +18,7 @@ public class Elevator {
 	// Create Talons
 	private TalonSRX elevator;
 	private TalonSRX elevatorSlave;
+	private int position;
 	//private AnalogInput topLimit;
 	//private AnalogInput bottomLimit;
 	
@@ -54,7 +55,7 @@ public class Elevator {
 
 		case HOLD_POSITION:
 
-			elevatorOverrideLooper(0);
+			holdInPosition();
 
 			// Set RobotStates
 			RobotStates.elevatorPos = ElevatorPos.HOLD_POSITION;
@@ -138,15 +139,14 @@ public class Elevator {
 	}
 	
 	private void elevatorToPos(int pos) {
-		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
 		elevator.set(ControlMode.Position, pos);
+		position = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
+		SmartDashboard.putNumber("Elevator Setpoint", position);
 		getElevatorFinishedState();
 	}
 
-	public void elevatorOverrideLooper(double joystickValue) {
-			
-		elevator.set(ControlMode.PercentOutput, joystickValue);
-		
+	public void holdInPosition() {
+		elevator.set(ControlMode.Position, position);
 	}
 	
 	/*void getLimits() {
@@ -169,7 +169,7 @@ public class Elevator {
 		}
 	}
 */
-	public void getElevatorFinishedState() {
+	private void getElevatorFinishedState() {
 
 		if (elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) < Constants.elevatorData.allowedError
 				|| elevator
