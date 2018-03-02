@@ -1,6 +1,5 @@
 package com.team2169.robot.subsystems;
 
-import com.team2169.robot.Constants;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.subsystems.elevatorArm.Arm;
 import com.team2169.robot.subsystems.elevatorArm.Elevator;

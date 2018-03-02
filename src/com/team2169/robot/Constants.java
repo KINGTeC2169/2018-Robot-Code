@@ -1,6 +1,5 @@
 package com.team2169.robot;
 
-import com.team2169.util.Converter;
 import com.team2169.util.TalonMaker.TalonConfig;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;

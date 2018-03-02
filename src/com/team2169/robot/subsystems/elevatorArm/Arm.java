@@ -16,6 +16,7 @@ public class Arm {
 
 	// Create Talons
 	private TalonSRX arm;
+	private int position = Constants.retractedArmEncoderPosition;
 	
 	public Arm() {
 
@@ -37,13 +38,18 @@ public class Arm {
 	
 	private void armToPos(int pos) {
 		arm.set(ControlMode.Position, pos);
+		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 	}
 
 	public void armOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.Position, arm.getSelectedSensorPosition(Constants.armData.slotIDx)); 
+		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 	}
 	public void armSetOverrideLooper(double joystickValue){
 		arm.set(ControlMode.PercentOutput, joystickValue);
+	}
+	public void holdArmInPosition() {
+		arm.set(ControlMode.Position, position);
 	}
 
 	public void armMacroLooper() {
@@ -55,7 +61,7 @@ public class Arm {
 			RobotStates.armPos = ArmPos.EXTENDED;
 			break;
 		case HOLD_POSITION:
-			armOverrideLooper(0);
+			holdArmInPosition();
 			RobotStates.armPos = ArmPos.HOLD_POSITION;
 			break;
 		case OVERRIDE:
