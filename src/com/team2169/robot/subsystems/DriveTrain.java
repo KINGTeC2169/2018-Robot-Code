@@ -3,29 +3,30 @@ package com.team2169.robot.subsystems;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.followers.KTEncoderFollower;
+import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
+
+import java.io.File;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.Constants;
 import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.DriveMode;
-import com.team2169.robot.RobotStates.DriveOverride;
-import com.team2169.robot.RobotStates.PathfinderState;
-import com.team2169.robot.RobotWantedStates.WantedDriveMode;
-import com.team2169.robot.RobotWantedStates.WantedDriveOverride;
+import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.subsystems.Subsystem;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
@@ -39,26 +40,28 @@ public class DriveTrain extends Subsystem {
 		return dInstance;
 	}
 
-	// Define null objects up here
-	// Public because autonomous needs to access actuators
-	// Static because there is only one of each subsystem
 	public TalonSRX leftMaster;
-	TalonSRX leftTop;
-	TalonSRX leftFront;
+	private TalonSRX leftTop;
+	private TalonSRX leftFront;
 	public TalonSRX rightMaster;
-	TalonSRX rightFront;
-	TalonSRX rightTop;
-	DoubleSolenoid shifter;
-	DoubleSolenoid ptoShift;
+	private TalonSRX rightFront;
+	private TalonSRX rightTop;
+	private DoubleSolenoid shifter;
+	private DoubleSolenoid ptoShift;
+	public AHRS navX;
+	private enum PathCalculationStatus{
+		CALCULATING, IDLE, FINISHED
+	}
+	PathCalculationStatus pathCalculationStatus;
 
 	// define pathfinder variables
-	public KTEncoderFollower leftFollower;
-	public KTEncoderFollower rightFollower;
-	public boolean isPathFinished = false;
-	public Waypoint[] points;
+	public boolean isProfileFinished = false;
 
 	public DriveTrain() {
 
+		//Define IMU
+		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
+		
 		// Create the objects and set properties
 		leftMaster = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
 		leftFront = new TalonSRX(ActuatorMap.leftFront);
@@ -68,18 +71,21 @@ public class DriveTrain extends Subsystem {
 		rightFront = new TalonSRX(ActuatorMap.rightFront);
 		rightTop = new TalonSRX(ActuatorMap.rightTop);
 
+		//Configure Mag Encoders
 		leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 
+		//Set Left Slaves
 		leftTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 		leftFront.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 
-		leftMaster.setInverted(true);
-		leftFront.setInverted(true);
-
+		//Set Right Slaves
 		rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 		rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 
+		//Set Inversions
+		leftMaster.setInverted(true);
+		leftFront.setInverted(true);
 		rightTop.setInverted(true);
 
 		// Set Current Limits
@@ -98,8 +104,9 @@ public class DriveTrain extends Subsystem {
 				ActuatorMap.dtSpeedShiftReverse);
 		ptoShift = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.ptoShiftForward, ActuatorMap.ptoShiftReverse);
 
-		RobotWantedStates.wantedDriveMode = WantedDriveMode.SHIFT_TO_LOW;
-		RobotWantedStates.wantedDriveOverride = WantedDriveOverride.WANTS_TO_DRIVE;
+		RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_LOW;
+		RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_DRIVE;
+		pathCalculationStatus = PathCalculationStatus.FINISHED;
 
 	}
 
@@ -117,12 +124,48 @@ public class DriveTrain extends Subsystem {
 		rightMaster.configClosedloopRamp(0, 0);
 	}
 
+	public void resetEncoders() {
+        leftMaster.setSelectedSensorPosition(0, Constants.leftDriveData.pidLoopIDx, Constants.leftDriveData.timeoutMs);
+        rightMaster.setSelectedSensorPosition(0, Constants.rightDriveData.pidLoopIDx, Constants.rightDriveData.timeoutMs);
+    }
+
+    public double getEncoderDistanceRight() {
+        return (rightMaster.getSelectedSensorPosition(0) * Math.PI * Constants.wheelDiameter) / Constants.ticksPerRotation;
+    }
+
+    public double getEncoderDistanceLeft() {
+        return (leftMaster.getSelectedSensorPosition(0) * Math.PI * Constants.wheelDiameter) / Constants.ticksPerRotation;
+    }
+
+    public double getEncoderRawLeft() {
+        return leftMaster.getSelectedSensorPosition(0);
+    }
+
+    public double getEncoderRawRight() {
+        return rightMaster.getSelectedSensorPosition(0);
+    }
+
+    public double getAngle() {
+        return -navX.getAngle();
+    }
+
+    public void resetGyro() {
+        navX.reset();
+}
+	
+    private void drive(double leftPower, double rightPower) {
+    	leftMaster.set(ControlMode.PercentOutput, leftPower);
+    	rightMaster.set(ControlMode.PercentOutput, rightPower);
+		leftTop.set(ControlMode.PercentOutput, leftPower * 0.91);
+		rightTop.set(ControlMode.PercentOutput, rightPower * 0.91);
+    }
+    
 	public void driveHandler() {
 
-		switch (RobotWantedStates.wantedDriveOverride) {
+		switch (RobotWantedStates.wantedDriveType) {
 
 		// Drive without Override
-		case NONE:
+		case NORMAL_DRIVING:
 		default:
 
 			// Debugging Information
@@ -140,12 +183,12 @@ public class DriveTrain extends Subsystem {
 			shift(false);
 
 			// Set Robot State
-			RobotStates.driveOverride = DriveOverride.NONE;
+			RobotStates.driveType = DriveType.NORMAL_DRIVING;
 
 			break;
 
 		// Drive with Override
-		case OVERRIDE:
+		case OVERRIDE_DRIVING:
 
 			// Debugging Information
 			if (RobotStates.debugMode) {
@@ -161,7 +204,7 @@ public class DriveTrain extends Subsystem {
 			shift(true);
 
 			// Set Robot State
-			RobotStates.driveOverride = DriveOverride.OVERRIDE;
+			RobotStates.driveType = DriveType.OVERRIDE_DRIVING;
 
 			break;
 
@@ -177,7 +220,7 @@ public class DriveTrain extends Subsystem {
 			leftMaster.set(ControlMode.PercentOutput, Constants.climbPower);
 
 			// Set Robot State
-			RobotStates.driveOverride = DriveOverride.HANG;
+			RobotStates.driveType = DriveType.HANG;
 
 			break;
 
@@ -195,11 +238,11 @@ public class DriveTrain extends Subsystem {
 			rightTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 
 			// Dogshifter Extended
-			// ptoShift.set(Value.kForward);
+			ptoShift.set(Value.kForward);
 			RobotStates.ptoActive = true;
 
 			// Set Robot State
-			RobotStates.driveOverride = DriveOverride.WANTS_TO_HANG;
+			RobotStates.driveType = DriveType.WANTS_TO_HANG;
 
 			break;
 
@@ -216,15 +259,33 @@ public class DriveTrain extends Subsystem {
 			rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 
 			// Dogshifter Retracted
-			// ptoShift.set(Value.kReverse);
+			ptoShift.set(Value.kReverse);
 			RobotStates.ptoActive = false;
 
 			// Set Robot State
-			RobotStates.driveOverride = DriveOverride.WANTS_TO_DRIVE;
+			RobotStates.driveType = DriveType.WANTS_TO_DRIVE;
 
 			break;
 
+		case WANTS_TO_FOLLOW_PATH:
+			RobotStates.driveType = DriveType.WANTS_TO_FOLLOW_PATH;
+			switch(pathCalculationStatus) {
+			case IDLE: default:
+				pathSetup(RobotStates.currentPath);
+				break;
+			case CALCULATING:
+				break;
+			case FINISHED:
+				RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
+				break;
+			}
+			
+		case FOLLOW_PATH:
+			RobotStates.driveType = DriveType.FOLLOW_PATH;
+			break;
+		
 		}
+			
 
 	}
 
@@ -251,24 +312,24 @@ public class DriveTrain extends Subsystem {
 			}
 
 			// If wanting to shift high
-			if (RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH) {
+			if (RobotWantedStates.wantedDriveMode == DriveMode.SHIFT_TO_HIGH) {
 
 				shifter.set(Constants.highGear);
 
 				// Set Robot States
 				RobotStates.driveMode = DriveMode.HIGH;
-				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
+				RobotWantedStates.wantedDriveMode = DriveMode.HIGH;
 
 			}
 
 			// If wanting to shift low
-			if (RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW) {
+			if (RobotWantedStates.wantedDriveMode == DriveMode.SHIFT_TO_LOW) {
 
 				shifter.set(Constants.lowGear);
 
 				// Set Robot States
 				RobotStates.driveMode = DriveMode.LOW;
-				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
+				RobotWantedStates.wantedDriveMode = DriveMode.LOW;
 
 			}
 		}
@@ -277,7 +338,7 @@ public class DriveTrain extends Subsystem {
 		else {
 
 			// If wanting to shift shift high, and it is safe
-			if (RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_HIGH
+			if (RobotWantedStates.wantedDriveMode == DriveMode.SHIFT_TO_HIGH
 					&& FlyByWireHandler.determineShiftSafety(RobotWantedStates.wantedDriveMode)) {
 
 				shifter.set(Constants.highGear);
@@ -288,12 +349,12 @@ public class DriveTrain extends Subsystem {
 
 				// Set Robot States
 				RobotStates.driveMode = DriveMode.HIGH;
-				RobotWantedStates.wantedDriveMode = WantedDriveMode.HIGH;
+				RobotWantedStates.wantedDriveMode = DriveMode.HIGH;
 
 			}
 
 			// If wanting to shift shift low, and it is safe
-			else if (RobotWantedStates.wantedDriveMode == WantedDriveMode.SHIFT_TO_LOW
+			else if (RobotWantedStates.wantedDriveMode == DriveMode.SHIFT_TO_LOW
 					&& FlyByWireHandler.determineShiftSafety(RobotWantedStates.wantedDriveMode)) {
 
 				shifter.set(Constants.lowGear);
@@ -304,7 +365,7 @@ public class DriveTrain extends Subsystem {
 
 				// Set Robot States
 				RobotStates.driveMode = DriveMode.LOW;
-				RobotWantedStates.wantedDriveMode = WantedDriveMode.LOW;
+				RobotWantedStates.wantedDriveMode = DriveMode.LOW;
 
 			}
 
@@ -338,113 +399,168 @@ public class DriveTrain extends Subsystem {
 
 	@Override
 	public void zeroSensors() {
-
-		// Zero sensors method
-
+		
+		resetGyro();
+		resetEncoders();
 	}
 
+    public boolean getIsProfileFinished() {
+        return isProfileFinished;
+    }
+    
+    public void resetForPath() {
+        isProfileFinished = false;
+        resetEncoders();
+        resetGyro();
+    }
+
+    public void resetPathAngleOffset() {
+        PathfinderData.path_angle_offset = 0.0;
+}
+	
+	public void stopPath() {
+		isProfileFinished = true;
+	}
+
+	public EncoderFollower[] pathSetup(Waypoint[] path) {
+		pathCalculationStatus = PathCalculationStatus.CALCULATING;
+		EncoderFollower left = new EncoderFollower();
+        EncoderFollower right = new EncoderFollower();
+        Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH,
+                PathfinderData.dt, PathfinderData.max_velocity, PathfinderData.max_acceleration, PathfinderData.max_jerk);
+        String pathHash = String.valueOf(path.hashCode());
+        SmartDashboard.putString("Path Hash", pathHash);
+        Trajectory toFollow;// = Pathfinder.generate(path, cfg);
+        File trajectory = new File("/home/lvuser/paths/" + pathHash + ".csv");
+        if (!trajectory.exists()) {
+            toFollow = Pathfinder.generate(path, cfg);
+            Pathfinder.writeToCSV(trajectory, toFollow);
+            System.out.println(pathHash + ".csv not found, wrote to file");
+        } else {
+            System.out.println(pathHash + ".csv read from file");
+            toFollow = Pathfinder.readFromCSV(trajectory);
+        }
+
+        TankModifier modifier = new TankModifier(toFollow).modify(Constants.wheelDiameter);
+        PathfinderData.last_gyro_error = 0.0;
+        left = new EncoderFollower(modifier.getLeftTrajectory());
+        right = new EncoderFollower(modifier.getRightTrajectory());
+        left.configureEncoder(leftMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation, Constants.wheelDiameter);
+        right.configureEncoder(rightMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation, Constants.wheelDiameter);
+        left.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv, PathfinderData.ka);
+        right.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv, PathfinderData.ka);
+		pathCalculationStatus = PathCalculationStatus.FINISHED;
+        return new EncoderFollower[]{
+                left, // 0
+                right, // 1
+        };
+	}
+	
+	public void pathFollow(EncoderFollower[] followers, boolean reverse) {
+
+        EncoderFollower left = followers[0];
+        EncoderFollower right = followers[1];
+        double l;
+        double r;
+        double localGp = PathfinderData.gp;
+        if (!reverse) {
+            localGp *= -1;
+
+            l = left.calculate(-leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
+            r = right.calculate(-rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
+        } 
+        else {
+            l = left.calculate(leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
+            r = right.calculate(rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
+        }
+
+        double gyro_heading = reverse ? -getAngle() - PathfinderData.path_angle_offset : getAngle() + PathfinderData.path_angle_offset;
+
+        double angle_setpoint = Pathfinder.r2d(left.getHeading());
+        SmartDashboard.putNumber("Angle setpoint", angle_setpoint);
+        double angleDifference = Pathfinder.boundHalfDegrees(angle_setpoint - gyro_heading);
+        SmartDashboard.putNumber("Angle difference", angleDifference);
+
+        double turn = localGp * angleDifference + (PathfinderData.gd *
+                ((angleDifference - PathfinderData.last_gyro_error) / PathfinderData.dt));
+
+        PathfinderData.last_gyro_error = angleDifference;
+
+
+        if (left != null && !left.isFinished()) {
+
+            SmartDashboard.putNumber("Left diff", left.getSegment().x + this.getEncoderDistanceLeft());
+            SmartDashboard.putNumber("Left set vel", left.getSegment().velocity);
+            SmartDashboard.putNumber("Left set pos", left.getSegment().x);
+            SmartDashboard.putNumber("Left calc voltage", l);
+            SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
+            SmartDashboard.putNumber("Left + turn", l + turn);
+            SmartDashboard.putNumber("Left seg acceleration", left.getSegment().acceleration);
+            SmartDashboard.putNumber("Path angle offset", PathfinderData.path_angle_offset);
+            SmartDashboard.putNumber("Angle offset w/ new path angle offset", angleDifference + PathfinderData.path_angle_offset);
+        }
+        if (!reverse) {
+            drive(l + turn, r - turn);
+        } 
+        else {
+            drive(-l + turn, -r - turn);
+        }
+
+        if (left.isFinished() && right.isFinished()) {
+            isProfileFinished = true;
+            PathfinderData.path_angle_offset = angleDifference;
+        }
+}
+	
+	
 	@Override
 	public void stop() {
 		// Code to make all moving parts halt goes here.
 		leftMaster.set(ControlMode.Disabled, 1);
 		rightMaster.set(ControlMode.Disabled, 1);
+		resetGyro();
+		resetEncoders();
 	}
 
-	public void stopPath() {
-		isPathFinished = true;
-	}
+	
+	public static class PathfinderData {
+		
+		public static double kp = 0.8;
+        public static double kd = 0.0;
+        public static double gp = 0.0375;
+        public static double gd = 0.0;
 
-	public void SetWaypoint(Waypoint[] _points) {
-		points = _points;
-	}
+        public static double ki = 0.0;
 
-	public void calculatePath() {
-		isPathFinished = false;
-		if (RobotState.isAutonomous()) {
-			RobotStates.pathfinderState = PathfinderState.CALCULATING_PATH;
-			leftMaster.set(ControlMode.Disabled, 1);
-			rightMaster.set(ControlMode.Disabled, 1);
+        //Gyro logging for motion profiling
+        public static double last_gyro_error = 0.0;
 
-			Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-					Trajectory.Config.SAMPLES_FAST, Constants.timeStep, Constants.maxVelocity,
-					Constants.maxAcceleration, Constants.maxJerk);
+        public static double path_angle_offset = 0.0;
+        public static final double max_velocity = 4.0;
+        public static final double kv = 1.0 / max_velocity;
+        public static final double max_acceleration = 3.8;
+        public static final double ka = 0.05;
+        public static final double max_jerk = 16.0;
+        public static final double wheel_diameter = 0.125;
 
-			// Generate the trajectory
-			Trajectory trajectory = Pathfinder.generate(points, config);
+        public static final double wheel_base_width = 0.72;
+        public static final int ticks_per_rev = 4096;
+        public static final double dt = 0.02;
 
-			// Create the Modifier Object
-			TankModifier modifier = new TankModifier(trajectory);
+        public static void setPIDG(double p, double i, double d, double gp, double gd) {
+            SmartDashboard.putNumber("kP", p);
+            SmartDashboard.putNumber("kI", i);
+            SmartDashboard.putNumber("kD", d);
+            SmartDashboard.putNumber("gP", gp);
+            SmartDashboard.putNumber("gD", gd);
+        }
 
-			// Generate the Left and Right trajectories using the original trajectory
-			// as the center
-			modifier.modify(Constants.wheelBaseWidth);
-			Trajectory left = modifier.getLeftTrajectory();
-			Trajectory right = modifier.getRightTrajectory();
-
-			// Make Encoder Followers
-			leftFollower = new KTEncoderFollower(left);
-			rightFollower = new KTEncoderFollower(right);
-
-			leftFollower.configureEncoder(leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx),
-					Constants.ticksPerRotation, Constants.wheelDiameter);
-			rightFollower.configureEncoder(rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx),
-					Constants.ticksPerRotation, Constants.wheelDiameter);
-
-			// Configure Pathfinder PID
-			leftFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
-					1 / Constants.maxVelocity, Constants.accelerationGain);
-			rightFollower.configurePIDVA(Constants.pathfinderP, Constants.pathfinderI, Constants.pathfinderD,
-					1 / Constants.maxVelocity, Constants.accelerationGain);
-		}
-	}
-
-	public void pathfinderLooper() {
-
-		if (RobotState.isAutonomous()) {
-			double l = leftFollower.calculate(leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
-			double r = rightFollower.calculate(rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-
-			double gyro_heading = RobotStates.GyroAngle; // Assuming the gyro is giving a value in degrees
-			double desired_heading = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
-
-			double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
-			double turn = 0.5 * (-1.0 / 80.0) * angleDifference;
-
-			// If left wheel trajectory isn't finished, set new power.
-			if (!leftFollower.isFinished() && !rightFollower.isFinished()) {
-				leftMaster.set(ControlMode.PercentOutput, l + turn);
-				rightMaster.set(ControlMode.PercentOutput, r - turn);
-
-			}
-
-			SmartDashboard.putNumber("Pathfinder Left Percentage", leftFollower.getCompletionPercentage());
-			SmartDashboard.putNumber("Pathfinder Right Percentage", rightFollower.getCompletionPercentage());
-			SmartDashboard.putNumber("Left PathFinder Value + turn", l + turn);
-			SmartDashboard.putNumber("Right PathFinder Value - turn", r - turn);
-			SmartDashboard.putNumber("Left PathFinder Value", l);
-			SmartDashboard.putNumber("Right PathFinder Value", r);
-			SmartDashboard.putNumber("Pathfinder Turn", turn);
-
-			RobotStates.leftPathCompletionPercent = leftFollower.getCompletionPercentage();
-			RobotStates.rightPathCompletionPercent = rightFollower.getCompletionPercentage();
-
-			// Return if trajectories are both finished
-			if (leftFollower.isFinished() && rightFollower.isFinished()) {
-				RobotStates.leftPathCompletionPercent = leftFollower.getCompletionPercentage();
-				RobotStates.rightPathCompletionPercent = rightFollower.getCompletionPercentage();
-				RobotStates.pathfinderState = PathfinderState.STOPPED;
-				RobotStates.leftPathCompletionPercent = 1;
-				RobotStates.rightPathCompletionPercent = 1;
-				isPathFinished = true;
-				leftMaster.set(ControlMode.Disabled, 1);
-				rightMaster.set(ControlMode.Disabled, 1);
-			} else {
-
-				RobotStates.pathfinderState = PathfinderState.LOOPING;
-
-			}
-
-		}
-	}
-
+        public static void updatePIDG() {
+            kp = SmartDashboard.getNumber("kP", 0.0);
+            ki = SmartDashboard.getNumber("kI", 0.0);
+            kd = SmartDashboard.getNumber("kD", 0.0);
+            gp = SmartDashboard.getNumber("gP", 0.0);
+            gd = SmartDashboard.getNumber("gD", 0.0);
+        }
+	}	
 }

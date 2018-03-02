@@ -2,6 +2,9 @@ package com.team2169.robot.auto.tasks;
 
 import jaci.pathfinder.Waypoint;
 
+import com.team2169.robot.RobotWantedStates;
+import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -13,15 +16,14 @@ public class FollowPath extends Task {
 	DriveTrain drive = DriveTrain.getInstance();
 	public FollowPath(Waypoint[] points) {
 
-		DriveTrain.getInstance().SetWaypoint(points);
-
+		RobotStates.currentPath = points;
 		DriverStation.reportWarning("Path Created", false);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		DriverStation.reportWarning("calculating path", false);
-		DriveTrain.getInstance().calculatePath();
+		DriverStation.reportWarning("Calculating path", false);
+		RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_FOLLOW_PATH;
 		DriverStation.reportWarning("Path Calculated", false);
 
 	}
@@ -30,26 +32,28 @@ public class FollowPath extends Task {
 	protected void execute() {
 
 		DriverStation.reportError("Executing path", false);
-		DriveTrain.getInstance().pathfinderLooper();
 
 	}
 	
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return DriveTrain.getInstance().isPathFinished;
+		return drive.getIsProfileFinished();
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
 		System.out.println("Path Finished");
-		DriveTrain.getInstance().stop();
+		RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
+		drive.stopPath();
+		drive.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		DriveTrain.getInstance().stop();
-		DriveTrain.getInstance().stopPath();
+		RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
+		drive.stop();
+		drive.stopPath();
 	}
 }

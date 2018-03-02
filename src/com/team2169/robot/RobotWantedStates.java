@@ -14,27 +14,21 @@ public class RobotWantedStates {
 	public static boolean isFMSConnected;
 	public static String fieldSetup;
 
-
 	public static RunningMode wantedRunningMode;
 
 	// Drive Mode Handler
-
-
 	public static DriveMode wantedDriveMode;
 	public static boolean wantedPTOActive;
 
-	// DriveOverride Handler
+	// DriveType Handler
 	public static DriveType wantedDriveType;
 	public static boolean platformRelease;
 
-
+	// Intake Mode Handler
 	public static IntakeMode wantedIntakeMode;
-
 	public static IntakeClamp wantedIntakeClamp;
 
 	// Arm Position Handler
-
-
 	public static ArmPos wantedArmPos;
 
 	// Elevator Position Handler

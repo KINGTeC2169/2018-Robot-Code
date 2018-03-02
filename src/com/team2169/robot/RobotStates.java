@@ -1,5 +1,7 @@
 package com.team2169.robot;
 
+import jaci.pathfinder.Waypoint;
+
 public class RobotStates {
 
 	public static boolean debugMode = true;
@@ -45,7 +47,7 @@ public class RobotStates {
 	// DriveOverride Handler
 	public static enum DriveType {
 
-		WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE_DRIVING, HANG, NORMAL_DRIVING, AUTO
+		WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE_DRIVING, HANG, NORMAL_DRIVING, FOLLOW_PATH, WANTS_TO_FOLLOW_PATH
 
 	}
 
@@ -100,7 +102,6 @@ public class RobotStates {
 
 	}
 
-
 	public static Macro elevatorPos;
 	public static double elevatorHeight = 0;
 
@@ -122,5 +123,8 @@ public class RobotStates {
 
 	public static double leftPathCompletionPercent;
 	public static double rightPathCompletionPercent;
+	
+	public static Waypoint[] currentPath;
+	
 
 }
