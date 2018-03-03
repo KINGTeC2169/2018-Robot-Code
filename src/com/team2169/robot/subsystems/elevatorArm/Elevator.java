@@ -28,6 +28,15 @@ public class Elevator {
 		elevator = new TalonSRX(ActuatorMap.elevatorMasterID);
 		elevatorSlave = new TalonSRX(ActuatorMap.elevatorSlaveID);
 		elevatorSlave.set(ControlMode.Follower, ActuatorMap.elevatorMasterID);
+		elevator.configPeakCurrentLimit(30, Constants.elevatorData.timeoutMs);
+		elevatorSlave.configPeakCurrentLimit(30, Constants.elevatorData.timeoutMs);
+		elevator.configAllowableClosedloopError(Constants.elevatorData.slotIDx, Constants.elevatorData.allowedError, Constants.elevatorData.timeoutMs);
+		elevatorSlave.configAllowableClosedloopError(Constants.elevatorData.slotIDx, Constants.elevatorData.allowedError, Constants.elevatorData.timeoutMs);
+		elevator.configPeakCurrentLimit(35, Constants.elevatorData.timeoutMs);
+		elevatorSlave.configPeakCurrentLimit(35, Constants.elevatorData.timeoutMs);
+		elevator.configPeakCurrentDuration(500, Constants.elevatorData.timeoutMs);
+		elevatorSlave.configPeakCurrentDuration(500, Constants.elevatorData.timeoutMs);
+		
 		// topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
 		// bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
 
@@ -128,6 +137,7 @@ public class Elevator {
 
 		}
 		SmartDashboard.putNumber("output to motor", elevator.getMotorOutputPercent());
+		SmartDashboard.putNumber("Elevator Error", elevator.getClosedLoopError(0));
 
 		SmartDashboard.putNumber("Elevator Setpoint",
 				elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
@@ -146,7 +156,9 @@ public class Elevator {
 	}
 
 	public void holdInPosition() {
-		elevator.set(ControlMode.Position, position);
+		//elevator.set(ControlMode.Position, position);
+		elevator.set(ControlMode.PercentOutput, 0);
+	
 	}
 
 	/*

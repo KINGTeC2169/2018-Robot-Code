@@ -25,6 +25,12 @@ public class Arm {
 
 		// Pull Constants Data for Arm
 		Constants.setArmDataFromConstants();
+		arm.configContinuousCurrentLimit(40, 10);
+		arm.configPeakCurrentLimit(30, Constants.armData.timeoutMs);
+		arm.configAllowableClosedloopError(Constants.armData.slotIDx, Constants.armData.allowedError, Constants.armData.timeoutMs);
+		arm.configPeakCurrentLimit(35, Constants.armData.timeoutMs);
+		arm.configPeakCurrentDuration(500, Constants.armData.timeoutMs);
+		
 
 		// Apply Talon Settings
 		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);

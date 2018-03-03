@@ -68,10 +68,10 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .1;
-		elevatorData.i = 0.001;
-		elevatorData.d = .002;
-		elevatorData.f = 0;
+		elevatorData.p = .165;
+		elevatorData.i = .0000001;
+		elevatorData.d = .01;
+		elevatorData.f = .2;
 		elevatorData.sensorPhase = false;
 
 	}
@@ -87,8 +87,8 @@ public class Constants {
 		armData.pidLoopIDx = 0;
 		armData.timeoutMs = 10;
 		armData.allowedError = 2;
-		armData.p = .56;
-		armData.i = 0;
+		armData.p = .85;
+		armData.i = .00001;
 		armData.d = .15;
 		armData.f = .2;
 		elevatorData.sensorPhase = false;
@@ -112,7 +112,7 @@ public class Constants {
 	public static int switchElevatorEncoderPosition = 9778 / 2;
 	public static int scaleLowElevatorEncoderPosition = 25033 / 2;
 	public static int scaleMidElevatorEncoderPosition = 31291 / 2;
-	public static int scaleHighElevatorEncoderPosition = 37549 / 2;
+	public static int scaleHighElevatorEncoderPosition = 19500;
 	public static int hangElevatorEncoderPosition = 37549 / 2;
 
 	// THESE ARE INCORECT LIFT ONLY OPERATES FROM 0 - 19000

@@ -89,11 +89,13 @@ public class Robot extends IterativeRobot {
 
 			StateManager.teleOpStateLooper();
 			shuffle.teleOp(m_ds.isFMSAttached());
-			superStructure.subsystemLooper();
+			
 
 		} catch (Exception e) {
 			DriverStation.reportError(e.toString(), true);
 		}
+		
+		superStructure.subsystemLooper();
 
 	}
 

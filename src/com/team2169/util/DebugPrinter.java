@@ -11,8 +11,8 @@ public class DebugPrinter {
 	}
 
 	public static void elevatorDebug() {
-		// DriverStation.reportWarning("Elevator Position: " +
-		// RobotStates.elevatorHeight, false);
+		//DriverStation.reportWarning("Elevator Position: " +
+		//RobotStates.elevatorHeight, false);
 		SmartDashboard.putString("Elevator State: ", RobotStates.elevatorPos.name());
 		String string = "" + RobotStates.elevatorOverrideMode;
 		SmartDashboard.putString("Elevator Override Mode: ", string);
