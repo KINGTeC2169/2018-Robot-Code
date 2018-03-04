@@ -87,10 +87,10 @@ public class Constants {
 		armData.pidLoopIDx = 0;
 		armData.timeoutMs = 10;
 		armData.allowedError = 2;
-		armData.p = .85;
-		armData.i = .00001;
-		armData.d = .15;
-		armData.f = .2;
+		armData.p = 1.75;
+		armData.i = 0;
+		armData.d = 0;
+		armData.f = 0;
 		elevatorData.sensorPhase = false;
 
 	}

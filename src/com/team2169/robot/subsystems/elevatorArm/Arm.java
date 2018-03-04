@@ -35,6 +35,7 @@ public class Arm {
 		// Apply Talon Settings
 		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
 
+		
 	}
 
 	public void pushToDashboard() {
@@ -49,7 +50,7 @@ public class Arm {
 	}
 
 	private void armSetOverrideLooper(double joystickValue) {
-		arm.set(ControlMode.PercentOutput, joystickValue);
+		arm.set(ControlMode.PercentOutput, -joystickValue);
 		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 	}
 
@@ -103,5 +104,5 @@ public class Arm {
 	public void stop() {
 		arm.set(ControlMode.PercentOutput, 0);
 	}
-
+	
 }

@@ -50,7 +50,7 @@ public class ControlMap {
 	static int releasePlatform = 110;
 
 	// Deadbands
-	static double operatorDeadband = .65;
+	static double operatorDeadband = .25;
 
 	// Create Joystick Objects
 	static Joystick primaryLeft;
@@ -181,7 +181,7 @@ public class ControlMap {
 
 	// Operator Override Handlers
 	public static double getOperatorStickValue() {
-		return operator.getRawAxis(operatorAxis);
+		return .5 * -operator.getRawAxis(operatorAxis);
 	}
 
 	public static void operatorUnsafeAction() {

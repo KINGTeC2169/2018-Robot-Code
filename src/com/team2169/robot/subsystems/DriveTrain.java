@@ -49,6 +49,7 @@ public class DriveTrain extends Subsystem {
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid ptoShift;
 	public AHRS navX;
+	private EncoderFollower[] followers;
 	private enum PathCalculationStatus{
 		CALCULATING, IDLE, FINISHED
 	}
@@ -58,7 +59,7 @@ public class DriveTrain extends Subsystem {
 	public boolean isProfileFinished = false;
 
 	public DriveTrain() {
-
+		
 		//Define IMU
 		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 		
@@ -271,7 +272,7 @@ public class DriveTrain extends Subsystem {
 			RobotStates.driveType = DriveType.WANTS_TO_FOLLOW_PATH;
 			switch(pathCalculationStatus) {
 			case IDLE: default:
-				pathSetup(RobotStates.currentPath);
+				followers = pathSetup(RobotStates.currentPath);
 				break;
 			case CALCULATING:
 				break;
@@ -281,6 +282,7 @@ public class DriveTrain extends Subsystem {
 			}
 			
 		case FOLLOW_PATH:
+			pathFollow(followers, false);
 			RobotStates.driveType = DriveType.FOLLOW_PATH;
 			break;
 		

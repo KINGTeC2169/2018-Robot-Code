@@ -77,7 +77,6 @@ public class Intake extends Subsystem {
 
 			// Stop Intakes
 			intakeManual(0);
-
 			RobotStates.intakeMode = IntakeMode.IDLE;
 
 			break;
@@ -87,7 +86,6 @@ public class Intake extends Subsystem {
 			// Run Intakes
 
 			intakeManual(-Constants.intakeSpeed);
-
 			RobotStates.intakeMode = IntakeMode.INTAKE;
 			break;
 
