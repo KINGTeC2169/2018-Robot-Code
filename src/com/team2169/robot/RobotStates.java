@@ -1,5 +1,7 @@
 package com.team2169.robot;
 
+import java.util.ArrayList;
+
 import jaci.pathfinder.Waypoint;
 
 public class RobotStates {
@@ -76,9 +78,15 @@ public class RobotStates {
 
 	public static boolean intakeClampOverride;
 	// Robot block held state
+	//public static ArrayList<Double> blockHeldHistory;
+	public static enum blockRecentState{
+		JUST_ENTERED, JUST_LEFT, NO_CHANGE
+	}
 	public static boolean ultraWithinRange;
+	public static boolean ultraAverage;
 	public static boolean operatorWantsUltrasonic;
 	public static boolean blockHeld;
+	public static blockRecentState blockRecent;
 
 	// Arduino
 	public static boolean arduinoConnected;

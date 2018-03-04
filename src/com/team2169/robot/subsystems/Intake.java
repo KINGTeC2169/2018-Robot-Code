@@ -1,5 +1,8 @@
 package com.team2169.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
@@ -26,7 +29,7 @@ public class Intake extends Subsystem {
 		return iInstance;
 	}
 
-	// private int blockPastPositions[];
+	private ArrayList<Double> blockHeldHistory;
 	Ultrasonic ultra;
 	private TalonSRX left;
 	private TalonSRX right;
@@ -45,6 +48,10 @@ public class Intake extends Subsystem {
 				ActuatorMap.clampPortReverse);
 		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 		ultra.setAutomaticMode(true);
+		blockHeldHistory = new ArrayList<Double>();
+		for(int i = 0; i > 10; i++){
+			blockHeldHistory.add(0.0);
+		}
 	}
 
 	public void intakeManual(double power) {
@@ -55,17 +62,50 @@ public class Intake extends Subsystem {
 	public double getBlockDistance() {
 		return ultra.getRangeInches();
 	}
-	/*
-	 * public void storeBlockHistory(boolean currentBlockPosition){ for(int i = 19;
-	 * i > 0; i--){ blockPastPositions[i] = blockPastPositions[i-1]; }
-	 * blockPastPositions[0] = null; }
-	 */
 
-	public void intakeHandler() {
+	 public void storeBlockHistory(boolean currentBlockPosition){
+		 blockHeldHistory.remove(0);
+		 if (currentBlockPosition)blockHeldHistory.add(1.0);
+		 else blockHeldHistory.add(0.0);
+	 }
+	 public boolean getBlockHistoryAverage(){
+		 double add = 0;
+		 int pos = 0;
+		 for (double i : blockHeldHistory){
+			 add = add + (i * pos + 1);
+			 pos++;
+		 }
+		 if(add >= Constants.WeightedAverageRequirement) return true;
+		 else return false;
+	 }
+	public boolean getAverage(List<Double> list){
+		double add = 0;
+		for(double i: list){
+			add = add + i;
+		}
+		if(add >= ((list.size() + 1)/ 2)) return true;
+		else return false;
+	}
+	public void ultrasonicHandler(){
 		RobotStates.ultraWithinRange = (getBlockDistance() <= Constants.maxUltraTriggerDistance
 				&& getBlockDistance() >= Constants.minUltraTriggerDistance);
+		storeBlockHistory(RobotStates.ultraWithinRange);
+		RobotStates.ultraAverage = getBlockHistoryAverage();
+		
+		if ((getAverage(blockHeldHistory.subList(0, 4)) == false) && ((getAverage(blockHeldHistory.subList(5, 9)) == true))){
+			RobotStates.blockRecent = RobotStates.blockRecentState.JUST_ENTERED;
+		}
+		else if ((getAverage(blockHeldHistory.subList(0, 4)) == true) && ((getAverage(blockHeldHistory.subList(5, 9)) == false))){
+			RobotStates.blockRecent = RobotStates.blockRecentState.JUST_LEFT;
+		} else {
+			RobotStates.blockRecent = RobotStates.blockRecentState.NO_CHANGE;
+		}
+	}
 
-		if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraWithinRange) {
+	public void intakeHandler() {
+		//ultrasonicHandler();
+		
+		if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraAverage) {
 			RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 		}
 
