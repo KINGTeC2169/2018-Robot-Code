@@ -25,12 +25,13 @@ public class FollowPath extends Task {
 		DriverStation.reportWarning("Calculating path", false);
 		RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_FOLLOW_PATH;
 		DriverStation.reportWarning("Path Calculated", false);
+		
 
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-
+		RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
 		DriverStation.reportError("Executing path", false);
 
 	}
@@ -49,7 +50,7 @@ public class FollowPath extends Task {
 		drive.stop();
 	}
 
-	// Called when another command which requires one or more of the same
+	// Called when another Command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
 		RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;

@@ -53,7 +53,7 @@ public class DriveTrain extends Subsystem {
 	private enum PathCalculationStatus{
 		CALCULATING, IDLE, FINISHED
 	}
-	PathCalculationStatus pathCalculationStatus;
+	PathCalculationStatus pathCalculationStatus = PathCalculationStatus.IDLE;
 
 	// define pathfinder variables
 	public boolean isProfileFinished = false;
@@ -277,7 +277,7 @@ public class DriveTrain extends Subsystem {
 			case CALCULATING:
 				break;
 			case FINISHED:
-				RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
+				RobotWantedStates.wantedDriveType = DriveType.WAITING;
 				break;
 			}
 			
@@ -286,8 +286,10 @@ public class DriveTrain extends Subsystem {
 			RobotStates.driveType = DriveType.FOLLOW_PATH;
 			break;
 		
-		}
+		case WAITING:
+			break;
 			
+		}
 
 	}
 
