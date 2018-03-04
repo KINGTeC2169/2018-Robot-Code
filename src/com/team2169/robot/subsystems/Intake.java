@@ -49,9 +49,10 @@ public class Intake extends Subsystem {
 		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 		ultra.setAutomaticMode(true);
 		blockHeldHistory = new ArrayList<Double>();
-		for(int i = 0; i > 10; i++){
+		for(int i = 0; i > 20; i++){
 			blockHeldHistory.add(0.0);
 		}
+		
 	}
 
 	public void intakeManual(double power) {
@@ -92,10 +93,10 @@ public class Intake extends Subsystem {
 		storeBlockHistory(RobotStates.ultraWithinRange);
 		RobotStates.ultraAverage = getBlockHistoryAverage();
 		
-		if ((getAverage(blockHeldHistory.subList(0, 4)) == false) && ((getAverage(blockHeldHistory.subList(5, 9)) == true))){
+		if ((getAverage(blockHeldHistory.subList(0, 9)) == false) && ((getAverage(blockHeldHistory.subList(10, 19)) == true))){
 			RobotStates.blockRecent = RobotStates.blockRecentState.JUST_ENTERED;
 		}
-		else if ((getAverage(blockHeldHistory.subList(0, 4)) == true) && ((getAverage(blockHeldHistory.subList(5, 9)) == false))){
+		else if ((getAverage(blockHeldHistory.subList(0, 9)) == true) && ((getAverage(blockHeldHistory.subList(10, 19)) == false))){
 			RobotStates.blockRecent = RobotStates.blockRecentState.JUST_LEFT;
 		} else {
 			RobotStates.blockRecent = RobotStates.blockRecentState.NO_CHANGE;

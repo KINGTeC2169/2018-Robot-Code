@@ -43,7 +43,7 @@ public class Constants {
 	public static final double climbPower = .75;
 	
 	//ultrasonic
-	public static final double WeightedAverageRequirement = 25;
+	public static final double WeightedAverageRequirement = 105;
 
 	// Arduino
 	public static final int arduinoMainSignal = 32; // 32 for kingTecRandom 64 for Rainbow 96 for stripes
