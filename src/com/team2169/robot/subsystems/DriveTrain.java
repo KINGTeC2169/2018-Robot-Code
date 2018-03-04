@@ -545,9 +545,9 @@ public class DriveTrain extends Subsystem {
         public static final double max_acceleration = 3.8;
         public static final double ka = 0.05;
         public static final double max_jerk = 16.0;
-        public static final double wheel_diameter = 0.125;
+        public static final double wheel_diameter = 0.1524;
 
-        public static final double wheel_base_width = 0.72;
+        public static final double wheel_base_width = 0.635;
         public static final int ticks_per_rev = 4096;
         public static final double dt = 0.02;
 
