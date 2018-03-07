@@ -14,12 +14,13 @@ public class Paths {
 			public static Waypoint[] startToScale = new Waypoint[] {
 					new Waypoint(49, 20.5, 0), // Starting Point
 					new Waypoint(49, 190, 0),
-					new Waypoint(83, 300, 0)
+					new Waypoint(75, 300, 0),
+				
 			};
 			
 			public static Waypoint[] scaleToBlock = new Waypoint[] {
-					new Waypoint(83, 300, 0),  // Starting Point 
-					new Waypoint(83, 300, Pathfinder.d2r(180)), 
+					new Waypoint(75, 285, 0),  // Starting Point 
+					new Waypoint(75, 273, Pathfinder.d2r(180)), 
 					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)) 
 			};
 			
@@ -34,23 +35,23 @@ public class Paths {
 			public static Waypoint[] startToScale = new Waypoint[] {
 					new Waypoint(49, 20.5, 0), // Starting Point
 					new Waypoint(49, 190, 0),
-					new Waypoint(83, 300, 0)
+					new Waypoint(75, 285, 0)
 			};
 			
 			public static Waypoint[] scaleToBlock = new Waypoint[] {
-					new Waypoint(83, 300, 0),  // Starting Point 
-					new Waypoint(83, 300, Pathfinder.d2r(180)), 
+					new Waypoint(75, 285, 0),  // Starting Point 
+					new Waypoint(75, 273, Pathfinder.d2r(180)), 
 					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)) 
 			};
 			
 			public static Waypoint[] blockToSwitch = new Waypoint[] {
 					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)), // Starting Point
-					new Waypoint(83, 300, Pathfinder.d2r(0)),// Final Point
+					new Waypoint(75, 285, Pathfinder.d2r(0)),// Final Point
 			};
 			
 			public static Waypoint[] turnAndPlace = new Waypoint[] {
-					new Waypoint(83, 300, Pathfinder.d2r(0)), // Starting Point
-					new Waypoint(83, 300, Pathfinder.d2r(0)), // Final Point
+					new Waypoint(75, 285, Pathfinder.d2r(0)), // Starting Point
+					new Waypoint(75, 286, Pathfinder.d2r(0)) // Final Point
 			};
 		}
 		
