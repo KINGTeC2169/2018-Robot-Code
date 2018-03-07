@@ -72,7 +72,8 @@ public class Superstructure {
 	}
 
 	public void updateGyro() {
-		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
+		RobotStates.gyroAngle = drive.getAngle();
+		SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
 	}
 
 	public void updateGyroContinuosly() {
@@ -84,7 +85,6 @@ public class Superstructure {
 	}
 
 	public void subsystemLooper() {
-		SmartDashboard.putNumber("Gyro", RobotStates.GyroAngle);
 		drive.pushToDashboard();
 		drive.driveHandler();
 		// platform.platformHandler();
@@ -93,15 +93,7 @@ public class Superstructure {
 		DebugPrinter.elevatorDebug();
 		drive.pushToDashboard();
 
-		// CANCycleHandler.startCycle(CANCycleHandler.sampleCANCycle);
-
 	}
-
-	// This is how you start a CANCycle
-	// CANCycleHandler.sampleCANCycle.start();
-
-	// This is how you cancel a CANCycle
-	// CANCycleHandler.sampleCANCycle.cancel();
 
 	public void zeroAllSensors() {
 

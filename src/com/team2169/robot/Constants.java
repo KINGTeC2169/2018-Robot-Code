@@ -71,10 +71,10 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .165;
-		elevatorData.i = .0000001;
-		elevatorData.d = .01;
-		elevatorData.f = .2;
+		elevatorData.p = .35;
+		elevatorData.i = .6;
+		elevatorData.d = .15;
+		elevatorData.f = 0;
 		elevatorData.sensorPhase = false;
 
 	}
@@ -112,9 +112,9 @@ public class Constants {
 
 	// Default Values (in case something fails)
 	public static int groundElevatorEncoderPosition = 0;
-	public static int switchElevatorEncoderPosition = 9778 / 2;
-	public static int scaleLowElevatorEncoderPosition = 25033 / 2;
-	public static int scaleMidElevatorEncoderPosition = 31291 / 2;
+	public static int switchElevatorEncoderPosition = 4000;
+	public static int scaleLowElevatorEncoderPosition = 9000;
+	public static int scaleMidElevatorEncoderPosition = 14000;
 	public static int scaleHighElevatorEncoderPosition = 19500;
 	public static int hangElevatorEncoderPosition = 37549 / 2;
 

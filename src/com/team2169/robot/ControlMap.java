@@ -181,7 +181,7 @@ public class ControlMap {
 
 	// Operator Override Handlers
 	public static double getOperatorStickValue() {
-		return .5 * -operator.getRawAxis(operatorAxis);
+		return -operator.getRawAxis(operatorAxis);
 	}
 
 	public static void operatorUnsafeAction() {

@@ -9,18 +9,22 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.util.TalonMaker;
 
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.team2169.robot.RobotStates.Macro;
 
+@SuppressWarnings("deprecation")
 public class Elevator {
 
 	// Create Talons
 	private TalonSRX elevator;
 	private TalonSRX elevatorSlave;
 	private int position;
-	// private AnalogInput topLimit;
-	// private AnalogInput bottomLimit;
+	//private AnalogInput topLimit;
+	//private AnalogInput bottomLimit;
+
+	NetworkTable table = NetworkTable.getTable("SmartDashboard");
 
 	public Elevator() {
 
@@ -37,8 +41,11 @@ public class Elevator {
 		elevator.configPeakCurrentDuration(500, Constants.elevatorData.timeoutMs);
 		elevatorSlave.configPeakCurrentDuration(500, Constants.elevatorData.timeoutMs);
 		
-		// topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
-		// bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
+		elevator.configClosedloopRamp(.25, 10);
+		elevatorSlave.configClosedloopRamp(.25, 10);
+		
+		//topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
+		//bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
 
 		// Pull Constants Data for Elevator
 		Constants.setElevatorDataFromConstants();
@@ -48,7 +55,10 @@ public class Elevator {
 	}
 
 	public void elevatorMacroLooper() {
-
+		
+		
+		//SmartDashboard.putNumber("topLimit", topLimit.getValue());
+		//SmartDashboard.putNumber("bottomLimit", bottomLimit.getValue());
 		// getLimits();
 		// set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedElevatorPos) {
@@ -176,6 +186,14 @@ public class Elevator {
 	 * else { elevator.configPeakOutputReverse(1, Constants.elevatorData.timeoutMs);
 	 * } }
 	 */
+	
+	void setPID() {
+		elevator.config_kP(0, table.getNumber("p", 0), 10);
+		elevator.config_kI(0, table.getNumber("i", 0), 10);
+		elevator.config_kD(0, table.getNumber("f", 0), 10);
+		elevator.config_kF(0, table.getNumber("p", 0), 10);
+	}
+	
 	private void getElevatorFinishedState() {
 
 		if (elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) < Constants.elevatorData.allowedError

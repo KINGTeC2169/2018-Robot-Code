@@ -30,10 +30,12 @@ public class FollowPath extends Task {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
+	
 	protected void execute() {
-		RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
-		DriverStation.reportError("Executing path", false);
-
+		if (RobotStates.driveType == DriveType.WAITING) {
+			RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
+			DriverStation.reportError("Starting Path", false);
+		}
 	}
 	
 

@@ -1,7 +1,5 @@
 package com.team2169.robot;
 
-import java.util.ArrayList;
-
 import jaci.pathfinder.Waypoint;
 
 public class RobotStates {
@@ -58,7 +56,7 @@ public class RobotStates {
 	public static boolean canCycleMode;
 
 	// Gyro angle
-	public static double GyroAngle;
+	public static double gyroAngle;
 
 	// Intake Mode Handler
 	public static enum IntakeMode {

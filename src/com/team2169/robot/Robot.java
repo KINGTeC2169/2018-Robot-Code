@@ -59,11 +59,11 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 
 		Scheduler.getInstance().run();
-
+		superStructure.subsystemLooper();
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();
 		shuffle.auto(m_ds.isFMSAttached());
 		auto.autoLooping();
-		superStructure.updateGyroContinuosly();
+
 	}
 
 	@Override
