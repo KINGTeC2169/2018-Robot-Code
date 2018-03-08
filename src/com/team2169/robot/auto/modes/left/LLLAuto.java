@@ -10,6 +10,7 @@ import com.team2169.robot.auto.tasks.FollowPath;
 import com.team2169.robot.auto.tasks.NestedPathTask;
 import com.team2169.robot.auto.tasks.ParallelTask;
 import com.team2169.robot.auto.tasks.Task;
+import com.team2169.robot.auto.tasks.arm.ArmConfig;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
@@ -51,31 +52,29 @@ public class LLLAuto extends AutoMode {
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
                 new FollowPath(Paths.LLLPaths.startToScale),
                 new NestedPathTask(Arrays.asList(new Task[] {
-                		
-                		new ArmRetract(),
-                		new ElevatorToGround(),
+                		new ArmConfig(),
+                		new ElevatorToSwitch(),
                 		new IntakeIdle(),
                 		new IntakeClampAction()
                 		
-                }), 0, 49),
+                }), 0, 50),
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
                 		new ElevatorToScaleHigh()
                 		
-                }), 50, 100)
+                }), 70, 100)
                 
     	})), 10);
-    	addSequential(new DropAndExhaust(), 1.5);
+    	addSequential(new DropAndExhaust(), .5);
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
                 new FollowPath(Paths.LLLPaths.scaleToBlock),
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
-                		new ArmRetract(),
                 		new ElevatorToGround(),
                 		new IntakeIdle(),
                 		new IntakeNeutral()
                 		
-                }), 0, 74),
+                }), 0, 70),
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
                 		new ArmExtend(),
@@ -84,6 +83,7 @@ public class LLLAuto extends AutoMode {
                 }), 75, 100)
                 
     	})), 10);
+    	addSequential(new IntakeClampAction());
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
                 new FollowPath(Paths.LLLPaths.blockToSwitch),
                 new IntakeClampAction(),
@@ -91,7 +91,7 @@ public class LLLAuto extends AutoMode {
                 new ElevatorToSwitch()
                 
     	})), 10);
-    	addSequential(new DropAndExhaust());
+    	addSequential(new DropAndExhaust(), 0.5);
     	
     }
 

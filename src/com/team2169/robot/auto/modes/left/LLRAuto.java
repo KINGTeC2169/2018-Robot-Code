@@ -10,6 +10,7 @@ import com.team2169.robot.auto.tasks.FollowPath;
 import com.team2169.robot.auto.tasks.NestedPathTask;
 import com.team2169.robot.auto.tasks.ParallelTask;
 import com.team2169.robot.auto.tasks.Task;
+import com.team2169.robot.auto.tasks.arm.ArmConfig;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
@@ -17,6 +18,7 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
+import com.team2169.robot.auto.tasks.intake.IntakeNeutral;
 import com.team2169.robot.auto.tasks.intake.IntakeUntilHeld;
 import com.team2169.robot.canCycles.cycles.DropAndExhaust;
 
@@ -51,8 +53,8 @@ public class LLRAuto extends AutoMode {
                 new FollowPath(Paths.LLRPaths.startToSwitch),
                 new NestedPathTask(Arrays.asList(new Task[] {
                 		
-                		new ArmRetract(),
-                		new ElevatorToGround(),
+                		new ArmConfig(),
+                		new ElevatorToSwitch(),
                 		new IntakeIdle(),
                 		new IntakeClampAction()
                 		
@@ -64,14 +66,15 @@ public class LLRAuto extends AutoMode {
                 }), 50, 100)
                 
     	})), 10);
-    	addSequential(new DropAndExhaust(), 1.25);
+    	addSequential(new DropAndExhaust(), .5);
    
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
     			new FollowPath(Paths.LLRPaths.switchToBlock),
     			new NestedPathTask(Arrays.asList(new Task[]{
+    					new IntakeIdle(),
+    					new ElevatorToGround(),
+    					new IntakeNeutral(),
     					
-    					new ArmRetract(),
-    					new ElevatorToGround()
     					
     			}), 0, 49),
     			new NestedPathTask(Arrays.asList(new Task[]{
@@ -84,14 +87,16 @@ public class LLRAuto extends AutoMode {
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
     			new FollowPath(Paths.LLRPaths.blockToScale),
     			new NestedPathTask(Arrays.asList(new Task[]{
+    					new IntakeClampAction(),
+    					new IntakeIdle(),
     					new ElevatorToSwitch()
-    			}), 0, 49),
+    			}), 0, 50),
     			new NestedPathTask(Arrays.asList(new Task[]{
     					new ElevatorToScaleHigh()
-    			}), 50, 100)
+    			}), 70, 100)
     			
     	})), 10);
-    	addSequential(new DropAndExhaust(), 1.25);
+    	addSequential(new DropAndExhaust(), .5);
     	
     	//This is where you put tasks    	
 

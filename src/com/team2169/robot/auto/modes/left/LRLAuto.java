@@ -10,6 +10,7 @@ import com.team2169.robot.auto.tasks.FollowPath;
 import com.team2169.robot.auto.tasks.NestedPathTask;
 import com.team2169.robot.auto.tasks.ParallelTask;
 import com.team2169.robot.auto.tasks.Task;
+import com.team2169.robot.auto.tasks.arm.ArmConfig;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
@@ -17,6 +18,7 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
+import com.team2169.robot.auto.tasks.intake.IntakeNeutral;
 import com.team2169.robot.auto.tasks.intake.IntakeUntilHeld;
 import com.team2169.robot.canCycles.cycles.DropAndExhaust;
 
@@ -50,21 +52,24 @@ public class LRLAuto extends AutoMode {
     	addSequential(new ParallelTask(Arrays.asList(new Task[]{
     			new FollowPath(Paths.LRLPaths.startToScale),
     			new NestedPathTask(Arrays.asList(new Task[] {
-    					new ArmRetract(),
-    					new ElevatorToGround(),
-    					new IntakeIdle(),
-    					new IntakeClampAction()
+    					new IntakeClampAction(),
+    					new ArmConfig(),
+    					new ElevatorToSwitch(),
+    					new IntakeIdle()
+    					
     			}), 0, 49),
     			new NestedPathTask(Arrays.asList(new Task[] {
     					new ElevatorToScaleHigh()
-    			}), 50, 100)
+    			}), 80, 100)
     	})), 10);
-    	addSequential(new DropAndExhaust(), 1.25);
+    	addSequential(new DropAndExhaust(), .5);
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
     			new FollowPath(Paths.LRLPaths.scaleToBlock),
     			new NestedPathTask(Arrays.asList(new Task [] {
-    					new ElevatorToGround(),
-    					new ArmRetract()
+    					new IntakeIdle(),
+    					new IntakeNeutral(),
+    					new ElevatorToGround()
+    					
     			}), 20, 49),
     			new NestedPathTask(Arrays.asList(new Task [] {
     					new ArmExtend(),
@@ -73,14 +78,14 @@ public class LRLAuto extends AutoMode {
     	})), 10);
     	
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
-    			new FollowPath(Paths.LRLPaths.blockToScale)
-    	})),5);
-    	addSequential(new ParallelTask(Arrays.asList(new Task[]{
+    			new FollowPath(Paths.LRLPaths.blockToScale),
     			new NestedPathTask(Arrays.asList(new Task [] {
-    					new ElevatorToSwitch(),
+    					new IntakeClampAction(),
+    					new IntakeIdle(),
+    					new ElevatorToSwitch()
     			}), 0, 49),
     	})),5);
-    	addSequential(new DropAndExhaust(), 1.25);    	
+    	addSequential(new DropAndExhaust(), .5);    	
     }
 
 	// Put looping checks/code in here
