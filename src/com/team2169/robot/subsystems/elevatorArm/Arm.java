@@ -81,6 +81,14 @@ public class Arm {
 			armToPos(Constants.retractedArmEncoderPosition);
 			RobotStates.armPos = ArmPos.RETRACTED;
 			break;
+		case CONFIG:
+			armSetOverrideLooper(-0.3);
+			if(arm.getOutputCurrent() >= 15){
+				arm.setSelectedSensorPosition(0, Constants.armData.pidLoopIDx, Constants.armData.timeoutMs);
+				RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
+			}
+			RobotStates.armPos = ArmPos.CONFIG;
+			break;
 
 		}
 
