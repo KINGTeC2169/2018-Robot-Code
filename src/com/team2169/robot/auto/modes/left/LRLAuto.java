@@ -73,7 +73,7 @@ public class LRLAuto extends AutoMode {
     	})), 10);
     	
     	addSequential(new ParallelTask(Arrays.asList(new Task[] {
-    			new FollowPath(Paths.LRLPaths.blockToSwitch)
+    			new FollowPath(Paths.LRLPaths.blockToScale)
     	})),5);
     	addSequential(new ParallelTask(Arrays.asList(new Task[]{
     			new NestedPathTask(Arrays.asList(new Task [] {

@@ -12,46 +12,46 @@ public class Paths {
 		//Brady
 		public static class LLLPaths {
 			public static Waypoint[] startToScale = new Waypoint[] {
-					new Waypoint(49, 20.5, 0), // Starting Point
-					new Waypoint(49, 190, 0),
-					new Waypoint(75, 300, 0),
+					new Waypoint(20.5, 275, 0), // Starting Point
+					new Waypoint(190, 275, 0),
+					new Waypoint(285, 244.0, 0)
 				
 			};
 			
 			public static Waypoint[] scaleToBlock = new Waypoint[] {
-					new Waypoint(75, 285, 0),  // Starting Point 
-					new Waypoint(75, 273, Pathfinder.d2r(180)), 
-					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)) 
+					new Waypoint(285, 244.0, 0),  // Starting Point 
+					new Waypoint(273, 244, Pathfinder.d2r(180)), 
+					new Waypoint(223.56, 230.17, Pathfinder.d2r(180)) 
 			};
 			
 			public static Waypoint[] blockToSwitch = new Waypoint[] {
-					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)), // Starting Point
-					new Waypoint(93.83, 213.56, Pathfinder.d2r(180)), // Final Point
+					new Waypoint(223.56, 230.17, Pathfinder.d2r(180)), // Starting Point
+					new Waypoint(213.56, 230.17, Pathfinder.d2r(180)), // Final Point
 			};
 		}
 		
 		//Tom
 		public static class LRLPaths {
 			public static Waypoint[] startToScale = new Waypoint[] {
-					new Waypoint(49, 20.5, 0), // Starting Point
-					new Waypoint(49, 190, 0),
-					new Waypoint(75, 285, 0)
+					new Waypoint(20.5, 275, 0), // Starting Point
+					new Waypoint(190, 275, 0),
+					new Waypoint(285, 244.0, 0)
 			};
 			
 			public static Waypoint[] scaleToBlock = new Waypoint[] {
-					new Waypoint(75, 285, 0),  // Starting Point 
-					new Waypoint(75, 273, Pathfinder.d2r(180)), 
-					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)) 
+					new Waypoint(285, 244.0, 0),  // Starting Point 
+					new Waypoint(273, 244, Pathfinder.d2r(180)), 
+					new Waypoint(223.56, 230.17, Pathfinder.d2r(180)) 
 			};
 			
-			public static Waypoint[] blockToSwitch = new Waypoint[] {
-					new Waypoint(93.83, 223.56, Pathfinder.d2r(180)), // Starting Point
-					new Waypoint(75, 285, Pathfinder.d2r(0)),// Final Point
+			public static Waypoint[] blockToScale = new Waypoint[] {
+					new Waypoint(223.56, 230.17, Pathfinder.d2r(180)),
+					new Waypoint(275, 244, 0),// Final Point
 			};
 			
 			public static Waypoint[] turnAndPlace = new Waypoint[] {
-					new Waypoint(75, 285, Pathfinder.d2r(0)), // Starting Point
-					new Waypoint(75, 286, Pathfinder.d2r(0)) // Final Point
+					new Waypoint(275, 244, 0), // Starting Point
+					new Waypoint(285, 244, 0) // Final Point
 			};
 		}
 		
@@ -98,6 +98,50 @@ public class Paths {
 					new Waypoint(244, 300, Pathfinder.d2r(0)),
 			};		
 			
+		}
+		public static class RLLPaths{
+			public static Waypoint[] startToScale = new Waypoint[] {
+					new Waypoint(20.5, 49, 0), // Starting Point
+					new Waypoint(190, 49, 0),
+					new Waypoint(285, 80, 0),
+				
+			};
+			
+			public static Waypoint[] scaleToBlock = new Waypoint[] {
+					new Waypoint(285, 80, 0),  // Starting Point 
+					new Waypoint(273, 80, Pathfinder.d2r(180)), 
+					new Waypoint(223.56, 93.83, Pathfinder.d2r(180)) 
+			};
+			
+			public static Waypoint[] blockToSwitch = new Waypoint[] {
+					new Waypoint(223.56, 93.83, Pathfinder.d2r(180)), // Starting Point
+					new Waypoint(213.56, 93.83, Pathfinder.d2r(180)), // Final Point
+			};
+			
+		}
+		
+		public static class RRLPaths{
+			public static Waypoint[] startToScale = new Waypoint[] {
+					new Waypoint(20.5, 49, 0), // Starting Point
+					new Waypoint(190, 49, 0),
+					new Waypoint(285, 80, 0)
+			};
+			
+			public static Waypoint[] scaleToBlock = new Waypoint[] {
+					new Waypoint(285, 80, 0),  // Starting Point 
+					new Waypoint(273, 80, Pathfinder.d2r(180)), 
+					new Waypoint(223.56, 93.83, Pathfinder.d2r(180)) 
+			};
+			
+			public static Waypoint[] blockToScale = new Waypoint[] {
+					new Waypoint(223.56, 93.83, Pathfinder.d2r(180)), // Starting Point
+					new Waypoint(275, 80, 0),// Final Point
+			};
+			
+			public static Waypoint[] turnAndPlace = new Waypoint[] {
+					new Waypoint(275, 80, 0), // Starting Point
+					new Waypoint(285, 80, 0) // Final Point
+			};
 		}
 		
 		public static class JeffPaths {
