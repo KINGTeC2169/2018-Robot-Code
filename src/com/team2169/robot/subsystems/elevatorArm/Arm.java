@@ -40,7 +40,7 @@ public class Arm {
 
 	public void pushToDashboard() {
 		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
-		SmartDashboard.putNumber("ARM_CURRENT", arm.getOutputCurrent());
+		SmartDashboard.putNumber("Arm_Current", arm.getOutputCurrent());
 	}
 
 	private void armToPos(int pos) {

@@ -461,12 +461,12 @@ public class DriveTrain extends Subsystem {
 			toFollow = Pathfinder.readFromCSV(trajectory);
 		}
 
-		TankModifier modifier = new TankModifier(toFollow).modify(Constants.wheelBaseWidth);
+		TankModifier modifier = new TankModifier(toFollow).modify(PathfinderData.wheel_base_width);
 		PathfinderData.last_gyro_error = 0.0;
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 		left.configureEncoder(leftMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
-				Constants.wheelDiameter);
+				PathfinderData.wheel_diameter);
 		right.configureEncoder(rightMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
 				Constants.wheelDiameter);
 		left.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv,
@@ -563,9 +563,9 @@ public class DriveTrain extends Subsystem {
 		public static final double max_acceleration = 3.8;
 		public static final double ka = 0.05;
 		public static final double max_jerk = 16.0;
-		public static final double wheel_diameter = 0.1524;
+		public static final double wheel_diameter = 6;
 
-		public static final double wheel_base_width = 0.635;
+		public static final double wheel_base_width = 25;
 		public static final int ticks_per_rev = 4096;
 		public static final double dt = 0.02;
 
