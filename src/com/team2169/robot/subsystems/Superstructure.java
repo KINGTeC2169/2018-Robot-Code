@@ -11,8 +11,6 @@ import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Superstructure {
 
 	private static Superstructure sInstance = null;
@@ -30,7 +28,7 @@ public class Superstructure {
 	private ElevatorArm liftArm;
 	private Compressor comp;
 
-	private int gyroContCount = 0;
+
 
 	public Superstructure() {
 

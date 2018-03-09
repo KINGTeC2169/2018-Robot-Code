@@ -19,7 +19,7 @@ public class IntakeUntilHeld extends Task {
 
 	protected boolean isFinished(){
 		
-		return RobotStates.blockHeld;
+		return RobotStates.ultraAverage;
 		
 	}
 	

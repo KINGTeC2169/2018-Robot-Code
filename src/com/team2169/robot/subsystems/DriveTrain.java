@@ -448,19 +448,20 @@ public class DriveTrain extends Subsystem {
 				Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
 				PathfinderData.max_acceleration, PathfinderData.max_jerk);
 		String pathHash = String.valueOf(path.hashCode());
+		String configHash = String.valueOf(cfg.hashCode());
 		SmartDashboard.putString("Path Hash", pathHash);
 		Trajectory toFollow;// = Pathfinder.generate(path, cfg);
-		File trajectory = new File("/home/lvuser/paths/" + pathHash + ".csv");
+		File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
 		if (!trajectory.exists()) {
 			toFollow = Pathfinder.generate(path, cfg);
 			Pathfinder.writeToCSV(trajectory, toFollow);
-			System.out.println(pathHash + ".csv not found, wrote to file");
+			System.out.println(pathHash + configHash + ".csv not found, wrote to file");
 		} else {
-			System.out.println(pathHash + ".csv read from file");
+			System.out.println(pathHash + configHash +".csv read from file");
 			toFollow = Pathfinder.readFromCSV(trajectory);
 		}
 
-		TankModifier modifier = new TankModifier(toFollow).modify(Constants.wheelDiameter);
+		TankModifier modifier = new TankModifier(toFollow).modify(Constants.wheelBaseWidth);
 		PathfinderData.last_gyro_error = 0.0;
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
