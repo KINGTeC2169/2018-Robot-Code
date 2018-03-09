@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 		}
 		superStructure.reinstance();
 		Scheduler.getInstance().removeAll();
-		RobotStates.armPos = ArmPos.CONFIG;
+		RobotStates.armPos =  ArmPos.CONFIG;
 
 	}
 
@@ -107,9 +107,14 @@ public class Robot extends IterativeRobot {
 		// Stop all subsystems here
 
 	}
-
+	
+	@Override
+	public void testInit(){
+		superStructure.startCompressor();
+	}
 	@Override
 	public void testPeriodic() {
+		
 	}
 
 }

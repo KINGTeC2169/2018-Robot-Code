@@ -67,22 +67,14 @@ public class Superstructure {
 			DriverStation.reportWarning("Superstructure Init Finished", false);
 		}
 
+		this.startCompressor();
+
+	}
+	public void startCompressor(){
 		comp.start();
-
 	}
 
-	public void updateGyro() {
-		RobotStates.gyroAngle = drive.getAngle();
-		SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
-	}
 
-	public void updateGyroContinuosly() {
-		if (gyroContCount == 5) {
-			updateGyro();
-			gyroContCount = 0;
-		}
-		gyroContCount++;
-	}
 
 	public void subsystemLooper() {
 		drive.pushToDashboard();
