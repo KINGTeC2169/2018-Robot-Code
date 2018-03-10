@@ -11,8 +11,6 @@ import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Superstructure {
 
 	private static Superstructure sInstance = null;
@@ -30,7 +28,7 @@ public class Superstructure {
 	private ElevatorArm liftArm;
 	private Compressor comp;
 
-	private int gyroContCount = 0;
+
 
 	public Superstructure() {
 
@@ -67,22 +65,18 @@ public class Superstructure {
 			DriverStation.reportWarning("Superstructure Init Finished", false);
 		}
 
-		comp.start();
+		this.startCompressor();
 
 	}
+	public void startCompressor(){
+		comp.start();
 	
 	public void updateGyro() {
 		RobotStates.gyroAngle = drive.getAngle();
 		SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
 	}
 
-	public void updateGyroContinuosly() {
-		if (gyroContCount == 5) {
-			updateGyro();
-			gyroContCount = 0;
-		}
-		gyroContCount++;
-	}
+
 
 	public void subsystemLooper() {
 		drive.pushToDashboard();
@@ -94,7 +88,7 @@ public class Superstructure {
 		drive.pushToDashboard();
 
 	}
-
+	
 	public void zeroAllSensors() {
 
 		drive.zeroSensors();

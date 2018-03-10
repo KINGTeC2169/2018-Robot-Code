@@ -135,7 +135,7 @@ public class AutoManager {
 
 	public void autoLooping() {
 
-		// auto.looper();
+		auto.looper();
 
 	}
 

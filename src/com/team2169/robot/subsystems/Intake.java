@@ -37,7 +37,6 @@ public class Intake extends Subsystem {
 	DoubleSolenoid clampSolenoid;
 
 	public Intake() {
-		// blockPastPositions = new int[20];
 		ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
 		left = new TalonSRX(ActuatorMap.leftIntakeID);
 		right = new TalonSRX(ActuatorMap.rightIntakeID);
@@ -88,6 +87,7 @@ public class Intake extends Subsystem {
 		else return false;
 	}
 	public void ultrasonicHandler(){
+		RobotStates.blockHeld = (RobotStates.intakeClamp == IntakeClamp.CLAMP) && RobotStates.ultraAverage;
 		RobotStates.ultraWithinRange = (getBlockDistance() <= Constants.maxUltraTriggerDistance
 				&& getBlockDistance() >= Constants.minUltraTriggerDistance);
 		storeBlockHistory(RobotStates.ultraWithinRange);
@@ -104,7 +104,7 @@ public class Intake extends Subsystem {
 	}
 
 	public void intakeHandler() {
-		//ultrasonicHandler();
+		ultrasonicHandler();
 		
 		if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraAverage) {
 			RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;

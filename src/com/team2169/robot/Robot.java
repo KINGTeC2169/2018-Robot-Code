@@ -1,5 +1,6 @@
 package com.team2169.robot;
 
+import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoManager;
 import com.team2169.robot.canCycles.CANCycleHandler;
@@ -74,6 +75,7 @@ public class Robot extends IterativeRobot {
 		}
 		superStructure.reinstance();
 		Scheduler.getInstance().removeAll();
+		RobotStates.armPos =  ArmPos.CONFIG;
 
 	}
 
@@ -105,9 +107,14 @@ public class Robot extends IterativeRobot {
 		// Stop all subsystems here
 
 	}
-
+	
+	@Override
+	public void testInit(){
+		superStructure.startCompressor();
+	}
 	@Override
 	public void testPeriodic() {
+		
 	}
 
 }

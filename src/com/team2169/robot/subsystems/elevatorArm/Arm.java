@@ -40,7 +40,7 @@ public class Arm {
 
 	public void pushToDashboard() {
 		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
-		SmartDashboard.putNumber("ARM_CURRENT", arm.getOutputCurrent());
+		SmartDashboard.putNumber("Arm_Current", arm.getOutputCurrent());
 	}
 
 	private void armToPos(int pos) {
@@ -80,6 +80,14 @@ public class Arm {
 		case RETRACTED:
 			armToPos(Constants.retractedArmEncoderPosition);
 			RobotStates.armPos = ArmPos.RETRACTED;
+			break;
+		case CONFIG:
+			armSetOverrideLooper(0.3);
+			if(arm.getOutputCurrent() >= 15){
+				arm.setSelectedSensorPosition(0, Constants.armData.pidLoopIDx, Constants.armData.timeoutMs);
+				RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
+			}
+			RobotStates.armPos = ArmPos.CONFIG;
 			break;
 
 		}
