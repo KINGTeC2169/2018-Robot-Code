@@ -24,6 +24,12 @@ public class RobotStates {
 	}
 
 	public static StartingPosition startingPosition;
+	
+	public static enum AutoMode{
+		SEGMENTED, CONTINUOUS
+	}
+	
+	public static AutoMode autoMode;
 
 	// RunningMode Handler
 	public static enum RunningMode {
