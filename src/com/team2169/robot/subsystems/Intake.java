@@ -46,6 +46,7 @@ public class Intake extends Subsystem {
 		clampSolenoid = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.clampPortForward,
 				ActuatorMap.clampPortReverse);
 		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+		
 		ultra.setAutomaticMode(true);
 		blockHeldHistory = new ArrayList<Double>();
 		for(int i = 0; i > 20; i++){
