@@ -516,7 +516,7 @@ public class DriveTrain extends Subsystem {
 
 		PathfinderData.last_gyro_error = angleDifference;
 
-		if ((left != null && !left.isFinished()) && (right != null && !right.isFinished()) /*(Math.abs(angleDifference) >= 3)*/) {
+		if ((left != null && !left.isFinished()) && (right != null && !right.isFinished()) && (Math.abs(angleDifference) >= 3)) {
 			
 			SmartDashboard.putNumber("Turn", turn);
 			SmartDashboard.putNumber("Left diff", left.getSegment().x + this.getEncoderDistanceLeft());
@@ -533,14 +533,14 @@ public class DriveTrain extends Subsystem {
 			SmartDashboard.putNumber("Angle offset - h", angleDifference - PathfinderData.last_gyro_error);
 		}
 		if (!reverse) {
-			//drive(-l + tura -r - turn);
-			drive(-l, -r);
+			drive(-l + turn, -r - turn);
+			//drive(-l, -r);
 		} else {
-			//drive(l + turn, r - turn);
-			drive(l, r);
+			drive(l + turn, r - turn);
+			//drive(l, r);
 		}
 
-		if (left.isFinished() && right.isFinished() /*(Math.abs(angleDifference) <= 3)*/) {
+		if (left.isFinished() && right.isFinished() && (Math.abs(angleDifference) <= 3)) {
 			isProfileFinished = true;
 			PathfinderData.path_angle_offset = angleDifference;
 		}
@@ -557,10 +557,10 @@ public class DriveTrain extends Subsystem {
 
 	public static class PathfinderData {
 
-		public static double kp = 0.0005;
-		public static double kd = 0.0;
-		public static double gp = 0.0035;
-		public static double gd = 0.0001;
+		public static double kp = 0.00035;
+		public static double kd = 0.00001;
+		public static double gp = 0.00075;
+		public static double gd = 0.00004;
 
 		public static double ki = 0.0;
 
