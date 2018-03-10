@@ -32,12 +32,12 @@ public class ControlMap {
 	 * = 10; static int bMacroHang = 11;
 	 */
 
-	static int bMacroGround = 11;
-	static int bMacroSwitch = 9;
-	static int bMacroScaleLow = 7;
-	static int bMacroScaleMid = 12;
-	static int bMacroScaleHigh = 10;
-	static int bMacroHang = 8;
+	static int bMacroGround = 1;
+	static int bMacroSwitch = 2;
+	static int bMacroScaleLow = 3;
+	static int bMacroScaleMid = 4;
+	static int bMacroScaleHigh = 5;
+	static int bMacroHang = 6;
 
 	private static final int wantsUltrasonic = 1;
 
@@ -64,7 +64,7 @@ public class ControlMap {
 		primaryLeft = new Joystick(0);
 		primaryRight = new Joystick(1);
 		operator = new Joystick(2);
-		buttonBoard = new Joystick(2);
+		buttonBoard = new Joystick(3);
 
 	}
 

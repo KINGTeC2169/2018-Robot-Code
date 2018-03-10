@@ -50,7 +50,7 @@ public class Arm {
 	}
 
 	private void armSetOverrideLooper(double joystickValue) {
-		arm.set(ControlMode.PercentOutput, -joystickValue);
+		arm.set(ControlMode.PercentOutput, joystickValue);
 		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
 	}
 

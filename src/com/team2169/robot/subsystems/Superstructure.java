@@ -70,6 +70,10 @@ public class Superstructure {
 	}
 	public void startCompressor(){
 		comp.start();
+	
+	public void updateGyro() {
+		RobotStates.gyroAngle = drive.getAngle();
+		SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
 	}
 
 

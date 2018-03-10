@@ -62,7 +62,7 @@ public class Constants {
 	public static double hangElevatorEncoderInches = 65;
 
 	public static int extendedArmEncoderPosition = 0;
-	public static int retractedArmEncoderPosition = -950;
+	public static int retractedArmEncoderPosition = -600;
 
 	public static TalonConfig elevatorData = new TalonConfig();
 
@@ -114,7 +114,7 @@ public class Constants {
 	public static int groundElevatorEncoderPosition = 0;
 	public static int switchElevatorEncoderPosition = 4000;
 	public static int scaleLowElevatorEncoderPosition = 9000;
-	public static int scaleMidElevatorEncoderPosition = 14000;
+	public static int scaleMidElevatorEncoderPosition = 17000;
 	public static int scaleHighElevatorEncoderPosition = 19500;
 	public static int hangElevatorEncoderPosition = 37549 / 2;
 
