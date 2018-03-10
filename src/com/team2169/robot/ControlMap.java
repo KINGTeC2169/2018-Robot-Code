@@ -23,7 +23,7 @@ public class ControlMap {
 	static int clampButton = 5;
 	static int dropButton = 3;
 	private static int neutralButton = 4;
-	static int dropAndExhaustButton = 6;
+	static int dropAndExhaustButton = 100;
 
 	// Elevator Macro Keys
 	/*
@@ -110,11 +110,11 @@ public class ControlMap {
 	}
 
 	public static boolean armExtendPressed() {
-		return operator.getPOV() == 0;
+		return operator.getPOV() == 180;
 	}
 
 	public static boolean armRetractPressed() {
-		return operator.getPOV() == 180;
+		return operator.getPOV() == 0;
 	}
 
 	// Macro Buttons

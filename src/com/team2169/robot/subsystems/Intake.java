@@ -35,6 +35,8 @@ public class Intake extends Subsystem {
 	private TalonSRX right;
 	DoubleSolenoid dropSolenoid;
 	DoubleSolenoid clampSolenoid;
+	int i = 0;
+	int a = 0;
 
 	public Intake() {
 		ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
@@ -146,11 +148,22 @@ public class Intake extends Subsystem {
 		case NEUTRAL:
 		default:
 
+			a = 0;
+			if(i < 5) {
+				i++;
+				clampSolenoid.set(Value.kForward);
+				dropSolenoid.set(Value.kReverse);
+				break;
+			}
+			else {
+				clampSolenoid.set(Value.kReverse);
+				dropSolenoid.set(Value.kReverse);
+				RobotStates.intakeClamp = IntakeClamp.NEUTRAL;
+				break;
+			}
+			
 			// Set Clamp to Neutral
-			clampSolenoid.set(Value.kReverse);
-			dropSolenoid.set(Value.kReverse);
-			RobotStates.intakeClamp = IntakeClamp.NEUTRAL;
-			break;
+			
 
 		case CLAMP:
 
@@ -158,11 +171,22 @@ public class Intake extends Subsystem {
 			clampSolenoid.set(Value.kForward);
 			dropSolenoid.set(Value.kReverse);
 			RobotStates.intakeClamp = IntakeClamp.CLAMP;
+			a = 0;
+			i = 0;
 			break;
 
 		case DROP:
 
+			i = 0;
+			
 			// Set Clamp to Drop
+			if(a > 50) {
+				RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
+				a++;
+			}
+			else {
+				RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+			}
 			clampSolenoid.set(Value.kReverse);
 			dropSolenoid.set(Value.kForward);
 			RobotStates.intakeClamp = IntakeClamp.DROP;

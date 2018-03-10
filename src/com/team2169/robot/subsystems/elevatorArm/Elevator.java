@@ -231,7 +231,29 @@ public class Elevator {
 	}
 
 	private void elevatorManual(double power) {
-		elevator.set(ControlMode.PercentOutput, -power);
+		int position = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
+		System.out.println(position);
+		if(position < 14000 && position > 12000) {
+			elevator.set(ControlMode.PercentOutput, -power * .75);
+			System.out.println("Mid");
+		}
+		else if(position < 1500) {
+			elevator.set(ControlMode.PercentOutput, -power * .5);
+			System.out.println("Mid");
+		}
+		else if(position < 1500 &&  position > 2000) {
+			elevator.set(ControlMode.PercentOutput, -power * .75);
+			System.out.println("Mid");
+		}
+		else if(position > 14000) {
+			elevator.set(ControlMode.PercentOutput, -power * .5);
+			System.out.println("Slow");
+		}
+		else {
+			elevator.set(ControlMode.PercentOutput, -power);
+			System.out.println("Fast");
+	
+		}
 	}
 
 	private void elevatorToPos(int pos) {
@@ -270,6 +292,7 @@ public class Elevator {
 	
 	void setPID(int direction) {
 		
+		/*
 		//Going Down
 		if(direction == 0) {
 			elevator.config_kP(0, table.getNumber("p0", 0), 10);
@@ -295,6 +318,26 @@ public class Elevator {
 			System.out.println(table.getNumber("f1", -1));
 			SmartDashboard.putString("Direction", "Going Up");
 		}
+		*/
+		
+		//Going Down
+				if(direction == 0) {
+					elevator.config_kP(0, .15, 10);
+					elevator.config_kI(0, 0, 10);
+					elevator.config_kD(0, .25, 10);
+					elevator.config_kF(0, .005, 10);
+					SmartDashboard.putString("Direction", "Going Down");
+				}
+				
+				//Going Up
+				else if(direction == 1) {
+					elevator.config_kP(0, .35, 10);
+					elevator.config_kI(0, 0, 10);
+					elevator.config_kD(0, .15, 10);
+					elevator.config_kF(0, .015, 10);
+					SmartDashboard.putString("Direction", "Going Up");
+				}
+		
 		
 
 		

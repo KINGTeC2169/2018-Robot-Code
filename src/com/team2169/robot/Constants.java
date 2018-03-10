@@ -61,7 +61,7 @@ public class Constants {
 	public static double hangElevatorEncoderInches = 65;
 
 	public static int extendedArmEncoderPosition = 0;
-	public static int retractedArmEncoderPosition = -600;
+	public static int retractedArmEncoderPosition = -800;
 
 	public static TalonConfig elevatorData = new TalonConfig();
 
