@@ -11,6 +11,7 @@ import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Superstructure {
 
 	private static Superstructure sInstance = null;
@@ -70,6 +71,7 @@ public class Superstructure {
 	}
 	public void startCompressor(){
 		comp.start();
+	}
 	
 	public void updateGyro() {
 		RobotStates.gyroAngle = drive.getAngle();
