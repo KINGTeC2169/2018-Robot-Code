@@ -7,8 +7,8 @@ import com.team2169.robot.Constants;
 import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.util.TalonMaker;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,9 +20,10 @@ public class Elevator {
 	// Create Talons
 	private TalonSRX elevator;
 	private TalonSRX elevatorSlave;
-	private int position;
-	//private AnalogInput topLimit;
-	//private AnalogInput bottomLimit;
+	private int position;	
+	private DigitalInput topLimit;
+	private DigitalInput bottomLimit;
+	private int heightPos;
 
 	NetworkTable table = NetworkTable.getTable("SmartDashboard");
 
@@ -41,26 +42,38 @@ public class Elevator {
 		elevator.configPeakCurrentDuration(500, Constants.elevatorData.timeoutMs);
 		elevatorSlave.configPeakCurrentDuration(500, Constants.elevatorData.timeoutMs);
 		
-		elevator.configClosedloopRamp(.25, 10);
-		elevatorSlave.configClosedloopRamp(.25, 10);
+		elevator.configPeakOutputForward(.5, 10);
+		elevator.configPeakOutputReverse(-.5, 10);
+		elevator.configClosedloopRamp(.75, 10);
+		elevatorSlave.configClosedloopRamp(.75, 10);
 		
-		//topLimit = new AnalogInput(ActuatorMap.elevatorTopLimitID);
-		//bottomLimit = new AnalogInput(ActuatorMap.elevatorBottomLimitID);
+		topLimit = new DigitalInput(ActuatorMap.elevatorTopLimitID);
+		bottomLimit = new DigitalInput(ActuatorMap.elevatorBottomLimitID);
 
 		// Pull Constants Data for Elevator
-		Constants.setElevatorDataFromConstants();
+		//Constants.setElevatorDataFromConstants();
 
 		// Apply Talon Settings
-		elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
+		//elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
+		
+		table.putNumber("p0", 0);
+		table.putNumber("i0", 0);
+		table.putNumber("d0", 0);
+		table.putNumber("f0", 0);
+		table.putNumber("p1", 0);
+		table.putNumber("i1", 0);
+		table.putNumber("d1", 0);
+		table.putNumber("f1", 0);
+		
 	}
 
 	public void elevatorMacroLooper() {
 		
 		
-		//SmartDashboard.putNumber("topLimit", topLimit.getValue());
-		//SmartDashboard.putNumber("bottomLimit", bottomLimit.getValue());
-		// getLimits();
-		// set robot's actual state to WantedState's value
+		SmartDashboard.putBoolean("topLimit", topLimit.get());
+		SmartDashboard.putBoolean("bottomLimit", bottomLimit.get());
+		getLimits();
+
 		switch (RobotWantedStates.wantedElevatorPos) {
 
 		case OVERRIDE:
@@ -82,7 +95,17 @@ public class Elevator {
 		case GROUND:
 
 			// CANCycle for Ground Position
+			//Coming Down
+			if(heightPos > 0) {
+				setPID(0);
+			}
+			//Going Up
+			else if(heightPos < 0){
+				setPID(1);
+			}
 
+			heightPos = 0;
+			
 			// Actuate the Motor
 			elevatorToPos(Constants.groundElevatorEncoderPosition);
 
@@ -94,6 +117,17 @@ public class Elevator {
 
 			// CANCycle Hang Position
 
+			//Coming Down
+			if(heightPos > 5) {
+				setPID(0);
+			}
+			//Going Up
+			else if(heightPos < 5){
+				setPID(1);
+			}
+
+			heightPos = 5;
+			
 			// Actuate the Motor
 			elevatorToPos(Constants.hangElevatorEncoderPosition);
 
@@ -104,7 +138,16 @@ public class Elevator {
 		case SCALE_HIGH:
 
 			// CANCycle for (High) Position
+			//Coming Down
+			if(heightPos > 4) {
+				setPID(0);
+			}
+			//Going Up
+			else if(heightPos < 4){
+				setPID(1);
+			}
 
+			heightPos = 4;
 			// Actuate the Motor
 			elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
 
@@ -115,7 +158,17 @@ public class Elevator {
 		case SCALE_MID:
 
 			// CANCycle for Scale (Mid) Position
+			//Coming Down
+			if(heightPos > 3) {
+				setPID(0);
+			}
+			//Going Up
+			else if(heightPos < 3){
+				setPID(1);
+			}
 
+			heightPos = 3;
+			
 			// Actuate the Motor
 			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
 
@@ -126,6 +179,17 @@ public class Elevator {
 		case SCALE_LOW:
 
 			// CANCycle for Scale (Low) Position
+			
+			//Coming Down
+			if(heightPos > 2) {
+				setPID(0);
+			}
+			//Going Up
+			else if(heightPos < 2){
+				setPID(1);
+			}
+
+			heightPos = 2;
 
 			// Actuate the Motor
 			elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
@@ -138,6 +202,18 @@ public class Elevator {
 
 			// CANCycle for Switch
 
+			//Coming Down
+			if(heightPos > 1) {
+				setPID(0);
+			}
+			//Going Up
+			else if(heightPos < 1){
+				setPID(1);
+				
+			}
+
+			heightPos = 1;
+			
 			// Actuate the Motor
 			elevatorToPos(Constants.switchElevatorEncoderPosition);
 
@@ -148,14 +224,14 @@ public class Elevator {
 		}
 		SmartDashboard.putNumber("output to motor", elevator.getMotorOutputPercent());
 		SmartDashboard.putNumber("Elevator Error", elevator.getClosedLoopError(0));
-
+		SmartDashboard.putNumber("Height Pos", heightPos);
 		SmartDashboard.putNumber("Elevator Setpoint",
 				elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx));
 
 	}
 
 	private void elevatorManual(double power) {
-		elevator.set(ControlMode.PercentOutput, power);
+		elevator.set(ControlMode.PercentOutput, -power);
 	}
 
 	private void elevatorToPos(int pos) {
@@ -171,34 +247,69 @@ public class Elevator {
 	
 	}
 
-	/*
-	 * void getLimits() {
-	 * 
-	 * //Upper Limit Switch Active if (topLimit.getValue() >
-	 * Constants.elevatorUpperLimit) { elevator.configPeakOutputReverse(0,
-	 * Constants.elevatorData.timeoutMs); } else {
-	 * elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs); }
-	 * 
-	 * //Lower Limit Switch Active if(bottomLimit.getValue() >
-	 * Constants.elevatorLowerLimit) { elevator.configPeakOutputForward(0,
-	 * Constants.elevatorData.timeoutMs); }
-	 * 
-	 * else { elevator.configPeakOutputReverse(1, Constants.elevatorData.timeoutMs);
-	 * } }
-	 */
+	 void getLimits() {
+
+		// Upper Limit Switch Active
+		if (!bottomLimit.get()) {
+			elevator.configPeakOutputReverse(0, Constants.elevatorData.timeoutMs);
+		} 
+		else {
+			elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs);
+		}
+
+		// Lower Limit Switch Active
+		if (!topLimit.get()) {
+			elevator.configPeakOutputForward(0, Constants.elevatorData.timeoutMs);
+
+		}
+		else {
+			elevator.configPeakOutputForward(1, Constants.elevatorData.timeoutMs);
+		}
+	}
+	 
 	
-	void setPID() {
-		elevator.config_kP(0, table.getNumber("p", 0), 10);
-		elevator.config_kI(0, table.getNumber("i", 0), 10);
-		elevator.config_kD(0, table.getNumber("f", 0), 10);
-		elevator.config_kF(0, table.getNumber("p", 0), 10);
+	void setPID(int direction) {
+		
+		//Going Down
+		if(direction == 0) {
+			elevator.config_kP(0, table.getNumber("p0", 0), 10);
+			elevator.config_kI(0, table.getNumber("i0", 0), 10);
+			elevator.config_kD(0, table.getNumber("d0", 0), 10);
+			elevator.config_kF(0, table.getNumber("f0", 0), 10);
+			System.out.println(table.getNumber("p0", -1));
+			System.out.println(table.getNumber("i0", -1));
+			System.out.println(table.getNumber("d0", -1));
+			System.out.println(table.getNumber("f0", -1));
+			SmartDashboard.putString("Direction", "Going Down");
+		}
+		
+		//Going Up
+		else if(direction == 1) {
+			elevator.config_kP(0, table.getNumber("p1", 0), 10);
+			elevator.config_kI(0, table.getNumber("i1", 0), 10);
+			elevator.config_kD(0, table.getNumber("d1", 0), 10);
+			elevator.config_kF(0, table.getNumber("f1", 0), 10);
+			System.out.println(table.getNumber("p1", -1));
+			System.out.println(table.getNumber("i1", -1));
+			System.out.println(table.getNumber("d1", -1));
+			System.out.println(table.getNumber("f1", -1));
+			SmartDashboard.putString("Direction", "Going Up");
+		}
+		
+
+		
+		
+		
+		
+		
+		elevator.valueUpdated();
 	}
 	
 	private void getElevatorFinishedState() {
 
 		if (elevator.getClosedLoopError(Constants.elevatorData.pidLoopIDx) < Constants.elevatorData.allowedError
 				|| elevator
-						.getClosedLoopError(Constants.elevatorData.pidLoopIDx) > -Constants.elevatorData.allowedError) {
+						.getClosedLoopError(Constants.elevatorData.pidLoopIDx) > -Constants.elevatorData.allowedError ) {
 			RobotStates.elevatorInPosition = true;
 		}
 
