@@ -12,7 +12,6 @@ import com.team2169.robot.auto.tasks.ParallelTask;
 import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.auto.tasks.arm.ArmConfig;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
-import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;

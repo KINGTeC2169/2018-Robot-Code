@@ -7,11 +7,11 @@ import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.StateManager;
-import com.team2169.util.DebugPrinter;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Superstructure {
 
 	private static Superstructure sInstance = null;
