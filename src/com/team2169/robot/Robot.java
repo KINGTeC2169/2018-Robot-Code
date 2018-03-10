@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
 		if (auto != null) {
 			auto.endAuto();
 		}
-		superStructure.reinstance();
+		
 		Scheduler.getInstance().removeAll();
 		RobotStates.armPos =  ArmPos.CONFIG;
 

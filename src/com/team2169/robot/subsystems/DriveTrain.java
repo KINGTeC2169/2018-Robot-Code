@@ -113,6 +113,8 @@ public class DriveTrain extends Subsystem {
 		pathCalculationStatus = PathCalculationStatus.IDLE;
 
 	}
+	
+
 
 	void enableRamping() {
 		leftMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
@@ -275,7 +277,9 @@ public class DriveTrain extends Subsystem {
 			break;
 
 		case WANTS_TO_FOLLOW_PATH:
+			
 			RobotStates.driveType = DriveType.WANTS_TO_FOLLOW_PATH;
+			
 			DriverStation.reportWarning("Wanting To Follow Path", false);
 			switch (pathCalculationStatus) {
 			case IDLE:
@@ -393,6 +397,7 @@ public class DriveTrain extends Subsystem {
 	public void pushToDashboard() {
 
 		// Put any SmartDash info here.
+		SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
 		DebugPrinter.driveTrainDebug();
 		SmartDashboard.putNumber("Left Encoder Value: ",
 				leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
@@ -429,6 +434,7 @@ public class DriveTrain extends Subsystem {
 		isProfileFinished = false;
 		resetEncoders();
 		resetGyro();
+		pathCalculationStatus = PathCalculationStatus.IDLE;
 	}
 
 	public void resetPathAngleOffset() {
@@ -445,13 +451,15 @@ public class DriveTrain extends Subsystem {
 		EncoderFollower left = new EncoderFollower();
 		EncoderFollower right = new EncoderFollower();
 		Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
-				Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
+				Trajectory.Config.SAMPLES_LOW, PathfinderData.dt, PathfinderData.max_velocity,
 				PathfinderData.max_acceleration, PathfinderData.max_jerk);
-		String pathHash = String.valueOf(path.hashCode());
-		String configHash = String.valueOf(cfg.hashCode());
-		SmartDashboard.putString("Path Hash", pathHash);
-		Trajectory toFollow;// = Pathfinder.generate(path, cfg);
-		File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
+		DriverStation.reportWarning("config set - drivetrain", false);
+
+		//String pathHash = String.valueOf(path.hashCode());
+		//String configHash = String.valueOf(cfg.hashCode());
+		//SmartDashboard.putString("Path Hash", pathHash);
+		Trajectory toFollow = Pathfinder.generate(path, cfg);
+		/*File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
 		if (!trajectory.exists()) {
 			toFollow = Pathfinder.generate(path, cfg);
 			Pathfinder.writeToCSV(trajectory, toFollow);
@@ -459,7 +467,7 @@ public class DriveTrain extends Subsystem {
 		} else {
 			System.out.println(pathHash + configHash +".csv read from file");
 			toFollow = Pathfinder.readFromCSV(trajectory);
-		}
+		}*/
 
 		TankModifier modifier = new TankModifier(toFollow).modify(PathfinderData.wheel_base_width);
 		PathfinderData.last_gyro_error = 0.0;
@@ -488,7 +496,7 @@ public class DriveTrain extends Subsystem {
 		double r;
 		double localGp = PathfinderData.gp;
 		if (!reverse) {
-			localGp *= -1;
+		//localGp *= -1;
 
 			l = left.calculate(-leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
 			r = right.calculate(-rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
@@ -497,9 +505,9 @@ public class DriveTrain extends Subsystem {
 			r = right.calculate(rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
 		}
 
-		double gyro_heading = reverse ? -getAngle() - PathfinderData.path_angle_offset
-				: getAngle() + PathfinderData.path_angle_offset;
-
+		//double gyro_heading = reverse ? -getAngle() - PathfinderData.path_angle_offset : getAngle() + PathfinderData.path_angle_offset;
+		double gyro_heading = reverse ? -getAngle() : getAngle();
+		//double gyro_heading = getAngle();
 		double angle_setpoint = Pathfinder.r2d(left.getHeading());
 		SmartDashboard.putNumber("Angle setpoint", angle_setpoint);
 		double angleDifference = Pathfinder.boundHalfDegrees(angle_setpoint - gyro_heading);
@@ -510,27 +518,28 @@ public class DriveTrain extends Subsystem {
 
 		PathfinderData.last_gyro_error = angleDifference;
 
-		if (left != null && !left.isFinished()) {
-
+		if ((left != null && !left.isFinished()) && (right != null && !right.isFinished()) && (Math.abs(angleDifference) >= 3)) {
+			
+			SmartDashboard.putNumber("Turn", turn);
 			SmartDashboard.putNumber("Left diff", left.getSegment().x + this.getEncoderDistanceLeft());
 			SmartDashboard.putNumber("Left set vel", left.getSegment().velocity);
 			SmartDashboard.putNumber("Left set pos", left.getSegment().x);
 			SmartDashboard.putNumber("Left calc voltage", l);
 			SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
-			SmartDashboard.putNumber("Left + turn", l + turn);
-			SmartDashboard.putNumber("Right - turn", r + turn);
+			SmartDashboard.putNumber("-Left + turn", -l + turn);
+			SmartDashboard.putNumber("-Right - turn", -r - turn);
+			SmartDashboard.putNumber("Gyro", this.getAngle());
 			SmartDashboard.putNumber("Left seg acceleration", left.getSegment().acceleration);
 			SmartDashboard.putNumber("Path angle offset", PathfinderData.path_angle_offset);
-			SmartDashboard.putNumber("Angle offset w/ new path angle offset",
-					angleDifference + PathfinderData.path_angle_offset);
+			SmartDashboard.putNumber("Angle offset - h", angleDifference - PathfinderData.last_gyro_error);
 		}
 		if (!reverse) {
-			drive(l + turn, r - turn);
-		} else {
 			drive(-l + turn, -r - turn);
+		} else {
+			drive(l + turn, r - turn);
 		}
 
-		if (left.isFinished() && right.isFinished()) {
+		if (left.isFinished() && right.isFinished() && (Math.abs(angleDifference) <= 3)) {
 			isProfileFinished = true;
 			PathfinderData.path_angle_offset = angleDifference;
 		}
@@ -547,10 +556,10 @@ public class DriveTrain extends Subsystem {
 
 	public static class PathfinderData {
 
-		public static double kp = 0.8;
+		public static double kp = 0.0005;
 		public static double kd = 0.0;
-		public static double gp = 0.0375;
-		public static double gd = 0.0;
+		public static double gp = 0.0035;
+		public static double gd = 0.0001;
 
 		public static double ki = 0.0;
 
@@ -563,9 +572,9 @@ public class DriveTrain extends Subsystem {
 		public static final double max_acceleration = 3.8;
 		public static final double ka = 0.05;
 		public static final double max_jerk = 16.0;
-		public static final double wheel_diameter = 6;
+		public static final double wheel_diameter =  0.1498;
 
-		public static final double wheel_base_width = 25;
+		public static final double wheel_base_width = 0.635;
 		public static final int ticks_per_rev = 4096;
 		public static final double dt = 0.02;
 

@@ -78,15 +78,15 @@ public class Superstructure {
 		drive.pushToDashboard();
 		drive.driveHandler();
 		// platform.platformHandler();
-		intake.intakeHandler();
-		liftArm.elevatorArmHandler();
-		DebugPrinter.elevatorDebug();
+		//intake.intakeHandler();
+		//liftArm.elevatorArmHandler();
+		//DebugPrinter.elevatorDebug();
 		drive.pushToDashboard();
 
 	}
 	
 	public void zeroAllSensors() {
-
+		drive.resetForPath();
 		drive.zeroSensors();
 		intake.zeroSensors();
 		platform.zeroSensors();
