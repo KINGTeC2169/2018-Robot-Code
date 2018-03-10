@@ -7,8 +7,6 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
-import java.io.File;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -451,7 +449,7 @@ public class DriveTrain extends Subsystem {
 		EncoderFollower left = new EncoderFollower();
 		EncoderFollower right = new EncoderFollower();
 		Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
-				Trajectory.Config.SAMPLES_LOW, PathfinderData.dt, PathfinderData.max_velocity,
+				Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
 				PathfinderData.max_acceleration, PathfinderData.max_jerk);
 		DriverStation.reportWarning("config set - drivetrain", false);
 
@@ -518,13 +516,14 @@ public class DriveTrain extends Subsystem {
 
 		PathfinderData.last_gyro_error = angleDifference;
 
-		if ((left != null && !left.isFinished()) && (right != null && !right.isFinished()) && (Math.abs(angleDifference) >= 3)) {
+		if ((left != null && !left.isFinished()) && (right != null && !right.isFinished()) /*(Math.abs(angleDifference) >= 3)*/) {
 			
 			SmartDashboard.putNumber("Turn", turn);
 			SmartDashboard.putNumber("Left diff", left.getSegment().x + this.getEncoderDistanceLeft());
 			SmartDashboard.putNumber("Left set vel", left.getSegment().velocity);
 			SmartDashboard.putNumber("Left set pos", left.getSegment().x);
 			SmartDashboard.putNumber("Left calc voltage", l);
+			SmartDashboard.putNumber("Right calc voltage", r);
 			SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
 			SmartDashboard.putNumber("-Left + turn", -l + turn);
 			SmartDashboard.putNumber("-Right - turn", -r - turn);
@@ -534,12 +533,14 @@ public class DriveTrain extends Subsystem {
 			SmartDashboard.putNumber("Angle offset - h", angleDifference - PathfinderData.last_gyro_error);
 		}
 		if (!reverse) {
-			drive(-l + turn, -r - turn);
+			//drive(-l + tura -r - turn);
+			drive(-l, -r);
 		} else {
-			drive(l + turn, r - turn);
+			//drive(l + turn, r - turn);
+			drive(l, r);
 		}
 
-		if (left.isFinished() && right.isFinished() && (Math.abs(angleDifference) <= 3)) {
+		if (left.isFinished() && right.isFinished() /*(Math.abs(angleDifference) <= 3)*/) {
 			isProfileFinished = true;
 			PathfinderData.path_angle_offset = angleDifference;
 		}

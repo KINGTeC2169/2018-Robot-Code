@@ -104,7 +104,7 @@ public class Intake extends Subsystem {
 	}
 
 	public void intakeHandler() {
-		ultrasonicHandler();
+		//ultrasonicHandler();
 		
 		if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraAverage) {
 			RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;

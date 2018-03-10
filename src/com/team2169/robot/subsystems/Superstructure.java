@@ -78,8 +78,8 @@ public class Superstructure {
 		drive.pushToDashboard();
 		drive.driveHandler();
 		// platform.platformHandler();
-		//intake.intakeHandler();
-		//liftArm.elevatorArmHandler();
+		intake.intakeHandler();
+		liftArm.elevatorArmHandler();
 		//DebugPrinter.elevatorDebug();
 		drive.pushToDashboard();
 
