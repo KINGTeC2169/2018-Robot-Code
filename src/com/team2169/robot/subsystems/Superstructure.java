@@ -86,13 +86,13 @@ public class Superstructure {
 		// platform.platformHandler();
 		intake.intakeHandler();
 		liftArm.elevatorArmHandler();
-		DebugPrinter.elevatorDebug();
+		//DebugPrinter.elevatorDebug();
 		drive.pushToDashboard();
 
 	}
 	
 	public void zeroAllSensors() {
-
+		drive.resetForPath();
 		drive.zeroSensors();
 		intake.zeroSensors();
 		platform.zeroSensors();

@@ -71,9 +71,9 @@ public class Constants {
 		elevatorData.pidLoopIDx = 0;
 		elevatorData.timeoutMs = 10;
 		elevatorData.allowedError = 2;
-		elevatorData.p = .35;
-		elevatorData.i = .6;
-		elevatorData.d = .15;
+		elevatorData.p = .15;
+		elevatorData.i = 0;
+		elevatorData.d = 0;
 		elevatorData.f = 0;
 		elevatorData.sensorPhase = false;
 
