@@ -115,10 +115,10 @@ public class StateManager {
 			// Intake Wheel States
 			if (ControlMap.getOperatorStickValue() < -ControlMap.operatorDeadband) {
 				CANCycleHandler.cancelArmElevatorCycles();
-				RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
+				RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
 			} else if (ControlMap.getOperatorStickValue() > ControlMap.operatorDeadband) {
 				CANCycleHandler.cancelArmElevatorCycles();
-				RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
+				RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
 			} else if (!RobotStates.canCycleMode) {
 				RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
 			}

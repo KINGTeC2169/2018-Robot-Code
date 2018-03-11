@@ -23,7 +23,7 @@ public class ControlMap {
 	static int clampButton = 5;
 	static int dropButton = 3;
 	private static int neutralButton = 4;
-	static int dropAndExhaustButton = 6;
+	static int dropAndExhaustButton = 100;
 
 	// Elevator Macro Keys
 	/*
@@ -43,6 +43,7 @@ public class ControlMap {
 
 	// Intake Keys
 	static int operatorAxis = 1;
+	static int twistAxis = 2;
 
 	// Climb Keys
 	static int climbPrimary = 10;
@@ -110,11 +111,11 @@ public class ControlMap {
 	}
 
 	public static boolean armExtendPressed() {
-		return operator.getPOV() == 0;
+		return operator.getPOV() == 180;
 	}
 
 	public static boolean armRetractPressed() {
-		return operator.getPOV() == 180;
+		return operator.getPOV() == 0;
 	}
 
 	// Macro Buttons
@@ -178,7 +179,15 @@ public class ControlMap {
 			operatorStickState = OperatorStickState.INTAKE;
 		}
 	}
+	
+	public static boolean getArmZero() {
+		return operator.getRawButton(11);
+	}
 
+	public static double getOperatorTwistValue() {
+		return operator.getRawAxis(twistAxis);
+	}
+	
 	// Operator Override Handlers
 	public static double getOperatorStickValue() {
 		return -operator.getRawAxis(operatorAxis);

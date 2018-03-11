@@ -32,7 +32,7 @@ public class Robot extends TimedRobot{
 		CANCycleHandler.createCycles();
 		superStructure = new Superstructure();
 		shuffle = new ShuffleBoardManager();
-		// camera.startCameraServer(true, true, true);
+		camera.startCameraServer(true, false, false);
 		SmartDashboard.putBoolean("isRunning", false);
 		ControlMap.init();
 		superStructure.robotInit();
