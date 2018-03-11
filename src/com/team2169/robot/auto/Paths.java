@@ -6,7 +6,8 @@ import jaci.pathfinder.Waypoint;
 public class Paths {
 	public static Waypoint[] example = new Waypoint[] {
 			new Waypoint(0, 0, 0), 
-			new Waypoint(1, 1, 0)
+			new Waypoint(1, 1, 0),
+			new Waypoint(2, 0, 0)
 	};
 	//Bill
 	public static class CLLPaths {

@@ -15,11 +15,12 @@ public class FollowPathInMeters extends Task {
 	public double LeftPos;
 	DriveTrain drive = DriveTrain.getInstance();
 	public FollowPathInMeters(Waypoint[] points) {
-		for(Waypoint h : points){
+		RobotStates.currentPath = points;
+		for(Waypoint h : RobotStates.currentPath){
 			h.x = h.x * 0.0254;
 			h.y = h.y * 0.0254;
 		}
-		RobotStates.currentPath = points;
+		
 		DriverStation.reportWarning("Path Created", false);
 	}
 

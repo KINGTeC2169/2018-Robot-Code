@@ -132,7 +132,9 @@ public class RobotStates {
 	}
 
 	public static PathfinderState pathfinderState;
-
+	public static int leftPathTotalSegments;
+	public static int rightPathTotalSegments;
+	
 	public static double leftPathCompletionPercent;
 	public static double rightPathCompletionPercent;
 	
