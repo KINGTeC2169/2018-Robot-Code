@@ -76,6 +76,7 @@ public class RobotStates {
 	public static enum IntakeClamp {
 
 		CLAMP, NEUTRAL, DROP
+		
 	}
 
 	public static IntakeClamp intakeClamp;

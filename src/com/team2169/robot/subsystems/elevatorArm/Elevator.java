@@ -232,26 +232,20 @@ public class Elevator {
 
 	private void elevatorManual(double power) {
 		int position = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
-		System.out.println(position);
 		if(position < 14000 && position > 12000) {
 			elevator.set(ControlMode.PercentOutput, -power * .75);
-			System.out.println("Mid");
 		}
 		else if(position < 1500) {
-			elevator.set(ControlMode.PercentOutput, -power * .5);
-			System.out.println("Mid");
+			elevator.set(ControlMode.PercentOutput, -power * .33);
 		}
-		else if(position < 1500 &&  position > 2000) {
+		else if(position < 1500 &&  position > 4000) {
 			elevator.set(ControlMode.PercentOutput, -power * .75);
-			System.out.println("Mid");
 		}
 		else if(position > 14000) {
 			elevator.set(ControlMode.PercentOutput, -power * .5);
-			System.out.println("Slow");
 		}
 		else {
 			elevator.set(ControlMode.PercentOutput, -power);
-			System.out.println("Fast");
 	
 		}
 	}

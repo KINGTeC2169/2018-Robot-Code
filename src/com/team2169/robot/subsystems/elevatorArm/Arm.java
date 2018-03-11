@@ -16,6 +16,7 @@ public class Arm {
 
 	// Create Talons
 	private TalonSRX arm;
+	int oldArmPos = 0;
 	private int position = Constants.retractedArmEncoderPosition;
 
 	public Arm() {
@@ -60,6 +61,16 @@ public class Arm {
 
 	public void armMacroLooper() {
 
+		if(ControlMap.getArmZero()) {
+			RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+			arm.setSelectedSensorPosition(0, 0, 10);
+		}
+		
+		if(arm.getSelectedSensorPosition(0) + 200 < oldArmPos || arm.getSelectedSensorPosition(0) - 200 > oldArmPos) {
+			arm.setSelectedSensorPosition(oldArmPos, 0, 10);
+		}
+		oldArmPos = arm.getSelectedSensorPosition(0);
+		
 		// set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedArmPos) {
 		case EXTENDED:

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import com.team2169.robot.Constants;
+import com.team2169.robot.ControlMap;
 
 public class Intake extends Subsystem {
 
@@ -37,6 +38,7 @@ public class Intake extends Subsystem {
 	DoubleSolenoid clampSolenoid;
 	int i = 0;
 	int a = 0;
+	boolean exhaustFromDrop = false;
 
 	public Intake() {
 		ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
@@ -57,7 +59,11 @@ public class Intake extends Subsystem {
 		
 	}
 
-	public void intakeManual(double power) {
+	public void intakeManual(double power, double twist) {
+		if(Math.abs(twist) > .25) {
+			left.set(ControlMode.PercentOutput, (twist * Math.abs(power)) * (4/3));
+			right.set(ControlMode.PercentOutput, (-twist * Math.abs(power)) * (4/3));
+		}
 		left.set(ControlMode.PercentOutput, power);
 		right.set(ControlMode.PercentOutput, power);
 	}
@@ -112,15 +118,19 @@ public class Intake extends Subsystem {
 		if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraAverage) {
 			RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 		}
+		
+		if(exhaustFromDrop) {
+			RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
+		}
 
 		// Handle Intake State
 		switch (RobotWantedStates.wantedIntakeMode) {
-
+		
 		case IDLE:
 		default:
 
 			// Stop Intakes
-			intakeManual(0);
+			intakeManual(0, 0);
 			RobotStates.intakeMode = IntakeMode.IDLE;
 
 			break;
@@ -129,14 +139,14 @@ public class Intake extends Subsystem {
 
 			// Run Intakes
 
-			intakeManual(-Constants.intakeSpeed);
+			intakeManual(Constants.intakeSpeed, ControlMap.getOperatorTwistValue());
 			RobotStates.intakeMode = IntakeMode.INTAKE;
 			break;
 
 		case EXHAUST:
 
 			// Run Intakes Backwards
-			intakeManual(Constants.intakeSpeed);
+			intakeManual(-Constants.intakeSpeed, ControlMap.getOperatorTwistValue());
 			RobotStates.intakeMode = IntakeMode.EXHAUST;
 			break;
 
@@ -178,14 +188,13 @@ public class Intake extends Subsystem {
 		case DROP:
 
 			i = 0;
-			
 			// Set Clamp to Drop
-			if(a > 50) {
-				RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
+			if(a < 6) {
+				exhaustFromDrop = true;
 				a++;
 			}
 			else {
-				RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+				exhaustFromDrop = false;
 			}
 			clampSolenoid.set(Value.kReverse);
 			dropSolenoid.set(Value.kForward);

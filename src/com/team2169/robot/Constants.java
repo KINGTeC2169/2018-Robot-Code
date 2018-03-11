@@ -15,9 +15,9 @@ public class Constants {
 	// Camera1
 	public static final String camera1Name = "Test Camera";
 	public static final int camera1ID = 0;
-	public static final int camera1FPS = 8;
-	public static final int camera1Width = 640;
-	public static final int camera1Height = 480;
+	public static final int camera1FPS = 15;
+	public static final int camera1Width = 480;
+	public static final int camera1Height = 320;
 
 	// Camera2
 	public static final String camera2Name = "Camera 2 Name";

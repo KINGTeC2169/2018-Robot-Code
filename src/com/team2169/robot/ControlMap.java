@@ -43,6 +43,7 @@ public class ControlMap {
 
 	// Intake Keys
 	static int operatorAxis = 1;
+	static int twistAxis = 2;
 
 	// Climb Keys
 	static int climbPrimary = 10;
@@ -178,7 +179,15 @@ public class ControlMap {
 			operatorStickState = OperatorStickState.INTAKE;
 		}
 	}
+	
+	public static boolean getArmZero() {
+		return operator.getRawButton(11);
+	}
 
+	public static double getOperatorTwistValue() {
+		return operator.getRawAxis(twistAxis);
+	}
+	
 	// Operator Override Handlers
 	public static double getOperatorStickValue() {
 		return -operator.getRawAxis(operatorAxis);
