@@ -469,6 +469,8 @@ public class DriveTrain extends Subsystem {
 
 		TankModifier modifier = new TankModifier(toFollow).modify(PathfinderData.wheel_base_width);
 		PathfinderData.last_gyro_error = 0.0;
+		RobotStates.leftPathTotalSegments = modifier.getLeftTrajectory().length();
+		RobotStates.rightPathTotalSegments = modifier.getRightTrajectory().length();
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 		left.configureEncoder(leftMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
@@ -520,10 +522,11 @@ public class DriveTrain extends Subsystem {
 			
 			SmartDashboard.putNumber("Turn", turn);
 			SmartDashboard.putNumber("Left diff", left.getSegment().x + this.getEncoderDistanceLeft());
-			SmartDashboard.putNumber("Left set vel", left.getSegment().velocity);
-			SmartDashboard.putNumber("Left set pos", left.getSegment().x);
+			SmartDashboard.putNumber("Left Completion Precentage", (left.getSegment().position / RobotStates.leftPathTotalSegments));
+			SmartDashboard.putNumber("Right Completion Precentage", (right.getSegment().position / RobotStates.leftPathTotalSegments));
 			SmartDashboard.putNumber("Left calc voltage", l);
 			SmartDashboard.putNumber("Right calc voltage", r);
+			
 			SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
 			SmartDashboard.putNumber("-Left + turn", -l + turn);
 			SmartDashboard.putNumber("-Right - turn", -r - turn);
@@ -560,7 +563,7 @@ public class DriveTrain extends Subsystem {
 		public static double kp = 0.00035;
 		public static double kd = 0.00001;
 		public static double gp = 0.00075;
-		public static double gd = 0.00004;
+		public static double gd = 0.00002;
 
 		public static double ki = 0.0;
 
