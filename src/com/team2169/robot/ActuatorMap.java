@@ -41,7 +41,7 @@ public class ActuatorMap {
 	public static final int ptoShiftReverse = 3;
 
 	// Hanger Ports
-	public static final int platformReleasePiston = 10;
+	public static final int platformReleasePiston = 9;
 
 	// Arduino Ports
 	public static final int prepArduinoDIOPort = 4;

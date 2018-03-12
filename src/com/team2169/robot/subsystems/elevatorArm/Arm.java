@@ -8,6 +8,7 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.ArmPos;
+import com.team2169.util.QuadEncoderObject;
 import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +17,7 @@ public class Arm {
 
 	// Create Talons
 	private TalonSRX arm;
+	private QuadEncoderObject enc;
 	int oldArmPos = 0;
 	private int position = Constants.retractedArmEncoderPosition;
 
@@ -26,12 +28,12 @@ public class Arm {
 
 		// Pull Constants Data for Arm
 		Constants.setArmDataFromConstants();
-		arm.configContinuousCurrentLimit(40, 10);
+		/*arm.configContinuousCurrentLimit(40, 10);
 		arm.configPeakCurrentLimit(30, Constants.armData.timeoutMs);
 		arm.configAllowableClosedloopError(Constants.armData.slotIDx, Constants.armData.allowedError, Constants.armData.timeoutMs);
 		arm.configPeakCurrentLimit(35, Constants.armData.timeoutMs);
 		arm.configPeakCurrentDuration(500, Constants.armData.timeoutMs);
-		
+		*/
 
 		// Apply Talon Settings
 		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
@@ -42,6 +44,7 @@ public class Arm {
 	public void pushToDashboard() {
 		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
 		SmartDashboard.putNumber("Arm_Current", arm.getOutputCurrent());
+		SmartDashboard.putNumber("pulseWidth Pos", arm.getSensorCollection().getPulseWidthPosition());
 	}
 
 	private void armToPos(int pos) {
@@ -60,7 +63,11 @@ public class Arm {
 	}
 
 	public void armMacroLooper() {
-
+	
+		//enc.inputValue(arm.getSensorCollection().getPulseWidthPosition());
+		System.out.println(arm.getSensorCollection().getPulseWidthPosition());
+		//SmartDashboard.putNumber("Arm Absolute Encoder: ", enc.getLatestValue());
+		
 		if(ControlMap.getArmZero()) {
 			RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
 			arm.setSelectedSensorPosition(0, 0, 10);

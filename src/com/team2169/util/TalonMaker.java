@@ -18,6 +18,8 @@ public class TalonMaker {
 		public double f;
 		public int allowedError;
 		public boolean sensorPhase;
+		public boolean zero = true;
+		public FeedbackDevice encoderType = FeedbackDevice.CTRE_MagEncoder_Absolute;
 
 		public void setPIDF(double P, double I, double D, double F) {
 			p = P;
@@ -29,10 +31,13 @@ public class TalonMaker {
 	}
 
 	public static TalonSRX prepTalonForMotionProfiling(TalonSRX talon_, TalonConfig config) {
-
+		
 		// Elevator Height Configuration
 		/* first choose the sensor */
-		talon_.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, config.pidLoopIDx, config.timeoutMs);
+		
+		talon_.configSelectedFeedbackSensor(config.encoderType, config.pidLoopIDx, config.timeoutMs);
+
+		
 		talon_.setSensorPhase(config.sensorPhase);
 		talon_.setInverted(false);
 
@@ -54,8 +59,10 @@ public class TalonMaker {
 		talon_.config_kD(config.slotIDx, config.d, config.timeoutMs);
 
 		/* zero the sensor */
-		talon_.setSelectedSensorPosition(0, config.pidLoopIDx, config.timeoutMs);
-
+		if(config.zero) {
+			talon_.setSelectedSensorPosition(0, config.pidLoopIDx, config.timeoutMs);
+		}
+		
 		/* return the updated Talon*/
 		return talon_;
 

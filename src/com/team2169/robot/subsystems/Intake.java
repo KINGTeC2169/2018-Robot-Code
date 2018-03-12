@@ -152,9 +152,11 @@ public class Intake extends Subsystem {
 
 		}
 
+		
 		// Handle Wanted Clamp State
 		switch (RobotWantedStates.wantedIntakeClamp) {
-
+		
+		
 		case NEUTRAL:
 		default:
 
@@ -202,9 +204,8 @@ public class Intake extends Subsystem {
 			break;
 
 		}
-
 		pushToDashboard();
-
+	
 	}
 
 	@Override

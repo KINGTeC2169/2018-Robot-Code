@@ -70,6 +70,8 @@ public class Elevator {
 	public void elevatorMacroLooper() {
 		
 		
+		SmartDashboard.putNumber("pulseWidth Pos", elevator.getSensorCollection().getQuadraturePosition());
+		
 		SmartDashboard.putBoolean("topLimit", topLimit.get());
 		SmartDashboard.putBoolean("bottomLimit", bottomLimit.get());
 		getLimits();

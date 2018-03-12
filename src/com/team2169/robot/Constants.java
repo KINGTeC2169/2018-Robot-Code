@@ -1,5 +1,6 @@
 package com.team2169.robot;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team2169.util.TalonMaker.TalonConfig;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -60,8 +61,8 @@ public class Constants {
 	public static double scaleHighElevatorEncoderInches = 72;
 	public static double hangElevatorEncoderInches = 65;
 
-	public static int extendedArmEncoderPosition = 0;
-	public static int retractedArmEncoderPosition = -800;
+	public static int extendedArmEncoderPosition = 4100;
+	public static int retractedArmEncoderPosition = 5100;
 
 	public static TalonConfig elevatorData = new TalonConfig();
 
@@ -93,6 +94,8 @@ public class Constants {
 		armData.i = 0;
 		armData.d = 0;
 		armData.f = 0;
+		armData.zero = false;
+		armData.encoderType = FeedbackDevice.PulseWidthEncodedPosition;
 		elevatorData.sensorPhase = false;
 
 	}

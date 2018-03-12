@@ -23,7 +23,7 @@ public class ControlMap {
 	static int clampButton = 5;
 	static int dropButton = 3;
 	private static int neutralButton = 4;
-	static int dropAndExhaustButton = 100;
+	static int dropAndExhaustButton = 6;
 
 	// Elevator Macro Keys
 	/*
@@ -56,7 +56,7 @@ public class ControlMap {
 	// Create Joystick Objects
 	static Joystick primaryLeft;
 	static Joystick primaryRight;
-	static Joystick operator;
+	public static Joystick operator;
 	static Joystick buttonBoard;
 
 	// Joystick Creater
