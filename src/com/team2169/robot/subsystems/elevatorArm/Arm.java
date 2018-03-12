@@ -8,7 +8,6 @@ import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.ArmPos;
-import com.team2169.util.QuadEncoderObject;
 import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,7 +16,6 @@ public class Arm {
 
 	// Create Talons
 	private TalonSRX arm;
-	private QuadEncoderObject enc;
 	int oldArmPos = 0;
 	private int position = Constants.retractedArmEncoderPosition;
 
