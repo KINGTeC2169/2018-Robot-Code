@@ -119,6 +119,7 @@ public class Constants {
 	public static int scaleMidElevatorEncoderPosition = 17000;
 	public static int scaleHighElevatorEncoderPosition = 19500;
 	public static int hangElevatorEncoderPosition = 37549 / 2;
+	public static double driveTrainP = .3;
 
 	// THESE ARE INCORECT LIFT ONLY OPERATES FROM 0 - 19000
 	public static void calculateMacros() {
@@ -143,6 +144,10 @@ public class Constants {
 	public static final int elevatorUpperLimit = 0;
 	public static final int elevatorLowerLimit = 0;
 	public static final double driveTrainRampRate = .25;
+	
+	public static final double driveTrainDistanceP = 0;
+	public static final double driveTrainDistanceI = 0;
+	public static final double driveTrainDistanceD = 0;
 
 
 }

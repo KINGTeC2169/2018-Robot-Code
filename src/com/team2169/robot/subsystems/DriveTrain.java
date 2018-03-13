@@ -84,7 +84,7 @@ public class DriveTrain extends Subsystem {
 		// Set Right Slaves
 		rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 		rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-
+		
 		// Set Inversions
 		leftMaster.setInverted(true);
 		leftFront.setInverted(true);
@@ -112,8 +112,6 @@ public class DriveTrain extends Subsystem {
 
 	}
 	
-
-
 	void enableRamping() {
 		leftMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
 		leftMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
