@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public abstract class AutoMode extends CommandGroup {
 
-	public abstract void looper();
+    public abstract void looper();
 
-	public abstract void smartDashPush();
+    public abstract void smartDashPush();
 
 }

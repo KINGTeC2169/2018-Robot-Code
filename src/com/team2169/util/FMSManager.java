@@ -1,58 +1,39 @@
 package com.team2169.util;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class FMSManager {
 
-	DriverStation fms;
+    DriverStation fms;
 
-	public FMSManager(DriverStation fms_) {
+    public FMSManager(DriverStation fms_) {
 
-		fms = fms_;
+        fms = fms_;
 
-	}
+    }
 
-	@SuppressWarnings("deprecation")
-	public double batteryVoltage() {
-		return fms.getBatteryVoltage();
-	}
+    public boolean fmsActive() {
+        return fms.isFMSAttached();
+    }
 
-	@SuppressWarnings("deprecation")
-	public boolean browningOut() {
-		return fms.isBrownedOut();
-	}
+    public boolean isDriverStationAttached() {
+        return fms.isDSAttached();
+    }
 
-	public boolean fmsActive() {
-		return fms.isFMSAttached();
-	}
+    public double matchTime() {
+        return fms.getMatchTime();
+    }
 
-	public Alliance alliance() {
-		return fms.getAlliance();
-	}
+    public double remainingTimeAuto() {
+        return 15 - fms.getMatchTime();
+    }
 
-	public String allianceName() {
-		return fms.getAlliance().toString();
-	}
+    public double remainingTimeTeleOp() {
+        return 200 - fms.getMatchTime();
+    }
 
-	public boolean isDriverStationAttached() {
-		return fms.isDSAttached();
-	}
-
-	public double matchTime() {
-		return fms.getMatchTime();
-	}
-
-	public double remainingTimeAuto() {
-		return 15 - fms.getMatchTime();
-	}
-
-	public double remainingTimeTeleOp() {
-		return 200 - fms.getMatchTime();
-	}
-
-	public String getGameMessage() {
-		return fms.getGameSpecificMessage();
-	}
+    public String getGameMessage() {
+        return fms.getGameSpecificMessage();
+    }
 
 }

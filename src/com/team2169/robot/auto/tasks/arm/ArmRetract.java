@@ -7,22 +7,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class ArmRetract extends Task {
 
-	public ArmRetract() {
+    public ArmRetract() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedArmPos = ArmPos.RETRACTED;
+        RobotWantedStates.wantedArmPos = ArmPos.RETRACTED;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return RobotStates.armInPosition;
-	}
+    @Override
+    protected boolean isFinished() {
+        return RobotStates.armInPosition;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

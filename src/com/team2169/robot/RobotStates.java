@@ -4,142 +4,134 @@ import jaci.pathfinder.Waypoint;
 
 public class RobotStates {
 
-	public static boolean debugMode = true;
+    public static boolean debugMode = true;
 
-	// FMS Handler
-	public static boolean isFMSConnected;
+    // FMS Handler
+    static boolean isFMSConnected;
 
-	public static enum FieldSetup {
-		LL, LR, RL, RR, FAIL
-	}
+    public enum FieldSetup {
+        LL, LR, RL, RR, FAIL
+    }
 
-	public static FieldSetup fieldSetup;
+    public static FieldSetup fieldSetup;
 
-	// Field Positions
+    // Field Positions
 
-	public static enum StartingPosition {
+    public enum StartingPosition {
 
-		LEFT, CENTER, RIGHT
+        LEFT, CENTER, RIGHT
 
-	}
+    }
 
-	public static StartingPosition startingPosition;
-	
-	public static enum AutoMode{
-		SEGMENTED, CONTINUOUS
-	}
-	
-	public static AutoMode autoMode;
+    public static StartingPosition startingPosition;
 
-	// RunningMode Handler
-	public static enum RunningMode {
+    public enum AutoMode {
+        SEGMENTED, CONTINUOUS
+    }
 
-		IDLE, AUTO, TELEOP, LIMP
+    public static AutoMode autoMode;
 
-	}
+    // RunningMode Handler
+    public enum RunningMode {
 
-	public static RunningMode runningMode;
+        IDLE, AUTO, TELEOP
 
-	// DriveMode Handler
-	public static enum DriveMode {
+    }
 
-		LOW, HIGH, SHIFTING, SHIFT_TO_LOW, SHIFT_TO_HIGH
+    public static RunningMode runningMode;
 
-	}
+    // DriveMode Handler
+    public enum DriveMode {
 
-	public static DriveMode driveMode;
-	public static boolean ptoActive;
+        LOW, HIGH, SHIFT_TO_LOW, SHIFT_TO_HIGH
 
-	// DriveOverride Handler
-	public static enum DriveType {
+    }
 
-		IDLE, WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE_DRIVING, HANG, NORMAL_DRIVING, FOLLOW_PATH, WANTS_TO_FOLLOW_PATH, WAITING
+    public static DriveMode driveMode;
+    public static boolean ptoActive;
 
-	}
+    // DriveOverride Handler
+    public enum DriveType {
 
-	public static DriveType driveType;
+        IDLE, WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE_DRIVING, HANG, NORMAL_DRIVING, FOLLOW_PATH, WANTS_TO_FOLLOW_PATH, WAITING
 
-	public static boolean canCycleMode;
+    }
 
-	// Gyro angle
-	public static double gyroAngle;
+    public static DriveType driveType;
 
-	// Intake Mode Handler
-	public static enum IntakeMode {
+    public static boolean canCycleMode;
 
-		INTAKE, EXHAUST, IDLE
+    // Gyro angle
+    public static double gyroAngle;
 
-	}
+    // Intake Mode Handler
+    public enum IntakeMode {
 
-	public static IntakeMode intakeMode;
+        INTAKE, EXHAUST, IDLE
 
-	public static enum IntakeClamp {
+    }
 
-		CLAMP, NEUTRAL, DROP
-		
-	}
+    public static IntakeMode intakeMode;
 
-	public static IntakeClamp intakeClamp;
+    public enum IntakeClamp {
 
-	public static boolean intakeClampOverride;
-	// Robot block held state
-	//public static ArrayList<Double> blockHeldHistory;
-	public static enum blockRecentState{
-		JUST_ENTERED, JUST_LEFT, NO_CHANGE
-	}
-	public static boolean ultraWithinRange;
-	public static boolean ultraAverage;
-	public static boolean operatorWantsUltrasonic;
-	public static boolean blockHeld;
-	public static blockRecentState blockRecent;
+        CLAMP, NEUTRAL, DROP
 
-	// Arduino
-	public static boolean arduinoConnected;
+    }
 
-	// Arm Position Handler
-	public static enum ArmPos {
+    public static IntakeClamp intakeClamp;
 
-		EXTENDED, RETRACTED, OVERRIDE, HOLD_POSITION, CONFIG
+    static boolean intakeClampOverride;
 
-	}
+    // Robot block held state
+    //public static ArrayList<Double> blockHeldHistory;
+    public enum blockRecentState {
+        JUST_ENTERED, JUST_LEFT, NO_CHANGE
+    }
 
-	public static ArmPos armPos;
-	public static boolean armStickMode = false;
-	public static boolean armButtonMode = false;
-	public static boolean armInPosition;
+    public static boolean ultraWithinRange;
+    public static boolean ultraAverage;
+    public static boolean operatorWantsUltrasonic;
+    public static boolean blockHeld;
+    public static blockRecentState blockRecent;
 
-	// Elevator Position Handler
-	public static enum Macro {
+    // Arduino
+    public static boolean arduinoConnected;
 
-		HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
+    // Arm Position Handler
+    public enum ArmPos {
 
-	}
+        EXTENDED, RETRACTED, OVERRIDE, HOLD_POSITION, CONFIG
 
-	public static Macro elevatorPos;
-	public static double elevatorHeight = 0;
+    }
 
-	public static double getElevatorHeight() {
-		return (elevatorHeight / Constants.maxElevatorHeight);
-	}
+    public static ArmPos armPos;
+    public static boolean armStickMode = false;
+    static boolean armButtonMode = false;
+    public static boolean armInPosition;
 
-	public static boolean elevatorInPosition;
-	public static boolean elevatorOverrideMode = false;
-	public static boolean platformRelease;
+    // Elevator Position Handler
+    public enum Macro {
 
-	public static enum PathfinderState {
+        HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
 
-		STOPPED, CALCULATING_PATH, LOOPING, INITIALIZING
+    }
 
-	}
+    public static Macro elevatorPos;
+    public static double elevatorHeight = 0;
 
-	public static PathfinderState pathfinderState;
-	public static int leftPathTotalSegments;
-	public static int rightPathTotalSegments;
-	
-	public static double leftPathCompletionPercent;
-	public static double rightPathCompletionPercent;
-	
-	public static Waypoint[] currentPath;
-	
+    public static boolean elevatorInPosition;
+    public static boolean elevatorOverrideMode = false;
+    public static boolean platformRelease;
+
+    public static int leftPathTotalSegments;
+    public static int rightPathTotalSegments;
+
+    public static double leftPathCompletionPercent;
+    public static double rightPathCompletionPercent;
+
+    public static Waypoint[] currentPath;
+    public static boolean reverseCurrentPath;
+
 
 }

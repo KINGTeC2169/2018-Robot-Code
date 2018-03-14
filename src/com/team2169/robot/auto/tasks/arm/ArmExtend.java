@@ -7,22 +7,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class ArmExtend extends Task {
 
-	public ArmExtend() {
+    public ArmExtend() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+        RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return RobotStates.armInPosition;
-	}
+    @Override
+    protected boolean isFinished() {
+        return RobotStates.armInPosition;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

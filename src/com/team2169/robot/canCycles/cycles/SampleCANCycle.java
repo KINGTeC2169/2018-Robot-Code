@@ -4,16 +4,16 @@ import com.team2169.robot.canCycles.CanCycle;
 
 public class SampleCANCycle extends CanCycle {
 
-	// Define Subsystems
+    // Define Subsystems
 
-	public SampleCANCycle() {
+    public SampleCANCycle() {
 
-		// Put Sequentials and Parallels here
-	}
+        // Put Sequentials and Parallels here
+    }
 
-	public void smartDashPush() {
+    public void smartDashPush() {
 
-		// Put Smartdashboard output
+        // Put Smartdashboard output
 
-	}
+    }
 }

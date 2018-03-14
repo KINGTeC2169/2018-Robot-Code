@@ -6,35 +6,32 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeExhaust extends Task {
 
-	boolean idleOnEnd;
+    private boolean idleOnEnd;
 
-	public IntakeExhaust(boolean idleOnEnd_) {
+    public IntakeExhaust(boolean idleOnEnd_) {
 
-		idleOnEnd = idleOnEnd_;
+        idleOnEnd = idleOnEnd_;
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
+        RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
+    @Override
+    protected boolean isFinished() {
 
-		if (idleOnEnd) {
-			return false;
-		}
-		return true;
+        return !idleOnEnd;
 
-	}
+    }
 
-	protected void end() {
+    protected void end() {
 
-		if (idleOnEnd) {
-			RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-		}
+        if (idleOnEnd) {
+            RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+        }
 
-	}
+    }
 }

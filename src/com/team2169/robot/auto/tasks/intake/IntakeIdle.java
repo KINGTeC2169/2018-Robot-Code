@@ -6,22 +6,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeIdle extends Task {
 
-	public IntakeIdle() {
+    public IntakeIdle() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+        RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

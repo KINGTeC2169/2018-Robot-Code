@@ -7,69 +7,69 @@ import com.team2169.util.DebugPrinter;
 
 public class ElevatorArm extends Subsystem {
 
-	private Arm arm;
+    private Arm arm;
 
-	private Elevator elevator;
+    private Elevator elevator;
 
-	private static ElevatorArm eInstance = null;
+    private static ElevatorArm eInstance = null;
 
-	public static ElevatorArm getInstance() {
-		if (eInstance == null) {
-			eInstance = new ElevatorArm();
-		}
-		return eInstance;
-	}
+    public static ElevatorArm getInstance() {
+        if (eInstance == null) {
+            eInstance = new ElevatorArm();
+        }
+        return eInstance;
+    }
 
-	public ElevatorArm() {
+    private ElevatorArm() {
 
-		arm = new Arm();
-		elevator = new Elevator();
+        arm = new Arm();
+        elevator = new Elevator();
 
-		RobotStates.elevatorInPosition = false;
+        RobotStates.elevatorInPosition = false;
 
-		// Calulcate Latest Macro Positions
-		// Constants.calculateMacros();
+        // Calulcate Latest Macro Positions
+        // Constants.calculateMacros();
 
-	}
+    }
 
-	public void elevatorArmHandler() {
+    void elevatorArmHandler() {
 
-		// Arm Handler
-		arm.armMacroLooper();
+        // Arm Handler
+        arm.armMacroLooper();
 
-		// Elevator Handler
-		elevator.elevatorMacroLooper();
+        // Elevator Handler
+        elevator.elevatorMacroLooper();
 
-		pushToDashboard();
+        pushToDashboard();
 
-	}
+    }
 
-	@Override
-	public void pushToDashboard() {
+    @Override
+    public void pushToDashboard() {
 
-		arm.pushToDashboard();
+        arm.pushToDashboard();
 
-		if (RobotStates.debugMode) {
-			DebugPrinter.armDebug();
-			DebugPrinter.elevatorDebug();
-		}
+        if (RobotStates.debugMode) {
+            DebugPrinter.armDebug();
+            DebugPrinter.elevatorDebug();
+        }
 
-	}
+    }
 
-	@Override
-	public void zeroSensors() {
+    @Override
+    public void zeroSensors() {
 
-		elevator.zeroSensors();
-		arm.zeroSensors();
+        elevator.zeroSensors();
+        arm.zeroSensors();
 
-	}
+    }
 
-	@Override
-	public void stop() {
+    @Override
+    public void stop() {
 
-		elevator.stop();
-		arm.stop();
+        elevator.stop();
+        arm.stop();
 
-	}
+    }
 
 }

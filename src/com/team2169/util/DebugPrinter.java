@@ -5,36 +5,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DebugPrinter {
 
-	public static void intakeDebug() {
-		SmartDashboard.putString("Intake Wheels State: ", RobotStates.intakeMode.name());
-		SmartDashboard.putString("Intake Clamp State: ", RobotStates.intakeClamp.name());
-	}
+    public static void intakeDebug() {
+        SmartDashboard.putString("Intake Wheels State: ", RobotStates.intakeMode.name());
+        SmartDashboard.putString("Intake Clamp State: ", RobotStates.intakeClamp.name());
+    }
 
-	public static void elevatorDebug() {
-		//DriverStation.reportWarning("Elevator Position: " +
-		//RobotStates.elevatorHeight, false);
-		SmartDashboard.putString("Elevator State: ", RobotStates.elevatorPos.name());
-		String string = "" + RobotStates.elevatorOverrideMode;
-		SmartDashboard.putString("Elevator Override Mode: ", string);
-		// DriverStation.reportWarning("Elevator In Position: " +
-		// RobotStates.elevatorInPosition, false);
-	}
+    public static void elevatorDebug() {
+        //DriverStation.reportWarning("Elevator Position: " +
+        //RobotStates.elevatorHeight, false);
+        SmartDashboard.putString("Elevator State: ", RobotStates.elevatorPos.name());
+        String string = "" + RobotStates.elevatorOverrideMode;
+        SmartDashboard.putString("Elevator Override Mode: ", string);
+        // DriverStation.reportWarning("Elevator In Position: " +
+        // RobotStates.elevatorInPosition, false);
+    }
 
-	public static void armDebug() {
-		SmartDashboard.putString("Arm State: ", RobotStates.armPos.name());
-		String string = "" + RobotStates.armStickMode;
-		SmartDashboard.putString("Arm Override Mode: ", string);
-		// DriverStation.reportWarning("Arm In Position: " + RobotStates.armInPosition,
-		// false);
-		SmartDashboard.putBoolean("CanCycle Active", RobotStates.canCycleMode);
-	}
+    public static void armDebug() {
+        SmartDashboard.putString("Arm State: ", RobotStates.armPos.name());
+        String string = "" + RobotStates.armStickMode;
+        SmartDashboard.putString("Arm Override Mode: ", string);
+        // DriverStation.reportWarning("Arm In Position: " + RobotStates.armInPosition,
+        // false);
+        SmartDashboard.putBoolean("CanCycle Active", RobotStates.canCycleMode);
+    }
 
-	public static void pathfinderDebug() {
-
-	}
-
-	public static void driveTrainDebug() {
-		/*
+    public static void driveTrainDebug() {
+        /*
 		 * DriverStation.reportWarning("Left Wheel Power: " +
 		 * DriveTrain.getInstance().leftMaster.getMotorOutputVoltage(), false);
 		 * DriverStation.reportWarning("Right Wheel Power: " +
@@ -50,10 +46,11 @@ public class DebugPrinter {
 		 * DriverStation.reportWarning("Driver Mode: " + RobotStates.driveMode.name(),
 		 * false);
 		 */
-	}
+    }
 
-	public static void platformDebug() {
-		// DriverStation.reportWarning("Platform Released: " +
-		// RobotStates.platformRelease, false);
-	}
+    @SuppressWarnings("unused")
+    public static void platformDebug() {
+        // DriverStation.reportWarning("Platform Released: " +
+        // RobotStates.platformRelease, false);
+    }
 }

@@ -1,216 +1,206 @@
 package com.team2169.robot;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ControlMap {
 
-	// Primary Controls
+    // Primary Controls
 
-	// Button Constants
-	static int shiftUp = 3;
-	static int shiftDown = 2;
+    // Button Constants
+    private static int shiftUp = 3;
+    private static int shiftDown = 2;
 
-	// Operator Controls
+    // Operator Controls
 
-	// Master Overrides
-	static int primaryOverride = 1;
+    // Master Overrides
+    private static int primaryOverride = 1;
 
-	// Axis Constants
-	static int armOverrideButton = 2;
-	static int elevatorOverrideButton = 1;
+    // Axis Constants
+    private static int armOverrideButton = 2;
+    private static int elevatorOverrideButton = 1;
 
-	static int clampButton = 5;
-	static int dropButton = 3;
-	private static int neutralButton = 4;
-	static int dropAndExhaustButton = 6;
+    private static int clampButton = 5;
+    private static int dropButton = 3;
+    private static int neutralButton = 4;
+    private static int dropAndExhaustButton = 6;
 
-	// Elevator Macro Keys
-	/*
+    // Elevator Macro Keys
+    /*
 	 * static int bMacroGround = 6; static int bMacroSwitch = 7; static int
 	 * bMacroScaleLow = 8; static int bMacroScaleMid = 9; static int bMacroScaleHigh
 	 * = 10; static int bMacroHang = 11;
 	 */
 
-	static int bMacroGround = 1;
-	static int bMacroSwitch = 2;
-	static int bMacroScaleLow = 3;
-	static int bMacroScaleMid = 4;
-	static int bMacroScaleHigh = 5;
-	static int bMacroHang = 6;
+    private static int bMacroGround = 1;
+    private static int bMacroSwitch = 2;
+    private static int bMacroScaleLow = 3;
+    private static int bMacroScaleMid = 4;
+    private static int bMacroScaleHigh = 5;
+    private static int bMacroHang = 6;
 
-	private static final int wantsUltrasonic = 1;
+    private static final int wantsUltrasonic = 1;
 
-	// Intake Keys
-	static int operatorAxis = 1;
-	static int twistAxis = 2;
+    // Intake Keys
+    private static int operatorAxis = 1;
+    private static int twistAxis = 2;
 
-	// Climb Keys
-	static int climbPrimary = 10;
-	static int climbOperator = 100;
-	static int releasePlatform = 110;
+    // Climb Keys
+    private static int climbPrimary = 10;
+    private static int climbOperator = 100;
+    private static int releasePlatform = 110;
 
-	// Deadbands
-	static double operatorDeadband = .25;
+    // Deadbands
+    static double operatorDeadband = .25;
 
-	// Create Joystick Objects
-	static Joystick primaryLeft;
-	static Joystick primaryRight;
-	public static Joystick operator;
-	static Joystick buttonBoard;
+    // Create Joystick Objects
+    private static Joystick primaryLeft;
+    private static Joystick primaryRight;
+    private static Joystick operator;
+    private static Joystick buttonBoard;
 
-	// Joystick Creater
-	public static void init() {
+    // Joystick Creater
+    static void init() {
 
-		primaryLeft = new Joystick(0);
-		primaryRight = new Joystick(1);
-		operator = new Joystick(2);
-		buttonBoard = new Joystick(3);
+        primaryLeft = new Joystick(0);
+        primaryRight = new Joystick(1);
+        operator = new Joystick(2);
+        buttonBoard = new Joystick(3);
 
-	}
+    }
 
-	static enum OperatorStickState {
-		INTAKE, ARM, ELEVATOR
-	}
+    enum OperatorStickState {
+        INTAKE, ARM, ELEVATOR
+    }
 
-	static OperatorStickState operatorStickState;
+    static OperatorStickState operatorStickState;
 
-	// Control Settings
-	public static final double elevatorOverrideSetpointMovement = 6;
-	public static final double armOverrideSetpointMovement = 6;
+    // DriveTrain Control Sticks handler
+    public static double leftTankStick(boolean squared) {
+        if (squared) {
+            return primaryLeft.getRawAxis(1) * Math.abs(primaryLeft.getRawAxis(1));
+        }
+        return primaryLeft.getRawAxis(1);
+    }
 
-	// DriveTrain Control Sticks handler
-	public static double leftTankStick(boolean squared) {
-		if (squared) {
-			return primaryLeft.getRawAxis(1) * Math.abs(primaryLeft.getRawAxis(1));
-		}
-		return primaryLeft.getRawAxis(1);
-	}
+    public static double rightTankStick(boolean squared) {
+        if (squared) {
+            return primaryRight.getRawAxis(1) * Math.abs(primaryRight.getRawAxis(1));
+        }
+        return primaryRight.getRawAxis(1);
+    }
 
-	public static double rightTankStick(boolean squared) {
-		if (squared) {
-			return primaryRight.getRawAxis(1) * Math.abs(primaryRight.getRawAxis(1));
-		}
-		return primaryRight.getRawAxis(1);
-	}
+    static boolean shiftUp() {
+        return (primaryLeft.getRawButton(shiftUp) || primaryRight.getRawButton(shiftUp));
+    }
 
-	public static boolean shiftUp() {
-		return (primaryLeft.getRawButton(shiftUp) || primaryRight.getRawButton(shiftUp));
-	}
+    static boolean shiftDown() {
+        return (primaryLeft.getRawButton(shiftDown) || primaryRight.getRawButton(shiftDown));
+    }
 
-	public static boolean shiftDown() {
-		return (primaryLeft.getRawButton(shiftDown) || primaryRight.getRawButton(shiftDown));
-	}
+    // Primary Driver Speed-Cap/Shifting Override Handler
+    static boolean primaryDriverOverride() {
+        return primaryLeft.getRawButton(primaryOverride) || primaryRight.getRawButton(primaryOverride);
+    }
 
-	// Primary Driver Speed-Cap/Shifting Override Handler
-	public static boolean primaryDriverOverride() {
-		if (primaryLeft.getRawButton(primaryOverride) || primaryRight.getRawButton(primaryOverride)) {
-			return true;
-		}
-		return false;
-	}
+    static boolean armExtendPressed() {
+        return operator.getPOV() == 180;
+    }
 
-	public static boolean armExtendPressed() {
-		return operator.getPOV() == 180;
-	}
+    static boolean armRetractPressed() {
+        return operator.getPOV() == 0;
+    }
 
-	public static boolean armRetractPressed() {
-		return operator.getPOV() == 0;
-	}
+    // Macro Buttons
+    // Ground Macro
+    static boolean groundMacroPressed() {
+        return buttonBoard.getRawButton(bMacroGround);
+    }
 
-	// Macro Buttons
-	// Ground Macro
-	public static boolean groundMacroPressed() {
-		return buttonBoard.getRawButton(bMacroGround);
-	}
+    // Switch Macro
+    static boolean switchMacroPressed() {
+        return buttonBoard.getRawButton(bMacroSwitch);
+    }
 
-	// Switch Macro
-	public static boolean switchMacroPressed() {
-		return buttonBoard.getRawButton(bMacroSwitch);
-	}
+    // Scale Low Macro
+    static boolean scaleLowMacroPressed() {
+        return buttonBoard.getRawButton(bMacroScaleLow);
+    }
 
-	// Scale Low Macro
-	public static boolean scaleLowMacroPressed() {
-		return buttonBoard.getRawButton(bMacroScaleLow);
-	}
+    // Scale Mid Macro
+    static boolean scaleMidMacroPressed() {
+        return buttonBoard.getRawButton(bMacroScaleMid);
+    }
 
-	// Scale Mid Macro
-	public static boolean scaleMidMacroPressed() {
-		return buttonBoard.getRawButton(bMacroScaleMid);
-	}
+    // Scale High Macro
+    @SuppressWarnings("unused")
+    static boolean scaleHighMacroPressed() {
+        return buttonBoard.getRawButton(bMacroScaleHigh);
+    }
 
-	// Scale High Macro
-	public static boolean scaleHighMacroPressed() {
-		return buttonBoard.getRawButton(bMacroScaleHigh);
-	}
+    // Hang Macro
+    static boolean hangMacroPressed() {
+        return buttonBoard.getRawButton(bMacroHang);
+    }
 
-	// Hang Macro
-	public static boolean hangMacroPressed() {
-		return buttonBoard.getRawButton(bMacroHang);
-	}
+    // Intake State Buttons
+    static boolean clampButtonPressed() {
+        return operator.getRawButtonPressed(clampButton);
+    }
 
-	// Intake State Buttons
-	public static boolean clampButtonPressed() {
-		return operator.getRawButtonPressed(clampButton);
-	}
+    static boolean dropButtonPressed() {
+        return operator.getRawButtonPressed(dropButton);
+    }
 
-	public static boolean dropButtonPressed() {
-		return operator.getRawButtonPressed(dropButton);
-	}
+    static boolean dropAndExhaustButton() {
+        return operator.getRawButtonPressed(dropAndExhaustButton);
+    }
 
-	public static boolean dropAndExhaustButton() {
-		return operator.getRawButtonPressed(dropAndExhaustButton);
-	}
+    static boolean neutralButtonPressed() {
+        // TODO Auto-generated method stub
+        return operator.getRawButton(neutralButton);
+    }
 
-	public static boolean neutralButtonPressed() {
-		// TODO Auto-generated method stub
-		return operator.getRawButton(neutralButton);
-	}
+    static void getOperatorStickState() {
 
-	public static void getOperatorStickState() {
+        if (operator.getRawButton(elevatorOverrideButton)) {
+            operatorStickState = OperatorStickState.ELEVATOR;
+            RobotStates.elevatorOverrideMode = true;
+        } else if (operator.getRawButton(armOverrideButton)) {
+            operatorStickState = OperatorStickState.ARM;
+            RobotStates.armStickMode = true;
+        } else {
+            operatorStickState = OperatorStickState.INTAKE;
+        }
+    }
 
-		if (operator.getRawButton(elevatorOverrideButton)) {
-			operatorStickState = OperatorStickState.ELEVATOR;
-			RobotStates.elevatorOverrideMode = true;
-		} else if (operator.getRawButton(armOverrideButton)) {
-			operatorStickState = OperatorStickState.ARM;
-			RobotStates.armStickMode = true;
-		} else {
-			operatorStickState = OperatorStickState.INTAKE;
-		}
-	}
-	
-	public static boolean getArmZero() {
-		return operator.getRawButton(11);
-	}
+    public static boolean getArmZero() {
+        return operator.getRawButton(11);
+    }
 
-	public static double getOperatorTwistValue() {
-		return operator.getRawAxis(twistAxis);
-	}
-	
-	// Operator Override Handlers
-	public static double getOperatorStickValue() {
-		return -operator.getRawAxis(operatorAxis);
-	}
+    public static double getOperatorTwistValue() {
+        return operator.getRawAxis(twistAxis);
+    }
 
-	public static void operatorUnsafeAction() {
-		operator.setRumble(RumbleType.kLeftRumble, 1);
-	}
+    // Operator Override Handlers
+    public static double getOperatorStickValue() {
+        return -operator.getRawAxis(operatorAxis);
+    }
 
-	// Hanging Logic
-	public static boolean driversWantToHang() {
-		return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary))
-				&& operator.getRawButton(climbOperator);
-	}
+    // Hanging Logic
+    static boolean driversWantToHang() {
+        return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary))
+                && operator.getRawButton(climbOperator);
+    }
 
-	public static void getWantedPlatform() {
-		if (/* Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {
-			RobotWantedStates.platformRelease = true;
-		}
-	}
+    public static void getWantedPlatform() {
+        if (/* Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releasePlatform)) {
+            RobotWantedStates.platformRelease = true;
+        }
+    }
 
-	public static boolean operatorWantsUltrasonic() {
-		return operator.getRawButton(wantsUltrasonic);
-	}
+    static boolean operatorWantsUltrasonic() {
+        return operator.getRawButton(wantsUltrasonic);
+    }
 
 }

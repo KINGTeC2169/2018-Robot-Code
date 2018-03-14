@@ -1,269 +1,245 @@
 package com.team2169.robot;
 
 import com.team2169.robot.ControlMap.OperatorStickState;
-import com.team2169.robot.RobotStates.ArmPos;
-import com.team2169.robot.RobotStates.DriveMode;
-import com.team2169.robot.RobotStates.DriveType;
-import com.team2169.robot.RobotStates.IntakeClamp;
-import com.team2169.robot.RobotStates.IntakeMode;
-import com.team2169.robot.RobotStates.Macro;
+import com.team2169.robot.RobotStates.*;
 import com.team2169.robot.canCycles.CANCycleHandler;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateManager {
 
-	public static void stateInit() {
-		setWantedMacro(Macro.GROUND);
-	}
+    public static void stateInit() {
+        setWantedMacro(Macro.GROUND);
+    }
 
-	public static void teleOpStateLooper() {
-		ControlMap.getOperatorStickState();
-		getCANCycles();
-		getWantedMacroState();
-		getWantedDriveOverride();
-		getWantedShiftState();
-		getWantedArmState();
-		getWantedIntakeState();
-		getWantedElevatorState();
-	}
+    static void teleOpStateLooper() {
+        ControlMap.getOperatorStickState();
+        getCANCycles();
+        getWantedMacroState();
+        getWantedDriveOverride();
+        getWantedShiftState();
+        getWantedArmState();
+        getWantedIntakeState();
+        getWantedElevatorState();
+    }
 
-	static void getCANCycles() {
+    private static void getCANCycles() {
 
-		if (ControlMap.dropAndExhaustButton()) {
-			CANCycleHandler.dropAndExhaust.start();
-			RobotStates.elevatorOverrideMode = false;
-			RobotStates.armStickMode = false;
-			RobotStates.armButtonMode = false;
-			RobotStates.intakeClampOverride = false;
-		}
+        if (ControlMap.dropAndExhaustButton()) {
+            CANCycleHandler.dropAndExhaust.start();
+            RobotStates.elevatorOverrideMode = false;
+            RobotStates.armStickMode = false;
+            RobotStates.armButtonMode = false;
+            RobotStates.intakeClampOverride = false;
+        }
 
-	}
+    }
 
-	// Local MacroSetter
-	static void setWantedMacro(Macro pos) {
-		RobotWantedStates.wantedMacro = pos;
-		CANCycleHandler.cancelArmElevatorCycles();
-		RobotStates.elevatorOverrideMode = false;
-		RobotStates.armStickMode = false;
-		RobotStates.armButtonMode = false;
-		RobotStates.intakeClampOverride = false;
-	}
+    // Local MacroSetter
+    private static void setWantedMacro(Macro pos) {
+        RobotWantedStates.wantedMacro = pos;
+        CANCycleHandler.cancelArmElevatorCycles();
+        RobotStates.elevatorOverrideMode = false;
+        RobotStates.armStickMode = false;
+        RobotStates.armButtonMode = false;
+        RobotStates.intakeClampOverride = false;
+    }
 
-	// MacroButton/State Getter
-	static void getWantedMacroState() {
-		SmartDashboard.putBoolean("Task Running", CANCycleHandler.dropAndExhaust.isRunning());
-		if (ControlMap.groundMacroPressed()) {
-			setWantedMacro(Macro.GROUND);
-		} else if (ControlMap.switchMacroPressed()) {
-			setWantedMacro(Macro.SWITCH);
-		} else if (ControlMap.scaleLowMacroPressed()) {
-			setWantedMacro(Macro.SCALE_LOW);
-		} else if (ControlMap.scaleMidMacroPressed()) {
-			setWantedMacro(Macro.SCALE_HIGH);
-		} else if (ControlMap.hangMacroPressed()) {
-			setWantedMacro(Macro.HANG);
-		}
-	}
+    // MacroButton/State Getter
+    private static void getWantedMacroState() {
+        SmartDashboard.putBoolean("Task Running", CANCycleHandler.dropAndExhaust.isRunning());
+        if (ControlMap.groundMacroPressed()) {
+            setWantedMacro(Macro.GROUND);
+        } else if (ControlMap.switchMacroPressed()) {
+            setWantedMacro(Macro.SWITCH);
+        } else if (ControlMap.scaleLowMacroPressed()) {
+            setWantedMacro(Macro.SCALE_LOW);
+        } else if (ControlMap.scaleMidMacroPressed()) {
+            setWantedMacro(Macro.SCALE_HIGH);
+        } else if (ControlMap.hangMacroPressed()) {
+            setWantedMacro(Macro.HANG);
+        }
+    }
 
-	// Wanted Driver Override Handler
-	static void getWantedDriveOverride() {
+    // Wanted Driver Override Handler
+    private static void getWantedDriveOverride() {
 
-		// Drivers Want to Hang
-		if (ControlMap.driversWantToHang()) {
-			if (RobotWantedStates.wantedDriveType == DriveType.WANTS_TO_HANG
-					|| RobotWantedStates.wantedDriveType == DriveType.HANG) {
-				RobotWantedStates.wantedDriveType = DriveType.HANG;
-			}
+        // Drivers Want to Hang
+        if (ControlMap.driversWantToHang()) {
+            if (RobotWantedStates.wantedDriveType == DriveType.WANTS_TO_HANG
+                    || RobotWantedStates.wantedDriveType == DriveType.HANG) {
+                RobotWantedStates.wantedDriveType = DriveType.HANG;
+            } else {
+                RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_HANG;
+            }
+        }
 
-			else {
-				RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_HANG;
-			}
-		}
+        // Drivers Want to Drive
+        else {
+            // Coming from Climbing
+            if (RobotWantedStates.wantedDriveType == DriveType.WANTS_TO_HANG
+                    || RobotWantedStates.wantedDriveType == DriveType.HANG) {
+                RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_DRIVE;
+            } else if (ControlMap.primaryDriverOverride()) {
+                RobotWantedStates.wantedDriveType = DriveType.OVERRIDE_DRIVING;
+            } else {
+                RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
+            }
+        }
 
-		// Drivers Want to Drive
-		else {
-			// Coming from Climbing
-			if (RobotWantedStates.wantedDriveType == DriveType.WANTS_TO_HANG
-					|| RobotWantedStates.wantedDriveType == DriveType.HANG) {
-				RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_DRIVE;
-			} else if (ControlMap.primaryDriverOverride()) {
-				RobotWantedStates.wantedDriveType = DriveType.OVERRIDE_DRIVING;
-			} else {
-				RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
-			}
-		}
+    }
 
-	}
+    // Wanted Driver Shift Handler
+    private static void getWantedShiftState() {
+        if (ControlMap.shiftUp()) {
+            RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_HIGH;
+        } else if (ControlMap.shiftDown()) {
+            RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_LOW;
+        }
+    }
 
-	// Wanted Driver Shift Handler
-	static void getWantedShiftState() {
-		if (ControlMap.shiftUp()) {
-			RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_HIGH;
-		} else if (ControlMap.shiftDown()) {
-			RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_LOW;
-		}
-	}
+    // Wanted Operator Intake Handler
+    private static void getWantedIntakeState() {
 
-	// Wanted Operator Intake Handler
-	static void getWantedIntakeState() {
+        // Intake Wheel States
+        // Driver has taken control of mechanism, follow their controls.
+        if (ControlMap.operatorStickState == OperatorStickState.INTAKE || RobotStates.canCycleMode) {
 
-		// Intake Wheel States
-		// Driver has taken control of mechanism, follow their controls.
-		if (ControlMap.operatorStickState == OperatorStickState.INTAKE || RobotStates.canCycleMode) {
+            // Intake Wheel States
+            if (ControlMap.getOperatorStickValue() < -ControlMap.operatorDeadband) {
+                CANCycleHandler.cancelArmElevatorCycles();
+                RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
+            } else if (ControlMap.getOperatorStickValue() > ControlMap.operatorDeadband) {
+                CANCycleHandler.cancelArmElevatorCycles();
+                RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
+            } else if (!RobotStates.canCycleMode) {
+                RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+            }
 
-			// Intake Wheel States
-			if (ControlMap.getOperatorStickValue() < -ControlMap.operatorDeadband) {
-				CANCycleHandler.cancelArmElevatorCycles();
-				RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
-			} else if (ControlMap.getOperatorStickValue() > ControlMap.operatorDeadband) {
-				CANCycleHandler.cancelArmElevatorCycles();
-				RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
-			} else if (!RobotStates.canCycleMode) {
-				RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-			}
+        }
 
-		}
+        // Intake stick is busy at the moment, shut off intake
+        else {
+            RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+        }
 
-		// Intake stick is busy at the moment, shut off intake
-		else {
-			RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-		}
+        RobotStates.operatorWantsUltrasonic = ControlMap.operatorWantsUltrasonic();
 
-		if (ControlMap.operatorWantsUltrasonic()) {
-			RobotStates.operatorWantsUltrasonic = true;
-		} else {
-			RobotStates.operatorWantsUltrasonic = false;
-		}
+        // Intake Clamp States
 
-		// Intake Clamp States
+        // Not in CanCycle
 
-		// Not in CanCycle
+        if (ControlMap.neutralButtonPressed()) {
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
+            RobotStates.intakeClampOverride = true;
+        } else if (ControlMap.clampButtonPressed()) {
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+            RobotStates.intakeClampOverride = true;
+        } else if (ControlMap.dropButtonPressed()) {
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotWantedStates.wantedIntakeClamp = IntakeClamp.DROP;
+            RobotStates.intakeClampOverride = true;
+        }
 
-		if (ControlMap.neutralButtonPressed()) {
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
-			RobotStates.intakeClampOverride = true;
-		}
+        if (!RobotStates.intakeClampOverride && !RobotStates.canCycleMode) {
+            switch (RobotWantedStates.wantedMacro) {
+                case GROUND:
+                default:
+                    RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+                    break;
+                case HANG:
+                    RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+                    break;
+                case SCALE_HIGH:
+                    RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+                    break;
+                case SCALE_LOW:
+                    RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+                    break;
+                case SCALE_MID:
+                    RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+                    break;
+                case SWITCH:
+                    RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+                    break;
 
-		else if (ControlMap.clampButtonPressed()) {
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-			RobotStates.intakeClampOverride = true;
-		}
+            }
+        }
+    }
 
-		else if (ControlMap.dropButtonPressed()) {
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedIntakeClamp = IntakeClamp.DROP;
-			RobotStates.intakeClampOverride = true;
-		}
+    // Wanted Operator Elevator Handler
+    private static void getWantedElevatorState() {
 
-		if (!RobotStates.intakeClampOverride && !RobotStates.canCycleMode) {
-			switch (RobotWantedStates.wantedMacro) {
-			case GROUND:
-			default:
-				RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-				break;
-			case HANG:
-				RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-				break;
-			case SCALE_HIGH:
-				RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-				break;
-			case SCALE_LOW:
-				RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-				break;
-			case SCALE_MID:
-				RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-				break;
-			case SWITCH:
-				RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-				break;
+        // Intake Wheel States
+        // Driver has taken control of mechanism, follow their controls.
+        if (ControlMap.operatorStickState == OperatorStickState.ELEVATOR) {
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotStates.elevatorOverrideMode = true;
+            RobotWantedStates.wantedElevatorPos = Macro.OVERRIDE;
+        } else if (RobotStates.elevatorOverrideMode) {
+            RobotWantedStates.wantedElevatorPos = Macro.HOLD_POSITION;
+        }
 
-			}
-		}
-	}
+        // Robot is in a CanCycle, don't interfere unless overriden
+        if (!RobotStates.canCycleMode && !RobotStates.elevatorOverrideMode) {
+            RobotWantedStates.wantedElevatorPos = RobotWantedStates.wantedMacro;
+        }
 
-	// Wanted Operator Elevator Handler
-	static void getWantedElevatorState() {
+    }
 
-		// Intake Wheel States
-		// Driver has taken control of mechanism, follow their controls.
-		if (ControlMap.operatorStickState == OperatorStickState.ELEVATOR) {
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotStates.elevatorOverrideMode = true;
-			RobotWantedStates.wantedElevatorPos = Macro.OVERRIDE;
-		}
+    // Wanted Operator Arm Handler
+    private static void getWantedArmState() {
 
-		else if (RobotStates.elevatorOverrideMode) {
-			RobotWantedStates.wantedElevatorPos = Macro.HOLD_POSITION;
-		}
+        // Intake Wheel States
+        // Driver has taken control of mechanism, follow their controls.
 
-		// Robot is in a CanCycle, don't interfere unless overriden
-		if (!RobotStates.canCycleMode && !RobotStates.elevatorOverrideMode) {
-			RobotWantedStates.wantedElevatorPos = RobotWantedStates.wantedMacro;
-		}
+        if (ControlMap.operatorStickState == OperatorStickState.ARM) {
+            RobotStates.armStickMode = true;
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
+        } else if (ControlMap.armExtendPressed()) {
+            RobotStates.armButtonMode = true;
+            RobotStates.armStickMode = false;
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+        } else if (ControlMap.armRetractPressed()) {
+            RobotStates.armButtonMode = true;
+            RobotStates.armStickMode = false;
+            CANCycleHandler.cancelArmElevatorCycles();
+            RobotWantedStates.wantedArmPos = ArmPos.RETRACTED;
+        } else if (RobotStates.armStickMode) {
+            RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
+        }
 
-	}
+        // Robot is in a CanCycle, don't interfere unless overriden
+        if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {
 
-	// Wanted Operator Arm Handler
-	static void getWantedArmState() {
+            // No CanCycle or Driver Override, do the default Macro action
 
-		// Intake Wheel States
-		// Driver has taken control of mechanism, follow their controls.
+            switch (RobotWantedStates.wantedMacro) {
+                case GROUND:
+                default:
+                    RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+                    break;
+                case HANG:
+                    RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+                    break;
+                case SCALE_HIGH:
+                    RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+                    break;
+                case SCALE_LOW:
+                    RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+                    break;
+                case SCALE_MID:
+                    RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+                    break;
+                case SWITCH:
+                    RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+                    break;
 
-		if (ControlMap.operatorStickState == OperatorStickState.ARM) {
-			RobotStates.armStickMode = true;
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
-		}
+            }
+        }
 
-		else if (ControlMap.armExtendPressed()) {
-			RobotStates.armButtonMode = true;
-			RobotStates.armStickMode = false;
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-		}
-
-		else if (ControlMap.armRetractPressed()) {
-			RobotStates.armButtonMode = true;
-			RobotStates.armStickMode = false;
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.RETRACTED;
-		}
-
-		else if (RobotStates.armStickMode) {
-			RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
-		}
-
-		// Robot is in a CanCycle, don't interfere unless overriden
-		if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {
-
-			// No CanCycle or Driver Override, do the default Macro action
-
-			switch (RobotWantedStates.wantedMacro) {
-			case GROUND:
-			default:
-				RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-				break;
-			case HANG:
-				RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-				break;
-			case SCALE_HIGH:
-				RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-				break;
-			case SCALE_LOW:
-				RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-				break;
-			case SCALE_MID:
-				RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-				break;
-			case SWITCH:
-				RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-				break;
-
-			}
-		}
-
-	}
+    }
 }

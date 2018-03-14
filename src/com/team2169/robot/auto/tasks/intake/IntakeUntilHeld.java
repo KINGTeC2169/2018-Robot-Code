@@ -7,33 +7,33 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeUntilHeld extends Task {
-	
-	public IntakeUntilHeld() {
-		RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
-		RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
-	}
 
-	protected void initialize() {
-		RobotStates.canCycleMode = true;
-	}
+    public IntakeUntilHeld() {
+        RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
+    }
 
-	protected boolean isFinished(){
-		
-		return RobotStates.ultraAverage;
-		
-	}
-	
-	protected void interrupted() {
-		end();
-	}
+    protected void initialize() {
+        RobotStates.canCycleMode = true;
+    }
 
-	protected void end() {
-		RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-	}
+    protected boolean isFinished() {
 
-	public void smartDashPush() {
+        return RobotStates.ultraAverage;
 
-	}
+    }
+
+    protected void interrupted() {
+        end();
+    }
+
+    protected void end() {
+        RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+    }
+
+    public void smartDashPush() {
+
+    }
 
 }

@@ -5,23 +5,23 @@ import com.team2169.robot.RobotStates.RunningMode;
 
 public class FailureAuto extends AutoMode {
 
-	public FailureAuto() {
+    public FailureAuto() {
 
-		RobotStates.runningMode = RunningMode.AUTO;
-		// This is where you put tasks
+        RobotStates.runningMode = RunningMode.AUTO;
+        // This is where you put tasks
 
-	}
+    }
 
-	// Put looping checks/code in here
-	public void looper() {
+    // Put looping checks/code in here
+    public void looper() {
 
-		smartDashPush();
+        smartDashPush();
 
-	}
+    }
 
-	// Smartdashboard output
-	public void smartDashPush() {
+    // Smartdashboard output
+    public void smartDashPush() {
 
-	}
+    }
 
 }

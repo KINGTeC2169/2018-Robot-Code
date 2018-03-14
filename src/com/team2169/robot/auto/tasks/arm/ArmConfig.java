@@ -7,22 +7,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class ArmConfig extends Task {
 
-	public ArmConfig() {
+    public ArmConfig() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedArmPos = ArmPos.CONFIG;
+        RobotWantedStates.wantedArmPos = ArmPos.CONFIG;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return RobotStates.armPos == ArmPos.HOLD_POSITION;
-	}
+    @Override
+    protected boolean isFinished() {
+        return RobotStates.armPos == ArmPos.HOLD_POSITION;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

@@ -4,37 +4,35 @@ import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 
+@SuppressWarnings("unused")
 public class IntakeIn extends Task {
 
-	boolean idleOnEnd;
+    private boolean idleOnEnd;
 
-	public IntakeIn(boolean idleOnEnd_) {
+    public IntakeIn(boolean idleOnEnd_) {
 
-		idleOnEnd = idleOnEnd_;
+        idleOnEnd = idleOnEnd_;
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
+        RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
+    @Override
+    protected boolean isFinished() {
 
-		if (idleOnEnd) {
-			return false;
-		}
-		return true;
+        return !idleOnEnd;
 
-	}
+    }
 
-	protected void end() {
+    protected void end() {
 
-		if (idleOnEnd) {
-			RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-		}
+        if (idleOnEnd) {
+            RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
+        }
 
-	}
+    }
 }

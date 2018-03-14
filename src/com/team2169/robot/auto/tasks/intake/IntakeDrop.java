@@ -6,22 +6,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeDrop extends Task {
 
-	public IntakeDrop() {
+    public IntakeDrop() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedIntakeClamp = IntakeClamp.DROP;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.DROP;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

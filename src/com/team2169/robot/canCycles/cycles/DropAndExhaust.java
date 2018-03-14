@@ -8,28 +8,28 @@ import com.team2169.robot.canCycles.CanCycle;
 
 public class DropAndExhaust extends CanCycle {
 
-	public DropAndExhaust() {
+    public DropAndExhaust() {
 
-		addSequential(new ArmExtend(), 1);
-		addSequential(new IntakeDrop());
-		addSequential(new IntakeExhaust(true), .25);
+        addSequential(new ArmExtend(), 1);
+        addSequential(new IntakeDrop());
+        addSequential(new IntakeExhaust(true), .25);
 
-	}
+    }
 
-	protected void initialize() {
-		RobotStates.canCycleMode = true;
-	}
+    protected void initialize() {
+        RobotStates.canCycleMode = true;
+    }
 
-	protected void interrupted() {
-		end();
-	}
+    protected void interrupted() {
+        end();
+    }
 
-	protected void end() {
-		RobotStates.canCycleMode = false;
-	}
+    protected void end() {
+        RobotStates.canCycleMode = false;
+    }
 
-	public void smartDashPush() {
+    public void smartDashPush() {
 
-	}
+    }
 
 }

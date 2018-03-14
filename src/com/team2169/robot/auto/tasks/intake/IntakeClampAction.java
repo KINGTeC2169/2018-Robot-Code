@@ -6,22 +6,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeClampAction extends Task {
 
-	public IntakeClampAction() {
+    public IntakeClampAction() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

@@ -6,22 +6,22 @@ import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeNeutral extends Task {
 
-	public IntakeNeutral() {
+    public IntakeNeutral() {
 
-	}
+    }
 
-	protected void initialize() {
+    protected void initialize() {
 
-		RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
 
-	}
+    }
 
-	@Override
-	protected boolean isFinished() {
-		return true;
-	}
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-	protected void end() {
+    protected void end() {
 
-	}
+    }
 }

@@ -2,34 +2,35 @@ package com.team2169.util;
 
 import com.team2169.robot.Constants;
 
+@SuppressWarnings("unused")
 public class Converter {
 
-	public static int inchesToTicks(double inches) {
+    public static int inchesToTicks(double inches) {
 
-		double val = inches * Constants.ticksPerRotation;
-		return (int) Math.round(val);
+        double val = inches * Constants.ticksPerRotation;
+        return (int) Math.round(val);
 
-	}
+    }
 
-	public static int feetToTicks(double feet) {
+    public static int feetToTicks(double feet) {
 
-		double val = feet * 12 * Constants.ticksPerRotation;
-		return (int) Math.round(val);
+        double val = feet * 12 * Constants.ticksPerRotation;
+        return (int) Math.round(val);
 
-	}
+    }
 
-	public static int winchInchesToTicks(double inches, double drumDiameterIN) {
+    public static int winchInchesToTicks(double inches, double drumDiameterIN) {
 
-		double val = (inches * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
-		return (int) Math.round(val);
+        double val = (inches * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
+        return (int) Math.round(val);
 
-	}
+    }
 
-	public static int winchFeetToTicks(double feet, double drumDiameterIN) {
+    public static int winchFeetToTicks(double feet, double drumDiameterIN) {
 
-		double val = (feet * 12 * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
-		return (int) Math.round(val);
+        double val = (feet * 12 * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
+        return (int) Math.round(val);
 
-	}
+    }
 
 }
