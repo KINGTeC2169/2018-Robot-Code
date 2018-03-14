@@ -14,7 +14,7 @@ public class Constants {
 	// USBCamera Specs
 
 	// Camera1
-	public static final String camera1Name = "Test Camera";
+	public static final String camera1Name = "Intake Cam";
 	public static final int camera1ID = 0;
 	public static final int camera1FPS = 15;
 	public static final int camera1Width = 480;
