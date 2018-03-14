@@ -61,9 +61,9 @@ public class Constants {
 	public static double scaleHighElevatorEncoderInches = 72;
 	public static double hangElevatorEncoderInches = 65;
 
-	public static int extendedArmEncoderPosition = 4100;
-	public static int retractedArmEncoderPosition = 5100;
-
+	public static int extendedArmEncoderPosition = 923;
+	public static int retractedArmEncoderPosition = 1500;
+	
 	public static TalonConfig elevatorData = new TalonConfig();
 
 	public static void setElevatorDataFromConstants() {
@@ -96,7 +96,7 @@ public class Constants {
 		armData.f = 0;
 		armData.zero = false;
 		armData.encoderType = FeedbackDevice.PulseWidthEncodedPosition;
-		elevatorData.sensorPhase = false;
+		elevatorData.sensorPhase = true;
 
 	}
 
@@ -119,7 +119,7 @@ public class Constants {
 	public static int scaleMidElevatorEncoderPosition = 17000;
 	public static int scaleHighElevatorEncoderPosition = 19500;
 	public static int hangElevatorEncoderPosition = 37549 / 2;
-	public static double driveTrainP = .3;
+	public static double driveTrainP = .015;
 
 	// THESE ARE INCORECT LIFT ONLY OPERATES FROM 0 - 19000
 	public static void calculateMacros() {

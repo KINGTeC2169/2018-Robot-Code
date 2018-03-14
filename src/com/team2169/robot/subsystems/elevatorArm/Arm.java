@@ -35,12 +35,16 @@ public class Arm {
 
 		// Apply Talon Settings
 		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
+		
 
 		
 	}
 
 	public void pushToDashboard() {
 		SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(Constants.armData.slotIDx));
+		SmartDashboard.putNumber("Encoder", arm.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Arm_Error", arm.getClosedLoopError(0));
+		SmartDashboard.putNumber("Arm_Goal", arm.getClosedLoopTarget(0));
 		SmartDashboard.putNumber("Arm_Current", arm.getOutputCurrent());
 		SmartDashboard.putNumber("pulseWidth Pos", arm.getSensorCollection().getPulseWidthPosition());
 	}
@@ -53,7 +57,7 @@ public class Arm {
 
 	private void armSetOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.PercentOutput, joystickValue);
-		position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
+		position = arm.getSensorCollection().getPulseWidthPosition();
 	}
 
 	private void holdInPosition() {
@@ -62,8 +66,9 @@ public class Arm {
 
 	public void armMacroLooper() {
 	
+		arm.setSelectedSensorPosition(arm.getSensorCollection().getPulseWidthPosition(), 0, 10);
+		
 		//enc.inputValue(arm.getSensorCollection().getPulseWidthPosition());
-		System.out.println(arm.getSensorCollection().getPulseWidthPosition());
 		//SmartDashboard.putNumber("Arm Absolute Encoder: ", enc.getLatestValue());
 		
 		if(ControlMap.getArmZero()) {
@@ -98,12 +103,6 @@ public class Arm {
 			RobotStates.armPos = ArmPos.RETRACTED;
 			break;
 		case CONFIG:
-			armSetOverrideLooper(-0.3);
-			if(arm.getOutputCurrent() >= 5){
-				arm.setSelectedSensorPosition(0, Constants.armData.pidLoopIDx, Constants.armData.timeoutMs);
-				RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
-			}
-			RobotStates.armPos = ArmPos.CONFIG;
 			break;
 
 		}

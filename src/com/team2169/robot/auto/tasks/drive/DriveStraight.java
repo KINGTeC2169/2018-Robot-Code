@@ -7,7 +7,7 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.subsystems.DriveTrain;
 
-import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveStraight extends Task {
 
@@ -16,11 +16,11 @@ public class DriveStraight extends Task {
 	private DriveTrain drive;
 	private double speed;
 	int directionFactor;
-	PIDController turnController;
+	//PIDController turnController;
 
 	public DriveStraight(double inches, double speed_) {
 
-		turnController.enable();
+		//turnController.enable();
 		directionFactor = (desiredEncoderTicks >= 0) ? 1 : -1;
 		desiredEncoderTicks = (int) (inches * Constants.ticksPerRotation * Constants.wheelDiameter * Math.PI);
 		drive = DriveTrain.getInstance();
@@ -30,7 +30,7 @@ public class DriveStraight extends Task {
 
 	protected void initialize() {
 
-		RobotWantedStates.wantedDriveType = DriveType.IDLE;
+		RobotWantedStates.wantedDriveType = DriveType.WAITING;
 		drive.leftMaster.setSelectedSensorPosition(0, 0, 10);
 		drive.rightMaster.setSelectedSensorPosition(0, 0, 10);
 		initialAngle = drive.navX.getAngle();
@@ -39,44 +39,36 @@ public class DriveStraight extends Task {
 
 	protected void execute() {
 
-		drive.leftMaster.set(ControlMode.PercentOutput, speed + getAngleCorrection() * getRightRamp());
-		drive.rightMaster.set(ControlMode.PercentOutput, speed - getAngleCorrection() * getLeftRamp());
+		double leftOutput = -(speed + getAngleCorrection());
+		double rightOutput = speed - getAngleCorrection();
+		SmartDashboard.putNumber("Left Output", leftOutput);
+		SmartDashboard.putNumber("Right Output", rightOutput);
+		drive.leftMaster.set(ControlMode.PercentOutput, leftOutput);
+		drive.rightMaster.set(ControlMode.PercentOutput, rightOutput);
 
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return getLeftCompletionPercentage() > .995 && getRightCompletionPercentage() > .995;
-	}
-
-	double getLeftRamp() {
-		if (getLeftCompletionPercentage() > .94) {
-			return (1 - getLeftCompletionPercentage() * 8);
-		} else if (getLeftCompletionPercentage() < .6) {
-			return (getLeftCompletionPercentage() * 8);
-		}
-		return 1;
-	}
-
-	double getRightRamp() {
-		if (getRightCompletionPercentage() > .94) {
-			return (1 - getRightCompletionPercentage() * 8);
-		} else if (getRightCompletionPercentage() < .6) {
-			return (getRightCompletionPercentage() * 8);
-		}
-		return 1;
+		boolean finished = getLeftCompletionPercentage() > .995 && getRightCompletionPercentage() > .995;
+		SmartDashboard.putBoolean("Segment Finished", finished);
+		return finished;
 	}
 
 	double getLeftCompletionPercentage() {
 
-		return ((double) drive.leftMaster.getSelectedSensorPosition(0) / (double) desiredEncoderTicks);
+		double completion = (double) drive.leftMaster.getSelectedSensorPosition(0) / (double) desiredEncoderTicks;
+		SmartDashboard.putNumber("Left Completion %", completion);
+		return completion;
 
 	}
 
 	double getRightCompletionPercentage() {
 
-		return ((double) drive.rightMaster.getSelectedSensorPosition(0) / (double) desiredEncoderTicks);
-
+		double completion = (double) drive.rightMaster.getSelectedSensorPosition(0) / (double) desiredEncoderTicks;
+		SmartDashboard.putNumber("Right Completion %", completion);
+		return completion;
+		
 	}
 
 	double getAngleCorrection() {
@@ -84,7 +76,14 @@ public class DriveStraight extends Task {
 	}
 
 	double getAngleError() {
-		return (initialAngle - drive.getAngle());
+		double error = initialAngle - drive.getAngle();
+		SmartDashboard.putNumber("Angle Error", error);
+		return error;
+	}
+	
+	protected void end() {
+		drive.leftMaster.set(ControlMode.PercentOutput, 0);
+		drive.rightMaster.set(ControlMode.PercentOutput, 0);
 	}
 
 	protected void interrupted() {

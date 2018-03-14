@@ -5,16 +5,18 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnInPlace extends Command implements PIDOutput {
 
 	private DriveTrain drive;
 	public static PIDController turnController;
-	private static final double kP = 0.3;
+	private static final double kP = 0.2;
 	private static final double kI = 0.05;
 	private static final double kD = 0.1;
 	private static final double kF = 0.1;
@@ -44,8 +46,8 @@ public class TurnInPlace extends Command implements PIDOutput {
 
 	protected void execute() {
 		synchronized (this) {
-			turnController.enable();
 			currentAngle = drive.navX.getAngle();
+			SmartDashboard.putNumber("Current Angle", currentAngle);
 		}
 	}
 
@@ -55,6 +57,7 @@ public class TurnInPlace extends Command implements PIDOutput {
 	}
 
 	protected void end() {
+		DriverStation.reportError("DoNE", false);
 		turnController.disable();
 	}
 
@@ -66,8 +69,8 @@ public class TurnInPlace extends Command implements PIDOutput {
 	public void pidWrite(double output) {
 		synchronized (this) {
 			rotateToAngleRate = output;
-			drive.leftMaster.set(ControlMode.PercentOutput, rotateToAngleRate);
 			drive.leftMaster.set(ControlMode.PercentOutput, -1 * rotateToAngleRate);
+			drive.rightMaster.set(ControlMode.PercentOutput, rotateToAngleRate);
 		}
 	}
 
