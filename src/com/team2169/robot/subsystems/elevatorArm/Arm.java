@@ -86,12 +86,16 @@ public class Arm {
 
         // set robot's actual state to WantedState's value
         switch (RobotWantedStates.wantedArmPos) {
+            case STOW:
+                armToPos(Constants.stowArmEncoderPosition);
+                RobotStates.armPos = ArmPos.STOW;
+                break;
             case EXTENDED:
                 armToPos(Constants.extendedArmEncoderPosition);
                 RobotStates.armPos = ArmPos.EXTENDED;
                 break;
             case HOLD_POSITION:
-                holdInPosition();
+            holdInPosition();
                 RobotStates.armPos = ArmPos.HOLD_POSITION;
                 break;
             case OVERRIDE:

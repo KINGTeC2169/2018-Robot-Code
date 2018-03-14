@@ -27,7 +27,7 @@ public class Constants {
     public static final int camera2Height = 480;
 
     // Camera3
-    public static final String camera3Name = "Camera 1 Name";
+    public static final String camera3Name = "Camera 3 Name";
     public static final int camera3ID = 2;
     public static final int camera3FPS = 0;
     public static final int camera3Width = 640;
@@ -52,8 +52,9 @@ public class Constants {
     // Happens to work perfectly to set it to the height of the object you want to
     // reach.
 
-    public static int extendedArmEncoderPosition = 923;
-    public static int retractedArmEncoderPosition = 1500;
+    public static int extendedArmEncoderPosition;
+    public static int retractedArmEncoderPosition;
+    public static int stowArmEncoderPosition;
 
     public static TalonConfig elevatorData = new TalonConfig();
     public static TalonConfig armData = new TalonConfig();
@@ -107,9 +108,11 @@ public class Constants {
         if (pos) {
             extendedArmEncoderPosition = 2700;
             retractedArmEncoderPosition = 3300;
+            stowArmEncoderPosition = 4500;
         } else {
             extendedArmEncoderPosition = -500;
             retractedArmEncoderPosition = -1000;
+            retractedArmEncoderPosition = -1500;
         }
 
     }

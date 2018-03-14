@@ -7,6 +7,7 @@ import com.team2169.robot.RobotStates.FieldSetup;
 import com.team2169.robot.RobotStates.StartingPosition;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.modes.FailureAuto;
+import com.team2169.robot.auto.modes.PrepForMatch;
 import com.team2169.robot.auto.modes.SelfTest;
 import com.team2169.robot.auto.modes.center.CLLAuto;
 import com.team2169.robot.auto.modes.center.CLRAuto;
@@ -53,6 +54,7 @@ public class AutoManager {
         // Alliance Choosers
         selfTestChooser.addDefault("Normal", 0);
         selfTestChooser.addObject("Self-Test", 1);
+        selfTestChooser.addObject("Match Prep", 2);
 
         // Position Choosers
         positionChooser.addDefault("Left", -1);
@@ -158,7 +160,11 @@ public class AutoManager {
 
         if (selfTestActive == 1) {
             auto = new SelfTest();
-        } else {
+        }
+        else if(selfTestActive == 2){
+            auto = new PrepForMatch();
+        }
+        else {
             switch (RobotStates.autoMode) {
                 case CONTINUOUS:
                     switch (RobotStates.fieldSetup) {

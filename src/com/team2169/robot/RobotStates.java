@@ -101,7 +101,7 @@ public class RobotStates {
     // Arm Position Handler
     public enum ArmPos {
 
-        EXTENDED, RETRACTED, OVERRIDE, HOLD_POSITION, CONFIG
+        EXTENDED, RETRACTED, OVERRIDE, HOLD_POSITION, CONFIG, STOW
 
     }
 
