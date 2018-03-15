@@ -59,7 +59,7 @@ public class CameraManager {
         }
     }
 
-    @SuppressWarnings({"unused", "ConstantConditions"})
+    @SuppressWarnings("unused")
     private boolean checkConflictions() {
 
         if (Constants.camera2ID == Constants.camera1ID) {

@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
 
         RobotStates.isFMSConnected = m_ds.isFMSAttached();
-        shuffle.init(m_ds.isFMSAttached());
+        shuffle.init();
 
     }
 
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
         superStructure.subsystemLooper();
         RobotStates.isFMSConnected = m_ds.isFMSAttached();
-        shuffle.auto(m_ds.isFMSAttached());
+        shuffle.auto();
         auto.autoLooping();
 
     }
@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
         try {
 
             StateManager.teleOpStateLooper();
-            shuffle.teleOp(m_ds.isFMSAttached());
+            shuffle.teleOp();
 
 
         } catch (Exception e) {

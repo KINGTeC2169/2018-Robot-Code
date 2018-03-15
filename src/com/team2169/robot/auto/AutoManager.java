@@ -9,19 +9,30 @@ import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.PrepForMatch;
 import com.team2169.robot.auto.modes.SelfTest;
-import com.team2169.robot.auto.modes.center.CLLAuto;
-import com.team2169.robot.auto.modes.center.CLRAuto;
-import com.team2169.robot.auto.modes.center.CRLAuto;
-import com.team2169.robot.auto.modes.center.CRRAuto;
-import com.team2169.robot.auto.modes.left.LLLAuto;
-import com.team2169.robot.auto.modes.left.LLRAuto;
-import com.team2169.robot.auto.modes.left.LRLAuto;
-import com.team2169.robot.auto.modes.left.LRRAuto;
-import com.team2169.robot.auto.modes.pathfinderAutos.*;
-import com.team2169.robot.auto.modes.right.RLLAuto;
-import com.team2169.robot.auto.modes.right.RLRAuto;
-import com.team2169.robot.auto.modes.right.RRLAuto;
-import com.team2169.robot.auto.modes.right.RRRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCLLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCLRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCRLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCRRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRLLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRLRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRRAuto;
+import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLLAuto;
+import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLRAuto;
+import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRLAuto;
+import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRRAuto;
+import com.team2169.robot.auto.modes.switchAutos.left.SwitchLLLAuto;
+import com.team2169.robot.auto.modes.switchAutos.left.SwitchLLRAuto;
+import com.team2169.robot.auto.modes.switchAutos.left.SwitchLRLAuto;
+import com.team2169.robot.auto.modes.switchAutos.left.SwitchLRRAuto;
+import com.team2169.robot.auto.modes.switchAutos.right.SwitchRLLAuto;
+import com.team2169.robot.auto.modes.switchAutos.right.SwitchRLRAuto;
+import com.team2169.robot.auto.modes.switchAutos.right.SwitchRRLAuto;
+import com.team2169.robot.auto.modes.switchAutos.right.SwitchRRRAuto;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,393 +41,387 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoManager {
 
-    // Alliance IDs
-
-    private int position;
-    private int mode;
-    private int selfTestActive;
-    private AutoMode auto;
-
-    // Sendable Chooser Declarations
-
-    private static SendableChooser<Integer> selfTestChooser;
-    private static SendableChooser<Integer> positionChooser;
-    private static SendableChooser<Integer> modeChooser;
-
-    // Command Declarations
-
-    public AutoManager() {
-
-        positionChooser = new SendableChooser<>();
-        selfTestChooser = new SendableChooser<>();
-        modeChooser = new SendableChooser<>();
-
-        // Alliance Choosers
-        selfTestChooser.addDefault("Normal", 0);
-        selfTestChooser.addObject("Self-Test", 1);
-        selfTestChooser.addObject("Match Prep", 2);
-
-        // Position Choosers
-        positionChooser.addDefault("Left", -1);
-        positionChooser.addObject("Center", 0);
-        positionChooser.addObject("Right", 1);
-
-        // Mode Choosers
-        modeChooser.addDefault(Constants.defaultAutoName, 0);
-        modeChooser.addObject(Constants.secondAutoName, 1);
-
-        SmartDashboard.putData("Self-Test Selector", selfTestChooser);
-        SmartDashboard.putData("Field Position Selector", positionChooser);
-        SmartDashboard.putData("Auto Mode Selector", modeChooser);
-
-    }
-
-    private void determineField() {
-
-        String gameMessage_ = Robot.fms.getGameMessage();
-
-        switch (gameMessage_) {
-            case "LRL":
-            case "LRR":
-                RobotStates.fieldSetup = FieldSetup.LR;
-                SmartDashboard.putString("Switch State:", "LEFT");
-                SmartDashboard.putString("Scale State:", "RIGHT");
-                break;
-            case "LLL":
-            case "LLR":
-                RobotStates.fieldSetup = FieldSetup.LL;
-                SmartDashboard.putString("Switch State:", "LEFT");
-                SmartDashboard.putString("Scale State:", "LEFT");
-                break;
-            case "RLL":
-            case "RLR":
-                RobotStates.fieldSetup = FieldSetup.RL;
-                SmartDashboard.putString("Switch State:", "RIGHT");
-                SmartDashboard.putString("Scale State:", "LEFT");
-                break;
-            case "RRL":
-            case "RRR":
-                RobotStates.fieldSetup = FieldSetup.RR;
-                SmartDashboard.putString("Switch State:", "RIGHT");
-                SmartDashboard.putString("Scale State:", "RIGHT");
-                break;
-            default:
-                DriverStation.reportError("Failure to recieve Field Data", true);
-                RobotStates.fieldSetup = FieldSetup.FAIL;
-                break;
-        }
-
-
-        // Set RobotPosition based on SmartDash chooser
-        if (position == -1) {
-            RobotStates.startingPosition = StartingPosition.LEFT;
-        } else if (position == 0) {
-            RobotStates.startingPosition = StartingPosition.CENTER;
-        } else if (position == 1) {
-            RobotStates.startingPosition = StartingPosition.RIGHT;
-        } else {
-            // Default to Center because TODO come up with a reason to start in the middle
-            RobotStates.startingPosition = StartingPosition.CENTER;
-        }
-        //AutoMode from smartDash Choser
-        if (mode == 0) {
-            RobotStates.autoMode = RobotStates.AutoMode.CONTINUOUS;
-        } else if (mode == 1) {
-            RobotStates.autoMode = RobotStates.AutoMode.SEGMENTED;
-        }
-
-        setAutoMode();
-
-        SmartDashboard.putString("Robot Location:", RobotStates.startingPosition.toString());
-
-    }
-
-    public void runAuto() {
+	// Alliance IDs
+
+	private int position;
+	private int mode;
+	private int selfTestActive;
+	private AutoMode auto;
+
+	// Sendable Chooser Declarations
+
+	private static SendableChooser<Integer> selfTestChooser;
+	private static SendableChooser<Integer> positionChooser;
+	private static SendableChooser<Integer> modeChooser;
+
+	// Command Declarations
+
+	public AutoManager() {
+
+		positionChooser = new SendableChooser<>();
+		selfTestChooser = new SendableChooser<>();
+		modeChooser = new SendableChooser<>();
+
+		// Alliance Choosers
+		selfTestChooser.addDefault("Normal", 0);
+		selfTestChooser.addObject("Self-Test", 1);
+		selfTestChooser.addObject("Match Prep", 2);
+
+		// Position Choosers
+		positionChooser.addDefault("Left", -1);
+		positionChooser.addObject("Center", 0);
+		positionChooser.addObject("Right", 1);
+
+		// Mode Choosers
+		modeChooser.addDefault(Constants.defaultAutoName, 0);
+		modeChooser.addObject(Constants.secondAutoName, 1);
+
+		SmartDashboard.putData("Self-Test Selector", selfTestChooser);
+		SmartDashboard.putData("Field Position Selector", positionChooser);
+		SmartDashboard.putData("Auto Mode Selector", modeChooser);
+
+	}
+
+	private void determineField() {
+
+		String gameMessage_ = Robot.fms.getGameMessage();
 
-        selfTestActive = selfTestChooser.getSelected();
-        position = positionChooser.getSelected();
-        mode = modeChooser.getSelected();
+		switch (gameMessage_) {
+		case "LRL":
+		case "LRR":
+			RobotStates.fieldSetup = FieldSetup.LR;
+			SmartDashboard.putString("Switch State:", "LEFT");
+			SmartDashboard.putString("Scale State:", "RIGHT");
+			break;
+		case "LLL":
+		case "LLR":
+			RobotStates.fieldSetup = FieldSetup.LL;
+			SmartDashboard.putString("Switch State:", "LEFT");
+			SmartDashboard.putString("Scale State:", "LEFT");
+			break;
+		case "RLL":
+		case "RLR":
+			RobotStates.fieldSetup = FieldSetup.RL;
+			SmartDashboard.putString("Switch State:", "RIGHT");
+			SmartDashboard.putString("Scale State:", "LEFT");
+			break;
+		case "RRL":
+		case "RRR":
+			RobotStates.fieldSetup = FieldSetup.RR;
+			SmartDashboard.putString("Switch State:", "RIGHT");
+			SmartDashboard.putString("Scale State:", "RIGHT");
+			break;
+		default:
+			DriverStation.reportError("Failure to recieve Field Data", true);
+			RobotStates.fieldSetup = FieldSetup.FAIL;
+			break;
+		}
+
+		// Set RobotPosition based on SmartDash chooser
+		if (position == -1) {
+			RobotStates.startingPosition = StartingPosition.LEFT;
+		} else if (position == 0) {
+			RobotStates.startingPosition = StartingPosition.CENTER;
+		} else if (position == 1) {
+			RobotStates.startingPosition = StartingPosition.RIGHT;
+		} else {
+			// Default to Center because TODO come up with a reason to start in the middle
+			RobotStates.startingPosition = StartingPosition.CENTER;
+		}
+
+		setAutoMode();
+
+		SmartDashboard.putString("Robot Location:", RobotStates.startingPosition.toString());
+
+	}
+
+	public void runAuto() {
+
+		selfTestActive = selfTestChooser.getSelected();
+		position = positionChooser.getSelected();
+		mode = modeChooser.getSelected();
+
+		determineField();
 
-        determineField();
+		auto.start();
 
-        auto.start();
+	}
 
-    }
+	public void endAuto() {
+		if (auto != null) {
+			auto.cancel();
+		}
+	}
 
-    public void endAuto() {
-        if (auto != null) {
-            auto.cancel();
-        }
-    }
+	public void autoLooping() {
 
-    public void autoLooping() {
+		auto.looper();
 
-        auto.looper();
+	}
 
-    }
+	// You're gonna want to minimize this pal
+	private void setAutoMode() {
 
-    // You're gonna want to minimize this pal
-    private void setAutoMode() {
+		if (selfTestActive == 1) {
+			auto = new SelfTest();
+		} else if (selfTestActive == 2) {
+			auto = new PrepForMatch();
+		} else {
 
-        if (selfTestActive == 1) {
-            auto = new SelfTest();
-        }
-        else if(selfTestActive == 2){
-            auto = new PrepForMatch();
-        }
-        else {
-            switch (RobotStates.autoMode) {
-                case CONTINUOUS:
-                    switch (RobotStates.fieldSetup) {
+			//Switch Autos
+			if(mode == 0) {
 
-                        // FAIL Case
-                        case FAIL:
-                        default:
+				switch (RobotStates.fieldSetup) {
 
-                            auto = new FailureAuto();
-                            break;
+					// FAIL Case
+					case FAIL:
+					default:
 
-                        // Switch: Left, Scale: Left
-                        case LL:
+						auto = new FailureAuto();
+						break;
 
-                            switch (RobotStates.startingPosition) {
+					// Switch: Left, Scale: Left
+					case LL:
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CLLAutoCont();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LLLAutoCont();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new SwitchCLLAuto();
+								break;
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RLLAutoCont();
-                                    break;
+							// Robot Pos: Left
+							case LEFT:
+								auto = new SwitchLLLAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new SwitchRLLAuto();
+								break;
 
-                            break;
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                        // Switch: Left, Scale: Right
-                        case LR:
+						break;
 
-                            switch (RobotStates.startingPosition) {
+					// Switch: Left, Scale: Right
+					case LR:
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CLRAutoCont();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LLRAutoCont();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new SwitchCLRAuto();
+								break;
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RLRAutoCont();
-                                    break;
+							// Robot Pos: Left
+							case LEFT:
+								auto = new SwitchLLRAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new SwitchRLRAuto();
+								break;
 
-                            break;
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                        // Switch: Right, Scale: Left
-                        case RL:
+						break;
 
-                            switch (RobotStates.startingPosition) {
+					// Switch: Right, Scale: Left
+					case RL:
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CRLAutoCont();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LRLAutoCont();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new SwitchCRLAuto();
+								break;
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RRLAutoCont();
-                                    break;
+							// Robot Pos: Left
+							case LEFT:
+								auto = new SwitchLRLAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new SwitchRRLAuto();
+								break;
 
-                            break;
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                        // Switch: Right, Scale: Right
-                        case RR:
+						break;
 
-                            switch (RobotStates.startingPosition) {
+					// Switch: Right, Scale: Right
+					case RR:
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CRRAutoCont();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LRRAutoCont();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new SwitchCRRAuto();
+								break;
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RRRAutoCont();
-                                    break;
+							// Robot Pos: Left
+							case LEFT:
+								auto = new SwitchLRRAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new SwitchRRRAuto();
+								break;
 
-                            break;
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                    }
-                    break;
+						break;
 
-                case SEGMENTED:
-                    switch (RobotStates.fieldSetup) {
+				}
+			}
 
-                        // FAIL Case
-                        case FAIL:
-                        default:
+			//Scale Autos
+			else if(mode == 1) {
 
-                            auto = new FailureAuto();
-                            break;
+				switch (RobotStates.fieldSetup) {
 
-                        // Switch: Left, Scale: Left
-                        case LL:
+					// FAIL Case
+					case FAIL:
+					default:
 
-                            switch (RobotStates.startingPosition) {
+						auto = new FailureAuto();
+						break;
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CLLAuto();
-                                    break;
+					// Switch: Left, Scale: Left
+					case LL:
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LLLAuto();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RLLAuto();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new ScaleCLLAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Left
+							case LEFT:
+								auto = new ScaleLLLAuto();
+								break;
 
-                            break;
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new ScaleRLLAuto();
+								break;
 
-                        // Switch: Left, Scale: Right
-                        case LR:
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                            switch (RobotStates.startingPosition) {
+						break;
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CLRAuto();
-                                    break;
+					// Switch: Left, Scale: Right
+					case LR:
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LLRAuto();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RLRAuto();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new ScaleCLRAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Left
+							case LEFT:
+								auto = new ScaleLLRAuto();
+								break;
 
-                            break;
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new ScaleRLRAuto();
+								break;
 
-                        // Switch: Right, Scale: Left
-                        case RL:
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                            switch (RobotStates.startingPosition) {
+						break;
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CRLAuto();
-                                    break;
+					// Switch: Right, Scale: Left
+					case RL:
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LRLAuto();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RRLAuto();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new ScaleCRLAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Left
+							case LEFT:
+								auto = new ScaleLRLAuto();
+								break;
 
-                            break;
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new ScaleRRLAuto();
+								break;
 
-                        // Switch: Right, Scale: Right
-                        case RR:
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
 
-                            switch (RobotStates.startingPosition) {
+						break;
 
-                                // Robot Pos: Center
-                                case CENTER:
-                                    auto = new CRRAuto();
-                                    break;
+					// Switch: Right, Scale: Right
+					case RR:
 
-                                // Robot Pos: Left
-                                case LEFT:
-                                    auto = new LRRAuto();
-                                    break;
+						switch (RobotStates.startingPosition) {
 
-                                // Robot Pos: Right
-                                case RIGHT:
-                                    auto = new RRRAuto();
-                                    break;
+							// Robot Pos: Center
+							case CENTER:
+								auto = new ScaleCRRAuto();
+								break;
 
-                                // FAIL Case
-                                default:
-                                    auto = new FailureAuto();
-                                    break;
-                            }
+							// Robot Pos: Left
+							case LEFT:
+								auto = new ScaleLRRAuto();
+								break;
 
-                            break;
+							// Robot Pos: Right
+							case RIGHT:
+								auto = new ScaleRRRAuto();
+								break;
 
-                    }
-                    break;
-            }
-        }
-    }
+							// FAIL Case
+							default:
+								auto = new FailureAuto();
+								break;
+						}
+
+						break;
+
+				}
+			}
+		}
+	}
 
 }

@@ -1,4 +1,4 @@
-package com.team2169.robot.auto.modes.left;
+package com.team2169.robot.auto.modes.switchAutos.center;
 
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
@@ -9,14 +9,15 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 
-public class LLRAuto extends AutoMode {
+
+public class SwitchCLLAuto extends AutoMode {
 /*
 
 	
        +-------+         +-------+
-       |       |         |-------|
-       |       |         |-------|
-       |	   |         |-------|
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
        +-------+         +-------+
 
        +-------+         +-------+
@@ -24,24 +25,23 @@ public class LLRAuto extends AutoMode {
        |-------|         |       |
        |-------|         |       |
        +-------+         +-------+
-
-+----+
-|    |
-|    |
-|    |
-+----+
-
+   
+                 +-----+      
+                 |     |      
+                 |     |      
+                 |     |      
+                 +-----+      
+	 
 */
 
-    public LLRAuto() {
+    public SwitchCLLAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
-        addSequential(new DriveStraight(AutoConstants.sideInchesForwardFirst, .6));
+        addSequential(new DriveStraight(AutoConstants.centerInchesForwardFirst, .6));
         addParallel(new ArmRetract());
-        addSequential(new TurnInPlace(AutoConstants.sideDegreesFirst));
-        addSequential(new DriveStraight(AutoConstants.sideInchesToSwitch, .4));
+        addSequential(new TurnInPlace(-AutoConstants.centerDegreesFirst));
+        addSequential(new DriveStraight(AutoConstants.centerInchesToSwitch, .7));
         addSequential(new IntakeExhaust(true), 3);
-
     }
 
     // Put looping checks/code in here

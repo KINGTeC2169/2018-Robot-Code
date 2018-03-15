@@ -1,8 +1,8 @@
-package com.team2169.robot.auto.modes.right;
+package com.team2169.robot.auto.modes.switchAutos.right;
 
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class RLRAuto extends AutoMode {
+public class SwitchRLRAuto extends AutoMode {
 /*
 
 	
@@ -26,7 +26,7 @@ public class RLRAuto extends AutoMode {
 
 */
 
-    public RLRAuto() {
+    public SwitchRLRAuto() {
 
 
     }

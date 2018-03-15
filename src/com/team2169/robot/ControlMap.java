@@ -133,7 +133,6 @@ public class ControlMap {
     }
 
     // Scale High Macro
-    @SuppressWarnings("unused")
     static boolean scaleHighMacroPressed() {
         return buttonBoard.getRawButton(bMacroScaleHigh);
     }
@@ -157,7 +156,6 @@ public class ControlMap {
     }
 
     static boolean neutralButtonPressed() {
-        // TODO Auto-generated method stub
         return operator.getRawButton(neutralButton);
     }
 

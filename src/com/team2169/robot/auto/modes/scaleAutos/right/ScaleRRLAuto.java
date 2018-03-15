@@ -1,4 +1,4 @@
-package com.team2169.robot.auto.modes.right;
+package com.team2169.robot.auto.modes.scaleAutos.right;
 
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.auto.AutoConstants;
@@ -8,7 +8,7 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 
-public class RRLAuto extends AutoMode {
+public class ScaleRRLAuto extends AutoMode {
 /*
 
 	
@@ -32,7 +32,7 @@ public class RRLAuto extends AutoMode {
 	 
 */
 
-    public RRLAuto() {
+    public ScaleRRLAuto() {
 
         RobotStates.runningMode = RobotStates.RunningMode.AUTO;
         addSequential(new DriveStraight(AutoConstants.sideInchesForwardFirst, .6));

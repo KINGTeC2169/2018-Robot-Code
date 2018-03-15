@@ -1,8 +1,8 @@
-package com.team2169.robot.auto.modes.left;
+package com.team2169.robot.auto.modes.scaleAutos.right;
 
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class LRLAuto extends AutoMode {
+public class ScaleRLLAuto extends AutoMode {
 /*
 
 	
@@ -11,23 +11,22 @@ public class LRLAuto extends AutoMode {
        |-------|         |       |
        |-------|         |       |
        +-------+         +-------+
-       	
+
        +-------+         +-------+
-       |       |         |-------|
-       |       |         |-------|
-       |	   |         |-------|
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
        +-------+         +-------+
 
-+----+
-|    |
-|    |
-|    |
-+----+
+                                   +-----+
+                                   |     |
+                                   |     |
+                                   |     |
+                                   +-----+
 	 
 */
 
-    public LRLAuto() {
-
+    public ScaleRLLAuto() {
 
     }
 

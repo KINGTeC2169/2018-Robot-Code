@@ -1,9 +1,8 @@
 package com.team2169.util;
 
-import com.team2169.robot.Robot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-@SuppressWarnings("deprecation")
 public class ShuffleBoardManager {
 
     public void init() {
@@ -15,21 +14,21 @@ public class ShuffleBoardManager {
     public void auto() {
 
         connected();
-        SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
+        SmartDashboard.putNumber("Match Time", DriverStation.getInstance().getMatchTime());
 
     }
 
     public void teleOp() {
 
         connected();
-        SmartDashboard.putNumber("Match Time", Robot.fms.matchTime());
+        SmartDashboard.putNumber("Match Time", DriverStation.getInstance().getMatchTime());
 
     }
 
     private void connected() {
 
-        SmartDashboard.putBoolean("FMS Connected", Robot.fms.fmsActive());
-        SmartDashboard.putBoolean("DS Connected", Robot.fms.isDriverStationAttached());
+        SmartDashboard.putBoolean("FMS Connected", DriverStation.getInstance().isFMSAttached());
+        SmartDashboard.putBoolean("DS Connected", DriverStation.getInstance().isDSAttached());
 
     }
 }
