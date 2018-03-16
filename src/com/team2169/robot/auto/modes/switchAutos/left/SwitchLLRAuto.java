@@ -4,9 +4,11 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.modes.AutoMode;
+import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
+import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 
 public class SwitchLLRAuto extends AutoMode {
@@ -36,12 +38,15 @@ public class SwitchLLRAuto extends AutoMode {
     public SwitchLLRAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
-        addSequential(new DriveStraight(AutoConstants.sideInchesForwardFirst, .6));
+        
         addParallel(new ArmRetract());
-        addSequential(new TurnInPlace(AutoConstants.sideDegreesFirst));
-        addSequential(new DriveStraight(AutoConstants.sideInchesToSwitch, .4));
+        addParallel(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.startToPoint, .5));
+        addSequential(new TurnInPlace(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn));
+        addParallel(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5));
+        addParallel(new ElevatorToSwitch());
+        addParallel(new ArmExtend());
         addSequential(new IntakeExhaust(true), 3);
-
+    
     }
 
     // Put looping checks/code in here

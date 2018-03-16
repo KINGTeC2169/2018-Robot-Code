@@ -16,11 +16,11 @@ public class ActuatorMap {
     // Elevator TalonSRX IDs
     public static final int elevatorMasterID = 7;
     public static final int elevatorSlaveID = 6;
-    public static final int armID = 9;
+    public static final int armID = 8;
 
     // Intake TalonSRX IDs
     public static final int leftIntakeID = 10;
-    public static final int rightIntakeID = 8;
+    public static final int rightIntakeID = 9;
 
     // Pnuematics
     // Compressor

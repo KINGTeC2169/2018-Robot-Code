@@ -1,7 +1,6 @@
 package com.team2169.robot.auto;
 
 import com.team2169.robot.Constants;
-import com.team2169.robot.Robot;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.FieldSetup;
 import com.team2169.robot.RobotStates.StartingPosition;
@@ -46,6 +45,7 @@ public class AutoManager {
 	private int position;
 	private int mode;
 	private int selfTestActive;
+	String gameMessage;
 	private AutoMode auto;
 
 	// Sendable Chooser Declarations
@@ -84,9 +84,9 @@ public class AutoManager {
 
 	private void determineField() {
 
-		String gameMessage_ = Robot.fms.getGameMessage();
+		gameMessage = DriverStation.getInstance().getGameSpecificMessage();
 
-		switch (gameMessage_) {
+		switch (gameMessage) {
 		case "LRL":
 		case "LRR":
 			RobotStates.fieldSetup = FieldSetup.LR;
@@ -143,7 +143,9 @@ public class AutoManager {
 
 		determineField();
 
-		auto.start();
+		SmartDashboard.putString("GAME ID IMPORTANT LOOK AT ME", gameMessage);
+		
+		//auto.start();
 
 	}
 

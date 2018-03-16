@@ -23,7 +23,7 @@ public class IntakeExhaust extends Task {
     @Override
     protected boolean isFinished() {
 
-        return !idleOnEnd;
+        return isTimedOut();
 
     }
 

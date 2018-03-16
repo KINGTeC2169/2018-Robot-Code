@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Intake extends Subsystem {
+public class Arm extends Subsystem {
 
-    private static Intake iInstance = null;
+    private static Arm iInstance = null;
 
-    public static Intake getInstance() {
+    public static Arm getInstance() {
         if (iInstance == null) {
-            iInstance = new Intake();
+            iInstance = new Arm();
         }
         return iInstance;
     }
@@ -34,7 +34,7 @@ public class Intake extends Subsystem {
     private int a = 0;
     private boolean exhaustFromDrop = false;
 
-    private Intake() {
+    private Arm() {
         ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
         left = new TalonSRX(ActuatorMap.leftIntakeID);
         right = new TalonSRX(ActuatorMap.rightIntakeID);

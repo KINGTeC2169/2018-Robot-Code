@@ -33,6 +33,7 @@ public class DriveTrain extends Subsystem {
 
     public TalonSRX leftMaster;
     private TalonSRX leftTop;
+    private TalonSRX leftFront;
     public TalonSRX rightMaster;
     private TalonSRX rightFront;
     private TalonSRX rightTop;
@@ -57,7 +58,7 @@ public class DriveTrain extends Subsystem {
 
         // Create the objects and set properties
         leftMaster = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
-        TalonSRX leftFront = new TalonSRX(ActuatorMap.leftFront);
+        leftFront = new TalonSRX(ActuatorMap.leftFront);
         leftTop = new TalonSRX(ActuatorMap.leftTop);
 
         rightMaster = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
@@ -145,8 +146,6 @@ public class DriveTrain extends Subsystem {
     private void drive(double leftPower, double rightPower) {
         leftMaster.set(ControlMode.PercentOutput, leftPower);
         rightMaster.set(ControlMode.PercentOutput, rightPower);
-        leftTop.set(ControlMode.PercentOutput, leftPower * 0.91);
-        rightTop.set(ControlMode.PercentOutput, rightPower * 0.91);
     }
 
     void driveHandler() {
@@ -165,9 +164,6 @@ public class DriveTrain extends Subsystem {
                 // Acceleration Handler with Squared controls
                 leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false) * FlyByWireHandler.getSafeSpeed());
                 rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false) * FlyByWireHandler.getSafeSpeed());
-                leftTop.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false) * 0.91 * FlyByWireHandler.getSafeSpeed());
-                rightTop.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false) * 0.91 * FlyByWireHandler.getSafeSpeed());
-
                 // Shift without override
                 shift(false);
 
@@ -187,8 +183,6 @@ public class DriveTrain extends Subsystem {
                 // Drive with Override
                 leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
                 rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
-                leftTop.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true) * 0.91);
-                rightTop.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true) * 0.91);
                 // Shift with override
                 shift(true);
 

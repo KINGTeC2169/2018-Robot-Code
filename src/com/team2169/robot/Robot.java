@@ -4,6 +4,7 @@ import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoManager;
+import com.team2169.robot.auto.modes.YesNoAutoRight;
 import com.team2169.robot.canCycles.CANCycleHandler;
 import com.team2169.robot.subsystems.Superstructure;
 import com.team2169.util.CameraManager;
@@ -51,7 +52,9 @@ public class Robot extends TimedRobot {
         superStructure.zeroAllSensors();
         RobotStates.runningMode = RunningMode.AUTO;
         // ShuffleBoardManager.getPathfinderConstants();
-        auto.runAuto();
+        YesNoAutoRight auto = new YesNoAutoRight();
+        auto.start();
+        //auto.runAuto();
 
     }
 
@@ -62,7 +65,8 @@ public class Robot extends TimedRobot {
         superStructure.subsystemLooper();
         RobotStates.isFMSConnected = m_ds.isFMSAttached();
         shuffle.auto();
-        auto.autoLooping();
+        
+        //auto.autoLooping();
 
     }
 
@@ -74,7 +78,7 @@ public class Robot extends TimedRobot {
         }
 
         Scheduler.getInstance().removeAll();
-        RobotStates.armPos = ArmPos.CONFIG;
+        RobotStates.armPos = ArmPos.IDLE;
         RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
 
     }
@@ -105,7 +109,6 @@ public class Robot extends TimedRobot {
     public void disabledInit() {
         auto.endAuto();
         superStructure.stop();
-        CANCycleHandler.cancelAllCycles();
         // Stop all subsystems here
 
     }

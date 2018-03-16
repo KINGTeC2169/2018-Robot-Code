@@ -103,11 +103,11 @@ public class ControlMap {
         return primaryLeft.getRawButton(primaryOverride) || primaryRight.getRawButton(primaryOverride);
     }
 
-    static boolean armExtendPressed() {
+    static boolean intakeIn() {
         return operator.getPOV() == 180;
     }
 
-    static boolean armRetractPressed() {
+    static boolean intakeExhaust() {
         return operator.getPOV() == 0;
     }
 

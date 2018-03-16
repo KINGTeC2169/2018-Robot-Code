@@ -102,20 +102,18 @@ public class StateManager {
 
         // Intake Wheel States
         // Driver has taken control of mechanism, follow their controls.
-        if (ControlMap.operatorStickState == OperatorStickState.INTAKE || RobotStates.canCycleMode) {
-
+    	
             // Intake Wheel States
-            if (ControlMap.getOperatorStickValue() < -ControlMap.operatorDeadband) {
+            if (ControlMap.intakeIn()) {
                 CANCycleHandler.cancelArmElevatorCycles();
                 RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
-            } else if (ControlMap.getOperatorStickValue() > ControlMap.operatorDeadband) {
+            } else if (ControlMap.intakeExhaust()) {
                 CANCycleHandler.cancelArmElevatorCycles();
                 RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
             } else if (!RobotStates.canCycleMode) {
                 RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
             }
 
-        }
 
         // Intake stick is busy at the moment, shut off intake
         else {
@@ -198,19 +196,11 @@ public class StateManager {
             RobotStates.armStickMode = true;
             CANCycleHandler.cancelArmElevatorCycles();
             RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
-        } else if (ControlMap.armExtendPressed()) {
-            RobotStates.armButtonMode = true;
-            RobotStates.armStickMode = false;
-            CANCycleHandler.cancelArmElevatorCycles();
-            RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-        } else if (ControlMap.armRetractPressed()) {
-            RobotStates.armButtonMode = true;
-            RobotStates.armStickMode = false;
-            CANCycleHandler.cancelArmElevatorCycles();
-            RobotWantedStates.wantedArmPos = ArmPos.RETRACTED;
-        } else if (RobotStates.armStickMode) {
-            RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
         }
+        else {
+        	RobotWantedStates.wantedArmPos = ArmPos.IDLE;
+        }
+        
 
         // Robot is in a CanCycle, don't interfere unless overriden
         if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {

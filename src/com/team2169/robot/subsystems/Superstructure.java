@@ -22,7 +22,7 @@ public class Superstructure {
     }
 
     public static DriveTrain drive;
-    private Intake intake;
+    private Arm intake;
     private Platform platform;
     private ElevatorArm liftArm;
     private Compressor comp;
@@ -31,7 +31,7 @@ public class Superstructure {
     public Superstructure() {
 
         drive = DriveTrain.getInstance();
-        intake = Intake.getInstance();
+        intake = Arm.getInstance();
         platform = Platform.getInstance();
         liftArm = ElevatorArm.getInstance();
         comp = new Compressor(ActuatorMap.PCMPort);
@@ -48,7 +48,7 @@ public class Superstructure {
 
         // Set WantedStates
         RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-        RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
+        RobotWantedStates.wantedArmPos = ArmPos.IDLE;
         RobotWantedStates.wantedElevatorPos = Macro.GROUND;
         StateManager.stateInit();
 

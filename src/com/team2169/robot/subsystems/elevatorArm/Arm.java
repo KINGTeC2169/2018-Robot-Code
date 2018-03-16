@@ -9,8 +9,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 
+    private static Arm aInstance = null;
+
+    public static Arm getInstance() {
+        if (aInstance == null) {
+            aInstance = new Arm();
+        }
+        return aInstance;
+    }
+	
     // Create Talons
-    private TalonSRX arm;
+    public TalonSRX arm;
     private int oldArmPos = 0;
     private int position = Constants.retractedArmEncoderPosition;
 
@@ -52,14 +61,15 @@ public class Arm {
         }
     }
 
-    private void armToPos(int pos) {
+    @SuppressWarnings("unused")
+	private void armToPos(int pos) {
         arm.set(ControlMode.Position, pos);
         position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
         getFinishedState();
     }
 
     private void armSetOverrideLooper(double joystickValue) {
-        arm.set(ControlMode.PercentOutput, joystickValue);
+        arm.set(ControlMode.PercentOutput, -joystickValue);
         position = arm.getSensorCollection().getPulseWidthPosition();
     }
 
@@ -83,21 +93,25 @@ public class Arm {
             arm.setSelectedSensorPosition(oldArmPos, 0, 10);
         }
         oldArmPos = arm.getSelectedSensorPosition(0);
-
+        
         // set robot's actual state to WantedState's value
         switch (RobotWantedStates.wantedArmPos) {
             case STOW:
-                armToPos(Constants.stowArmEncoderPosition);
+                //armToPos(Constants.stowArmEncoderPosition);
                 RobotStates.armPos = ArmPos.STOW;
                 break;
             case EXTENDED:
-                armToPos(Constants.extendedArmEncoderPosition);
+                //armToPos(Constants.extendedArmEncoderPosition);
                 RobotStates.armPos = ArmPos.EXTENDED;
                 break;
             case HOLD_POSITION:
-            holdInPosition();
+            	holdInPosition();
                 RobotStates.armPos = ArmPos.HOLD_POSITION;
                 break;
+            case IDLE:
+            	armSetOverrideLooper(0);
+            	RobotStates.armPos = ArmPos.IDLE;
+            	break;
             case OVERRIDE:
             default:
                 armSetOverrideLooper(ControlMap.getOperatorStickValue());
@@ -106,7 +120,7 @@ public class Arm {
                 RobotStates.armPos = ArmPos.OVERRIDE;
                 break;
             case RETRACTED:
-                armToPos(Constants.retractedArmEncoderPosition);
+                //armToPos(Constants.retractedArmEncoderPosition);
                 RobotStates.armPos = ArmPos.RETRACTED;
                 break;
             case CONFIG:
