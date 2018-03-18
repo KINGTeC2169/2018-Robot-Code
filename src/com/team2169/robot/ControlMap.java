@@ -2,7 +2,6 @@ package com.team2169.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class ControlMap {
 
     // Primary Controls

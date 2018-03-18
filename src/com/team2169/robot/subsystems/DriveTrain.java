@@ -436,7 +436,7 @@ public class DriveTrain extends Subsystem {
         left.configureEncoder(leftMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
                 PathfinderData.wheel_diameter);
         right.configureEncoder(rightMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
-                Constants.wheelDiameter);
+        		PathfinderData.wheel_diameter);
         left.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv,
                 PathfinderData.ka);
         right.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv,
