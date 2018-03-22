@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.modifiers.TankModifier;
 
 public class DriveTrain extends Subsystem {
 
@@ -388,11 +389,10 @@ public class DriveTrain extends Subsystem {
 
     private void generatePath(Waypoint[] path) {
         pathCalculationStatus = PathCalculationStatus.CALCULATING;
-        DriverStation.reportWarning("calculating path - drivetrain", false);
+        DriverStation.reportWarning("Calculating Path", false);
         Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
                 Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
                 PathfinderData.max_acceleration, PathfinderData.max_jerk);
-        DriverStation.reportWarning("config set - drivetrain", false);
 
         String pathHash = String.valueOf(path.hashCode());
         String configHash = String.valueOf(cfg.hashCode());
@@ -407,6 +407,10 @@ public class DriveTrain extends Subsystem {
 			System.out.println(pathHash + configHash +".csv read from file");
 			toFollow = Pathfinder.readFromCSV(trajectory);
 		}
+		
+		TankModifier modifier = new TankModifier(toFollow).modify(PathfinderData.wheel_base_width); 
+        RobotStates.leftPathTotalSegments = modifier.getLeftTrajectory().length(); 
+        RobotStates.rightPathTotalSegments = modifier.getRightTrajectory().length(); 
 
     }
 
