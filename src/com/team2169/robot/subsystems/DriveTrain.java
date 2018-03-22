@@ -1,5 +1,7 @@
 package com.team2169.robot.subsystems;
 
+import java.io.File;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -17,8 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.followers.EncoderFollower;
-import jaci.pathfinder.modifiers.TankModifier;
 
 public class DriveTrain extends Subsystem {
 
@@ -40,7 +40,6 @@ public class DriveTrain extends Subsystem {
     private DoubleSolenoid shifter;
     private DoubleSolenoid ptoShift;
     public AHRS navX;
-    private EncoderFollower[] followers;
 
     private enum PathCalculationStatus {
         CALCULATING, IDLE, FINISHED
@@ -125,27 +124,12 @@ public class DriveTrain extends Subsystem {
                 Constants.rightDriveData.timeoutMs);
     }
 
-    private double getEncoderDistanceRight() {
-        return (rightMaster.getSelectedSensorPosition(0) * Math.PI * Constants.wheelDiameter)
-                / Constants.ticksPerRotation;
-    }
-
-    private double getEncoderDistanceLeft() {
-        return (leftMaster.getSelectedSensorPosition(0) * Math.PI * Constants.wheelDiameter)
-                / Constants.ticksPerRotation;
-    }
-
     public double getAngle() {
         return -navX.getAngle();
     }
 
     private void resetGyro() {
         navX.reset();
-    }
-
-    private void drive(double leftPower, double rightPower) {
-        leftMaster.set(ControlMode.PercentOutput, leftPower);
-        rightMaster.set(ControlMode.PercentOutput, rightPower);
     }
 
     void driveHandler() {
@@ -259,7 +243,6 @@ public class DriveTrain extends Subsystem {
                     case IDLE:
                     default:
                         DriverStation.reportWarning("Calculating started", false);
-                        followers = this.pathSetup(RobotStates.currentPath);
                         break;
                     case CALCULATING:
                         break;
@@ -270,7 +253,7 @@ public class DriveTrain extends Subsystem {
                 break;
 
             case FOLLOW_PATH:
-                pathFollow(followers, RobotStates.reverseCurrentPath);
+            	//TODO Follow Path
                 RobotStates.driveType = DriveType.FOLLOW_PATH;
                 break;
 
@@ -403,21 +386,19 @@ public class DriveTrain extends Subsystem {
         isProfileFinished = true;
     }
 
-    private EncoderFollower[] pathSetup(Waypoint[] path) {
+    private void generatePath(Waypoint[] path) {
         pathCalculationStatus = PathCalculationStatus.CALCULATING;
         DriverStation.reportWarning("calculating path - drivetrain", false);
-        EncoderFollower left;
-        EncoderFollower right;
         Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
                 Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
                 PathfinderData.max_acceleration, PathfinderData.max_jerk);
         DriverStation.reportWarning("config set - drivetrain", false);
 
-        //String pathHash = String.valueOf(path.hashCode());
-        //String configHash = String.valueOf(cfg.hashCode());
-        //SmartDashboard.putString("Path Hash", pathHash);
+        String pathHash = String.valueOf(path.hashCode());
+        String configHash = String.valueOf(cfg.hashCode());
+        SmartDashboard.putString("Path Hash", pathHash);
         Trajectory toFollow = Pathfinder.generate(path, cfg);
-        /*File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
+        File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
 		if (!trajectory.exists()) {
 			toFollow = Pathfinder.generate(path, cfg);
 			Pathfinder.writeToCSV(trajectory, toFollow);
@@ -425,89 +406,8 @@ public class DriveTrain extends Subsystem {
 		} else {
 			System.out.println(pathHash + configHash +".csv read from file");
 			toFollow = Pathfinder.readFromCSV(trajectory);
-		}*/
+		}
 
-        TankModifier modifier = new TankModifier(toFollow).modify(PathfinderData.wheel_base_width);
-        PathfinderData.last_gyro_error = 0.0;
-        RobotStates.leftPathTotalSegments = modifier.getLeftTrajectory().length();
-        RobotStates.rightPathTotalSegments = modifier.getRightTrajectory().length();
-        left = new EncoderFollower(modifier.getLeftTrajectory());
-        right = new EncoderFollower(modifier.getRightTrajectory());
-        left.configureEncoder(leftMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
-                PathfinderData.wheel_diameter);
-        right.configureEncoder(rightMaster.getSelectedSensorPosition(0), Constants.ticksPerRotation,
-        		PathfinderData.wheel_diameter);
-        left.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv,
-                PathfinderData.ka);
-        right.configurePIDVA(PathfinderData.kp, PathfinderData.ki, PathfinderData.kd, PathfinderData.kv,
-                PathfinderData.ka);
-        DriverStation.reportWarning("calculated path - drivetrain", false);
-        pathCalculationStatus = PathCalculationStatus.FINISHED;
-        return new EncoderFollower[]{left, // 0
-                right, // 1
-        };
-    }
-
-    private void pathFollow(EncoderFollower[] followers, boolean reverse) {
-        DriverStation.reportWarning("running path - drivetrain", false);
-        EncoderFollower left = followers[0];
-        EncoderFollower right = followers[1];
-        double l;
-        double r;
-        double localGp = PathfinderData.gp;
-        if (!reverse) {
-            //localGp *= -1;
-
-            l = left.calculate(-leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
-            r = right.calculate(-rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-        } else {
-            l = left.calculate(leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
-            r = right.calculate(rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-        }
-
-        //double gyro_heading = reverse ? -getAngle() - PathfinderData.path_angle_offset : getAngle() + PathfinderData.path_angle_offset;
-        double gyro_heading = reverse ? -getAngle() : getAngle();
-        //double gyro_heading = getAngle();
-        double angle_setpoint = Pathfinder.r2d(left.getHeading());
-        SmartDashboard.putNumber("Angle setpoint", angle_setpoint);
-        double angleDifference = Pathfinder.boundHalfDegrees(angle_setpoint - gyro_heading);
-        SmartDashboard.putNumber("Angle difference", angleDifference);
-
-        double turn = localGp * angleDifference
-                + (PathfinderData.gd * ((angleDifference - PathfinderData.last_gyro_error) / PathfinderData.dt));
-
-        PathfinderData.last_gyro_error = angleDifference;
-
-        if (!left.isFinished() && !right.isFinished() && Math.abs(angleDifference) >= 3) {
-
-            SmartDashboard.putNumber("Turn", turn);
-            SmartDashboard.putNumber("Left diff", left.getSegment().x + this.getEncoderDistanceLeft());
-            SmartDashboard.putNumber("Left diff", right.getSegment().x + this.getEncoderDistanceRight());
-            SmartDashboard.putNumber("Left Completion Precentage", (left.getSegment().position / RobotStates.leftPathTotalSegments));
-            SmartDashboard.putNumber("Right Completion Precentage", (right.getSegment().position / RobotStates.leftPathTotalSegments));
-            SmartDashboard.putNumber("Left calc voltage", l);
-            SmartDashboard.putNumber("Right calc voltage", r);
-
-            SmartDashboard.putNumber("Commanded seg heading", left.getHeading());
-            SmartDashboard.putNumber("-Left + turn", -l + turn);
-            SmartDashboard.putNumber("-Right - turn", -r - turn);
-            SmartDashboard.putNumber("Gyro", this.getAngle());
-            SmartDashboard.putNumber("Left seg acceleration", left.getSegment().acceleration);
-            SmartDashboard.putNumber("Path angle offset", PathfinderData.path_angle_offset);
-            SmartDashboard.putNumber("Angle offset - h", angleDifference - PathfinderData.last_gyro_error);
-        }
-        if (!reverse) {
-            drive(-l + turn, -r - turn);
-            //drive(-l, -r);
-        } else {
-            drive(l + turn, r - turn);
-            //drive(l, r);
-        }
-
-        if (left.isFinished() && right.isFinished() && (Math.abs(angleDifference) <= 3)) {
-            isProfileFinished = true;
-            PathfinderData.path_angle_offset = angleDifference;
-        }
     }
 
     @Override
