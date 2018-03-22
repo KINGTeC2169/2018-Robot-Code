@@ -1,6 +1,7 @@
 package com.team2169.robot.subsystems;
 
 import java.io.File;
+import java.net.PasswordAuthentication;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -11,6 +12,9 @@ import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
+import com.team2169.util.MotionProfile;
+import com.team2169.util.PathStorageHandler;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -349,20 +353,7 @@ public class DriveTrain extends Subsystem {
                 leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
         SmartDashboard.putNumber("Right Encoder Value: ",
                 rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
-
-        SmartDashboard.putNumber("RightTop", rightTop.getOutputCurrent());
-        SmartDashboard.putNumber("RightMaster", rightMaster.getOutputCurrent());
-        SmartDashboard.putNumber("RightFront", rightFront.getOutputCurrent());
-        SmartDashboard.putNumber("RightToVolts", rightTop.getMotorOutputVoltage());
-        SmartDashboard.putNumber("RightMasterVolts", rightMaster.getMotorOutputVoltage());
-        SmartDashboard.putNumber("RightFrontVolts", rightFront.getMotorOutputVoltage());
-
-        SmartDashboard.putNumber("LeftTop", leftTop.getOutputCurrent());
-        SmartDashboard.putNumber("LeftMaster", leftTop.getOutputCurrent());
-        SmartDashboard.putNumber("LeftFront", leftTop.getOutputCurrent());
-        SmartDashboard.putNumber("LeftTopVolts", leftTop.getMotorOutputVoltage());
-        SmartDashboard.putNumber("LeftMasterVolts", leftTop.getMotorOutputVoltage());
-        SmartDashboard.putNumber("LeftFrontVolts", leftTop.getMotorOutputVoltage());
+        
     }
 
     @Override
@@ -397,20 +388,18 @@ public class DriveTrain extends Subsystem {
         String pathHash = String.valueOf(path.hashCode());
         String configHash = String.valueOf(cfg.hashCode());
         SmartDashboard.putString("Path Hash", pathHash);
-        Trajectory toFollow = Pathfinder.generate(path, cfg);
+        Trajectory toFollow;
+        MotionProfile profile;
         File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
 		if (!trajectory.exists()) {
 			toFollow = Pathfinder.generate(path, cfg);
-			Pathfinder.writeToCSV(trajectory, toFollow);
+			profile = PathStorageHandler.pathToProfile(toFollow);
+			//Write Profile to CSV
 			System.out.println(pathHash + configHash + ".csv not found, wrote to file");
 		} else {
 			System.out.println(pathHash + configHash +".csv read from file");
-			toFollow = Pathfinder.readFromCSV(trajectory);
+			//Read Profile from CSV
 		}
-		
-		TankModifier modifier = new TankModifier(toFollow).modify(PathfinderData.wheel_base_width); 
-        RobotStates.leftPathTotalSegments = modifier.getLeftTrajectory().length(); 
-        RobotStates.rightPathTotalSegments = modifier.getRightTrajectory().length(); 
 
     }
 
@@ -443,7 +432,7 @@ public class DriveTrain extends Subsystem {
         static final double max_jerk = 16.0;
         static final double wheel_diameter = 0.1498;
 
-        static final double wheel_base_width = 0.635;
+        public static final double wheel_base_width = 0.635;
         private static final double dt = 0.02;
     }
 }

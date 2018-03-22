@@ -6,6 +6,9 @@ import com.team2169.robot.Constants;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motion.*;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
@@ -123,10 +126,10 @@ public class MotionProfileHandler {
 
 	private void startFilling() {
 		/* since this example only has one talon, just update that one */
-		startFilling(mProfile.Points, mProfile.kNumPoints);
+		startFilling(mProfile.leftPath, mProfile.kNumPoints);
 	}
 
-	private void startFilling(double[][] profile, int totalCnt) {
+	private void startFilling(ArrayList<ArrayList<Double>> profile, int totalCnt) {
 
 		/* create an empty point */
 		TrajectoryPoint point = new TrajectoryPoint();
@@ -142,15 +145,15 @@ public class MotionProfileHandler {
 
 		/* This is fast since it's just into our TOP buffer */
 		for (int i = 0; i < totalCnt; ++i) {
-			double positionRot = profile[i][0];
-			double velocityRPM = profile[i][1];
+			double positionRot = profile.get(i).get(0);
+			double velocityRPM = profile.get(i).get(1);
 			/* for each point, fill our structure and pass it to API */
 			point.position = positionRot * Constants.ticksPerRotation; // Convert Revolutions to Units
 			point.velocity = velocityRPM * Constants.ticksPerRotation / 600.0; // Convert RPM to Units/100ms
 			point.headingDeg = 0;
 			point.profileSlotSelect0 = 0;
 			point.profileSlotSelect1 = 0;
-			point.timeDur = GetTrajectoryDuration((int) profile[i][2]);
+			point.timeDur = GetTrajectoryDuration((int) profile.get(i).get(2).doubleValue());
 			point.zeroPos = false;
 			if (i == 0)
 				point.zeroPos = true; /* set this to true on the first point */
