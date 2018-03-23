@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -124,19 +125,14 @@ public class PathStorageHandler {
 
 		
 		try (BufferedReader brLeft = Files.newBufferedReader(Paths.get(leftFile.getPath()), StandardCharsets.UTF_8);
-				CSVReader readerLeft = new CSVReaderBuilder(brLeft).withCSVParser(parserLeft).build()) {
+				CSVReader reader = new CSVReaderBuilder(brLeft).withCSVParser(parserLeft).build()) {
 			
-			//Pull Left Data from CSV
-			//Convert to actual reader
-			String[] nextRecord;
-            while ((nextRecord = readerLeft.readNext()) != null) {
-                System.out.println("Name : " + nextRecord[0]);
-                System.out.println("Email : " + nextRecord[1]);
-                System.out.println("Phone : " + nextRecord[2]);
-                System.out.println("Country : " + nextRecord[3]);
-                System.out.println("==========================");
-            }
-			
+			//Add All Lines to Profile
+			List<String[]> records = reader.readAll();
+			for (String[] record : records) {
+			    profile.leftPath.add(profile.new MotionProfilePoint(Double.parseDouble(record[0]), 
+			    		Double.parseDouble(record[1]), Double.parseDouble(record[2])));
+			}
 
 		} catch (IOException e) {
 
@@ -146,19 +142,14 @@ public class PathStorageHandler {
 
 		
 		try (BufferedReader brRight = Files.newBufferedReader(Paths.get(rightFile.getPath()), StandardCharsets.UTF_8);
-				CSVReader readerRight = new CSVReaderBuilder(brRight).withCSVParser(parserRight).build()) {
+				CSVReader reader = new CSVReaderBuilder(brRight).withCSVParser(parserRight).build()) {
 			
-			
-			//Pull Right Data from CSV
-			//Convert to actual reader
-			String[] nextRecord;
-            while ((nextRecord = readerRight.readNext()) != null) {
-                System.out.println("Name : " + nextRecord[0]);
-                System.out.println("Email : " + nextRecord[1]);
-                System.out.println("Phone : " + nextRecord[2]);
-                System.out.println("Country : " + nextRecord[3]);
-                System.out.println("==========================");
-            }
+			//Add All Lines to Profile
+			List<String[]> records = reader.readAll();
+			for (String[] record : records) {
+			    profile.rightPath.add(profile.new MotionProfilePoint(Double.parseDouble(record[0]), 
+			    		Double.parseDouble(record[1]), Double.parseDouble(record[2])));
+			}
 			
 			
 
