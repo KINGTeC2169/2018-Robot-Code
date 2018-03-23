@@ -1,8 +1,5 @@
 package com.team2169.robot.subsystems;
 
-import java.io.File;
-import java.net.PasswordAuthentication;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -12,7 +9,6 @@ import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
-import com.team2169.util.MotionProfile;
 import com.team2169.util.PathStorageHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -20,10 +16,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.modifiers.TankModifier;
 
 public class DriveTrain extends Subsystem {
 
@@ -384,22 +378,7 @@ public class DriveTrain extends Subsystem {
         Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
                 Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
                 PathfinderData.max_acceleration, PathfinderData.max_jerk);
-
-        String pathHash = String.valueOf(path.hashCode());
-        String configHash = String.valueOf(cfg.hashCode());
-        SmartDashboard.putString("Path Hash", pathHash);
-        Trajectory toFollow;
-        MotionProfile profile;
-        File trajectory = new File("/home/lvuser/paths/" + pathHash + configHash + ".csv");
-		if (!trajectory.exists()) {
-			toFollow = Pathfinder.generate(path, cfg);
-			profile = PathStorageHandler.pathToProfile(toFollow);
-			//Write Profile to CSV
-			System.out.println(pathHash + configHash + ".csv not found, wrote to file");
-		} else {
-			System.out.println(pathHash + configHash +".csv read from file");
-			//Read Profile from CSV
-		}
+        PathStorageHandler.handlePath(path, cfg);
 
     }
 

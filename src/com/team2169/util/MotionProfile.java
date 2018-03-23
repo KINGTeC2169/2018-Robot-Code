@@ -8,8 +8,8 @@ public class MotionProfile {
 	
 	// Position (rotations) Velocity (RPM) Duration (ms)
 	
-	public ArrayList<ArrayList<Double>> leftPath;
-	public ArrayList<ArrayList<Double>> rightPath;
+	public ArrayList<MotionProfilePoint> leftPath;
+	public ArrayList<MotionProfilePoint> rightPath;
 	
 	public int getLeftPathLength() {
 		return leftPath.size()+1;
@@ -21,9 +21,30 @@ public class MotionProfile {
 	
 	public MotionProfile() {
 		
-		leftPath = new ArrayList<ArrayList<Double>>();
-		rightPath = new ArrayList<ArrayList<Double>>();
+		leftPath = new ArrayList<MotionProfilePoint>();
+		rightPath = new ArrayList<MotionProfilePoint>();
 		
+	}
+	
+	public class MotionProfilePoint{
+		double dt = 0;
+		double velocity = 0;
+		double position = 0;
+		
+		public MotionProfilePoint(double pos, double vel, double dt_) {
+			position = pos;
+			velocity = vel;
+			dt = dt_;
+			
+		}
+		
+		void printPointData() {
+
+			System.out.println("Position = " + position);
+			System.out.println("Velocity  = " + velocity);
+			System.out.println("DT  = " + dt);
+			
+		}
 	}
 	
 }
