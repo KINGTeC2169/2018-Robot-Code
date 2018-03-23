@@ -1,4 +1,4 @@
-package com.team2169.util;
+package com.team2169.util.motionProfiling;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.team2169.robot.subsystems.DriveTrain.PathfinderData;
-import com.team2169.util.MotionProfile.MotionProfilePoint;
+import com.team2169.util.motionProfiling.MotionProfilePath.MotionProfilePoint;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -25,21 +25,21 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class PathStorageHandler {
 
-	public static MotionProfile handlePath(Waypoint[] waypoints, Trajectory.Config config) {
+	public static MotionProfilePath handlePath(Waypoint[] waypoints, Trajectory.Config config) {
 
 		int pathHash = waypoints.hashCode() + config.hashCode();
 		File pathFile = new File("/home/lvuser/paths/" + pathHash + ".csv");
 		if (pathFile.exists()) {
 			return readProfile(pathFile);
 		} else {
-			MotionProfile profile = pathToProfile(Pathfinder.generate(waypoints, config));
+			MotionProfilePath profile = pathToProfile(Pathfinder.generate(waypoints, config));
 			storeProfile(pathFile, profile);
 			return profile;
 		}
 
 	}
 
-	public static void storeProfile(File file, MotionProfile profile) {
+	public static void storeProfile(File file, MotionProfilePath profile) {
 
 		try {
 
@@ -88,13 +88,13 @@ public class PathStorageHandler {
 
 	}
 
-	public static MotionProfile pathToProfile(Trajectory traj) {
+	public static MotionProfilePath pathToProfile(Trajectory traj) {
 
 		TankModifier modifier = new TankModifier(traj).modify(PathfinderData.wheel_base_width);
 		Trajectory left = modifier.getLeftTrajectory();
 		Trajectory right = modifier.getRightTrajectory();
 
-		MotionProfile profile = new MotionProfile();
+		MotionProfilePath profile = new MotionProfilePath();
 
 		// Populate Right Path
 		for (Segment s : right.segments) {
@@ -106,7 +106,7 @@ public class PathStorageHandler {
 		// Populate Left Path
 		for (Segment s : left.segments) {
 
-			profile.rightPath.add(profile.new MotionProfilePoint(s.position, s.velocity, s.dt));
+			profile.leftPath.add(profile.new MotionProfilePoint(s.position, s.velocity, s.dt));
 
 		}
 
@@ -114,9 +114,9 @@ public class PathStorageHandler {
 
 	}
 
-	public static MotionProfile readProfile(File file) {
+	public static MotionProfilePath readProfile(File file) {
 
-		MotionProfile profile = new MotionProfile();
+		MotionProfilePath profile = new MotionProfilePath();
 		CSVParser parserLeft = new CSVParserBuilder().withSeparator(',').build();
 		CSVParser parserRight = new CSVParserBuilder().withSeparator(',').build();
 

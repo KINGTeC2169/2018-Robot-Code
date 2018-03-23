@@ -1,9 +1,9 @@
-package com.team2169.util;
+package com.team2169.util.motionProfiling;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.team2169.robot.Constants;
-import com.team2169.util.MotionProfile.MotionProfilePoint;
+import com.team2169.util.motionProfiling.MotionProfilePath.MotionProfilePoint;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import com.ctre.phoenix.motion.*;
 import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
-public class MotionProfileHandler {
+public class MotionProfileFollower {
 
-	private MotionProfile mProfile;
+	private ArrayList<MotionProfilePoint> mProfile;
 	private MotionProfileStatus _status = new MotionProfileStatus();
 	double _pos = 0, _vel = 0, _heading = 0;
 	private TalonSRX _talon;
@@ -34,7 +34,7 @@ public class MotionProfileHandler {
 
 	Notifier _notifer = new Notifier(new PeriodicRunnable());
 
-	public MotionProfileHandler(TalonSRX talon, MotionProfile profile) {
+	public MotionProfileFollower(TalonSRX talon, ArrayList<MotionProfilePoint> profile) {
 		_talon = talon;
 		mProfile = profile;
 		/*
@@ -127,7 +127,7 @@ public class MotionProfileHandler {
 
 	private void startFilling() {
 		/* since this example only has one talon, just update that one */
-		startFilling(mProfile.leftPath, mProfile.kNumPoints);
+		startFilling(mProfile, mProfile.size() + 1);
 	}
 
 	private void startFilling(ArrayList<MotionProfilePoint> profile, int totalCnt) {

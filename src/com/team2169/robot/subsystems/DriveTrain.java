@@ -9,7 +9,9 @@ import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
-import com.team2169.util.PathStorageHandler;
+import com.team2169.util.motionProfiling.MotionProfilePath;
+import com.team2169.util.motionProfiling.PathFollower;
+import com.team2169.util.motionProfiling.PathStorageHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -39,7 +41,9 @@ public class DriveTrain extends Subsystem {
     private DoubleSolenoid shifter;
     private DoubleSolenoid ptoShift;
     public AHRS navX;
-
+    private MotionProfilePath profile;
+    private PathFollower follower;
+    
     private enum PathCalculationStatus {
         CALCULATING, IDLE, FINISHED
     }
@@ -51,6 +55,8 @@ public class DriveTrain extends Subsystem {
 
     private DriveTrain() {
 
+    	profile = new MotionProfilePath();
+    	
         // Define IMU
         navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 
@@ -241,6 +247,9 @@ public class DriveTrain extends Subsystem {
                 switch (pathCalculationStatus) {
                     case IDLE:
                     default:
+                    	profile = generatePath(RobotStates.currentPath);
+                    	follower = new PathFollower(leftMaster, rightMaster, profile);
+                    	follower.reset();
                         DriverStation.reportWarning("Calculating started", false);
                         break;
                     case CALCULATING:
@@ -252,7 +261,8 @@ public class DriveTrain extends Subsystem {
                 break;
 
             case FOLLOW_PATH:
-            	//TODO Follow Path
+
+            	follower.loop();
                 RobotStates.driveType = DriveType.FOLLOW_PATH;
                 break;
 
@@ -372,13 +382,13 @@ public class DriveTrain extends Subsystem {
         isProfileFinished = true;
     }
 
-    private void generatePath(Waypoint[] path) {
+    private MotionProfilePath generatePath(Waypoint[] path) {
         pathCalculationStatus = PathCalculationStatus.CALCULATING;
         DriverStation.reportWarning("Calculating Path", false);
         Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
                 Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
                 PathfinderData.max_acceleration, PathfinderData.max_jerk);
-        PathStorageHandler.handlePath(path, cfg);
+        return PathStorageHandler.handlePath(path, cfg);
 
     }
 

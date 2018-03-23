@@ -1,8 +1,8 @@
-package com.team2169.util;
+package com.team2169.util.motionProfiling;
 
 import java.util.ArrayList;
 
-public class MotionProfile {
+public class MotionProfilePath {
 
 	public int kNumPoints;
 	
@@ -19,7 +19,7 @@ public class MotionProfile {
 		return rightPath.size()+1;
 	}
 	
-	public MotionProfile() {
+	public MotionProfilePath() {
 		
 		leftPath = new ArrayList<MotionProfilePoint>();
 		rightPath = new ArrayList<MotionProfilePoint>();
