@@ -4,7 +4,6 @@ import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoManager;
-import com.team2169.robot.auto.modes.YesNoAutoRight;
 import com.team2169.robot.canCycles.CANCycleHandler;
 import com.team2169.robot.subsystems.Superstructure;
 import com.team2169.util.CameraManager;
@@ -51,10 +50,7 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().removeAll();
         superStructure.zeroAllSensors();
         RobotStates.runningMode = RunningMode.AUTO;
-        // ShuffleBoardManager.getPathfinderConstants();
-        YesNoAutoRight auto = new YesNoAutoRight();
-        auto.start();
-        //auto.runAuto();
+        auto.runAuto();
 
     }
 
@@ -62,9 +58,15 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
 
         Scheduler.getInstance().run();
-        superStructure.subsystemLooper();
-        RobotStates.isFMSConnected = m_ds.isFMSAttached();
-        shuffle.auto();
+        try {
+            superStructure.subsystemLooper();
+            RobotStates.isFMSConnected = m_ds.isFMSAttached();
+            shuffle.auto();        	
+        }
+        catch(Exception e) {
+        	System.out.println(e.getStackTrace());
+        	System.out.println("Auto Error");
+        }
         
         //auto.autoLooping();
 
@@ -95,13 +97,15 @@ public class Robot extends TimedRobot {
 
             StateManager.teleOpStateLooper();
             shuffle.teleOp();
-
+            
 
         } catch (Exception e) {
             DriverStation.reportError(e.toString(), true);
         }
-
+        
         superStructure.subsystemLooper();
+
+        
 
     }
 

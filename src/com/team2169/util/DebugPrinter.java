@@ -48,7 +48,6 @@ public class DebugPrinter {
 		 */
     }
 
-    @SuppressWarnings("unused")
     public static void platformDebug() {
         // DriverStation.reportWarning("Platform Released: " +
         // RobotStates.platformRelease, false);

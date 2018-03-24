@@ -40,7 +40,7 @@ public class ElevatorArm extends Subsystem {
         // Elevator Handler
         elevator.elevatorMacroLooper();
 
-        pushToDashboard();
+        //pushToDashboard();
 
     }
 

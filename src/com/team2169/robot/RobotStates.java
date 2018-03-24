@@ -4,7 +4,7 @@ import jaci.pathfinder.Waypoint;
 
 public class RobotStates {
 
-    public static boolean debugMode = true;
+    public static boolean debugMode = false;
 
     // FMS Handler
     static boolean isFMSConnected;

@@ -43,12 +43,6 @@ public class DriveTrain extends Subsystem {
     public AHRS navX;
     private MotionProfilePath profile;
     private PathFollower follower;
-    
-    private enum PathCalculationStatus {
-        CALCULATING, IDLE, FINISHED
-    }
-
-    private PathCalculationStatus pathCalculationStatus = PathCalculationStatus.IDLE;
 
     // define pathfinder variables
     private boolean isProfileFinished = false;
@@ -104,7 +98,6 @@ public class DriveTrain extends Subsystem {
 
         RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_LOW;
         RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_DRIVE;
-        pathCalculationStatus = PathCalculationStatus.IDLE;
 
     }
 
@@ -244,20 +237,13 @@ public class DriveTrain extends Subsystem {
                 RobotStates.driveType = DriveType.WANTS_TO_FOLLOW_PATH;
 
                 DriverStation.reportWarning("Wanting To Follow Path", false);
-                switch (pathCalculationStatus) {
-                    case IDLE:
-                    default:
-                    	profile = generatePath(RobotStates.currentPath);
-                    	follower = new PathFollower(leftMaster, rightMaster, profile);
-                    	follower.reset();
-                        DriverStation.reportWarning("Calculating started", false);
-                        break;
-                    case CALCULATING:
-                        break;
-                    case FINISHED:
-                        RobotWantedStates.wantedDriveType = DriveType.WAITING;
-                        break;
-                }
+            	profile = generatePath(RobotStates.currentPath);
+            	follower = new PathFollower(leftMaster, rightMaster, profile);
+            	follower.reset();
+                DriverStation.reportWarning("Calculating started", false);
+
+                RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
+                
                 break;
 
             case FOLLOW_PATH:
@@ -375,7 +361,6 @@ public class DriveTrain extends Subsystem {
         isProfileFinished = false;
         resetEncoders();
         resetGyro();
-        pathCalculationStatus = PathCalculationStatus.IDLE;
     }
 
     public void stopPath() {
@@ -383,7 +368,6 @@ public class DriveTrain extends Subsystem {
     }
 
     private MotionProfilePath generatePath(Waypoint[] path) {
-        pathCalculationStatus = PathCalculationStatus.CALCULATING;
         DriverStation.reportWarning("Calculating Path", false);
         Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
                 Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,

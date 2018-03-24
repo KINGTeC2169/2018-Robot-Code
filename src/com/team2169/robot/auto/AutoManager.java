@@ -143,9 +143,9 @@ public class AutoManager {
 
 		determineField();
 
-		SmartDashboard.putString("GAME ID IMPORTANT LOOK AT ME", gameMessage);
+		SmartDashboard.putString("Field ID", gameMessage);
 		
-		//auto.start();
+		auto.start();
 
 	}
 

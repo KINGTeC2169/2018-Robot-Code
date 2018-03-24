@@ -6,7 +6,6 @@ import com.team2169.robot.RobotStates;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PWM;
 
-@SuppressWarnings("unused")
 public class ArduinoManager {
     private DigitalInput StatusSignal;
     private PWM ArduinoPWM;

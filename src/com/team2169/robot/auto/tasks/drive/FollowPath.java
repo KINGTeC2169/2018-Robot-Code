@@ -1,23 +1,21 @@
-package com.team2169.robot.auto.tasks;
+package com.team2169.robot.auto.tasks.drive;
 
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.DriveType;
+import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.DriverStation;
 import jaci.pathfinder.Waypoint;
 
-public class FollowPathInMeters extends Task {
+public class FollowPath extends Task {
 
     private DriveTrain drive = DriveTrain.getInstance();
 
-    public FollowPathInMeters(Waypoint[] points) {
-        RobotStates.currentPath = points;
-        for (Waypoint h : RobotStates.currentPath) {
-            h.x = h.x * 0.0254;
-            h.y = h.y * 0.0254;
-        }
+    public FollowPath(Waypoint[] points, boolean reverse_) {
 
+        RobotStates.reverseCurrentPath = reverse_;
+        RobotStates.currentPath = points;
         DriverStation.reportWarning("Path Created", false);
     }
 
