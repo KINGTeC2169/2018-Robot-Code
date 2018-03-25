@@ -16,9 +16,9 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.team2169.robot.subsystems.DriveTrain.PathfinderData;
 import com.team2169.util.Converter;
-import com.team2169.util.motionProfiling.MotionProfilePath.MotionProfilePoint;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
@@ -31,6 +31,7 @@ public class PathStorageHandler {
 	public static MotionProfilePath handlePath(Waypoint[] waypoints, Trajectory.Config config) {
 
 		String pathHash = getPathHash(waypoints) + getConfigHash(config);
+		SmartDashboard.putString("Path Hash", pathHash);
 		DriverStation.reportError("Path Hash: " + pathHash, false);
 		File pathFile = new File("/home/lvuser/paths/" + pathHash + ".csv");
 		if (pathFile.exists()) {
@@ -91,10 +92,10 @@ public class PathStorageHandler {
 
 		) {
 			for (MotionProfilePoint p : profile.leftPath) {
-				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + Converter.fpsToRPM(p.velocity, PathfinderData.wheel_diameter), "" + p.dt });
+				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + Converter.fpsToRPM(p.velocity, PathfinderData.wheel_diameter), "" + p.timeDur, "" + p.zeroPos,"" + p.isLastPoint,});
 			}
 			for (MotionProfilePoint p : profile.rightPath) {
-				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + Converter.fpsToRPM(p.velocity, PathfinderData.wheel_diameter), "" + p.dt });
+				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + Converter.fpsToRPM(p.velocity, PathfinderData.wheel_diameter), "" + p.timeDur, "" + p.zeroPos,"" + p.isLastPoint,});
 			}
 
 		} catch (IOException e) {
@@ -113,17 +114,35 @@ public class PathStorageHandler {
 		MotionProfilePath profile = new MotionProfilePath();
 
 		// Populate Right Path
+		int i = 0;
 		for (Segment s : right.segments) {
-
-			profile.rightPath.add(profile.new MotionProfilePoint(s.position, s.velocity, s.dt));
-
+			if(i == 0) {
+				profile.rightPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt, true, false));	
+			}
+			else if(i == right.segments.length) {
+				profile.rightPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt, false, true));	
+			}
+			else {
+				profile.rightPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt, false, false));	
+			}
+			i++;
 		}
 
+		i = 0;
 		// Populate Left Path
 		for (Segment s : left.segments) {
 
-			profile.leftPath.add(profile.new MotionProfilePoint(s.position, s.velocity, s.dt));
-
+			if(i == 0) {
+				profile.leftPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt, true, false));	
+			}
+			else if(i == right.segments.length) {
+				profile.leftPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt, false, true));	
+			}
+			else {
+				profile.leftPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt, false, false));	
+			}
+			
+			i++;
 		}
 
 		return profile;
@@ -145,13 +164,13 @@ public class PathStorageHandler {
 			// Add All Lines to Profile
 			List<String[]> records = reader.readAll();
 			for (String[] record : records) {
-				profile.leftPath.add(profile.new MotionProfilePoint(Double.parseDouble(record[0]),
-						Double.parseDouble(record[1]), Double.parseDouble(record[2])));
+				profile.leftPath.add(new MotionProfilePoint(Double.parseDouble(record[0]),
+						Double.parseDouble(record[1]), Double.parseDouble(record[2]), Boolean.parseBoolean(record[3]), Boolean.parseBoolean(record[4])));
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			profile.leftPath.add(profile.new MotionProfilePoint(0, 0, 0));
+			profile.leftPath.add(new MotionProfilePoint(0, 0, 0, true, true));
 
 		}
 
@@ -161,30 +180,33 @@ public class PathStorageHandler {
 			// Add All Lines to Profile
 			List<String[]> records = reader.readAll();
 			for (String[] record : records) {
-				profile.rightPath.add(profile.new MotionProfilePoint(Double.parseDouble(record[0]),
-						Double.parseDouble(record[1]), Double.parseDouble(record[2])));
+				profile.rightPath.add(new MotionProfilePoint(Double.parseDouble(record[0]),
+						Double.parseDouble(record[1]), Double.parseDouble(record[2]), Boolean.parseBoolean(record[3]), Boolean.parseBoolean(record[4])));
 			}
 
 		} catch (IOException e) {
 
 			System.out.println(e.getMessage());
-			profile.rightPath.add(profile.new MotionProfilePoint(0, 0, 0));
+			profile.rightPath.add(new MotionProfilePoint(0, 0, 0, true, true));
 
 		}
 
 		return profile;
 
 	}
-
+	
 	static String getPathHash(Waypoint[] waypoints) {
 		
+		double value = 0;
 		String returnable = "";
 		
 		for(Waypoint w:waypoints) {
-			returnable += w.angle;
-			returnable += w.x;
-			returnable += w.y;
+			value += w.angle;
+			value += w.x;
+			value += w.y;
 		}
+		
+		returnable += value;
 		
 		return returnable.hashCode() + "";
 	}
@@ -192,14 +214,21 @@ public class PathStorageHandler {
 	static String getConfigHash(Trajectory.Config config) {
 		
 		String returnable = "";
+		double value = 0;
 		
-			returnable += config.dt;
-			returnable += config.fit;
-			returnable += config.max_acceleration;
-			returnable += config.max_jerk;
-			returnable += config.max_velocity;
-			returnable += config.sample_count;
+			value += config.dt;
+			value += config.fit.name().length();
+			value += config.max_acceleration;
+			value += config.max_jerk;
+			value += config.max_velocity;
+			value += config.sample_count;
 		
+			SmartDashboard.putNumber("Config Sum", value);
+			
+			value = Math.abs(value);
+			
+			returnable = "" + value;
+			
 		return returnable.hashCode() + "";
 	}
 	

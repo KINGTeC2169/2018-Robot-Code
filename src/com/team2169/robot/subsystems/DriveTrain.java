@@ -263,7 +263,8 @@ public class DriveTrain extends Subsystem {
                 break;
 
         }
-
+        System.out.println(
+                leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
         RobotStates.gyroAngle = getAngle();
 
     }
@@ -392,8 +393,8 @@ public class DriveTrain extends Subsystem {
     private MotionProfilePath generatePath(Waypoint[] path) {
     	DriverStation.reportWarning("Calculating Path", false);
     	try {
-        	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
-                    Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
+        	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+                    Trajectory.Config.SAMPLES_LOW, PathfinderData.timeStep, PathfinderData.max_velocity,
                     PathfinderData.max_acceleration, PathfinderData.max_jerk);
         	return PathStorageHandler.handlePath(path, cfg);
             	
@@ -417,25 +418,13 @@ public class DriveTrain extends Subsystem {
 
     public static class PathfinderData {
 
-        static double kp = 0.00035;
-        static double kd = 0.00001;
-        static double gp = 0.00075;
-        static double gd = 0.00002;
-
-        static double ki = 0.0;
-
-        // Gyro logging for motion profiling
-        static double last_gyro_error = 0.0;
-
-        static double path_angle_offset = 0.0;
         static final double max_velocity = 4.0;
-        static final double kv = 1.0 / max_velocity;
         static final double max_acceleration = 3.8;
-        static final double ka = 0.05;
         static final double max_jerk = 16.0;
+        private static final double timeStep = .01;
+        
         public static final double wheel_diameter = 6;
-
         public static final double wheel_base_width = 0.635;
-        private static final double dt = 0.05;
+
     }
 }

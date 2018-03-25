@@ -1,9 +1,10 @@
 package com.team2169.util.motionProfiling;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.team2169.robot.Constants;
-import com.team2169.util.motionProfiling.MotionProfilePath.MotionProfilePoint;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -37,6 +38,24 @@ public class MotionProfileFollower {
 	public MotionProfileFollower(TalonSRX talon, ArrayList<MotionProfilePoint> profile) {
 		_talon = talon;
 		mProfile = profile;
+		
+		_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		_talon.setSensorPhase(true); /* keep sensor and motor in phase */
+		_talon.configNeutralDeadband(Constants.kNeutralDeadband, Constants.kTimeoutMs);
+
+		_talon.config_kF(0, 0.076, Constants.kTimeoutMs);
+		_talon.config_kP(0, 2.000, Constants.kTimeoutMs);
+		_talon.config_kI(0, 0.0, Constants.kTimeoutMs);
+		_talon.config_kD(0, 20.0, Constants.kTimeoutMs);
+
+		/* Our profile uses 10ms timing */
+		_talon.configMotionProfileTrajectoryPeriod(10, Constants.kTimeoutMs); 
+		/*
+		 * status 10 provides the trajectory target for motion profile AND
+		 * motion magic
+		 */
+		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+		
 		/*
 		 * since our MP is 10ms per point, set the control frame rate and the notifer to
 		 * half that
@@ -70,7 +89,7 @@ public class MotionProfileFollower {
 				--_loopTimeout;
 			}
 		}
-
+		
 		System.out.println(_talon.getControlMode().name());
 		
 		/* first check if we are in MP mode */
@@ -116,7 +135,7 @@ public class MotionProfileFollower {
 				}
 				break;
 			}
-
+			
 			_talon.getMotionProfileStatus(_status);
 			_heading = _talon.getActiveTrajectoryHeading();
 			_pos = _talon.getActiveTrajectoryPosition();
@@ -125,6 +144,7 @@ public class MotionProfileFollower {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private TrajectoryDuration GetTrajectoryDuration(int durationMs) {
 		TrajectoryDuration retval = TrajectoryDuration.Trajectory_Duration_0ms;
 		retval = retval.valueOf(durationMs);
@@ -157,22 +177,6 @@ public class MotionProfileFollower {
 
 		/* This is fast since it's just into our TOP buffer */
 		for (int i = 0; i < totalCnt; ++i) {
-			double positionRot = profile.get(i).position;
-			double velocityRPM = profile.get(i).velocity;
-			/* for each point, fill our structure and pass it to API */
-			point.position = positionRot * Constants.ticksPerRotation; // Convert Revolutions to Units
-			point.velocity = velocityRPM * Constants.ticksPerRotation / 600.0; // Convert RPM to Units/100ms
-			point.headingDeg = 0;
-			point.profileSlotSelect0 = 0;
-			point.profileSlotSelect1 = 0;
-			point.timeDur = GetTrajectoryDuration((int) profile.get(i).dt);
-			point.zeroPos = false;
-			if (i == 0)
-				point.zeroPos = true; /* set this to true on the first point */
-
-			point.isLastPoint = false;
-			if ((i + 1) == totalCnt)
-				point.isLastPoint = true; /* set this to true on the last point */
 
 			_talon.pushMotionProfileTrajectory(point);
 		}

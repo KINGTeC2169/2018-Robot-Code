@@ -28,9 +28,7 @@ public class PathFollower {
 	}
 	
 	public void loop() {
-		System.out.println("Left Data:");
 		leftFollower.control();
-		System.out.println("Right Data:");
 		rightFollower.control();
 		
 		SetValueMotionProfile leftOutput = leftFollower.getSetValue();
@@ -38,8 +36,8 @@ public class PathFollower {
 		
 
 		SetValueMotionProfile rightOutput = rightFollower.getSetValue();
-		right.set(ControlMode.MotionProfile, rightOutput.value);
-		
+		right.set(ControlMode.MotionProfile, rightOutput.value);	
+
 	}
 	
 	public void reset() {

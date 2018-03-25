@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MotionProfilePath {
 
-	public int kNumPoints;
+	public int kNumthiss;
 	
 	// Position (rotations) Velocity (RPM) Duration (ms)
 	
@@ -29,34 +29,13 @@ public class MotionProfilePath {
 	public void printProfile() {
 		
 		for(MotionProfilePoint p: leftPath) {
-			System.out.println("  Position: " + p.position + "  Velocity: " + p.velocity + "  DT: " + p.dt);
+			System.out.println("  Position: " + p.position + "  Velocity: " + p.velocity + "  DT: " + p.timeDur);
 		}
 		
 		for(MotionProfilePoint p: rightPath) {
-			System.out.println("  Position: " + p.position + "  Velocity: " + p.velocity + "  DT: " + p.dt);
+			System.out.println("  Position: " + p.position + "  Velocity: " + p.velocity + "  DT: " + p.timeDur);
 		}
 		
-	}
-	
-	public class MotionProfilePoint{
-		double dt = 0;
-		double velocity = 0;
-		double position = 0;
-		
-		public MotionProfilePoint(double pos, double vel, double dt_) {
-			position = pos;
-			velocity = vel;
-			dt = dt_;
-			
-		}
-		
-		void printPointData() {
-
-			System.out.println("Position = " + position);
-			System.out.println("Velocity  = " + velocity);
-			System.out.println("DT  = " + dt);
-			
-		}
 	}
 	
 }

@@ -102,6 +102,8 @@ public class Constants {
     public static final int driveTrainCurrentTimeout = 5;
 
     public static final double driveTrainRampRate = .25;
+	public static final double kNeutralDeadband = 0;
+	public static final int kTimeoutMs = 10;
 
     public static void calculateArmMacros(boolean pos) {
 
