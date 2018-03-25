@@ -26,6 +26,18 @@ public class MotionProfilePath {
 		
 	}
 	
+	public void printProfile() {
+		
+		for(MotionProfilePoint p: leftPath) {
+			System.out.println("  Position: " + p.position + "  Velocity: " + p.velocity + "  DT: " + p.dt);
+		}
+		
+		for(MotionProfilePoint p: rightPath) {
+			System.out.println("  Position: " + p.position + "  Velocity: " + p.velocity + "  DT: " + p.dt);
+		}
+		
+	}
+	
 	public class MotionProfilePoint{
 		double dt = 0;
 		double velocity = 0;

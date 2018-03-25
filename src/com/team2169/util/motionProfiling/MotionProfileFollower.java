@@ -47,6 +47,8 @@ public class MotionProfileFollower {
 
 	public void reset() {
 
+		System.out.println("reset");
+		
 		_talon.clearMotionProfileTrajectories();
 		_setValue = SetValueMotionProfile.Disable;
 		_state = 0;
@@ -55,8 +57,10 @@ public class MotionProfileFollower {
 	}
 
 	public void control() {
-
+		
 		_talon.getMotionProfileStatus(_status);
+
+		System.out.println("_bStart: " + _bStart);
 
 		if (_loopTimeout < 0) {
 		} else {
@@ -67,18 +71,24 @@ public class MotionProfileFollower {
 			}
 		}
 
+		System.out.println(_talon.getControlMode().name());
+		
 		/* first check if we are in MP mode */
 		if (_talon.getControlMode() != ControlMode.MotionProfile) {
+			
 			_state = 0;
 			_loopTimeout = -1;
 		
 		} else {
 			
+			System.out.println("State: " + _state);
+
+			
 			switch (_state) {
 			case 0: /* wait for application to tell us to start an MP */
 				if (_bStart) {
 					_bStart = false;
-
+					System.out.println("Starting");
 					_setValue = SetValueMotionProfile.Disable;
 					startFilling();
 					_state = 1;
@@ -87,6 +97,7 @@ public class MotionProfileFollower {
 				break;
 			case 1: 
 				if (_status.btmBufferCnt > kMinPointsInTalon) {
+					System.out.println("Running");
 					_setValue = SetValueMotionProfile.Enable;
 					_state = 2;
 					_loopTimeout = kNumLoopsTimeout;
@@ -127,7 +138,7 @@ public class MotionProfileFollower {
 
 	private void startFilling() {
 		/* since this example only has one talon, just update that one */
-		startFilling(mProfile, mProfile.size() + 1);
+		startFilling(mProfile, mProfile.size());
 	}
 
 	private void startFilling(ArrayList<MotionProfilePoint> profile, int totalCnt) {

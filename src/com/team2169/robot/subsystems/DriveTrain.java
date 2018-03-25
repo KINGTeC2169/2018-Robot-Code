@@ -131,7 +131,7 @@ public class DriveTrain extends Subsystem {
     }
 
     void driveHandler() {
-
+    	
         switch (RobotWantedStates.wantedDriveType) {
 
             // Drive without Override
@@ -237,9 +237,12 @@ public class DriveTrain extends Subsystem {
                 RobotStates.driveType = DriveType.WANTS_TO_FOLLOW_PATH;
 
                 DriverStation.reportWarning("Wanting To Follow Path", false);
-            	profile = generatePath(RobotStates.currentPath);
+
+                profile = generatePath(RobotStates.currentPath);
             	follower = new PathFollower(leftMaster, rightMaster, profile);
             	follower.reset();
+            	follower.start();
+                	
                 DriverStation.reportWarning("Calculating started", false);
 
                 RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
@@ -336,6 +339,10 @@ public class DriveTrain extends Subsystem {
     @Override
     public void pushToDashboard() {
 
+    	
+    	SmartDashboard.putNumber("Left Velocity", leftMaster.getSelectedSensorVelocity(0));
+    	SmartDashboard.putNumber("Right Velocity", rightMaster.getSelectedSensorVelocity(0));
+    	
         // Put any SmartDash info here.
         SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
         DebugPrinter.driveTrainDebug();
@@ -368,11 +375,19 @@ public class DriveTrain extends Subsystem {
     }
 
     private MotionProfilePath generatePath(Waypoint[] path) {
-        DriverStation.reportWarning("Calculating Path", false);
-        Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
-                Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
-                PathfinderData.max_acceleration, PathfinderData.max_jerk);
-        return PathStorageHandler.handlePath(path, cfg);
+    	DriverStation.reportWarning("Calculating Path", false);
+    	try {
+        	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
+                    Trajectory.Config.SAMPLES_HIGH, PathfinderData.dt, PathfinderData.max_velocity,
+                    PathfinderData.max_acceleration, PathfinderData.max_jerk);
+        	return PathStorageHandler.handlePath(path, cfg);
+            	
+        }
+        catch(Exception e){
+        	return new MotionProfilePath();
+        }
+    	
+        
 
     }
 
@@ -403,9 +418,9 @@ public class DriveTrain extends Subsystem {
         static final double max_acceleration = 3.8;
         static final double ka = 0.05;
         static final double max_jerk = 16.0;
-        static final double wheel_diameter = 0.1498;
+        public static final double wheel_diameter = 6;
 
         public static final double wheel_base_width = 0.635;
-        private static final double dt = 0.02;
+        private static final double dt = 0.05;
     }
 }

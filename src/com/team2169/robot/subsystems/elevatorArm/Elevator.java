@@ -5,10 +5,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.Macro;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-@SuppressWarnings("deprecation")
 public class Elevator {
 
     // Create Talons
@@ -46,22 +44,10 @@ public class Elevator {
         // Apply Talon Settings
         //elevator = TalonMaker.prepTalonForMotionProfiling(elevator, Constants.elevatorData);
 
-        NetworkTable table = NetworkTable.getTable("SmartDashboard");
-        table.putNumber("p0", 0);
-        table.putNumber("i0", 0);
-        table.putNumber("d0", 0);
-        table.putNumber("f0", 0);
-        table.putNumber("p1", 0);
-        table.putNumber("i1", 0);
-        table.putNumber("d1", 0);
-        table.putNumber("f1", 0);
-
     }
 
     public void elevatorMacroLooper() {
 
-
-        SmartDashboard.putNumber("pulseWidth Pos", elevator.getSensorCollection().getQuadraturePosition());
 
         SmartDashboard.putBoolean("topLimit", topLimit.get());
         SmartDashboard.putBoolean("bottomLimit", bottomLimit.get());

@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
             shuffle.auto();        	
         }
         catch(Exception e) {
-        	System.out.println(e.getStackTrace());
+        	e.printStackTrace();
         	System.out.println("Auto Error");
         }
         
@@ -73,8 +73,7 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopInit() {
-        RobotStates.runningMode = RunningMode.TELEOP;
+    public void teleopInit() {        RobotStates.runningMode = RunningMode.TELEOP;
         if (auto != null) {
             auto.endAuto();
         }
@@ -87,7 +86,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-
         Scheduler.getInstance().run();
 
         RobotStates.isFMSConnected = m_ds.isFMSAttached();

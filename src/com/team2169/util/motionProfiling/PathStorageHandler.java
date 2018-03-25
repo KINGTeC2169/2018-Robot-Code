@@ -15,6 +15,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.team2169.robot.subsystems.DriveTrain.PathfinderData;
+import com.team2169.util.Converter;
 import com.team2169.util.motionProfiling.MotionProfilePath.MotionProfilePoint;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -34,7 +35,8 @@ public class PathStorageHandler {
 		File pathFile = new File("/home/lvuser/paths/" + pathHash + ".csv");
 		if (pathFile.exists()) {
 			System.out.println("File Found!");
-			return readProfile(pathFile);
+			MotionProfilePath profile = readProfile(pathHash);
+			return profile;
 		} else {
 			MotionProfilePath profile = pathToProfile(Pathfinder.generate(waypoints, config));
 			storeProfile(pathHash, profile);
@@ -89,10 +91,10 @@ public class PathStorageHandler {
 
 		) {
 			for (MotionProfilePoint p : profile.leftPath) {
-				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.dt });
+				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + Converter.fpsToRPM(p.velocity, PathfinderData.wheel_diameter), "" + p.dt });
 			}
 			for (MotionProfilePoint p : profile.rightPath) {
-				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.dt });
+				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + Converter.fpsToRPM(p.velocity, PathfinderData.wheel_diameter), "" + p.dt });
 			}
 
 		} catch (IOException e) {
@@ -128,14 +130,14 @@ public class PathStorageHandler {
 
 	}
 
-	public static MotionProfilePath readProfile(File file) {
+	public static MotionProfilePath readProfile(String fileName) {
 
 		MotionProfilePath profile = new MotionProfilePath();
 		CSVParser parserLeft = new CSVParserBuilder().withSeparator(',').build();
 		CSVParser parserRight = new CSVParserBuilder().withSeparator(',').build();
 
-		File leftFile = new File("/home/lvuser/paths/" + file.getName() + "Left" + ".csv");
-		File rightFile = new File("/home/lvuser/paths/" + file.getName() + "Right" + ".csv");
+		File leftFile = new File("/home/lvuser/paths/" + fileName + "Left" + ".csv");
+		File rightFile = new File("/home/lvuser/paths/" + fileName + "Right" + ".csv");
 
 		try (BufferedReader brLeft = Files.newBufferedReader(Paths.get(leftFile.getPath()), StandardCharsets.UTF_8);
 				CSVReader reader = new CSVReaderBuilder(brLeft).withCSVParser(parserLeft).build()) {
@@ -148,7 +150,7 @@ public class PathStorageHandler {
 			}
 
 		} catch (IOException e) {
-
+			e.printStackTrace();
 			profile.leftPath.add(profile.new MotionProfilePoint(0, 0, 0));
 
 		}
@@ -165,6 +167,7 @@ public class PathStorageHandler {
 
 		} catch (IOException e) {
 
+			System.out.println(e.getMessage());
 			profile.rightPath.add(profile.new MotionProfilePoint(0, 0, 0));
 
 		}

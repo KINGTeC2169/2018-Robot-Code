@@ -36,7 +36,7 @@ public class Constants {
     // intake constants
     public static final double minUltraTriggerDistance = 0;
     public static final double maxUltraTriggerDistance = 8;
-    public static final double intakeSpeed = 0.75;
+    public static final double intakeSpeed = 1;
 
     // Climb Speed
     public static final double climbPower = .75;
