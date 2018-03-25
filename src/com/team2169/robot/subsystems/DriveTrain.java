@@ -43,6 +43,9 @@ public class DriveTrain extends Subsystem {
     public AHRS navX;
     private MotionProfilePath profile;
     private PathFollower follower;
+    private int maxLeft = 0;
+    private int maxRight = 0;
+    
 
     // define pathfinder variables
     private boolean isProfileFinished = false;
@@ -339,9 +342,7 @@ public class DriveTrain extends Subsystem {
     @Override
     public void pushToDashboard() {
 
-    	
-    	SmartDashboard.putNumber("Left Velocity", leftMaster.getSelectedSensorVelocity(0));
-    	SmartDashboard.putNumber("Right Velocity", rightMaster.getSelectedSensorVelocity(0));
+    	maxVelocityGrabber();
     	
         // Put any SmartDash info here.
         SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
@@ -370,6 +371,20 @@ public class DriveTrain extends Subsystem {
         resetGyro();
     }
 
+    void maxVelocityGrabber() {
+    	int leftVel = leftMaster.getSelectedSensorVelocity(0);
+    	int rightVel = rightMaster.getSelectedSensorVelocity(0);
+    	if(leftVel > maxLeft) {
+    		SmartDashboard.putNumber("Left Velocity", leftVel);
+    		maxLeft = leftVel;
+    	}
+    	if(rightVel > maxRight) {
+    		SmartDashboard.putNumber("Right Velocity", rightVel);
+    		maxRight = rightVel;
+    	}
+    	
+    }
+    
     public void stopPath() {
         isProfileFinished = true;
     }
