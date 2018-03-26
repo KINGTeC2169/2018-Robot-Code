@@ -16,9 +16,7 @@ public class PathFollower {
         this.left = left;
         this.right = right;
         processBuffer = new Notifier(() -> {
-            System.out.println("processBuffer notifier");
             processMotionProfileBufferPeriodic();
-            followProfilePeriodic();
         });
     }
 
