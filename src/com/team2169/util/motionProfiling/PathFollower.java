@@ -4,14 +4,14 @@ import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Notifier;
 
-public class MotionProfileFollower {
+public class PathFollower {
 
     private ProfileTalon left;
     private ProfileTalon right;
 
     public Notifier processBuffer;
 
-    public MotionProfileFollower(ProfileTalon left, ProfileTalon right)
+    public PathFollower(ProfileTalon left, ProfileTalon right)
     {
         this.left = left;
         this.right = right;
@@ -22,12 +22,12 @@ public class MotionProfileFollower {
         });
     }
 
-    public void setProfiles(MotionProfilePath profiles)
+    public void setPath(MotionProfilePath path)
     {
-        if (profiles.leftPath.size() != profiles.rightPath.size())
+        if (path.leftPath.size() != path.rightPath.size())
             System.err.println("Profile size mismatch, things WILL break.");
-        left.profile = profiles.leftPath;
-        right.profile = profiles.rightPath;
+        left.profile = path.leftPath;
+        right.profile = path.rightPath;
     }
 
     public void initFollowProfile()
@@ -47,7 +47,6 @@ public class MotionProfileFollower {
         {
             v.processMotionProfileBuffer(); 
         }
-        System.out.println("ProcessBuffer");
     }
 
     public void followProfilePeriodic()

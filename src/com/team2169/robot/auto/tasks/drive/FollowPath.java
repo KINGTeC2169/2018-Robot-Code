@@ -54,8 +54,6 @@ public class FollowPath extends Task {
     // Called when another Command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
-        drive.stop();
-        drive.stopPath();
+        end();
     }
 }

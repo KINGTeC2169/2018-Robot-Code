@@ -7,16 +7,19 @@ import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.team2169.robot.Constants;
+import com.team2169.robot.subsystems.DriveTrain.PathfinderData;
 
 public class ProfileTalon extends WPI_TalonSRX {
 
     public ArrayList<MotionProfilePoint> profile;
+    
     private int pointsSent;
+    
     public ProfileTalon(int port)
     {
         super(port);
         reset();
-        setGains(new SRXGains(0,0,0,0));
+        setGains(new SRXGains(PathfinderData.kP,PathfinderData.kI,PathfinderData.kD,PathfinderData.kF));
         pointsSent = 0;
     }
 
