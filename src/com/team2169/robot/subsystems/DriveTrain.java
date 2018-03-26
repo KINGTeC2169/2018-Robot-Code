@@ -10,7 +10,6 @@ import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
 import com.team2169.util.motionProfiling.MotionProfilePath;
-import com.team2169.util.motionProfiling.PathFollower;
 import com.team2169.util.motionProfiling.PathStorageHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -42,7 +41,6 @@ public class DriveTrain extends Subsystem {
     private DoubleSolenoid ptoShift;
     public AHRS navX;
     private MotionProfilePath profile;
-    private PathFollower follower;
     private int maxLeft = 0;
     private int maxRight = 0;
     
@@ -242,9 +240,6 @@ public class DriveTrain extends Subsystem {
                 DriverStation.reportWarning("Wanting To Follow Path", false);
 
                 profile = generatePath(RobotStates.currentPath);
-            	follower = new PathFollower(leftMaster, rightMaster, profile);
-            	follower.reset();
-            	follower.start();
                 	
                 DriverStation.reportWarning("Calculating started", false);
 
@@ -254,7 +249,6 @@ public class DriveTrain extends Subsystem {
 
             case FOLLOW_PATH:
 
-            	follower.loop();
                 RobotStates.driveType = DriveType.FOLLOW_PATH;
                 break;
 
@@ -424,7 +418,7 @@ public class DriveTrain extends Subsystem {
         private static final double timeStep = .01;
         
         public static final double wheel_diameter = 6;
-        public static final double wheel_base_width = 0.635;
+        public static final double wheel_base_width = 32;
 
     }
 }

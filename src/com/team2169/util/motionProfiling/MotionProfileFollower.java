@@ -1,192 +1,97 @@
 package com.team2169.util.motionProfiling;
 
+import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.*;
-import com.team2169.robot.Constants;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
-
-import java.util.ArrayList;
-
-import com.ctre.phoenix.motion.*;
-import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 
 public class MotionProfileFollower {
 
-	private ArrayList<MotionProfilePoint> mProfile;
-	private MotionProfileStatus _status = new MotionProfileStatus();
-	double _pos = 0, _vel = 0, _heading = 0;
-	private TalonSRX _talon;
-	private int _state = 0;
-	private int _loopTimeout = -1;
-	private boolean _bStart = false;
-	private SetValueMotionProfile _setValue = SetValueMotionProfile.Disable;
-	private static final int kMinPointsInTalon = 5;
-	private static final int kNumLoopsTimeout = 10;
+    private ProfileTalon left;
+    private ProfileTalon right;
 
-	class PeriodicRunnable implements java.lang.Runnable {
-		public void run() {
-			_talon.processMotionProfileBuffer();
-		}
-	}
+    public Notifier processBuffer;
 
-	Notifier _notifer = new Notifier(new PeriodicRunnable());
+    public MotionProfileFollower(ProfileTalon left, ProfileTalon right)
+    {
+        this.left = left;
+        this.right = right;
+        processBuffer = new Notifier(() -> {
+            System.out.println("processBuffer notifier");
+            processMotionProfileBufferPeriodic();
+            followProfilePeriodic();
+        });
+    }
 
-	public MotionProfileFollower(TalonSRX talon, ArrayList<MotionProfilePoint> profile) {
-		_talon = talon;
-		mProfile = profile;
-		
-		_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		_talon.setSensorPhase(true); /* keep sensor and motor in phase */
-		_talon.configNeutralDeadband(Constants.kNeutralDeadband, Constants.kTimeoutMs);
+    public void setProfiles(MotionProfilePath profiles)
+    {
+        if (profiles.leftPath.size() != profiles.rightPath.size())
+            System.err.println("Profile size mismatch, things WILL break.");
+        left.profile = profiles.leftPath;
+        right.profile = profiles.rightPath;
+    }
 
-		_talon.config_kF(0, 0.076, Constants.kTimeoutMs);
-		_talon.config_kP(0, 2.000, Constants.kTimeoutMs);
-		_talon.config_kI(0, 0.0, Constants.kTimeoutMs);
-		_talon.config_kD(0, 20.0, Constants.kTimeoutMs);
+    public void initFollowProfile()
+    {
+        for (ProfileTalon v : new ProfileTalon[] {left, right})
+        {
+            v.followInit();
+            for (int i = 0; i < 64; i++)
+                v.sendNextPoint(); // Get some initial points
+        }
+        System.out.println("Init Follow Profile");
+    }
 
-		/* Our profile uses 10ms timing */
-		_talon.configMotionProfileTrajectoryPeriod(10, Constants.kTimeoutMs); 
-		/*
-		 * status 10 provides the trajectory target for motion profile AND
-		 * motion magic
-		 */
-		_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
-		
-		/*
-		 * since our MP is 10ms per point, set the control frame rate and the notifer to
-		 * half that
-		 */
-		_talon.changeMotionControlFramePeriod(5);
-		_notifer.startPeriodic(0.005);
-	}
+    public void processMotionProfileBufferPeriodic()
+    {
+        for (ProfileTalon v : new ProfileTalon[] {left, right})
+        {
+            v.processMotionProfileBuffer(); 
+        }
+        System.out.println("ProcessBuffer");
+    }
 
-	public void reset() {
+    public void followProfilePeriodic()
+    {
+    	
+    	if(!left.isMotionProfileTopLevelBufferFull() && left.getSentPoints() <= left.profile.size()) {
+    		left.sendNextPoint();
+    	}
+    	if(!right.isMotionProfileTopLevelBufferFull() && right.getSentPoints() <= right.profile.size()) {
+    		right.sendNextPoint();
+    	}
+    	
+        MotionProfileStatus statusL = left.getStatus();
+        MotionProfileStatus statusR = right.getStatus();
+        left.set(ControlMode.MotionProfile, statusL.isLast ? 2 : 1);
+        right.set(ControlMode.MotionProfile, statusR.isLast ? 2 : 1);
+        System.out.println("followProfile");
+    }
 
-		System.out.println("reset");
-		
-		_talon.clearMotionProfileTrajectories();
-		_setValue = SetValueMotionProfile.Disable;
-		_state = 0;
-		_loopTimeout = -1;
-		_bStart = false;
-	}
+    public boolean doneWithProfile()
+    {
+        MotionProfileStatus statusL = left.getStatus();
+        MotionProfileStatus statusR = right.getStatus();
+        return statusL.isLast && statusR.isLast;
+    }
 
-	public void control() {
-		
-		_talon.getMotionProfileStatus(_status);
+    public void startFollowing()
+    {
+        System.out.println("startFollowing");
+        if (left.profile == null || right.profile == null) {
+            System.err.println("Call setProfiles before attempting to follow a profile");
+            return;
+        }
+        initFollowProfile();
+        System.out.println("Starting notifiers");
+        processBuffer.startPeriodic(10/2000);
+        System.out.println("Notifiers started");
+    }
 
-		System.out.println("_bStart: " + _bStart);
-
-		if (_loopTimeout < 0) {
-		} else {
-			if (_loopTimeout == 0) {
-				System.out.println("MP ERROR");
-			} else {
-				--_loopTimeout;
-			}
-		}
-		
-		System.out.println(_talon.getControlMode().name());
-		
-		/* first check if we are in MP mode */
-		if (_talon.getControlMode() != ControlMode.MotionProfile) {
-			
-			_state = 0;
-			_loopTimeout = -1;
-		
-		} else {
-			
-			System.out.println("State: " + _state);
-
-			
-			switch (_state) {
-			case 0: /* wait for application to tell us to start an MP */
-				if (_bStart) {
-					_bStart = false;
-					System.out.println("Starting");
-					_setValue = SetValueMotionProfile.Disable;
-					startFilling();
-					_state = 1;
-					_loopTimeout = kNumLoopsTimeout;
-				}
-				break;
-			case 1: 
-				if (_status.btmBufferCnt > kMinPointsInTalon) {
-					System.out.println("Running");
-					_setValue = SetValueMotionProfile.Enable;
-					_state = 2;
-					_loopTimeout = kNumLoopsTimeout;
-				}
-				break;
-			case 2: /* check the status of the MP */
-
-				if (_status.isUnderrun == false) {
-					_loopTimeout = kNumLoopsTimeout;
-				}
-
-				if (_status.activePointValid && _status.isLast) {
-					_setValue = SetValueMotionProfile.Hold;
-					_state = 0;
-					_loopTimeout = -1;
-				}
-				break;
-			}
-			
-			_talon.getMotionProfileStatus(_status);
-			_heading = _talon.getActiveTrajectoryHeading();
-			_pos = _talon.getActiveTrajectoryPosition();
-			_vel = _talon.getActiveTrajectoryVelocity();
-
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private TrajectoryDuration GetTrajectoryDuration(int durationMs) {
-		TrajectoryDuration retval = TrajectoryDuration.Trajectory_Duration_0ms;
-		retval = retval.valueOf(durationMs);
-		if (retval.value != durationMs) {
-			DriverStation.reportError(
-					"Trajectory Duration not supported - use configMotionProfileTrajectoryPeriod instead", false);
-		}
-
-		return retval;
-	}
-
-	private void startFilling() {
-		/* since this example only has one talon, just update that one */
-		startFilling(mProfile, mProfile.size());
-	}
-
-	private void startFilling(ArrayList<MotionProfilePoint> profile, int totalCnt) {
-
-		/* create an empty point */
-		TrajectoryPoint point = new TrajectoryPoint();
-
-		if (_status.hasUnderrun) {
-
-			_talon.clearMotionProfileHasUnderrun(0);
-
-		}
-
-		_talon.clearMotionProfileTrajectories();
-		_talon.configMotionProfileTrajectoryPeriod(0, 10);
-
-		/* This is fast since it's just into our TOP buffer */
-		for (int i = 0; i < totalCnt; ++i) {
-
-			_talon.pushMotionProfileTrajectory(point);
-		}
-	}
-
-	void startMotionProfile() {
-		_bStart = true;
-	}
-
-	SetValueMotionProfile getSetValue() {
-		return _setValue;
-	}
+    public void stopFollowing()
+    {
+        System.out.println("stopFollowing");
+        left.reset();
+        right.reset();
+        processBuffer.stop();
+    }
 }

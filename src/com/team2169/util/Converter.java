@@ -11,8 +11,8 @@ public class Converter {
 
     }
 
-    public static double fpsToRPM(double fps, double diameter) {
-    	return (fps * 12 * 60)/(diameter *  Math.PI);
+    public static double fpsToRPS(double fps, double diameter) {
+    	return (fps * 12)/(diameter *  Math.PI);
     }
     
     public static int feetToTicks(double feet) {
