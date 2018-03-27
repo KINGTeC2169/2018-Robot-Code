@@ -92,10 +92,10 @@ public class PathStorageHandler {
 
 		) {
 			for (MotionProfilePoint p : profile.leftPath) {
-				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeDur, "" + p.zeroPos,"" + p.isLastPoint,});
+				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeStep, "" + p.zeroPos,"" + p.isLastPoint,});
 			}
 			for (MotionProfilePoint p : profile.rightPath) {
-				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeDur, "" + p.zeroPos,"" + p.isLastPoint,});
+				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeStep, "" + p.zeroPos,"" + p.isLastPoint,});
 			}
 
 		} catch (IOException e) {
@@ -117,13 +117,13 @@ public class PathStorageHandler {
 		int i = 0;
 		for (Segment s : right.segments) {
 			if(i == 0) {
-				profile.rightPath.add(new MotionProfilePoint(s.position, Converter.fpsToRPS(s.velocity, PathfinderData.wheel_diameter), s.dt, true, false));	
+				profile.rightPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, true, false));	
 			}
 			else if(i == right.segments.length) {
-				profile.rightPath.add(new MotionProfilePoint(s.position, Converter.fpsToRPS(s.velocity, PathfinderData.wheel_diameter), s.dt, false, true));	
+				profile.rightPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, true));	
 			}
 			else {
-				profile.rightPath.add(new MotionProfilePoint(s.position, Converter.fpsToRPS(s.velocity, PathfinderData.wheel_diameter), s.dt, false, false));	
+				profile.rightPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, false));	
 			}
 			
 			i++;
@@ -134,13 +134,13 @@ public class PathStorageHandler {
 		for (Segment s : left.segments) {
 
 			if(i == 0) {
-				profile.leftPath.add(new MotionProfilePoint(s.position, Converter.fpsToRPS(s.velocity, PathfinderData.wheel_diameter), s.dt, true, false));	
+				profile.leftPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, true, false));	
 			}
 			else if(i == right.segments.length) {
-				profile.leftPath.add(new MotionProfilePoint(s.position, Converter.fpsToRPS(s.velocity, PathfinderData.wheel_diameter), s.dt, false, true));	
+				profile.leftPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, true));	
 			}
 			else {
-				profile.leftPath.add(new MotionProfilePoint(s.position, Converter.fpsToRPS(s.velocity, PathfinderData.wheel_diameter), s.dt, false, false));	
+				profile.leftPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, false));	
 			}
 			
 			i++;

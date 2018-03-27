@@ -31,16 +31,13 @@ public class FollowPath extends Task {
     // Called repeatedly when this Command is scheduled to run
 
     protected void execute() {
-        if (RobotStates.driveType == DriveType.WAITING) {
-            RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
-            DriverStation.reportError("Starting Path", false);
-        }
+    	
     }
 
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return drive.getIsProfileFinished();
+    	return drive.getIsProfileFinished() || this.isTimedOut();
     }
 
     // Called once after isFinished returns true

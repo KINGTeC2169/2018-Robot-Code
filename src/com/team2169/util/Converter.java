@@ -11,8 +11,12 @@ public class Converter {
 
     }
 
-    public static double fpsToRPS(double fps, double diameter) {
-    	return (fps * 12)/(diameter *  Math.PI);
+    public static double talonVelocityConverter(double fps, double diameter) {
+    	return ((((60 * fps)/(diameter * Math.PI))*(4096))/600);
+    }
+    
+    public static double talonPositionConverter(double rot) {
+    	return (rot*4096);
     }
     
     public static int feetToTicks(double feet) {

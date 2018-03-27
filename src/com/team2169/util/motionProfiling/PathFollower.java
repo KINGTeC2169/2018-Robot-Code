@@ -3,11 +3,13 @@ package com.team2169.util.motionProfiling;
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PathFollower {
 
     private ProfileTalon left;
     private ProfileTalon right;
+    public boolean running = false;
 
     public Notifier processBuffer;
 
@@ -16,63 +18,91 @@ public class PathFollower {
         this.left = left;
         this.right = right;
         processBuffer = new Notifier(() -> {
-            processMotionProfileBufferPeriodic();
+            //System.out.println("processBuffer notifier");
+        	
+        	if(running) {
+        		 processMotionProfileBufferPeriodic();
+                 followProfilePeriodic();
+        	}
+           
         });
     }
 
-    public void setPath(MotionProfilePath path)
+    void setPath(MotionProfilePath path)
     {
         if (path.leftPath.size() != path.rightPath.size())
             System.err.println("Profile size mismatch, things WILL break.");
-        left.profile = path.leftPath;
-        right.profile = path.rightPath;
+        left.setProfile(path.leftPath);
+        right.setProfile(path.rightPath);
     }
 
     public void initFollowProfile()
     {
-        for (ProfileTalon v : new ProfileTalon[] {left, right})
-        {
-            v.followInit();
-            for (int i = 0; i < 64; i++)
-                v.sendNextPoint(); // Get some initial points
-        }
-        System.out.println("Init Follow Profile");
+    
+    	running = true;
+    	if(!((left.profile.size() == 0) || (left.profile == null)) && !((right.profile.size() == 0) || (right.profile == null))) {
+    		
+    		for (ProfileTalon v : new ProfileTalon[] {left, right})
+            {
+                v.followInit();
+                for (int i = 0; i < 64; i++)
+                    v.sendNextPoint(); // Get some initial points
+            }
+            System.out.println("Init Follow Profile");
+    		
+    	}
+    	
+    	else {
+    		if(left.profile == null) {
+    			System.out.println("Path is null!");
+    		}
+    		else {
+    			System.out.println("Path is empty!");
+    		}
+    	}
+    	
+    	
+    	
+        
     }
 
     public void processMotionProfileBufferPeriodic()
     {
         for (ProfileTalon v : new ProfileTalon[] {left, right})
         {
-            v.processMotionProfileBuffer(); 
+        	if(!v.isMotionProfileTopLevelBufferFull() && !(v.getSentPoints() > v.profile.size())){
+        		v.sendNextPoint();
+        	}
+             // It's ok if this fails, we won't lose any points
+            v.processMotionProfileBuffer(); // Move points from the top buffer to the bottom buffer
         }
+        //System.out.println("ProcessBuffer");
     }
 
-    public void followProfilePeriodic()
-    {
+    public void followProfilePeriodic(){
     	
-    	if(!left.isMotionProfileTopLevelBufferFull() && left.getSentPoints() <= left.profile.size()) {
-    		left.sendNextPoint();
-    	}
-    	if(!right.isMotionProfileTopLevelBufferFull() && right.getSentPoints() <= right.profile.size()) {
-    		right.sendNextPoint();
-    	}
+		SmartDashboard.putNumber("Left Top Count", left.getMotionProfileTopLevelBufferCount());
+		SmartDashboard.putBoolean("Left Top Full", left.isMotionProfileTopLevelBufferFull());
+		SmartDashboard.putNumber("Right Top Count", right.getMotionProfileTopLevelBufferCount());
+		SmartDashboard.putBoolean("Right Top Full", right.isMotionProfileTopLevelBufferFull());
     	
         MotionProfileStatus statusL = left.getStatus();
         MotionProfileStatus statusR = right.getStatus();
         left.set(ControlMode.MotionProfile, statusL.isLast ? 2 : 1);
         right.set(ControlMode.MotionProfile, statusR.isLast ? 2 : 1);
-        System.out.println("followProfile");
+        //System.out.println("followProfile");
     }
 
-    public boolean doneWithProfile()
-    {
+    public boolean doneWithProfile(){
         MotionProfileStatus statusL = left.getStatus();
         MotionProfileStatus statusR = right.getStatus();
         return statusL.isLast && statusR.isLast;
     }
 
-    public void startFollowing()
-    {
+    public void startFollowing(MotionProfilePath path){
+    	
+    	setPath(path);
+    	
         System.out.println("startFollowing");
         if (left.profile == null || right.profile == null) {
             System.err.println("Call setProfiles before attempting to follow a profile");
@@ -84,8 +114,8 @@ public class PathFollower {
         System.out.println("Notifiers started");
     }
 
-    public void stopFollowing()
-    {
+    public void stopFollowing(){
+    	running = false;
         System.out.println("stopFollowing");
         left.reset();
         right.reset();

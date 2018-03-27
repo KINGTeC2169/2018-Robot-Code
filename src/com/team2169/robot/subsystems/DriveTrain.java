@@ -46,10 +46,6 @@ public class DriveTrain extends Subsystem {
     private PathFollower pathFollower;
     private int maxLeft = 0;
     private int maxRight = 0;
-    
-
-    // define pathfinder variables
-    private boolean isProfileFinished = false;
 
     private DriveTrain() {
 
@@ -228,7 +224,7 @@ public class DriveTrain extends Subsystem {
                 // Set Talon Modes for Driving
                 rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
                 rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-
+                
                 // Dogshifter Retracted
                 ptoShift.set(Value.kReverse);
                 RobotStates.ptoActive = false;
@@ -245,9 +241,7 @@ public class DriveTrain extends Subsystem {
                 DriverStation.reportWarning("Wanting To Follow Path", false);
 
                 profile = generatePath(RobotStates.currentPath);
-                pathFollower.setPath(profile);
-            	pathFollower.initFollowProfile();
-            	pathFollower.startFollowing();
+                pathFollower.startFollowing(profile);
 
                 RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
                 
@@ -255,7 +249,7 @@ public class DriveTrain extends Subsystem {
 
             case FOLLOW_PATH:
 
-            	pathFollower.followProfilePeriodic();
+            	//pathFollower.followProfilePeriodic();
                 RobotStates.driveType = DriveType.FOLLOW_PATH;
                 break;
 
@@ -264,9 +258,9 @@ public class DriveTrain extends Subsystem {
                 break;
 
         }
-        System.out.println(
-                leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
+        
         RobotStates.gyroAngle = getAngle();
+        SmartDashboard.putNumber("Left Output", leftMaster.getMotorOutputPercent());
 
     }
 
@@ -364,11 +358,10 @@ public class DriveTrain extends Subsystem {
     }
 
     public boolean getIsProfileFinished() {
-        return isProfileFinished;
+        return pathFollower.doneWithProfile();
     }
 
     void resetForPath() {
-        isProfileFinished = false;
         resetEncoders();
         resetGyro();
     }
@@ -401,6 +394,8 @@ public class DriveTrain extends Subsystem {
             	
         }
         catch(Exception e){
+        	e.printStackTrace();
+        	System.out.println("Path Reading Failed");
         	return new MotionProfilePath();
         }
     	
@@ -419,9 +414,9 @@ public class DriveTrain extends Subsystem {
 
     public static class PathfinderData {
 
-        static final double max_velocity = 4.0;
-        static final double max_acceleration = 3.8;
-        static final double max_jerk = 16.0;
+        static final double max_velocity = 7.5*12;
+        static final double max_acceleration = 15;
+        static final double max_jerk = .5;
         private static final double timeStep = .01;
         
         public static final double wheel_diameter = 6;

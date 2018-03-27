@@ -10,7 +10,7 @@ public class SelfTest extends AutoMode {
 
     public SelfTest() {
         DriverStation.reportError("AUTOMODE - SELF", false);
-        addSequential(new FollowPath(Paths.CLLPaths.startToSwitch, false));
+        addSequential(new FollowPath(Paths.example, false));
 
     }
 
