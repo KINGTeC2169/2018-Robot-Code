@@ -30,8 +30,8 @@ public class DriveStraight extends Task {
     protected void initialize() {
 
         RobotWantedStates.wantedDriveType = DriveType.WAITING;
-        drive.leftMaster.setSelectedSensorPosition(0, 0, 10);
-        drive.rightMaster.setSelectedSensorPosition(0, 0, 10);
+        drive.left.setSelectedSensorPosition(0, 0, 10);
+        drive.right.setSelectedSensorPosition(0, 0, 10);
         initialAngle = drive.navX.getAngle();
 
     }
@@ -42,8 +42,8 @@ public class DriveStraight extends Task {
         double rightOutput = (speed - getAngleCorrection()) * directionFactor;
         SmartDashboard.putNumber("Left Output", leftOutput);
         SmartDashboard.putNumber("Right Output", rightOutput);
-        drive.leftMaster.set(ControlMode.PercentOutput, leftOutput);
-        drive.rightMaster.set(ControlMode.PercentOutput, rightOutput);
+        drive.left.set(ControlMode.PercentOutput, leftOutput);
+        drive.right.set(ControlMode.PercentOutput, rightOutput);
 
     }
 
@@ -56,7 +56,7 @@ public class DriveStraight extends Task {
 
     private double getLeftCompletionPercentage() {
 
-        double completion = (double) drive.leftMaster.getSelectedSensorPosition(0) / (double) desiredEncoderTicks;
+        double completion = (double) drive.left.getSelectedSensorPosition(0) / (double) desiredEncoderTicks;
         SmartDashboard.putNumber("Left Completion %", completion);
         return completion;
 
@@ -64,7 +64,7 @@ public class DriveStraight extends Task {
 
     private double getRightCompletionPercentage() {
 
-        double completion = (double) drive.rightMaster.getSelectedSensorPosition(0) / (double) desiredEncoderTicks;
+        double completion = (double) drive.right.getSelectedSensorPosition(0) / (double) desiredEncoderTicks;
         SmartDashboard.putNumber("Right Completion %", completion);
         return completion;
 
@@ -81,8 +81,8 @@ public class DriveStraight extends Task {
     }
 
     protected void end() {
-        drive.leftMaster.set(ControlMode.PercentOutput, 0);
-        drive.rightMaster.set(ControlMode.PercentOutput, 0);
+        drive.left.set(ControlMode.PercentOutput, 0);
+        drive.right.set(ControlMode.PercentOutput, 0);
     }
 
     protected void interrupted() {

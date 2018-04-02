@@ -66,8 +66,8 @@ public class TurnInPlace extends Command implements PIDOutput {
     @Override
     public void pidWrite(double output) {
         synchronized (this) {
-            drive.leftMaster.set(ControlMode.PercentOutput, -1 * output);
-            drive.rightMaster.set(ControlMode.PercentOutput, output);
+            drive.left.set(ControlMode.PercentOutput, -1 * output);
+            drive.right.set(ControlMode.PercentOutput, output);
         }
     }
 

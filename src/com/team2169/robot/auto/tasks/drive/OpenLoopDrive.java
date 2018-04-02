@@ -30,8 +30,8 @@ public class OpenLoopDrive extends Task {
         double rightOutput = 1;
         SmartDashboard.putNumber("Left Output", leftOutput);
         SmartDashboard.putNumber("Right Output", rightOutput);
-        drive.leftMaster.set(ControlMode.PercentOutput, -.5);
-        drive.rightMaster.set(ControlMode.PercentOutput, -.5);
+        drive.left.set(ControlMode.PercentOutput, -.5);
+        drive.right.set(ControlMode.PercentOutput, -.5);
 
     }
 
@@ -42,8 +42,8 @@ public class OpenLoopDrive extends Task {
 
 
     protected void end() {
-        drive.leftMaster.set(ControlMode.PercentOutput, 0);
-        drive.rightMaster.set(ControlMode.PercentOutput, 0);
+        drive.left.set(ControlMode.PercentOutput, 0);
+        drive.right.set(ControlMode.PercentOutput, 0);
     }
 
     protected void interrupted() {

@@ -10,6 +10,7 @@ import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
 import com.team2169.util.motionProfiling.MotionProfilePath;
+import com.team2169.util.motionProfiling.PathFollower;
 import com.team2169.util.motionProfiling.PathStorageHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -31,36 +32,36 @@ public class DriveTrain extends Subsystem {
         return dInstance;
     }
 
-    public TalonSRX leftMaster;
+    public TalonSRX left;
     private TalonSRX leftTop;
     private TalonSRX leftFront;
-    public TalonSRX rightMaster;
+    public TalonSRX right;
     private TalonSRX rightFront;
     private TalonSRX rightTop;
     private DoubleSolenoid shifter;
     private DoubleSolenoid ptoShift;
+    private PathFollower pathFollower;
     public AHRS navX;
     private int maxLeft = 0;
     private int maxRight = 0;
 
     private DriveTrain() {
-
     	
         // Define IMU
         navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         // Create the objects and set properties
-        leftMaster = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
+        left = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
         leftFront = new TalonSRX(ActuatorMap.leftFront);
         leftTop = new TalonSRX(ActuatorMap.leftTop);
 
-        rightMaster = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
+        right = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
         rightFront = new TalonSRX(ActuatorMap.rightFront);
         rightTop = new TalonSRX(ActuatorMap.rightTop);
 
         // Configure Mag Encoders
-        leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
-        rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+        left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+        right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 
         // Set Left Slaves
         leftTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
@@ -71,16 +72,16 @@ public class DriveTrain extends Subsystem {
         rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 
         // Set Inversions
-        leftMaster.setInverted(true);
+        left.setInverted(true);
         leftFront.setInverted(true);
         rightTop.setInverted(true);
 
         // Set Current Limits
 
-        leftMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+        left.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
         leftFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
         leftTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
-        rightMaster.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
+        right.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
         rightFront.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
         rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
 
@@ -97,23 +98,23 @@ public class DriveTrain extends Subsystem {
     }
 
     private void enableRamping() {
-        leftMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
-        leftMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
-        rightMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
-        rightMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
+        left.configOpenloopRamp(Constants.driveTrainRampRate, 0);
+        left.configClosedloopRamp(Constants.driveTrainRampRate, 0);
+        right.configOpenloopRamp(Constants.driveTrainRampRate, 0);
+        right.configClosedloopRamp(Constants.driveTrainRampRate, 0);
     }
 
     @SuppressWarnings("unused")
     private void disableRamping() {
-        leftMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
-        leftMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
-        rightMaster.configOpenloopRamp(Constants.driveTrainRampRate, 0);
-        rightMaster.configClosedloopRamp(Constants.driveTrainRampRate, 0);
+        left.configOpenloopRamp(Constants.driveTrainRampRate, 0);
+        left.configClosedloopRamp(Constants.driveTrainRampRate, 0);
+        right.configOpenloopRamp(Constants.driveTrainRampRate, 0);
+        right.configClosedloopRamp(Constants.driveTrainRampRate, 0);
     }
 
     private void resetEncoders() {
-        leftMaster.setSelectedSensorPosition(0, Constants.leftDriveData.pidLoopIDx, Constants.leftDriveData.timeoutMs);
-        rightMaster.setSelectedSensorPosition(0, Constants.rightDriveData.pidLoopIDx,
+        left.setSelectedSensorPosition(0, Constants.leftDriveData.pidLoopIDx, Constants.leftDriveData.timeoutMs);
+        right.setSelectedSensorPosition(0, Constants.rightDriveData.pidLoopIDx,
                 Constants.rightDriveData.timeoutMs);
     }
 
@@ -139,8 +140,8 @@ public class DriveTrain extends Subsystem {
                 }
 
                 // Acceleration Handler with Squared controls
-                leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false) * FlyByWireHandler.getSafeSpeed());
-                rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false) * FlyByWireHandler.getSafeSpeed());
+                left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false) * FlyByWireHandler.getSafeSpeed());
+                right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false) * FlyByWireHandler.getSafeSpeed());
                 // Shift without override
                 shift(false);
 
@@ -158,8 +159,8 @@ public class DriveTrain extends Subsystem {
                 }
 
                 // Drive with Override
-                leftMaster.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
-                rightMaster.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
+                left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(true));
+                right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(true));
                 // Shift with override
                 shift(true);
 
@@ -177,7 +178,7 @@ public class DriveTrain extends Subsystem {
                 }
 
                 // Set Wheels to Hang Power
-                leftMaster.set(ControlMode.PercentOutput, Constants.climbPower);
+                left.set(ControlMode.PercentOutput, Constants.climbPower);
 
                 // Set Robot State
                 RobotStates.driveType = DriveType.HANG;
@@ -193,7 +194,7 @@ public class DriveTrain extends Subsystem {
                 }
 
                 // Set Talon Modes for Driving
-                rightMaster.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
+                right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
                 rightFront.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
                 rightTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
 
@@ -233,13 +234,16 @@ public class DriveTrain extends Subsystem {
 
                 DriverStation.reportWarning("Wanting To Follow Path", false);
 
+                pathFollower = new PathFollower(generatePath(RobotStates.currentPath), left, right);
+                pathFollower.startPath();
+                
                 RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
                 
                 break;
 
             case FOLLOW_PATH:
 
-            	//pathFollower.followProfilePeriodic();
+            	pathFollower.pathLooper();
                 RobotStates.driveType = DriveType.FOLLOW_PATH;
                 break;
 
@@ -250,7 +254,7 @@ public class DriveTrain extends Subsystem {
         }
         
         RobotStates.gyroAngle = getAngle();
-        SmartDashboard.putNumber("Left Output", leftMaster.getMotorOutputPercent());
+        SmartDashboard.putNumber("Left Output", left.getMotorOutputPercent());
 
     }
 
@@ -334,9 +338,9 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("Gyro", RobotStates.gyroAngle);
         DebugPrinter.driveTrainDebug();
         SmartDashboard.putNumber("Left Encoder Value: ",
-                leftMaster.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
+                left.getSelectedSensorPosition(Constants.leftDriveData.slotIDx));
         SmartDashboard.putNumber("Right Encoder Value: ",
-                rightMaster.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
+                right.getSelectedSensorPosition(Constants.rightDriveData.slotIDx));
         
     }
 
@@ -353,8 +357,8 @@ public class DriveTrain extends Subsystem {
     }
 
     void maxVelocityGrabber() {
-    	int leftVel = leftMaster.getSelectedSensorVelocity(0);
-    	int rightVel = rightMaster.getSelectedSensorVelocity(0);
+    	int leftVel = left.getSelectedSensorVelocity(0);
+    	int rightVel = right.getSelectedSensorVelocity(0);
     	if(leftVel > maxLeft) {
     		SmartDashboard.putNumber("Left Velocity", leftVel);
     		maxLeft = leftVel;
@@ -389,8 +393,8 @@ public class DriveTrain extends Subsystem {
     @Override
     public void stop() {
         // Code to make all moving parts halt goes here.
-        leftMaster.set(ControlMode.Disabled, 1);
-        rightMaster.set(ControlMode.Disabled, 1);
+        left.set(ControlMode.Disabled, 1);
+        right.set(ControlMode.Disabled, 1);
         resetGyro();
         resetEncoders();
     }
