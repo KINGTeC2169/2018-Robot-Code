@@ -22,7 +22,6 @@ public class Platform extends Subsystem {
         RobotWantedStates.platformRelease = false;
     }
 
-    @SuppressWarnings("unused")
     public void platformHandler() {
 
         ControlMap.getWantedPlatform();
@@ -36,7 +35,6 @@ public class Platform extends Subsystem {
 
     }
 
-    @SuppressWarnings("unused")
     private void releasePlatform(boolean releaseState) {
         // platformRelease.set(releaseState);
     }

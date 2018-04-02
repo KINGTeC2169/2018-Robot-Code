@@ -5,7 +5,6 @@ import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 
-@SuppressWarnings("unused")
 public class ElevatorToScaleLow extends Task {
 
     public ElevatorToScaleLow() {

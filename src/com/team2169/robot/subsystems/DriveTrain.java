@@ -10,9 +10,7 @@ import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
 import com.team2169.util.motionProfiling.MotionProfilePath;
-import com.team2169.util.motionProfiling.PathFollower;
 import com.team2169.util.motionProfiling.PathStorageHandler;
-import com.team2169.util.motionProfiling.ProfileTalon;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -33,17 +31,15 @@ public class DriveTrain extends Subsystem {
         return dInstance;
     }
 
-    public ProfileTalon leftMaster;
+    public TalonSRX leftMaster;
     private TalonSRX leftTop;
     private TalonSRX leftFront;
-    public ProfileTalon rightMaster;
+    public TalonSRX rightMaster;
     private TalonSRX rightFront;
     private TalonSRX rightTop;
     private DoubleSolenoid shifter;
     private DoubleSolenoid ptoShift;
     public AHRS navX;
-    private MotionProfilePath profile;
-    private PathFollower pathFollower;
     private int maxLeft = 0;
     private int maxRight = 0;
 
@@ -54,11 +50,11 @@ public class DriveTrain extends Subsystem {
         navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         // Create the objects and set properties
-        leftMaster = new ProfileTalon(ActuatorMap.leftMasterDriveTalon);
+        leftMaster = new TalonSRX(ActuatorMap.leftMasterDriveTalon);
         leftFront = new TalonSRX(ActuatorMap.leftFront);
         leftTop = new TalonSRX(ActuatorMap.leftTop);
 
-        rightMaster = new ProfileTalon(ActuatorMap.rightMasterDriveTalon);
+        rightMaster = new TalonSRX(ActuatorMap.rightMasterDriveTalon);
         rightFront = new TalonSRX(ActuatorMap.rightFront);
         rightTop = new TalonSRX(ActuatorMap.rightTop);
 
@@ -94,9 +90,6 @@ public class DriveTrain extends Subsystem {
         shifter = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dtSpeedShiftForward,
                 ActuatorMap.dtSpeedShiftReverse);
         ptoShift = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.ptoShiftForward, ActuatorMap.ptoShiftReverse);
-
-        profile = new MotionProfilePath();
-    	pathFollower = new PathFollower(leftMaster, rightMaster);
         
         RobotWantedStates.wantedDriveMode = DriveMode.SHIFT_TO_LOW;
         RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_DRIVE;
@@ -240,9 +233,6 @@ public class DriveTrain extends Subsystem {
 
                 DriverStation.reportWarning("Wanting To Follow Path", false);
 
-                profile = generatePath(RobotStates.currentPath);
-                pathFollower.startFollowing(profile);
-
                 RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
                 
                 break;
@@ -357,10 +347,6 @@ public class DriveTrain extends Subsystem {
         resetEncoders();
     }
 
-    public boolean getIsProfileFinished() {
-        return pathFollower.doneWithProfile();
-    }
-
     void resetForPath() {
         resetEncoders();
         resetGyro();
@@ -380,11 +366,8 @@ public class DriveTrain extends Subsystem {
     	
     }
     
-    public void stopPath() {
-    	pathFollower.stopFollowing();
-    }
-
-    private MotionProfilePath generatePath(Waypoint[] path) {
+    @SuppressWarnings("unused")
+	private MotionProfilePath generatePath(Waypoint[] path) {
     	DriverStation.reportWarning("Calculating Path", false);
     	try {
         	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,

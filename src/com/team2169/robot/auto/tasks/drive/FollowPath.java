@@ -37,14 +37,13 @@ public class FollowPath extends Task {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return drive.getIsProfileFinished() || this.isTimedOut();
+    	return this.isTimedOut();
     }
 
     // Called once after isFinished returns true
     protected void end() {
         System.out.println("Path Finished");
         RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
-        drive.stopPath();
         drive.stop();
     }
 
