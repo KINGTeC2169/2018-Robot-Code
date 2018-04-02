@@ -10,7 +10,7 @@ public class IntakeUntilHeld extends Task {
 
     public IntakeUntilHeld() {
         RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
-        RobotWantedStates.wantedIntakeClamp = IntakeClamp.NEUTRAL;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.OPEN;
     }
 
     protected void initialize() {

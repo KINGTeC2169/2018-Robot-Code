@@ -61,7 +61,7 @@ public class RobotStates {
     // Intake Mode Handler
     public enum IntakeMode {
 
-        INTAKE, EXHAUST, IDLE
+        INTAKE, EXHAUST, IDLE, MANUAL
 
     }
 
@@ -69,7 +69,7 @@ public class RobotStates {
 
     public enum IntakeClamp {
 
-        CLAMP, NEUTRAL, DROP
+        CLAMP, OPEN
 
     }
 
@@ -102,6 +102,7 @@ public class RobotStates {
     public static ArmPos armPos;
     public static boolean armStickMode = false;
     static boolean armButtonMode = false;
+    static boolean armOverride = false;
     public static boolean armInPosition;
 
     // Elevator Position Handler

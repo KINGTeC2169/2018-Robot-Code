@@ -20,9 +20,8 @@ public class ControlMap {
     private static int elevatorOverrideButton = 1;
 
     private static int clampButton = 5;
-    private static int dropButton = 3;
-    private static int neutralButton = 4;
-    private static int dropAndExhaustButton = 6;
+    private static int openButton = 3;
+    private static int resetElevatorButton = 12;
 
     // Elevator Macro Keys
     /*
@@ -48,6 +47,9 @@ public class ControlMap {
     private static int climbPrimary = 10;
     private static int climbOperator = 100;
     private static int releasePlatform = 110;
+    
+	private static int retractArmButton = 5;
+	private static int extendArmButton = 4;
 
     // Deadbands
     static double operatorDeadband = .25;
@@ -57,6 +59,7 @@ public class ControlMap {
     private static Joystick primaryRight;
     private static Joystick operator;
     private static Joystick buttonBoard;
+    private static Joystick intakeStick;
 
     // Joystick Creater
     static void init() {
@@ -64,7 +67,8 @@ public class ControlMap {
         primaryLeft = new Joystick(0);
         primaryRight = new Joystick(1);
         operator = new Joystick(2);
-        buttonBoard = new Joystick(3);
+        buttonBoard = new Joystick(4);
+        intakeStick = new Joystick(3);
 
     }
 
@@ -76,17 +80,30 @@ public class ControlMap {
 
     // DriveTrain Control Sticks handler
     public static double leftTankStick(boolean squared) {
-        if (squared) {
-            return primaryLeft.getRawAxis(1) * Math.abs(primaryLeft.getRawAxis(1));
+        double stickVal = primaryLeft.getRawAxis(1);
+    	
+        if(Math.abs(stickVal) < .01) {
+        	return 0;
         }
-        return primaryLeft.getRawAxis(1);
+        
+        if (squared) {
+            return stickVal * Math.abs(stickVal);
+        }
+        return stickVal;
     }
 
     public static double rightTankStick(boolean squared) {
-        if (squared) {
-            return primaryRight.getRawAxis(1) * Math.abs(primaryRight.getRawAxis(1));
+        
+        double stickVal = primaryRight.getRawAxis(1);
+    	
+        if(Math.abs(stickVal) < .01) {
+        	return 0;
         }
-        return primaryRight.getRawAxis(1);
+    	
+    	if (squared) {
+            return stickVal * Math.abs(stickVal);
+        }
+        return stickVal;
     }
 
     static boolean shiftUp() {
@@ -108,6 +125,10 @@ public class ControlMap {
 
     static boolean intakeExhaust() {
         return operator.getPOV() == 0;
+    }
+    
+    public static double intakeAmount() {
+    	return intakeStick.getRawAxis(1);
     }
 
     // Macro Buttons
@@ -146,16 +167,20 @@ public class ControlMap {
         return operator.getRawButtonPressed(clampButton);
     }
 
-    static boolean dropButtonPressed() {
-        return operator.getRawButtonPressed(dropButton);
+    static boolean openButtonPressed() {
+        return operator.getRawButtonPressed(openButton);
     }
 
-    static boolean dropAndExhaustButton() {
-        return operator.getRawButtonPressed(dropAndExhaustButton);
+    static boolean retractArm() {
+        return operator.getRawButtonPressed(retractArmButton);
     }
 
-    static boolean neutralButtonPressed() {
-        return operator.getRawButton(neutralButton);
+    static boolean extendArm() {
+        return operator.getRawButtonPressed(extendArmButton);
+    }
+    
+    public static boolean resetElevator() {
+    	return operator.getRawButton(resetElevatorButton);
     }
 
     static void getOperatorStickState() {

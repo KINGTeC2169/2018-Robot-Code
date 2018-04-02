@@ -1,3 +1,4 @@
+
 package com.team2169.robot.subsystems.elevatorArm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -38,7 +39,6 @@ public class Arm {
 		*/
 
         // Apply Talon Settings
-        getArmEncoderSetup();
         arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
 
 
@@ -51,14 +51,6 @@ public class Arm {
         SmartDashboard.putNumber("Arm_Goal", arm.getClosedLoopTarget(0));
         SmartDashboard.putNumber("Arm_Current", arm.getOutputCurrent());
         SmartDashboard.putNumber("pulseWidth Pos", arm.getSensorCollection().getPulseWidthPosition());
-    }
-
-    private void getArmEncoderSetup() {
-        if (arm.getSensorCollection().getPulseWidthPosition() > 0) {
-            Constants.calculateArmMacros(true);
-        } else if (arm.getSensorCollection().getPulseWidthPosition() > 0) {
-            Constants.calculateArmMacros(false);
-        }
     }
 
     @SuppressWarnings("unused")
@@ -79,8 +71,7 @@ public class Arm {
 
     public void armMacroLooper() {
 
-        arm.setSelectedSensorPosition(arm.getSensorCollection().getPulseWidthPosition(), 0, 10);
-
+        SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(0));
         //enc.inputValue(arm.getSensorCollection().getPulseWidthPosition());
         //SmartDashboard.putNumber("Arm Absolute Encoder: ", enc.getLatestValue());
 
@@ -97,11 +88,11 @@ public class Arm {
         // set robot's actual state to WantedState's value
         switch (RobotWantedStates.wantedArmPos) {
             case STOW:
-                //armToPos(Constants.stowArmEncoderPosition);
+                armToPos(Constants.stowArmEncoderPosition);
                 RobotStates.armPos = ArmPos.STOW;
                 break;
             case EXTENDED:
-                //armToPos(Constants.extendedArmEncoderPosition);
+                armToPos(Constants.extendedArmEncoderPosition);
                 RobotStates.armPos = ArmPos.EXTENDED;
                 break;
             case HOLD_POSITION:
@@ -120,7 +111,7 @@ public class Arm {
                 RobotStates.armPos = ArmPos.OVERRIDE;
                 break;
             case RETRACTED:
-                //armToPos(Constants.retractedArmEncoderPosition);
+                armToPos(Constants.retractedArmEncoderPosition);
                 RobotStates.armPos = ArmPos.RETRACTED;
                 break;
             case CONFIG:

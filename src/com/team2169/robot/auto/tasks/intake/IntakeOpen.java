@@ -4,15 +4,15 @@ import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 
-public class IntakeDrop extends Task {
+public class IntakeOpen extends Task {
 
-    public IntakeDrop() {
+    public IntakeOpen() {
 
     }
 
     protected void initialize() {
 
-        RobotWantedStates.wantedIntakeClamp = IntakeClamp.DROP;
+        RobotWantedStates.wantedIntakeClamp = IntakeClamp.OPEN;
 
     }
 

@@ -20,6 +20,7 @@ public class Robot extends TimedRobot {
 	private static Superstructure superStructure;
 	public static FMSManager fms;
 	private static ShuffleBoardManager shuffle;
+	boolean lastConnected = true;
 
 	@Override
 	public void robotInit() {
@@ -86,6 +87,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
+		
+		SmartDashboard.putBoolean("New Control Data", DriverStation.getInstance().isNewControlData());
+		
 		Scheduler.getInstance().run();
 
 		RobotStates.isFMSConnected = m_ds.isFMSAttached();

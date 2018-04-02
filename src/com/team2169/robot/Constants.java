@@ -52,9 +52,9 @@ public class Constants {
     // Happens to work perfectly to set it to the height of the object you want to
     // reach.
 
-    public static int extendedArmEncoderPosition;
-    public static int retractedArmEncoderPosition;
-    public static int stowArmEncoderPosition;
+    public static int extendedArmEncoderPosition = 800;
+    public static int retractedArmEncoderPosition = 500;
+    public static int stowArmEncoderPosition = 0;
 
     public static TalonConfig elevatorData = new TalonConfig();
     public static TalonConfig armData = new TalonConfig();
@@ -70,7 +70,7 @@ public class Constants {
         armData.f = 0;
         armData.zero = false;
         armData.encoderType = FeedbackDevice.PulseWidthEncodedPosition;
-        elevatorData.sensorPhase = true;
+        elevatorData.sensorPhase = false;
 
     }
 
@@ -104,23 +104,5 @@ public class Constants {
     public static final double driveTrainRampRate = .25;
 	public static final double kNeutralDeadband = 0;
 	public static final int kTimeoutMs = 10;
-	
-    public static void calculateArmMacros(boolean pos) {
 
-        if (pos) {
-            extendedArmEncoderPosition = 2700;
-            retractedArmEncoderPosition = 3300;
-            stowArmEncoderPosition = 4500;
-        } else {
-            extendedArmEncoderPosition = -500;
-            retractedArmEncoderPosition = -1000;
-            retractedArmEncoderPosition = -1500;
-        }
-
-    }
-    
-    //Motion Profile Data
-    public static final int kBaseTrajPeriodMs = 0;
-
-    
 }

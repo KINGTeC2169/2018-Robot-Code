@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Arm extends Subsystem {
+public class Intake extends Subsystem {
 
-    private static Arm iInstance = null;
+    private static Intake iInstance = null;
 
-    public static Arm getInstance() {
+    public static Intake getInstance() {
         if (iInstance == null) {
-            iInstance = new Arm();
+            iInstance = new Intake();
         }
         return iInstance;
     }
@@ -28,19 +28,14 @@ public class Arm extends Subsystem {
     private Ultrasonic ultra;
     private TalonSRX left;
     private TalonSRX right;
-    private DoubleSolenoid dropSolenoid;
     private DoubleSolenoid clampSolenoid;
-    private int i = 0;
-    private int a = 0;
     private boolean exhaustFromDrop = false;
 
-    private Arm() {
+    private Intake() {
         ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
         left = new TalonSRX(ActuatorMap.leftIntakeID);
         right = new TalonSRX(ActuatorMap.rightIntakeID);
         right.setInverted(true);
-        dropSolenoid = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dropPortForward,
-                ActuatorMap.dropPortReverse);
         clampSolenoid = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.clampPortForward,
                 ActuatorMap.clampPortReverse);
         RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
@@ -50,13 +45,13 @@ public class Arm extends Subsystem {
 
     }
 
-    private void intakeManual(double power, double twist) {
-        if (Math.abs(twist) > .25) {
-            left.set(ControlMode.PercentOutput, (twist * Math.abs(power)) * (4 / 3));
-            right.set(ControlMode.PercentOutput, (-twist * Math.abs(power)) * (4 / 3));
-        }
+    private void intakeManual(double power) {
+
+    	System.out.println("Power: " + power);
+    	
         left.set(ControlMode.PercentOutput, power);
         right.set(ControlMode.PercentOutput, power);
+        
     }
 
     private double getBlockDistance() {
@@ -107,7 +102,7 @@ public class Arm extends Subsystem {
 
     void intakeHandler() {
         //ultrasonicHandler();
-
+    	
         if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraAverage) {
             RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
         }
@@ -116,30 +111,39 @@ public class Arm extends Subsystem {
             RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
         }
 
+
+    	System.out.println(RobotWantedStates.wantedIntakeMode);
+        
         // Handle Intake State
         switch (RobotWantedStates.wantedIntakeMode) {
-
+        
             case IDLE:
             default:
 
                 // Stop Intakes
-                intakeManual(0, 0);
+                intakeManual(0);
                 RobotStates.intakeMode = IntakeMode.IDLE;
 
                 break;
 
+            case MANUAL:
+            	intakeManual(ControlMap.intakeAmount());
+            	System.out.println("Amount: " + ControlMap.intakeAmount());
+                
+            	break;
+            	
             case INTAKE:
 
                 // Run Intakes
 
-                intakeManual(Constants.intakeSpeed, ControlMap.getOperatorTwistValue());
+                intakeManual(Constants.intakeSpeed);
                 RobotStates.intakeMode = IntakeMode.INTAKE;
                 break;
 
             case EXHAUST:
 
                 // Run Intakes Backwards
-                intakeManual(-Constants.intakeSpeed, ControlMap.getOperatorTwistValue());
+                intakeManual(-Constants.intakeSpeed);
                 RobotStates.intakeMode = IntakeMode.EXHAUST;
                 break;
 
@@ -149,49 +153,17 @@ public class Arm extends Subsystem {
         // Handle Wanted Clamp State
         switch (RobotWantedStates.wantedIntakeClamp) {
 
-
-            case NEUTRAL:
-            default:
-
-                a = 0;
-                if (i < 5) {
-                    i++;
-                    clampSolenoid.set(Value.kForward);
-                    dropSolenoid.set(Value.kReverse);
-                    break;
-                } else {
-                    clampSolenoid.set(Value.kReverse);
-                    dropSolenoid.set(Value.kReverse);
-                    RobotStates.intakeClamp = IntakeClamp.NEUTRAL;
-                    break;
-                }
-
-                // Set Clamp to Neutral
-
-
             case CLAMP:
 
                 // Set Clamp to Clamped
                 clampSolenoid.set(Value.kForward);
-                dropSolenoid.set(Value.kReverse);
                 RobotStates.intakeClamp = IntakeClamp.CLAMP;
-                a = 0;
-                i = 0;
                 break;
 
-            case DROP:
+            case OPEN:
 
-                i = 0;
-                // Set Clamp to Drop
-                if (a < 6) {
-                    exhaustFromDrop = true;
-                    a++;
-                } else {
-                    exhaustFromDrop = false;
-                }
                 clampSolenoid.set(Value.kReverse);
-                dropSolenoid.set(Value.kForward);
-                RobotStates.intakeClamp = IntakeClamp.DROP;
+                RobotStates.intakeClamp = IntakeClamp.OPEN;
                 break;
 
         }

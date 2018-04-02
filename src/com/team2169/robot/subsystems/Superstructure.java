@@ -22,7 +22,7 @@ public class Superstructure {
     }
 
     public static DriveTrain drive;
-    private Arm intake;
+    private Intake intake;
     private Platform platform;
     private ElevatorArm liftArm;
     private Compressor comp;
@@ -31,7 +31,7 @@ public class Superstructure {
     public Superstructure() {
 
         drive = DriveTrain.getInstance();
-        intake = Arm.getInstance();
+        intake = Intake.getInstance();
         platform = Platform.getInstance();
         liftArm = ElevatorArm.getInstance();
         comp = new Compressor(ActuatorMap.PCMPort);

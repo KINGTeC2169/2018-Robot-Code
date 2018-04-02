@@ -86,7 +86,7 @@ public class DriveTrain extends Subsystem {
         rightTop.configContinuousCurrentLimit(Constants.maxDriveTrainCurrent, Constants.driveTrainCurrentTimeout);
 
         enableRamping();
-
+        
         // Shifting Solenoids
         shifter = new DoubleSolenoid(ActuatorMap.PCMPort, ActuatorMap.dtSpeedShiftForward,
                 ActuatorMap.dtSpeedShiftReverse);
@@ -127,6 +127,8 @@ public class DriveTrain extends Subsystem {
     }
 
     void driveHandler() {
+    	
+        System.out.println(leftMaster.getMotorOutputPercent());
     	
         switch (RobotWantedStates.wantedDriveType) {
 

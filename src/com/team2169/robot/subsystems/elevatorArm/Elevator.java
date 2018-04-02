@@ -201,6 +201,11 @@ public class Elevator {
                 break;
 
         }
+        
+        if(ControlMap.resetElevator()) {
+        	resetElevatorPosition();
+        }
+        
         SmartDashboard.putNumber("output to motor", elevator.getMotorOutputPercent());
         SmartDashboard.putNumber("Elevator Error", elevator.getClosedLoopError(0));
         SmartDashboard.putNumber("Height Pos", heightPos);
@@ -225,6 +230,10 @@ public class Elevator {
         }
     }
 
+    private void resetElevatorPosition() {
+    	elevator.setSelectedSensorPosition(0, 0, Constants.elevatorData.timeoutMs);
+    }
+    
     private void elevatorToPos(int pos) {
         elevator.set(ControlMode.Position, pos);
         int position = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
@@ -243,6 +252,7 @@ public class Elevator {
         // Upper Limit Switch Active
         if (!bottomLimit.get()) {
             elevator.configPeakOutputReverse(0, Constants.elevatorData.timeoutMs);
+            resetElevatorPosition();
         } else {
             elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs);
         }

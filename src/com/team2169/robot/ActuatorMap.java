@@ -16,10 +16,10 @@ public class ActuatorMap {
     // Elevator TalonSRX IDs
     public static final int elevatorMasterID = 7;
     public static final int elevatorSlaveID = 6;
-    public static final int armID = 8;
+    public static final int armID = 10;
 
     // Intake TalonSRX IDs
-    public static final int leftIntakeID = 10;
+    public static final int leftIntakeID = 8;
     public static final int rightIntakeID = 9;
 
     // Pnuematics
@@ -27,10 +27,8 @@ public class ActuatorMap {
     public static final int PCMPort = 12;
 
     // Intake Piston
-    public static final int clampPortForward = 4;
+    public static final int clampPortForward = 7;
     public static final int clampPortReverse = 5;
-    public static final int dropPortForward = 6;
-    public static final int dropPortReverse = 7;
 
     // Drive Train Shifting
     public static final int dtSpeedShiftForward = 1;
@@ -41,7 +39,6 @@ public class ActuatorMap {
     public static final int ptoShiftReverse = 3;
 
     // Hanger Ports
-    @SuppressWarnings("unused")
     public static final int platformReleasePiston = 9;
 
     // Arduino Ports
