@@ -104,7 +104,7 @@ public class Constants {
     public static final double driveTrainRampRate = .25;
 	public static final double kNeutralDeadband = 0;
 	public static final int kTimeoutMs = 10;
-
+	
     public static void calculateArmMacros(boolean pos) {
 
         if (pos) {
@@ -118,4 +118,9 @@ public class Constants {
         }
 
     }
+    
+    //Motion Profile Data
+    public static final int kBaseTrajPeriodMs = 0;
+
+    
 }

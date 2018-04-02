@@ -15,7 +15,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.team2169.robot.subsystems.DriveTrain.PathfinderData;
-import com.team2169.util.Converter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -92,10 +91,10 @@ public class PathStorageHandler {
 
 		) {
 			for (MotionProfilePoint p : profile.leftPath) {
-				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeStep, "" + p.zeroPos,"" + p.isLastPoint,});
+				leftCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeStep});
 			}
 			for (MotionProfilePoint p : profile.rightPath) {
-				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeStep, "" + p.zeroPos,"" + p.isLastPoint,});
+				rightCSVWriter.writeNext(new String[] { "" + p.position, "" + p.velocity, "" + p.timeStep});
 			}
 
 		} catch (IOException e) {
@@ -113,37 +112,15 @@ public class PathStorageHandler {
 
 		MotionProfilePath profile = new MotionProfilePath();
 
-		// Populate Right Path
-		int i = 0;
-		for (Segment s : right.segments) {
-			if(i == 0) {
-				profile.rightPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, true, false));	
-			}
-			else if(i == right.segments.length) {
-				profile.rightPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, true));	
-			}
-			else {
-				profile.rightPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, false));	
-			}
-			
-			i++;
-		}
-
-		i = 0;
 		// Populate Left Path
 		for (Segment s : left.segments) {
 
-			if(i == 0) {
-				profile.leftPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, true, false));	
-			}
-			else if(i == right.segments.length) {
-				profile.leftPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, true));	
-			}
-			else {
-				profile.leftPath.add(new MotionProfilePoint(Converter.talonPositionConverter(s.position), Converter.talonVelocityConverter(s.velocity, PathfinderData.wheel_diameter), s.dt, false, false));	
-			}
-			
-			i++;
+			profile.leftPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt * 1000));
+		}
+		
+		for (Segment s : right.segments) {
+
+			profile.rightPath.add(new MotionProfilePoint(s.position, s.velocity, s.dt * 1000));
 		}
 
 		return profile;
@@ -166,12 +143,12 @@ public class PathStorageHandler {
 			List<String[]> records = reader.readAll();
 			for (String[] record : records) {
 				profile.leftPath.add(new MotionProfilePoint(Double.parseDouble(record[0]),
-						Double.parseDouble(record[1]), Double.parseDouble(record[2]), Boolean.parseBoolean(record[3]), Boolean.parseBoolean(record[4])));
+						Double.parseDouble(record[1]), Double.parseDouble(record[2])));
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			profile.leftPath.add(new MotionProfilePoint(0, 0, 0, true, true));
+			profile.leftPath.add(new MotionProfilePoint(0, 0, 0));
 
 		}
 
@@ -182,13 +159,13 @@ public class PathStorageHandler {
 			List<String[]> records = reader.readAll();
 			for (String[] record : records) {
 				profile.rightPath.add(new MotionProfilePoint(Double.parseDouble(record[0]),
-						Double.parseDouble(record[1]), Double.parseDouble(record[2]), Boolean.parseBoolean(record[3]), Boolean.parseBoolean(record[4])));
+						Double.parseDouble(record[1]), Double.parseDouble(record[2])));
 			}
 
 		} catch (IOException e) {
 
 			System.out.println(e.getMessage());
-			profile.rightPath.add(new MotionProfilePoint(0, 0, 0, true, true));
+			profile.rightPath.add(new MotionProfilePoint(0, 0, 0));
 
 		}
 
