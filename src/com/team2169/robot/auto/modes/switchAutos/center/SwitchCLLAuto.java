@@ -38,7 +38,7 @@ public class SwitchCLLAuto extends AutoMode {
 
         RobotStates.runningMode = RunningMode.AUTO;
         addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5));
-        addParallel(new TurnInPlace(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn));
+        addParallel(new TurnInPlace(.75, AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn, 2));
         addParallel(new ElevatorToSwitch());
         addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5));
         addSequential(new IntakeExhaust(true), 3);
