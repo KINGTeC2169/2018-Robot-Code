@@ -253,6 +253,9 @@ public class DriveTrain extends Subsystem {
             	pathFollower.stopPath();
                 RobotStates.driveType = DriveType.STOP_PATH;
                 break;
+                
+            case EXTERNAL_DRIVING:
+            	break;
 
         }
         
@@ -408,9 +411,9 @@ public class DriveTrain extends Subsystem {
 
     public static class PathfinderData {
 
-        static final double max_velocity = 7.5*12;
-        static final double max_acceleration = 15;
-        static final double max_jerk = .5;
+        static final double max_velocity = 10;
+        static final double max_acceleration = 11;
+        static final double max_jerk = 55;
         private static final double timeStep = .01;
         
         public static final double wheel_diameter = 6;

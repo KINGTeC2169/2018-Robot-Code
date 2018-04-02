@@ -41,7 +41,7 @@ public class SwitchLLLAuto extends AutoMode {
 
         addParallel(new ArmRetract());
         addParallel(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.startToPoint, .5));
-        addSequential(new TurnInPlace(.75, AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn, 2));
+        addSequential(new TurnInPlace(.75, AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
         addParallel(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5));
         addParallel(new ElevatorToSwitch());
         addParallel(new ArmExtend());

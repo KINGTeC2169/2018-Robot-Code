@@ -39,9 +39,9 @@ public class SwitchLRRAuto extends AutoMode {
         RobotStates.runningMode = RunningMode.AUTO;
         addParallel(new ArmRetract());
         addParallel(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.RightSwitch.startToPoint, .5));
-        addSequential(new TurnInPlace(.75, AutoConstants.LeftAutos.SwitchAutos.RightSwitch.pointToPoint2Turn, 2));
+        addSequential(new TurnInPlace(.75, AutoConstants.LeftAutos.SwitchAutos.RightSwitch.pointToPoint2Turn), 2);
         addSequential(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.RightSwitch.pointToPoint2, .5));
-        addParallel(new TurnInPlace(.75, AutoConstants.LeftAutos.SwitchAutos.RightSwitch.point2ToSwitchTurn, 2));
+        addParallel(new TurnInPlace(.75, AutoConstants.LeftAutos.SwitchAutos.RightSwitch.point2ToSwitchTurn), 2);
         addParallel(new ElevatorToSwitch());
         addSequential(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.RightSwitch.point2ToSwitch, .25));
         addSequential(new IntakeExhaust(true), 3);

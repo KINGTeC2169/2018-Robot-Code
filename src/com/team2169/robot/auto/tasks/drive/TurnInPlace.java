@@ -12,16 +12,13 @@ public class TurnInPlace extends Command {
 
   private double speed = 0.0;
   private double angle = 0.0;
-  private double timeout = 0.0;
   private AHRS navX;
   private DriveTrain drive;
 
-  public TurnInPlace(double speed, double angle, double timeout) {
+  public TurnInPlace(double speed, double angle) {
 
     this.speed = speed;
     this.angle = angle;
-    this.timeout = timeout;
-    this.setTimeout(timeout);
     navX = DriveTrain.getInstance().navX;
     drive = DriveTrain.getInstance();
     
@@ -30,7 +27,7 @@ public class TurnInPlace extends Command {
   protected void initialize() {
 
     navX.reset();
-    RobotWantedStates.wantedDriveType = DriveType.EXTENAL_DRIVING;
+    RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
     
   }
 

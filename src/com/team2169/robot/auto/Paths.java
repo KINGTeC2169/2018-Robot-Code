@@ -5,9 +5,9 @@ import jaci.pathfinder.Waypoint;
 
 public class Paths {
     public static Waypoint[] example = new Waypoint[]{
-            new Waypoint(0, 0, 0),
-            new Waypoint(1, 1, 0),
-            new Waypoint(2, 0, 0)
+            new Waypoint(3.25, 13.04, 0),
+            new Waypoint(7, 17, 50),
+            new Waypoint(11.5, 18, 0)
     };
 
     //Bill
