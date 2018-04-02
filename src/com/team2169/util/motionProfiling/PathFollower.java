@@ -20,6 +20,15 @@ public class PathFollower {
 		
 	}
 	
+	public boolean isDone() {
+		return leftExec.isDone() && rightExec.isDone();
+	}
+	
+	public void stopPath() {
+		leftExec.stop();
+		rightExec.stop();
+	}
+	
 	public void startPath() {
 		leftExec.startMotionProfile();
 		rightExec.startMotionProfile();

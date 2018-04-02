@@ -29,7 +29,7 @@ public class DriveStraight extends Task {
 
     protected void initialize() {
 
-        RobotWantedStates.wantedDriveType = DriveType.WAITING;
+        RobotWantedStates.wantedDriveType = DriveType.STOP_PATH;
         drive.left.setSelectedSensorPosition(0, 0, 10);
         drive.right.setSelectedSensorPosition(0, 0, 10);
         initialAngle = drive.navX.getAngle();

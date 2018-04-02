@@ -104,5 +104,6 @@ public class Constants {
     public static final double driveTrainRampRate = .25;
 	public static final double kNeutralDeadband = 0;
 	public static final int kTimeoutMs = 10;
+	public static final int kBaseTrajPeriodMs = 0;
 
 }

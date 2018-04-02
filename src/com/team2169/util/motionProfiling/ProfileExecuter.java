@@ -42,6 +42,7 @@ public class ProfileExecuter {
 	private TalonSRX _talon;
 	private ArrayList<MotionProfilePoint> _profile;
 	private int _state = 0;
+	private boolean done = false;
 	private int _loopTimeout = -1;
 	private boolean _bStart = false;
 	private SetValueMotionProfile _setValue = SetValueMotionProfile.Disable;
@@ -86,6 +87,13 @@ public class ProfileExecuter {
 		_bStart = false;
 	}
 
+	public void stop() {
+		_notifer.stop();
+		_talon.clearMotionProfileTrajectories();
+		_talon.clearMotionProfileHasUnderrun(10);
+		_talon.set(ControlMode.PercentOutput, 0);
+	}
+	
 	public void control() {
 		/* Get the motion profile status every loop */
 		_talon.getMotionProfileStatus(_status);
@@ -165,6 +173,7 @@ public class ProfileExecuter {
 					 * because we set the last point's isLast to true, we will get here when the MP
 					 * is done
 					 */
+					done = true;
 					_setValue = SetValueMotionProfile.Hold;
 					_state = 0;
 					_loopTimeout = -1;
@@ -182,6 +191,10 @@ public class ProfileExecuter {
 		}
 	}
 
+	public boolean isDone() {
+		return done;
+	}
+	
 	/**
 	 * Find enum value if supported.
 	 * 

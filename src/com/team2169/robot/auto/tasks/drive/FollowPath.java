@@ -25,7 +25,6 @@ public class FollowPath extends Task {
         RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_FOLLOW_PATH;
         DriverStation.reportWarning("Path Calculated", false);
 
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,13 +36,13 @@ public class FollowPath extends Task {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return this.isTimedOut();
+    	return drive.isPathDone() || this.isTimedOut();
     }
 
     // Called once after isFinished returns true
     protected void end() {
         System.out.println("Path Finished");
-        RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
+        RobotWantedStates.wantedDriveType = DriveType.STOP_PATH;
         drive.stop();
     }
 

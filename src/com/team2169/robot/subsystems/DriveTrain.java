@@ -128,7 +128,7 @@ public class DriveTrain extends Subsystem {
 
     void driveHandler() {
     	
-        System.out.println(leftMaster.getMotorOutputPercent());
+        System.out.println(left.getMotorOutputPercent());
     	
         switch (RobotWantedStates.wantedDriveType) {
 
@@ -249,8 +249,10 @@ public class DriveTrain extends Subsystem {
                 RobotStates.driveType = DriveType.FOLLOW_PATH;
                 break;
 
-            case WAITING:
-                RobotStates.driveType = DriveType.WAITING;
+            case STOP_PATH:
+            	pathFollower.stopPath();
+                RobotStates.driveType = DriveType.STOP_PATH;
+                RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
                 break;
 
         }
@@ -329,6 +331,10 @@ public class DriveTrain extends Subsystem {
             }
 
         }
+    }
+    
+    public boolean isPathDone() {
+    	return pathFollower.isDone();
     }
 
     @Override
