@@ -252,7 +252,6 @@ public class DriveTrain extends Subsystem {
             case STOP_PATH:
             	pathFollower.stopPath();
                 RobotStates.driveType = DriveType.STOP_PATH;
-                RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
                 break;
 
         }
