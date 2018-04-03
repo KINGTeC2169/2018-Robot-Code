@@ -4,12 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.RobotWantedStates;
+import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.subsystems.DriveTrain;
 import com.team2169.robot.subsystems.Superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class TurnInPlace extends Command {
+public class TurnInPlace extends Task{
 
   private double speed = 0.0;
   private double angle = 0.0;
