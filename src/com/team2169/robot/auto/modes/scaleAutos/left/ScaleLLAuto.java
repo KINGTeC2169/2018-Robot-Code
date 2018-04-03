@@ -4,7 +4,7 @@ import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class ScaleLLLAuto extends AutoMode {
+public class ScaleLLAuto extends AutoMode {
 /*
 
 	
@@ -28,7 +28,7 @@ public class ScaleLLLAuto extends AutoMode {
 	 
 */
 
-    public ScaleLLLAuto() {
+    public ScaleLLAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
 

@@ -16,7 +16,7 @@ public class YesNoAutoRight extends AutoMode {
 
 		if (DriverStation.getInstance().getGameSpecificMessage().startsWith("R")) {
 			System.out.println("Exhausting");
-			addSequential(new IntakeExhaust(true), 3);
+			addSequential(new IntakeExhaust(.75, true), 3);
 
 		}
 	}

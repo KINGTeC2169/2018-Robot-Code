@@ -8,26 +8,16 @@ import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.PrepForMatch;
 import com.team2169.robot.auto.modes.SelfTest;
-import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLRAuto;
-import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRRAuto;
-import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRLLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRLRAuto;
-import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRRAuto;
-import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLLAuto;
-import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLRAuto;
-import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRLAuto;
-import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRRAuto;
-import com.team2169.robot.auto.modes.switchAutos.left.SwitchLLLAuto;
-import com.team2169.robot.auto.modes.switchAutos.left.SwitchLLRAuto;
-import com.team2169.robot.auto.modes.switchAutos.left.SwitchLRLAuto;
-import com.team2169.robot.auto.modes.switchAutos.left.SwitchLRRAuto;
-import com.team2169.robot.auto.modes.switchAutos.right.SwitchRLLAuto;
-import com.team2169.robot.auto.modes.switchAutos.right.SwitchRLRAuto;
-import com.team2169.robot.auto.modes.switchAutos.right.SwitchRRLAuto;
-import com.team2169.robot.auto.modes.switchAutos.right.SwitchRRRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRAuto;
+import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRLAuto;
+import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRAuto;
+import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLAuto;
+import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRAuto;
+import com.team2169.robot.auto.modes.switchAutos.left.SwitchLLAuto;
+import com.team2169.robot.auto.modes.switchAutos.left.SwitchLRAuto;
+import com.team2169.robot.auto.modes.switchAutos.right.SwitchRLAuto;
+import com.team2169.robot.auto.modes.switchAutos.right.SwitchRRAuto;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -185,17 +175,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCLLAuto();
+								auto = new SwitchCLAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new SwitchLLLAuto();
+								auto = new SwitchLLAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new SwitchRLLAuto();
+								auto = new SwitchRLAuto();
 								break;
 
 							// FAIL Case
@@ -213,17 +203,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCLRAuto();
+								auto = new SwitchCLAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new SwitchLLRAuto();
+								auto = new SwitchLLAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new SwitchRLRAuto();
+								auto = new SwitchRLAuto();
 								break;
 
 							// FAIL Case
@@ -241,17 +231,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCRLAuto();
+								auto = new SwitchCRAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new SwitchLRLAuto();
+								auto = new SwitchLRAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new SwitchRRLAuto();
+								auto = new SwitchRRAuto();
 								break;
 
 							// FAIL Case
@@ -269,17 +259,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCRRAuto();
+								auto = new SwitchCRAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new SwitchLRRAuto();
+								auto = new SwitchLRAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new SwitchRRRAuto();
+								auto = new SwitchRRAuto();
 								break;
 
 							// FAIL Case
@@ -312,17 +302,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCLLAuto();
+								auto = new SwitchCLAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new ScaleLLLAuto();
+								auto = new ScaleLLAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new ScaleRLLAuto();
+								auto = new ScaleRLAuto();
 								break;
 
 							// FAIL Case
@@ -340,17 +330,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCLRAuto();
+								auto = new SwitchCLAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new ScaleLLRAuto();
+								auto = new ScaleLRAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new ScaleRLRAuto();
+								auto = new ScaleRRAuto();
 								break;
 
 							// FAIL Case
@@ -368,17 +358,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCRLAuto();
+								auto = new SwitchCRAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new ScaleLRLAuto();
+								auto = new ScaleLLAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new ScaleRRLAuto();
+								auto = new ScaleRLAuto();
 								break;
 
 							// FAIL Case
@@ -396,17 +386,17 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new SwitchCRRAuto();
+								auto = new SwitchCRAuto();
 								break;
 
 							// Robot Pos: Left
 							case LEFT:
-								auto = new ScaleLRRAuto();
+								auto = new ScaleLRAuto();
 								break;
 
 							// Robot Pos: Right
 							case RIGHT:
-								auto = new ScaleRRRAuto();
+								auto = new ScaleRRAuto();
 								break;
 
 							// FAIL Case

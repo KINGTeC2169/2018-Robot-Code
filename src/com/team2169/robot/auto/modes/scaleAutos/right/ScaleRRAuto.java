@@ -1,32 +1,36 @@
 package com.team2169.robot.auto.modes.scaleAutos.right;
 
+import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class ScaleRLRAuto extends AutoMode {
+public class ScaleRRAuto extends AutoMode {
 /*
 
 	
+       +-------+         +-------+
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
+       +-------+         +-------+
+       	
        +-------+         +-------+
        |       |         |-------|
        |       |         |-------|
        |	   |         |-------|
        +-------+         +-------+
 
-       +-------+         +-------+
-       |-------|         |       |
-       |-------|         |       |
-       |-------|         |       |
-       +-------+         +-------+
-
                                    +-----+
                                    |     |
                                    |     |
                                    |     |
                                    +-----+
-
+	 
 */
 
-    public ScaleRLRAuto() {
+    public ScaleRRAuto() {
+
+        RobotStates.runningMode = RunningMode.AUTO;
 
 
     }

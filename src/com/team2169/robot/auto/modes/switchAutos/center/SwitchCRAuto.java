@@ -8,39 +8,38 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 
-
-public class SwitchCLLAuto extends AutoMode {
+public class SwitchCRAuto extends AutoMode {
 /*
 
 	
        +-------+         +-------+
-       |-------|         |       |
-       |-------|         |       |
-       |-------|         |       |
+       |       |         |-------|
+       |       |         |-------|
+       |       |         |-------|
+       +-------+         +-------+
+     	
+       +-------+         +-------+
+       |       |         |-------|
+       |       |         |-------|
+       |       |         |-------|
        +-------+         +-------+
 
-       +-------+         +-------+
-       |-------|         |       |
-       |-------|         |       |
-       |-------|         |       |
-       +-------+         +-------+
-   
                  +-----+      
                  |     |      
                  |     |      
                  |     |      
                  +-----+      
-	 
+
 */
 
-    public SwitchCLLAuto() {
+    public SwitchCRAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.startToPoint, .5));
-        addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5));
-        addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
-        addSequential(new IntakeExhaust(true), 2);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.startToPoint, .5));
+        addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 2);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitch, .5));
+        addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 2);
+        addSequential(new IntakeExhaust(.75, true), 2);
         
     }
 

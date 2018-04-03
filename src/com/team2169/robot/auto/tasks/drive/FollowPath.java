@@ -36,7 +36,7 @@ public class FollowPath extends Task {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return drive.isPathDone() || this.isTimedOut();
+    	return this.isTimedOut();
     }
 
     // Called once after isFinished returns true

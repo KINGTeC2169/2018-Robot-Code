@@ -16,7 +16,7 @@ public class YesNoAutoLeft extends AutoMode {
 
 		if (DriverStation.getInstance().getGameSpecificMessage().startsWith("L")) {
 			System.out.println("Exhausting");
-			addSequential(new IntakeExhaust(true), 3);
+			addSequential(new IntakeExhaust(.75, true), 3);
 
 		}
         // This is where you put tasks

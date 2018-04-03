@@ -254,15 +254,7 @@ public class DriveTrain extends Subsystem {
             
     	}
     	else if(ControlMap.ptoDeactivate()) {
-            // Debugging Information
-            if (RobotStates.debugMode) {
-                DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
-            }
 
-            // Set Talon Modes for Driving
-            rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-            rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-            
             // Dogshifter Retracted
             ptoShift.set(Value.kReverse);
             RobotStates.ptoActive = false;
@@ -339,14 +331,7 @@ public class DriveTrain extends Subsystem {
 
         }
     }
-    
-    public boolean isPathDone() {
-    	if(pathFollower != null) {
-    		return pathFollower.isDone();	
-    	}
-    	return false;
-    	
-    }
+
 
     @Override
     public void pushToDashboard() {

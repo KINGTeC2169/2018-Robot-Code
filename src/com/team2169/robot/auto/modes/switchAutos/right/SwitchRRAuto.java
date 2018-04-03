@@ -16,20 +16,20 @@ import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
-public class SwitchRRRAuto extends AutoMode {
+public class SwitchRRAuto extends AutoMode {
 /*
 
 	
        +-------+         +-------+
-       |       |         |-------|
-       |       |         |-------|
-       |       |         |-------|
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
        +-------+         +-------+
-     	
+       	
        +-------+         +-------+
        |       |         |-------|
        |       |         |-------|
-       |       |         |-------|
+       |	   |         |-------|
        +-------+         +-------+
 
                                    +-----+
@@ -37,10 +37,10 @@ public class SwitchRRRAuto extends AutoMode {
                                    |     |
                                    |     |
                                    +-----+
-
+	 
 */
 
-    public SwitchRRRAuto() {
+    public SwitchRRAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
         addSequential(new ParallelTask(Arrays.asList(new Task[] {
@@ -50,8 +50,7 @@ public class SwitchRRRAuto extends AutoMode {
         })));
         addSequential(new TurnInPlace(.5, AutoConstants.RightAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 2);
         addSequential(new WaitCommand(1));
-        addSequential(new IntakeExhaust(true), 2);
-
+        addSequential(new IntakeExhaust(.75, true), 2);
     }
 
     // Put looping checks/code in here

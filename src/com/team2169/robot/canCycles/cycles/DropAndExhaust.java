@@ -12,7 +12,7 @@ public class DropAndExhaust extends CanCycle {
 
         addSequential(new ArmExtend(), 1);
         addSequential(new IntakeOpen());
-        addSequential(new IntakeExhaust(true), .25);
+        addSequential(new IntakeExhaust(.5, true), .25);
 
     }
 

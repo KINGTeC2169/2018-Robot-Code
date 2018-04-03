@@ -2,7 +2,7 @@ package com.team2169.robot.auto.modes.scaleAutos.left;
 
 import com.team2169.robot.auto.modes.AutoMode;
 
-public class ScaleLRLAuto extends AutoMode {
+public class ScaleLRAuto extends AutoMode {
 /*
 
 	
@@ -26,7 +26,7 @@ public class ScaleLRLAuto extends AutoMode {
 	 
 */
 
-    public ScaleLRLAuto() {
+    public ScaleLRAuto() {
 
 
     }

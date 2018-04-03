@@ -5,20 +5,20 @@ import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 
-public class SwitchLRRAuto extends AutoMode {
+public class SwitchLRAuto extends AutoMode {
 /*
 
 	
        +-------+         +-------+
-       |       |         |-------|
-       |       |         |-------|
-       |       |         |-------|
+       |-------|         |       |
+       |-------|         |       |
+       |-------|         |       |
        +-------+         +-------+
-     	
+       	
        +-------+         +-------+
        |       |         |-------|
        |       |         |-------|
-       |       |         |-------|
+       |	   |         |-------|
        +-------+         +-------+
 
 +----+
@@ -26,14 +26,14 @@ public class SwitchLRRAuto extends AutoMode {
 |    |
 |    |
 +----+
-
+	 
 */
 
-    public SwitchLRRAuto() {
-    	
+    public SwitchLRAuto() {
+
         RobotStates.runningMode = RunningMode.AUTO;
         addSequential(new DriveStraight(196, .5));
-
+        
     }
 
     // Put looping checks/code in here
