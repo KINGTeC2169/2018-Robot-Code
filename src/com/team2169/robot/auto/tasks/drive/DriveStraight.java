@@ -59,7 +59,9 @@ public class DriveStraight extends Task {
     }
 
     public boolean distanceFinished() {
-    	if(drive.left.getSelectedSensorPosition(0) >= desiredEncoderTicks) {
+    	
+    	//If either encoder has hit the point, stop.  This is because red/orange encoders don't read as many ticks, so they overshoot.
+    	if(drive.left.getSelectedSensorPosition(0) >= desiredEncoderTicks || drive.right.getSelectedSensorPosition(0) >= desiredEncoderTicks) {
     		return true;
     	}
     	return false;
