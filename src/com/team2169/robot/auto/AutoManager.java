@@ -8,10 +8,6 @@ import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.PrepForMatch;
 import com.team2169.robot.auto.modes.SelfTest;
-import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCLLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCLRAuto;
-import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCRLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.center.ScaleCRRAuto;
 import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLLAuto;
 import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLRAuto;
 import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRLAuto;
@@ -316,7 +312,7 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new ScaleCLLAuto();
+								auto = new SwitchCLLAuto();
 								break;
 
 							// Robot Pos: Left
@@ -344,7 +340,7 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new ScaleCLRAuto();
+								auto = new SwitchCLRAuto();
 								break;
 
 							// Robot Pos: Left
@@ -372,7 +368,7 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new ScaleCRLAuto();
+								auto = new SwitchCRLAuto();
 								break;
 
 							// Robot Pos: Left
@@ -400,7 +396,7 @@ public class AutoManager {
 
 							// Robot Pos: Center
 							case CENTER:
-								auto = new ScaleCRRAuto();
+								auto = new SwitchCRRAuto();
 								break;
 
 							// Robot Pos: Left

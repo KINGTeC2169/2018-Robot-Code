@@ -8,19 +8,10 @@ public class AutoConstants {
 
 			public static class LeftSwitch {
 				// Switch Ideal Side Autos
-				public static double startToPoint = 188;
+				public static double startToPoint = 146;
 				public static double pointToSwitchTurn = 90;
-				public static double pointToSwitch = 8;
 			}
-
-			public static class RightSwitch {
-				// Switch Bad Side Autos
-				public static double startToPoint = 256;
-				public static double pointToPoint2Turn = 90;
-				public static double pointToPoint2 = 241;
-				public static double point2ToSwitchTurn = 135;
-				public static double point2ToSwitch = 35;
-			}
+			
 		}
 
 		public static class ScaleAutos {
@@ -55,7 +46,7 @@ public class AutoConstants {
 
 			public static class RightSwitch {
 				// Switch Bad Side Autos
-				public static double startToPoint = 67;
+				public static double startToPoint = 7;
 				public static double pointToSwitchTurn = 30;
 				public static double pointToSwitch = 87;
 			}
@@ -67,18 +58,9 @@ public class AutoConstants {
 
 		public static class SwitchAutos {
 
-			public static class LeftSwitch {
-				// Switch Bad Side Autos
-				public static double startToPoint = 256;
-				public static double pointToPoint2Turn = -90;
-				public static double pointToPoint2 = 241;
-				public static double point2ToSwitchTurn = -135;
-				public static double point2ToSwitch = 35;
-			}
-
 			public static class RightSwitch {
 				// Switch Ideal Side Autos
-				public static double startToPoint = 188;
+				public static double startToPoint = 146;
 				public static double pointToSwitchTurn = -90;
 				public static double pointToSwitch = 8;
 			}

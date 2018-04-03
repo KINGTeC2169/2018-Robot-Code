@@ -52,8 +52,8 @@ public class Constants {
     // Happens to work perfectly to set it to the height of the object you want to
     // reach.
 
-    public static int extendedArmEncoderPosition = 1000;
-    public static int retractedArmEncoderPosition = 500;
+    public static int extendedArmEncoderPosition = 2500;
+    public static int retractedArmEncoderPosition = 1000;
     public static int stowArmEncoderPosition = 0;
 
     public static TalonConfig elevatorData = new TalonConfig();
