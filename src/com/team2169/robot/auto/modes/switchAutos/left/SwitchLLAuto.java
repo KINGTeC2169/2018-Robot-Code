@@ -50,7 +50,7 @@ public class SwitchLLAuto extends AutoMode {
         })));
         addSequential(new TurnInPlace(.5, AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
         addSequential(new WaitCommand(1));
-        addSequential(new IntakeExhaust(.75, true), 2);
+        addSequential(new IntakeExhaust(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.intakeSpeed, true), 2);
         
     }
 

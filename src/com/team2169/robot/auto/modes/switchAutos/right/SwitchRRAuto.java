@@ -50,7 +50,7 @@ public class SwitchRRAuto extends AutoMode {
         })));
         addSequential(new TurnInPlace(.5, AutoConstants.RightAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 2);
         addSequential(new WaitCommand(1));
-        addSequential(new IntakeExhaust(.75, true), 2);
+        addSequential(new IntakeExhaust(AutoConstants.RightAutos.SwitchAutos.RightSwitch.intakeSpeed, true), 2);
     }
 
     // Put looping checks/code in here

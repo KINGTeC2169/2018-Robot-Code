@@ -40,7 +40,7 @@ public class SwitchCLAuto extends AutoMode {
         addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
         addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5));
         addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
-        addSequential(new IntakeExhaust(.75, true), 2);
+        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.intakeSpeed, true), 2);
         
     }
 
