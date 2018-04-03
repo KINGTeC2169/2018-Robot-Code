@@ -128,8 +128,6 @@ public class DriveTrain extends Subsystem {
 
     void driveHandler() {
     	
-        System.out.println(left.getMotorOutputPercent());
-    	
         switch (RobotWantedStates.wantedDriveType) {
 
             // Drive without Override
@@ -195,38 +193,14 @@ public class DriveTrain extends Subsystem {
                     DriverStation.reportWarning("DriveTrain: Wants To Hang Mode", false);
                 }
 
-                // Set Talon Modes for Driving
-                right.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-                rightFront.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-                rightTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);
-
-                // Dogshifter Extended
-                ptoShift.set(Value.kForward);
-                RobotStates.ptoActive = true;
-
-                // Set Robot State
-                RobotStates.driveType = DriveType.WANTS_TO_HANG;
 
                 break;
 
             // Single-Run Go into Drive Mode
             case WANTS_TO_DRIVE:
 
-                // Debugging Information
-                if (RobotStates.debugMode) {
-                    DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
-                }
-
-                // Set Talon Modes for Driving
                 rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
                 rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
-                
-                // Dogshifter Retracted
-                ptoShift.set(Value.kReverse);
-                RobotStates.ptoActive = false;
-
-                // Set Robot State
-                RobotStates.driveType = DriveType.WANTS_TO_DRIVE;
 
                 break;
 
@@ -250,8 +224,10 @@ public class DriveTrain extends Subsystem {
                 break;
 
             case STOP_PATH:
-            	pathFollower.stopPath();
-                RobotStates.driveType = DriveType.STOP_PATH;
+            	if(pathFollower != null) {
+            		pathFollower.stopPath();
+            	}
+            	RobotStates.driveType = DriveType.STOP_PATH;
                 break;
                 
             case EXTERNAL_DRIVING:
@@ -266,7 +242,36 @@ public class DriveTrain extends Subsystem {
 
     private void shift(boolean override) {
         // If the override is active, switch to the requested Drive Mode
+    	
+    	if(ControlMap.ptoActivate()) {
+            
+            // Dogshifter Extended
+            ptoShift.set(Value.kForward);
+            RobotStates.ptoActive = true;
 
+            // Set Robot State
+            RobotStates.driveType = DriveType.WANTS_TO_HANG;
+            
+    	}
+    	else if(ControlMap.ptoDeactivate()) {
+            // Debugging Information
+            if (RobotStates.debugMode) {
+                DriverStation.reportWarning("DriveTrain: Wants To Drive Mode", false);
+            }
+
+            // Set Talon Modes for Driving
+            rightFront.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+            rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
+            
+            // Dogshifter Retracted
+            ptoShift.set(Value.kReverse);
+            RobotStates.ptoActive = false;
+
+            // Set Robot State
+            RobotStates.driveType = DriveType.WANTS_TO_DRIVE;
+            RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
+    	}
+    	
         // If Master Override is Active
         if (override) {
 
@@ -336,7 +341,11 @@ public class DriveTrain extends Subsystem {
     }
     
     public boolean isPathDone() {
-    	return pathFollower.isDone();
+    	if(pathFollower != null) {
+    		return pathFollower.isDone();	
+    	}
+    	return false;
+    	
     }
 
     @Override
@@ -384,8 +393,8 @@ public class DriveTrain extends Subsystem {
 	private MotionProfilePath generatePath(Waypoint[] path) {
     	DriverStation.reportWarning("Calculating Path", false);
     	try {
-        	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-                    Trajectory.Config.SAMPLES_LOW, PathfinderData.timeStep, PathfinderData.max_velocity,
+        	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
+                    Trajectory.Config.SAMPLES_HIGH, PathfinderData.timeStep, PathfinderData.max_velocity,
                     PathfinderData.max_acceleration, PathfinderData.max_jerk);
         	return PathStorageHandler.handlePath(path, cfg);
             	
@@ -416,8 +425,8 @@ public class DriveTrain extends Subsystem {
         static final double max_jerk = 55;
         private static final double timeStep = .01;
         
-        public static final double wheel_diameter = 6;
-        public static final double wheel_base_width = 32;
+        public static final double wheel_diameter = 1/2;
+        public static final double wheel_base_width = 2.91;
         
 		public static final double kP = 0;
 		public static final double kI = 0;

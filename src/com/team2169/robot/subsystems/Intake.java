@@ -46,8 +46,6 @@ public class Intake extends Subsystem {
     }
 
     private void intakeManual(double power) {
-
-    	System.out.println("Power: " + power);
     	
         left.set(ControlMode.PercentOutput, power);
         right.set(ControlMode.PercentOutput, power);
@@ -111,9 +109,6 @@ public class Intake extends Subsystem {
             RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
         }
 
-
-    	System.out.println(RobotWantedStates.wantedIntakeMode);
-        
         // Handle Intake State
         switch (RobotWantedStates.wantedIntakeMode) {
         
@@ -128,8 +123,7 @@ public class Intake extends Subsystem {
 
             case MANUAL:
             	intakeManual(ControlMap.intakeAmount());
-            	System.out.println("Amount: " + ControlMap.intakeAmount());
-                
+            	
             	break;
             	
             case INTAKE:

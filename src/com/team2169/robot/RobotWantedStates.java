@@ -29,5 +29,7 @@ public class RobotWantedStates {
     // Elevator Position Handler
     public static Macro wantedElevatorPos;
     static Macro wantedMacro;
+	public static boolean climberRelease;
+	public static HookState hookRelease;
 
 }

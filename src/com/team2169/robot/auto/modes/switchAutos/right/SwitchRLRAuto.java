@@ -1,6 +1,9 @@
 package com.team2169.robot.auto.modes.switchAutos.right;
 
+import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
+import com.team2169.robot.auto.tasks.drive.DriveStraight;
 
 public class SwitchRLRAuto extends AutoMode {
 /*
@@ -27,7 +30,8 @@ public class SwitchRLRAuto extends AutoMode {
 */
 
     public SwitchRLRAuto() {
-
+        RobotStates.runningMode = RunningMode.AUTO;
+        addSequential(new DriveStraight(106, .5));
 
     }
 

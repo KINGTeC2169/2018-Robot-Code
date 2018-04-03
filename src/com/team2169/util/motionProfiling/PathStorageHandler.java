@@ -36,11 +36,13 @@ public class PathStorageHandler {
 		if (pathFile.exists()) {
 			System.out.println("File Found!");
 			MotionProfilePath profile = readProfile(pathHash);
+			profile.printProfile();
 			return profile;
 		} else {
 			MotionProfilePath profile = pathToProfile(Pathfinder.generate(waypoints, config));
 			storeProfile(pathHash, profile);
 			System.out.println("File Created!");
+			profile.printProfile();
 			return profile;
 		}
 
@@ -183,6 +185,8 @@ public class PathStorageHandler {
 			value += w.x;
 			value += w.y;
 		}
+		
+		value = Math.abs(value);
 		
 		returnable += value;
 		

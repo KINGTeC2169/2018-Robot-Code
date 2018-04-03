@@ -111,6 +111,10 @@ public class RobotStates {
         HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
 
     }
+    
+    public enum HookState{
+    	EXTEND, RETRACT, IDLE
+    }
 
     public static Macro elevatorPos;
     public static double elevatorHeight = 0;

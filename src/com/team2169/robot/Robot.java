@@ -60,14 +60,14 @@ public class Robot extends TimedRobot {
 
 		Scheduler.getInstance().run();
 		try {
-			superStructure.subsystemLooper();
+			
 			RobotStates.isFMSConnected = m_ds.isFMSAttached();
 			shuffle.auto();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Auto Error");
 		}
-
+		superStructure.subsystemLooper();
 		// auto.autoLooping();
 
 	}

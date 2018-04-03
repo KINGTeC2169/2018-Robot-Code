@@ -26,7 +26,7 @@ public class Superstructure {
     private Platform platform;
     private ElevatorArm liftArm;
     private Compressor comp;
-
+    private Climber climber;
 
     public Superstructure() {
 
@@ -35,6 +35,7 @@ public class Superstructure {
         platform = Platform.getInstance();
         liftArm = ElevatorArm.getInstance();
         comp = new Compressor(ActuatorMap.PCMPort);
+        climber = new Climber();
 
     }
 
@@ -73,6 +74,7 @@ public class Superstructure {
         liftArm.elevatorArmHandler();
         //DebugPrinter.elevatorDebug();
         drive.pushToDashboard();
+        climber.climberHandler();
 
     }
 

@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.subsystems.DriveTrain;
+import com.team2169.robot.subsystems.Superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -14,13 +15,14 @@ public class TurnInPlace extends Command {
   private double angle = 0.0;
   private AHRS navX;
   private DriveTrain drive;
+  private double error;
 
   public TurnInPlace(double speed, double angle) {
 
     this.speed = speed;
     this.angle = angle;
-    navX = DriveTrain.getInstance().navX;
-    drive = DriveTrain.getInstance();
+    navX = Superstructure.drive.navX;
+    drive = Superstructure.drive;
     
   }
 
@@ -33,15 +35,16 @@ public class TurnInPlace extends Command {
 
   protected boolean isFinished() {
 
-    return this.isTimedOut();
+    return Math.abs(error) < 1 || this.isTimedOut();
   }
 
   protected void execute() {
 
     double p = 0.025;
-    double error = navX.getAngle() - this.angle;
+    error = navX.getAngle() - this.angle;
     drive.left.set(ControlMode.PercentOutput, p * error * speed);
     drive.right.set(ControlMode.PercentOutput, -p * error * speed);
+    
     
   }
 

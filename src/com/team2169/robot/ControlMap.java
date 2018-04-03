@@ -1,5 +1,7 @@
 package com.team2169.robot;
 
+import com.team2169.robot.RobotStates.HookState;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlMap {
@@ -45,11 +47,13 @@ public class ControlMap {
 
     // Climb Keys
     private static int climbPrimary = 10;
-    private static int climbOperator = 100;
     private static int releasePlatform = 110;
     
 	private static int retractArmButton = 5;
 	private static int extendArmButton = 4;
+	
+	private static int releaseHook = 7;
+	private static int retractHook = 9;
 
     // Deadbands
     static double operatorDeadband = .25;
@@ -211,8 +215,7 @@ public class ControlMap {
 
     // Hanging Logic
     static boolean driversWantToHang() {
-        return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary))
-                && operator.getRawButton(climbOperator);
+        return (primaryLeft.getRawButton(climbPrimary) || primaryRight.getRawButton(climbPrimary));
     }
 
     public static void getWantedPlatform() {
@@ -220,9 +223,30 @@ public class ControlMap {
             RobotWantedStates.platformRelease = true;
         }
     }
+    
+    public static void getWantedHookRelease() {
+        if (/* Robot.fms.remainingTimeTeleOp() <= 30 && */operator.getRawButton(releaseHook)) {
+            RobotWantedStates.hookRelease = HookState.EXTEND;
+        }
+        else if(operator.getRawButton(retractHook)) {
+        	RobotWantedStates.hookRelease = HookState.RETRACT;
+        }
+        else {
+        	RobotWantedStates.hookRelease = HookState.IDLE;
+        }
+    }
+
 
     static boolean operatorWantsUltrasonic() {
         return operator.getRawButton(wantsUltrasonic);
     }
+
+	public static boolean ptoActivate() {
+		return primaryLeft.getRawButton(11);
+	}
+	
+	public static boolean ptoDeactivate() {
+		return primaryLeft.getRawButton(10);
+	}
 
 }

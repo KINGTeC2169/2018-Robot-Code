@@ -4,6 +4,8 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class PathFollower {
 
 	ProfileExecuter leftExec;
@@ -47,13 +49,17 @@ public class PathFollower {
 		
 		//Set Left Talon to it's correct MP state
 		SetValueMotionProfile leftSetOutput = leftExec.getSetValue();
+		SmartDashboard.putNumber("Left Output", _left.getMotorOutputPercent());
+		SmartDashboard.putNumber("Left Desired Output", _left.getActiveTrajectoryVelocity());
 		_left.set(ControlMode.MotionProfile, leftSetOutput.value);
 
-
-		//Set Left Talon to it's correct MP state
-		SetValueMotionProfile rightSetOutput = leftExec.getSetValue();
+		//Set Right Talon to it's correct MP state
+		SetValueMotionProfile rightSetOutput = rightExec.getSetValue();
+		SmartDashboard.putNumber("Right Desired Output", _right.getActiveTrajectoryVelocity());
+		SmartDashboard.putNumber("Right Output", _right.getMotorOutputPercent());
 		_right.set(ControlMode.MotionProfile, rightSetOutput.value);
-
+		
+		
 	}
 	
 }

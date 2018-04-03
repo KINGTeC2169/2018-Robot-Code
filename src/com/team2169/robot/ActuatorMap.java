@@ -21,6 +21,8 @@ public class ActuatorMap {
     // Intake TalonSRX IDs
     public static final int leftIntakeID = 8;
     public static final int rightIntakeID = 9;
+    
+	public static final int hookDeplyID = 11;
 
     // Pnuematics
     // Compressor

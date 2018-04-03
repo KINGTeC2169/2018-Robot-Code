@@ -49,8 +49,6 @@ public class Arm {
         SmartDashboard.putNumber("Encoder", arm.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Arm_Error", arm.getClosedLoopError(0));
         SmartDashboard.putNumber("Arm_Goal", arm.getClosedLoopTarget(0));
-        SmartDashboard.putNumber("Arm_Current", arm.getOutputCurrent());
-        SmartDashboard.putNumber("pulseWidth Pos", arm.getSensorCollection().getPulseWidthPosition());
     }
 
     @SuppressWarnings("unused")

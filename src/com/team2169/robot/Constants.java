@@ -52,7 +52,7 @@ public class Constants {
     // Happens to work perfectly to set it to the height of the object you want to
     // reach.
 
-    public static int extendedArmEncoderPosition = 800;
+    public static int extendedArmEncoderPosition = 1000;
     public static int retractedArmEncoderPosition = 500;
     public static int stowArmEncoderPosition = 0;
 
@@ -64,10 +64,10 @@ public class Constants {
         armData.pidLoopIDx = 0;
         armData.timeoutMs = 10;
         armData.allowedError = 2;
-        armData.p = 1.75;
+        armData.p = 1;
         armData.i = 0;
         armData.d = 0;
-        armData.f = 0;
+        armData.f = .1;
         armData.zero = false;
         armData.encoderType = FeedbackDevice.PulseWidthEncodedPosition;
         elevatorData.sensorPhase = false;
@@ -105,5 +105,7 @@ public class Constants {
 	public static final double kNeutralDeadband = 0;
 	public static final int kTimeoutMs = 10;
 	public static final int kBaseTrajPeriodMs = 0;
+	
+	public static final double hookReleasePosition = -90000;
 
 }

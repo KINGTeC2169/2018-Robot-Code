@@ -50,16 +50,14 @@ public class StateManager {
     // Wanted Driver Override Handler
     private static void getWantedDriveOverride() {
 
-        // Drivers Want to Hang
-        if (ControlMap.driversWantToHang()) {
-            if (RobotWantedStates.wantedDriveType == DriveType.WANTS_TO_HANG
-                    || RobotWantedStates.wantedDriveType == DriveType.HANG) {
-                RobotWantedStates.wantedDriveType = DriveType.HANG;
-            } else {
-                RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_HANG;
-            }
-        }
-
+    	if(ControlMap.ptoActivate()) {
+    		System.out.println("HANG MODE");
+    		RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_HANG;
+    	}
+    	else if(ControlMap.ptoActivate()) {
+    		System.out.println("Drive MODE");
+    		RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_DRIVE;
+    	}
         // Drivers Want to Drive
         else {
             // Coming from Climbing

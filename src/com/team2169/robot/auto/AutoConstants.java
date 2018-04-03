@@ -48,7 +48,7 @@ public class AutoConstants {
 
 			public static class LeftSwitch {
 				// Switch Ideal Side Autos
-				public static double startToPoint = 67;
+				public static double startToPoint = 7;
 				public static double pointToSwitchTurn = -30;
 				public static double pointToSwitch = 87;
 			}
