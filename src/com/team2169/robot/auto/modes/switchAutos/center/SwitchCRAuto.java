@@ -40,11 +40,11 @@ public class SwitchCRAuto extends AutoMode {
         addParallel(new ArmRetract());
         addParallel(new ElevatorToSwitch());
         addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.startToPoint, .5));
-        addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 2);
+        addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 1);
         addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitch, .5));
-        addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 2);
-        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.SwitchAutos.LeftSwitch.intakeSpeed, true), 2);
-        
+        addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 1);
+        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.intakeSpeed, true), 2);
+     
     }
 
     // Put looping checks/code in here
