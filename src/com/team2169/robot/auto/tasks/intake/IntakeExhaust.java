@@ -33,6 +33,7 @@ public class IntakeExhaust extends Task {
 
     protected void end() {
 
+    	System.out.println("DONE INTAKING");
         if (idleOnEnd) {
             RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
         }

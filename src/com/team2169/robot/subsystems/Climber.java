@@ -38,9 +38,6 @@ public class Climber extends Subsystem {
         //release.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false));
         SmartDashboard.putNumber("Hook Encoder Amount", release.getSelectedSensorPosition(0));
         
-        System.out.println(RobotWantedStates.hookRelease.name());
-        
-        
         if(RobotWantedStates.hookRelease == HookState.EXTEND) {
         	release.set(ControlMode.PercentOutput, .5);
         }

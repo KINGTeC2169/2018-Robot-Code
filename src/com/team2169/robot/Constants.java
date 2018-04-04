@@ -83,9 +83,9 @@ public class Constants {
     public static int switchElevatorEncoderPosition = 4000;
     public static int scaleLowElevatorEncoderPosition = 9000;
     public static int scaleMidElevatorEncoderPosition = 17000;
-    public static int scaleHighElevatorEncoderPosition = 19500;
+    public static int scaleHighElevatorEncoderPosition = 18000;
     public static int hangElevatorEncoderPosition = 37549 / 2;
-    public static double driveTrainP = .015;
+    public static double driveTrainP = .025;
 
     // Robot Contants go here
     public static final double wheelDiameter = 6;

@@ -187,7 +187,6 @@ public class StateManager {
             CANCycleHandler.cancelArmElevatorCycles(); 
             RobotWantedStates.wantedArmPos = ArmPos.IDLE; 
         }
-        System.out.println("ARM STATE: " + RobotWantedStates.wantedArmPos);
 
         // Robot is in a CanCycle, don't interfere unless overriden
         if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {

@@ -14,6 +14,7 @@ import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
+import com.team2169.robot.auto.tasks.intake.IntakeOpen;
 
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
@@ -43,20 +44,17 @@ public class ScaleLLAuto extends AutoMode {
 
     public ScaleLLAuto() {
 
+    	System.out.println("Running ScaleLL Auto");
+    	
         RobotStates.runningMode = RunningMode.AUTO;
-        addSequential(new ParallelTask(Arrays.asList(new Task[] {
-                new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.startToPoint, .5),
-                new ArmRetract(),
-                new ElevatorToSwitch(),        
-        })));
-        addSequential(new ParallelTask(Arrays.asList(new Task[] {
-        		new TurnInPlace(.5, AutoConstants.LeftAutos.ScaleAutos.LeftScale.pointToScaleTurn),
-                new ArmRetract(),
-                new ElevatorToScaleHigh(),        
-        })), 2);
-        addSequential(new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.pointToScale, .5));
-        addSequential(new WaitCommand(1));
-        addSequential(new IntakeExhaust(AutoConstants.LeftAutos.ScaleAutos.LeftScale.intakeSpeed, true), 2);
+        addParallel(new ElevatorToSwitch());
+        addParallel(new ArmRetract());
+        addSequential(new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.startToPoint, .5), 6);
+        addParallel(new ElevatorToScaleHigh(), 2);
+        addSequential(new TurnInPlace(.5, AutoConstants.LeftAutos.ScaleAutos.LeftScale.pointToScaleTurn), 1.5);
+        addSequential(new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.pointToScale, .5), 10);
+        addParallel(new IntakeOpen());
+        addSequential(new IntakeExhaust(AutoConstants.LeftAutos.ScaleAutos.LeftScale.intakeSpeed, true), 7);
 
 
 

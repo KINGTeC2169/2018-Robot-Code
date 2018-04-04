@@ -15,40 +15,63 @@ public class DriveStraight extends Task {
     private int desiredEncoderTicks;
     private double initialAngle;
     private DriveTrain drive;
+    int i;
     private double speed;
     private int directionFactor;
-    //PIDController turnController;
 
     public DriveStraight(double inches, double speed_) {
 
-        //turnController.enable();
+    	System.out.println("RECRREATING FOR NEW DRIVE FORWARD");
     	RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
         directionFactor = (desiredEncoderTicks >= 0) ? 1 : -1;
         desiredEncoderTicks = (int) (inches /  (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
         drive = Superstructure.drive;
-        speed = speed_;
-
+        speed = speed_;   
     }
 
     protected void initialize() {
 
-        RobotWantedStates.wantedDriveType = DriveType.STOP_PATH;
+        RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
+        System.out.println("RESETTING FOR NEW DRIVE FORWARD");
         drive.left.setSelectedSensorPosition(0, 0, 10);
         drive.right.setSelectedSensorPosition(0, 0, 10);
+        System.out.println("ENCODERS ZEROED");
         drive.navX.reset();
         initialAngle = drive.navX.getAngle();
+        System.out.println("Desired Enc Ticks: " + desiredEncoderTicks);
+        i = 0;
+        while(i < 5) {
 
+        	if(((Math.abs(drive.left.getSelectedSensorPosition(0)) <= 50) || drive.left.getSelectedSensorPosition(0) == 0)
+        			&& ((Math.abs(drive.right.getSelectedSensorPosition(0)) <= 50) || drive.right.getSelectedSensorPosition(0) == 0)) {
+        		i++;
+        	}
+        	else {
+        		i = 0;
+        	}
+        }
+        
+        i = 0;
+    	
     }
 
     protected void execute() {
 
+    	if(i > 10) {
+    	
         double leftOutput = -(speed - getAngleCorrection()) * directionFactor;
         double rightOutput = -(speed + getAngleCorrection()) * directionFactor;
+        System.out.println(getAngleCorrection());
+        SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
         SmartDashboard.putNumber("Left DT Error", desiredEncoderTicks - drive.left.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Right DT Error", desiredEncoderTicks - drive.right.getSelectedSensorPosition(0));
         drive.left.set(ControlMode.PercentOutput, leftOutput);
         drive.right.set(ControlMode.PercentOutput, rightOutput);
 
+    	}
+    	
+    	i++;
+    	
     }
 
     @Override
@@ -62,6 +85,7 @@ public class DriveStraight extends Task {
     	
     	//If either encoder has hit the point, stop.  This is because red/orange encoders don't read as many ticks, so they overshoot.
     	if(drive.left.getSelectedSensorPosition(0) >= desiredEncoderTicks || drive.right.getSelectedSensorPosition(0) >= desiredEncoderTicks) {
+    		System.out.println("DRIVE FINISHED");
     		return true;
     	}
     	return false;

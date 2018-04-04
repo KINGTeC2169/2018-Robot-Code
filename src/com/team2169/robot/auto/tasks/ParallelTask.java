@@ -22,16 +22,25 @@ public class ParallelTask extends Task {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 
+    	System.out.println("Parallel Running: " + this.isRunning());
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	boolean stop = true;
         for (Task t : masterTasks) {
+        	System.out.println(t.isRunning());
             if (t.isRunning()) {
-                return false;
+                stop = false;
             }
         }
-        return true;
+        
+        System.out.println("Still Going: " + stop);
+        
+        return stop;
+        
+        
     }
 
     // Called once after isFinished returns true

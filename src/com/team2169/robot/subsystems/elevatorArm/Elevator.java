@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.Macro;
+import com.team2169.robot.RobotStates.RunningMode;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -253,7 +255,11 @@ public class Elevator {
         if (!bottomLimit.get()) {
             elevator.configPeakOutputReverse(0, Constants.elevatorData.timeoutMs);
             resetElevatorPosition();
-        } else {
+        } 
+        else if(RobotStates.runningMode == RunningMode.AUTO) {
+        	elevator.configPeakOutputReverse(-.5, Constants.elevatorData.timeoutMs);
+        }
+        else {
             elevator.configPeakOutputReverse(-1, Constants.elevatorData.timeoutMs);
         }
 
@@ -261,7 +267,11 @@ public class Elevator {
         if (!topLimit.get()) {
             elevator.configPeakOutputForward(0, Constants.elevatorData.timeoutMs);
 
-        } else {
+        } 
+        else if(RobotStates.runningMode == RunningMode.AUTO) {
+        	elevator.configPeakOutputReverse(.5, Constants.elevatorData.timeoutMs);
+        }
+        else {
             elevator.configPeakOutputForward(1, Constants.elevatorData.timeoutMs);
         }
     }

@@ -43,13 +43,11 @@ public class SwitchLLAuto extends AutoMode {
     public SwitchLLAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
-        addSequential(new ParallelTask(Arrays.asList(new Task[] {
-                new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.startToPoint, .5),
-                new ArmRetract(),
-                new ElevatorToSwitch(),        
-        })));
+        addParallel(new ArmRetract());
+        addParallel(new ElevatorToSwitch());
+        addSequential(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.startToPoint, .5), 10);   
         addSequential(new TurnInPlace(.5, AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitchTurn), 2);
-        addSequential(new WaitCommand(1));
+        addSequential(new DriveStraight(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.pointToSwitch, .5), 2);
         addSequential(new IntakeExhaust(AutoConstants.LeftAutos.SwitchAutos.LeftSwitch.intakeSpeed, true), 2);
         
     }

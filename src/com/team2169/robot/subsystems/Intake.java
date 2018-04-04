@@ -151,13 +151,13 @@ public class Intake extends Subsystem {
             case CLAMP:
 
                 // Set Clamp to Clamped
-                clampSolenoid.set(Value.kForward);
+                clampSolenoid.set(Value.kReverse);
                 RobotStates.intakeClamp = IntakeClamp.CLAMP;
                 break;
 
             case OPEN:
 
-                clampSolenoid.set(Value.kReverse);
+                clampSolenoid.set(Value.kForward);
                 RobotStates.intakeClamp = IntakeClamp.OPEN;
                 break;
 
