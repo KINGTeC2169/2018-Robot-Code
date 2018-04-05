@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class Constants {
 
     // Auto Names
-    public static final String defaultAutoName = "Switch";
-    public static final String secondAutoName = "Scale";
+    public static final String preferenceOneName = "Switch";
+    public static final String preferenceTwoName = "Scale";
 
     // USBCamera Specs
 

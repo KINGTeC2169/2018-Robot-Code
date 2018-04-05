@@ -2,6 +2,26 @@ package com.team2169.robot.auto;
 
 public class AutoConstants {
 
+	public enum ElementSide {
+		LEFT, RIGHT, ERROR
+	}
+	
+	public static enum Preference{
+		SWITCH, SCALE
+	}
+	
+	public static enum Yield{
+		NONE, FAR_SCALE, ALL_SCALE
+	}
+
+	public enum RobotSide {
+		LEFT, RIGHT, CENTER, ERROR
+	}
+	
+	public enum Possesion {
+		CLOSE, FAR, CENTER, ERROR
+	}
+	
 	public static class LeftAutos {
 
 		public static class SwitchAutos {
@@ -97,6 +117,8 @@ public class AutoConstants {
 
 		}
 	}
+
+	public static final double driveForwardDistance = 100;
 
 	public static double desireIntakeSpeed;
 }
