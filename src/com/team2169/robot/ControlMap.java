@@ -49,7 +49,7 @@ public class ControlMap {
     private static int climbPrimary = 10;
     private static int releasePlatform = 110;
     
-	private static int retractArmButton = 5;
+	private static int retractArmButton = 6;
 	private static int extendArmButton = 4;
 	
 	private static int releaseHook = 7;

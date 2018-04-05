@@ -1,7 +1,6 @@
 package com.team2169.robot.auto;
 
 import com.team2169.robot.Constants;
-import com.team2169.robot.RobotStates;
 import com.team2169.robot.auto.AutoConstants.ElementSide;
 import com.team2169.robot.auto.AutoConstants.Possesion;
 import com.team2169.robot.auto.AutoConstants.Preference;
@@ -88,7 +87,7 @@ public class AutoManager {
 
 		setAutoMode();
 
-		SmartDashboard.putString("Robot Location:", RobotStates.startingPosition.toString());
+		SmartDashboard.putString("Robot Location:", position.name());
 
 	}
 
@@ -124,8 +123,10 @@ public class AutoManager {
 	private void setAutoMode() {
 
 		if (selfTestActive == 1) {
+			System.out.println("Running Self-Test");
 			auto = new SelfTest();
 		} else if (selfTestActive == 2) {
+			System.out.println("Running Match-Prep");
 			auto = new PrepForMatch();
 		} else {
 

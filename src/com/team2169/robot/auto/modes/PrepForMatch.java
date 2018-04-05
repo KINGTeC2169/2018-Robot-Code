@@ -10,9 +10,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class PrepForMatch extends AutoMode {
 
     public PrepForMatch() {
-        DriverStation.reportError("AUTOMODE - SELF", false);
-        addParallel(new ArmStow());
-        RobotWantedStates.wantedDriveMode = RobotStates.DriveMode.SHIFT_TO_LOW;
 
 
     }

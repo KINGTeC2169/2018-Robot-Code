@@ -2,14 +2,19 @@
 package com.team2169.robot.subsystems.elevatorArm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.util.TalonMaker;
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 
+	Timer timer;
+	
     private static Arm aInstance = null;
 
     public static Arm getInstance() {
@@ -22,10 +27,10 @@ public class Arm {
     // Create Talons
     public TalonSRX arm;
     private int oldArmPos = 0;
-    private int position = Constants.retractedArmEncoderPosition;
-
+    
     public Arm() {
 
+    	timer = new Timer();
         // Define Lift Talons
         arm = new TalonSRX(ActuatorMap.armID);
 
@@ -40,7 +45,8 @@ public class Arm {
 
         // Apply Talon Settings
         arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
-
+        arm.setNeutralMode(NeutralMode.Brake);
+        
 
     }
 
@@ -51,30 +57,21 @@ public class Arm {
         SmartDashboard.putNumber("Arm_Goal", arm.getClosedLoopTarget(0));
     }
 
-    @SuppressWarnings("unused")
-	private void armToPos(int pos) {
-        arm.set(ControlMode.Position, pos);
-        position = arm.getSelectedSensorPosition(Constants.armData.slotIDx);
-        getFinishedState();
-    }
-
     private void armSetOverrideLooper(double joystickValue) {
         arm.set(ControlMode.PercentOutput, joystickValue);
-        position = arm.getSensorCollection().getPulseWidthPosition();
-    }
-
-    private void holdInPosition() {
-        arm.set(ControlMode.Position, position);
+        arm.getSensorCollection().getPulseWidthPosition();
     }
 
     public void armMacroLooper() {
 
         SmartDashboard.putNumber("Arm Enc", arm.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Arm PulseWidth", arm.getSensorCollection().getPulseWidthPosition());
+        SmartDashboard.putNumber("Arm Quad", arm.getSensorCollection().getQuadraturePosition());
         //enc.inputValue(arm.getSensorCollection().getPulseWidthPosition());
         //SmartDashboard.putNumber("Arm Absolute Encoder: ", enc.getLatestValue());
 
         if (ControlMap.getArmZero()) {
-            RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
+            RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
             arm.setSelectedSensorPosition(0, 0, 10);
         }
 
@@ -83,23 +80,27 @@ public class Arm {
         }
         oldArmPos = arm.getSelectedSensorPosition(0);
         
+        //SmartDashboard.putString("Arm State", RobotStates.armPos.name());
+        
         // set robot's actual state to WantedState's value
         switch (RobotWantedStates.wantedArmPos) {
             case STOW:
-                armToPos(Constants.stowArmEncoderPosition);
-                RobotStates.armPos = ArmPos.STOW;
+            	armSetOverrideLooper(0);
+            	RobotStates.armPos = ArmPos.STOW;
                 break;
             case EXTENDED:
-                armToPos(Constants.extendedArmEncoderPosition);
+            	armSetOverrideLooper(0);
                 RobotStates.armPos = ArmPos.EXTENDED;
                 break;
             case HOLD_POSITION:
-            	holdInPosition();
+            	armSetOverrideLooper(0);
                 RobotStates.armPos = ArmPos.HOLD_POSITION;
                 break;
             case IDLE:
             	armSetOverrideLooper(0);
             	RobotStates.armPos = ArmPos.IDLE;
+            	break;
+            case PASS:
             	break;
             case OVERRIDE:
             default:
@@ -109,24 +110,12 @@ public class Arm {
                 RobotStates.armPos = ArmPos.OVERRIDE;
                 break;
             case RETRACTED:
-                armToPos(Constants.retractedArmEncoderPosition);
+            	armSetOverrideLooper(0);
                 RobotStates.armPos = ArmPos.RETRACTED;
                 break;
             case CONFIG:
                 break;
-
         }
-
-    }
-
-    private void getFinishedState() {
-
-        if (arm.getClosedLoopError(Constants.armData.pidLoopIDx) < Constants.armData.allowedError
-                || arm.getClosedLoopError(Constants.armData.pidLoopIDx) > -Constants.armData.allowedError) {
-            RobotStates.armInPosition = true;
-        }
-
-        RobotStates.armInPosition = false;
 
     }
 

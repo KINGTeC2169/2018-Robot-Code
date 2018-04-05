@@ -4,6 +4,7 @@ import com.team2169.robot.ActuatorMap;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.RobotStates.IntakeMode;
+import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.StateManager;
 import edu.wpi.first.wpilibj.Compressor;
@@ -48,7 +49,8 @@ public class Superstructure {
 
         // Set WantedStates
         RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-        RobotWantedStates.wantedArmPos = ArmPos.IDLE;
+        RobotWantedStates.wantedArmPos = ArmPos.PASS;
+        RobotWantedStates.wantedElevatorPos = Macro.GROUND;
         StateManager.stateInit();
 
         if (RobotStates.debugMode) {

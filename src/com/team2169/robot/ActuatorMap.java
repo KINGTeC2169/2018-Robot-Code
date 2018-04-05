@@ -29,8 +29,8 @@ public class ActuatorMap {
     public static final int PCMPort = 12;
 
     // Intake Piston
-    public static final int clampPortForward = 7;
-    public static final int clampPortReverse = 5;
+    public static final int clampPortForward = 5;
+    public static final int clampPortReverse = 4;
 
     // Drive Train Shifting
     public static final int dtSpeedShiftForward = 1;

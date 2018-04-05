@@ -161,34 +161,14 @@ public class StateManager {
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
 		}
-
-		else if (ControlMap.extendArm()) {
-			RobotStates.armButtonMode = true;
-			RobotStates.armStickMode = false;
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.EXTENDED;
-		}
-
-		else if (ControlMap.retractArm()) {
-			RobotStates.armButtonMode = true;
-			RobotStates.armStickMode = false;
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.RETRACTED;
-		}
-
-		else if (RobotStates.armStickMode) {
-			RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
-		}
-
-		//Elevator isn't being controlled, and no state has been set, so set the robot to HOLD_POSITION on next loop
 		else {
-			RobotStates.armStickMode = true;
+			RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
+			RobotStates.armStickMode = false;
 			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.IDLE;
 		}
 
 		// Robot is in a CanCycle, don't interfere unless overriden
-		if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {
+		/*if (!RobotStates.canCycleMode && !RobotStates.armStickMode && !RobotStates.armButtonMode) {
 
 			// No CanCycle or Driver Override, do the default Macro action
 
@@ -215,6 +195,6 @@ public class StateManager {
 
 			}
 		}
-
+*/
 	}
 }
