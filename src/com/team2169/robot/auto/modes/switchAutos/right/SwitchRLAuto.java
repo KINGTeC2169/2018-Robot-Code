@@ -31,6 +31,7 @@ public class SwitchRLAuto extends AutoMode {
 
     public SwitchRLAuto() {
         RobotStates.runningMode = RunningMode.AUTO;
+        this.autoName = "Switch RL";
         addSequential(new DriveStraight(106, .5));
     }
 

@@ -41,7 +41,8 @@ public class ScaleRLAuto extends AutoMode {
 
     public ScaleRLAuto() {
         RobotStates.runningMode = RunningMode.AUTO;
-        addSequential(new ParallelTask(Arrays.asList(new Task[] {
+        this.autoName = "Scale RL";
+        /*addSequential(new ParallelTask(Arrays.asList(new Task[] {
                 new DriveStraight(AutoConstants.RightAutos.ScaleAutos.LeftScale.startToPoint, .5),
                 new ArmRetract(),
                 new ElevatorToSwitch(),        
@@ -54,6 +55,9 @@ public class ScaleRLAuto extends AutoMode {
         })), 2);
         addSequential(new DriveStraight(AutoConstants.RightAutos.ScaleAutos.LeftScale.point2ToScale, .25));
         addSequential(new IntakeExhaust(AutoConstants.RightAutos.ScaleAutos.LeftScale.intakeSpeed, true), 2);
+   
+   */
+    
     }
 
     // Put looping checks/code in here

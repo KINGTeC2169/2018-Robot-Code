@@ -37,6 +37,7 @@ public class SwitchCRAuto extends AutoMode {
     public SwitchCRAuto() {
 
         RobotStates.runningMode = RunningMode.AUTO;
+        this.autoName = "Switch CR";
         addParallel(new ArmRetract());
         addParallel(new ElevatorToSwitch());
         addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.startToPoint, .5));

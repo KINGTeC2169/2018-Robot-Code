@@ -35,10 +35,9 @@ public class ScaleLLAuto extends AutoMode {
 +----+
 	 
 */
-
     public ScaleLLAuto() {
 
-    	System.out.println("Running ScaleLL Auto");
+    	this.autoName = "Scale LL";
     	
         RobotStates.runningMode = RunningMode.AUTO;
         addParallel(new ElevatorToSwitch());

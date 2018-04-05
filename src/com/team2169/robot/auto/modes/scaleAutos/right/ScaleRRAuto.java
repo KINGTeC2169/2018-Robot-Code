@@ -39,7 +39,8 @@ public class ScaleRRAuto extends AutoMode {
     public ScaleRRAuto() {
 
     	 RobotStates.runningMode = RunningMode.AUTO;
-         addParallel(new ElevatorToSwitch());
+    	 this.autoName = "Scale RR";
+    	 addParallel(new ElevatorToSwitch());
          addParallel(new ArmRetract());
          addSequential(new DriveStraight(AutoConstants.RightAutos.ScaleAutos.RightScale.startToPoint, .5), 6);
          addParallel(new ElevatorToScaleHigh(), 2);
