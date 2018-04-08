@@ -28,10 +28,10 @@ public class AutoConstants {
 
 			public static class LeftSwitch {
 				// Switch Ideal Side Autos
-				public static double startToPoint = 136;
+				public static double startToPoint = 156;
 				public static double pointToSwitchTurn = 90;
 				public static double pointToSwitch = 18;
-				public static double intakeSpeed = .25;
+				public static double intakeSpeed = .75;
 			}
 			
 		}
@@ -40,7 +40,7 @@ public class AutoConstants {
 
 			public static class LeftScale {
 				// Scale Ideal Side Autos
-				public static double startToPoint = 234;
+				public static double startToPoint = 281;
 				public static double pointToScaleTurn = 50;
 				public static double pointToScale = 20;
 				public static double intakeSpeed = .2;
@@ -52,8 +52,8 @@ public class AutoConstants {
 				public static double pointToPoint2Turn = 90;
 				public static double pointToPoint2 = 217;
 				public static double point2ToScaleTurn = -120;
-				public static double point2ToScale = 24;
-				public static double intakeSpeed = .25;
+				public static double point2ToScale = 54;
+				public static double intakeSpeed = .6;
 			}
 		}
 
@@ -64,15 +64,17 @@ public class AutoConstants {
 
 			public static class LeftSwitch {
 				public static double startToPoint = 27;
-				public static double pointToSwitchTurn = -45;
-				public static double pointToSwitch = 67;
+				public static double pointToSwitchTurn = -55;
+				public static double pointToPoint2 = 72;
+				public static double pointToSwitch = 30;
 				public static double intakeSpeed = .3;
 			}
 
 			public static class RightSwitch {
 				public static double startToPoint = 27;
-				public static double pointToSwitchTurn = 45;
-				public static double pointToSwitch = 67;
+				public static double pointToSwitchTurn = 55;
+				public static double pointToPoint2 = 72;
+				public static double pointToSwitch = 25;
 				public static double intakeSpeed = .3;
 
 			}
@@ -86,10 +88,10 @@ public class AutoConstants {
 
 			public static class RightSwitch {
 				// Switch Ideal Side Autos
-				public static double startToPoint = 136;
+				public static double startToPoint = 156;
 				public static double pointToSwitchTurn = -90;
 				public static double pointToSwitch = 18;
-				public static double intakeSpeed = .25;
+				public static double intakeSpeed = .75;
 			}
 
 		}
@@ -99,17 +101,17 @@ public class AutoConstants {
 			public static class LeftScale {
 				// Scale Bad Side Autos
 				// Scale Bad Side Autos
-				public static double startToPoint = 259;
+				public static double startToPoint = 235;
 				public static double pointToPoint2Turn = -90;
 				public static double pointToPoint2 = 217;
 				public static double point2ToScaleTurn = 120;
-				public static double point2ToScale = 24;
-				public static double intakeSpeed = .25;
+				public static double point2ToScale = 54;
+				public static double intakeSpeed = .3;
 			}
 
 			public static class RightScale {
 				// Scale Ideal Side Autos
-				public static double startToPoint = 234;
+				public static double startToPoint = 291;
 				public static double pointToScaleTurn = -50;
 				public static double pointToScale = 20;
 				public static double intakeSpeed = .2;

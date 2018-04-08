@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class ArmExtend extends Task {
 
     private Timer timer;
-    private double timeOut = 1;
+    private double timeOut = .5;
     private Arm arm;
 
     public ArmExtend() {
@@ -27,13 +27,15 @@ public class ArmExtend extends Task {
 
         timer.start();
         RobotWantedStates.wantedArmPos = ArmPos.PASS;
-        arm.arm.set(ControlMode.PercentOutput, .25);
+        arm.arm.set(ControlMode.PercentOutput, .5);
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 
+    	System.out.println("Running Arm" + timer.get());
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

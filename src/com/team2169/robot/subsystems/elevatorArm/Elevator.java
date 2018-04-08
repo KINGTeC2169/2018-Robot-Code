@@ -55,6 +55,8 @@ public class Elevator {
         SmartDashboard.putBoolean("bottomLimit", bottomLimit.get());
         getLimits();
 
+        SmartDashboard.putString("Elevator State", RobotWantedStates.wantedElevatorPos.name());
+        
         switch (RobotWantedStates.wantedElevatorPos) {
 
             case OVERRIDE:
@@ -201,6 +203,11 @@ public class Elevator {
                 // Set Robot States
                 RobotStates.elevatorPos = Macro.SWITCH;
                 break;
+            
+            case PASS:
+            	break;
+                
+             
 
         }
         

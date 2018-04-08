@@ -7,6 +7,7 @@ public class FailureAuto extends AutoMode {
 
     public FailureAuto() {
 
+    	this.autoName = "FAILURE AUTO";
         RobotStates.runningMode = RunningMode.AUTO;
         // This is where you put tasks
 

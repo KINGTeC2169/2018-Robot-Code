@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StateManager {
 
 	public static void stateInit() {
-		setWantedMacro(Macro.GROUND);
+		setWantedMacro(Macro.PASS);
 	}
 
 	static void teleOpStateLooper() {
@@ -34,7 +34,8 @@ public class StateManager {
 	// MacroButton/State Getter
 	private static void getWantedMacroState() {
 		SmartDashboard.putBoolean("Task Running", CANCycleHandler.dropAndExhaust.isRunning());
-		if (ControlMap.groundMacroPressed()) {
+		
+		/*if (ControlMap.groundMacroPressed()) {
 			setWantedMacro(Macro.GROUND);
 		} else if (ControlMap.switchMacroPressed()) {
 			setWantedMacro(Macro.SWITCH);
@@ -45,6 +46,7 @@ public class StateManager {
 		} else if (ControlMap.hangMacroPressed()) {
 			setWantedMacro(Macro.HANG);
 		}
+		*/
 	}
 
 	// Wanted Driver Override Handler

@@ -42,10 +42,10 @@ public class ScaleRRAuto extends AutoMode {
     	 this.autoName = "Scale RR";
     	 addParallel(new ElevatorToSwitch());
          addParallel(new ArmRetract());
-         addSequential(new DriveStraight(AutoConstants.RightAutos.ScaleAutos.RightScale.startToPoint, .5), 6);
+         addSequential(new DriveStraight(AutoConstants.RightAutos.ScaleAutos.RightScale.startToPoint, .75), 5.5);
          addParallel(new ElevatorToScaleHigh(), 2);
          addSequential(new TurnInPlace(.5, AutoConstants.RightAutos.ScaleAutos.RightScale.pointToScaleTurn), 1.5);
-         addSequential(new DriveStraight(AutoConstants.RightAutos.ScaleAutos.RightScale.pointToScale, .5), 10);
+         addSequential(new DriveStraight(AutoConstants.RightAutos.ScaleAutos.RightScale.pointToScale, .5), 4);
          addParallel(new IntakeOpen());
          addSequential(new IntakeExhaust(AutoConstants.RightAutos.ScaleAutos.RightScale.intakeSpeed, true), 7);
 

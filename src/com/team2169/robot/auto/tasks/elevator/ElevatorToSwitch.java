@@ -13,7 +13,7 @@ public class ElevatorToSwitch extends Task {
     protected void initialize() {
 
         RobotWantedStates.wantedElevatorPos = Macro.SWITCH;
-
+        
     }
 
     @Override

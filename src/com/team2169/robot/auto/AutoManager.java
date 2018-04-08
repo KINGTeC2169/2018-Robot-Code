@@ -2,7 +2,6 @@ package com.team2169.robot.auto;
 
 import com.team2169.robot.Constants;
 import com.team2169.robot.auto.AutoConstants.ElementSide;
-import com.team2169.robot.auto.AutoConstants.Possesion;
 import com.team2169.robot.auto.AutoConstants.Preference;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.AutoConstants.Yield;
@@ -12,8 +11,6 @@ import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.PrepForMatch;
 import com.team2169.robot.auto.modes.SelfTest;
 import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLRAuto;
-import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRLAuto;
 import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRAuto;
 import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLAuto;
 import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRAuto;
@@ -76,6 +73,7 @@ public class AutoManager {
 		SmartDashboard.putData("Self-Test Selector", selfTestChooser);
 		SmartDashboard.putData("Field Position Selector", positionChooser);
 		SmartDashboard.putData("Auto Mode Selector", preferenceChooser);
+		SmartDashboard.putData("Preference Chooser", yieldChooser);
 
 	}
 
@@ -102,8 +100,11 @@ public class AutoManager {
 
 		SmartDashboard.putString("Field ID", gameMessage);
 
+		//auto = new DriveForwardAuto();
+		
 		auto.printName();
 		auto.start();
+		
 
 	}
 
@@ -141,181 +142,80 @@ public class AutoManager {
 			}
 
 			else if (position == RobotSide.LEFT) {
-				// Switch Autos
-				// Branch 0
-				if (preference == Preference.SWITCH) {
 
-					// Branch 1
-					if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-						// Run Our Side Switch
+				String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+				
+				if (preference == Preference.SWITCH) {
+					if(gameMessage.equals("LLL")) {
 						auto = new SwitchLLAuto();
 					}
-					// Branch 1
-					else if (interpreter.nearSwitchPos == Possesion.FAR) {
-						// Branch 2
-						if (interpreter.scalePos == Possesion.CLOSE) {
-							// Branch 3
-							if (yield == Yield.NONE || yield == Yield.FAR_SCALE) {
-								// Run Our Side Scale
-								auto = new ScaleLLAuto();
-							} else if (yield == Yield.ALL_SCALE) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						}
-						// Branch 2
-						else if (interpreter.scalePos == Possesion.FAR) {
-							// Branch 3
-							if (yield == Yield.NONE) {
-								// Run Opposite Side Scale
-								auto = new ScaleLRAuto();
-							}
-							// Branch 3
-							else if (yield == Yield.ALL_SCALE || yield == Yield.FAR_SCALE) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						} else {
-							auto = new FailureAuto();
-						}
-					} else {
-						auto = new FailureAuto();
+					else if(gameMessage.equals("LRL")) {
+						auto = new SwitchLLAuto();
 					}
-
+					else if(gameMessage.equals("RLR")) {
+						auto = new DriveForwardAuto();
+					}
+					else if(gameMessage.contains("RRR")) {
+						auto = new DriveForwardAuto();
+					}
 				}
-
-				// Scale Autos
-				// Branch 0
+				
 				else if (preference == Preference.SCALE) {
-					if (interpreter.scalePos == Possesion.CLOSE) {
-						if (yield == Yield.FAR_SCALE || yield == Yield.NONE) {
-							// Run Our Scale
+
+						if(gameMessage.equals("LLL")) {
 							auto = new ScaleLLAuto();
-						} else if (yield == Yield.ALL_SCALE) {
-							if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-								// Run Close Switch
-								auto = new SwitchLLAuto();
-							} else if (interpreter.nearSwitchPos == Possesion.FAR) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						} else {
-							auto = new FailureAuto();
 						}
-					} else if (interpreter.scalePos == Possesion.FAR) {
-						if (yield == Yield.NONE) {
-							// Run Opposite Scale
-							auto = new ScaleLRAuto();
-						} else if (yield == Yield.FAR_SCALE || yield == Yield.ALL_SCALE) {
-							if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-								// Run Close Switch
-								auto = new SwitchLLAuto();
-							} else if (interpreter.nearSwitchPos == Possesion.FAR) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						} else {
-							auto = new FailureAuto();
+						else if(gameMessage.equals("RLR")) {
+							auto = new ScaleLLAuto();
 						}
-					}
-				} else {
+						else if(gameMessage.contains("RRR") || gameMessage.equals("LRL")) {
+							//Not On Our Side
+							auto = new DriveForwardAuto();
+						}
+				} 
+				
+				else {
 					auto = new FailureAuto();
 				}
+			
 			} 
 			
 			else if (position == RobotSide.RIGHT) {
-				// Switch Autos
-				// Branch 0
+				
+				String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+				
 				if (preference == Preference.SWITCH) {
-
-					// Branch 1
-					if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-						// Run Our Side Switch
+					if(gameMessage.equals("LLL")) {
+						auto = new DriveForwardAuto();
+					}
+					else if(gameMessage.equals("LRL")) {
+						auto = new DriveForwardAuto();
+					}
+					else if(gameMessage.equals("RLR")) {
 						auto = new SwitchRRAuto();
 					}
-					// Branch 1
-					else if (interpreter.nearSwitchPos == Possesion.FAR) {
-						// Branch 2
-						if (interpreter.scalePos == Possesion.CLOSE) {
-							// Branch 3
-							if (yield == Yield.NONE || yield == Yield.FAR_SCALE) {
-								// Run Our Side Scale
-								auto = new ScaleRRAuto();
-							} else if (yield == Yield.ALL_SCALE) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						}
-						// Branch 2
-						else if (interpreter.scalePos == Possesion.FAR) {
-							// Branch 3
-							if (yield == Yield.NONE) {
-								// Run Opposite Side Scale
-								auto = new ScaleRLAuto();
-							}
-							// Branch 3
-							else if (yield == Yield.ALL_SCALE || yield == Yield.FAR_SCALE) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						} else {
-							auto = new FailureAuto();
-						}
-					} else {
-						auto = new FailureAuto();
+					else if(gameMessage.contains("RRR")) {
+						auto = new SwitchRRAuto();
 					}
-
 				}
-
-				// Scale Autos
-				// Branch 0
+				
 				else if (preference == Preference.SCALE) {
-					if (interpreter.scalePos == Possesion.CLOSE) {
-						if (yield == Yield.FAR_SCALE || yield == Yield.NONE) {
+
+						if(gameMessage.equals("LLL") || gameMessage.equals("RLR")) {
+							auto = new DriveForwardAuto();
+						}
+						else if(gameMessage.equals("LRL")) {
 							auto = new ScaleRRAuto();
-						} else if (yield == Yield.ALL_SCALE) {
-							if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-								auto = new SwitchRRAuto();
-							} else if (interpreter.nearSwitchPos == Possesion.FAR) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						} else {
-							auto = new FailureAuto();
 						}
-					} else if (interpreter.scalePos == Possesion.FAR) {
-						if (yield == Yield.NONE) {
-							// Run Opposite Scale
-							auto = new ScaleRLAuto();
-						} else if (yield == Yield.FAR_SCALE || yield == Yield.ALL_SCALE) {
-							if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-								// Run Close Switch
-								auto = new ScaleRRAuto();
-							} else if (interpreter.nearSwitchPos == Possesion.FAR) {
-								auto = new DriveForwardAuto();
-							} else {
-								auto = new FailureAuto();
-							}
-						} else {
-							auto = new FailureAuto();
+						else if(gameMessage.contains("RRR")) {
+							auto = new ScaleRRAuto();
 						}
-					}
-				} else {
+				} 
+				
+				else {
 					auto = new FailureAuto();
 				}
 			}
-
-			else {
-				auto = new FailureAuto();
-			}
-
 		}
 	}
 }

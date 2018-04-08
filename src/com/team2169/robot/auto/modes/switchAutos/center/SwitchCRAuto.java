@@ -9,6 +9,7 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
+import com.team2169.robot.auto.tasks.intake.IntakeOpen;
 
 public class SwitchCRAuto extends AutoMode {
 /*
@@ -40,10 +41,12 @@ public class SwitchCRAuto extends AutoMode {
         this.autoName = "Switch CR";
         addParallel(new ArmRetract());
         addParallel(new ElevatorToSwitch());
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.startToPoint, .5));
-        addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 1);
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitch, .5));
-        addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 1);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.startToPoint, .5), 2);
+        addSequential(new TurnInPlace(.5, AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 1.5);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToPoint2, .5), 2);
+        addSequential(new TurnInPlace(.5, -AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitchTurn), 1.5);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.pointToSwitch, .5), 2);
+        addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.CenterAutos.SwitchAutos.RightSwitch.intakeSpeed, true), 2);
      
     }

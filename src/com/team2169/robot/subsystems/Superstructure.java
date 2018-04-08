@@ -50,7 +50,7 @@ public class Superstructure {
         // Set WantedStates
         RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
         RobotWantedStates.wantedArmPos = ArmPos.PASS;
-        RobotWantedStates.wantedElevatorPos = Macro.GROUND;
+        RobotWantedStates.wantedElevatorPos = Macro.PASS;
         StateManager.stateInit();
 
         if (RobotStates.debugMode) {

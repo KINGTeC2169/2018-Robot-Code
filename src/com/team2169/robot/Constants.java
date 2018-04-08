@@ -80,7 +80,7 @@ public class Constants {
 
     // Default Values (in case something fails)
     public static int groundElevatorEncoderPosition = 0;
-    public static int switchElevatorEncoderPosition = 4000;
+    public static int switchElevatorEncoderPosition = 6000;
     public static int scaleLowElevatorEncoderPosition = 9000;
     public static int scaleMidElevatorEncoderPosition = 17000;
     public static int scaleHighElevatorEncoderPosition = 18000;

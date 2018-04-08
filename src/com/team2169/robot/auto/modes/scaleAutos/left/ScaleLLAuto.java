@@ -42,7 +42,7 @@ public class ScaleLLAuto extends AutoMode {
         RobotStates.runningMode = RunningMode.AUTO;
         addParallel(new ElevatorToSwitch());
         addParallel(new ArmRetract());
-        addSequential(new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.startToPoint, .5), 6);
+        addSequential(new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.startToPoint, .75), 6);
         addParallel(new ElevatorToScaleHigh(), 2);
         addSequential(new TurnInPlace(.5, AutoConstants.LeftAutos.ScaleAutos.LeftScale.pointToScaleTurn), 1.5);
         addSequential(new DriveStraight(AutoConstants.LeftAutos.ScaleAutos.LeftScale.pointToScale, .5), 10);

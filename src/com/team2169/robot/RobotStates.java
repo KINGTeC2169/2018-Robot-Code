@@ -108,7 +108,7 @@ public class RobotStates {
     // Elevator Position Handler
     public enum Macro {
 
-        HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION
+        HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION, PASS
 
     }
     

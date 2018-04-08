@@ -13,6 +13,7 @@ public abstract class AutoMode extends CommandGroup {
     
     public void printName() {
     	DriverStation.reportWarning("Running Auto: " + autoName, false);
+    	DriverStation.reportError("Game Message: " + DriverStation.getInstance().getGameSpecificMessage(), false);
     }
 
 }
