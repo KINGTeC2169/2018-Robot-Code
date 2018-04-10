@@ -1,7 +1,7 @@
 package com.team2169.robot.auto;
 
 import com.team2169.robot.Constants;
-import com.team2169.robot.auto.AutoConstants.ElementSide;
+import com.team2169.robot.auto.AutoConstants.Possesion;
 import com.team2169.robot.auto.AutoConstants.Preference;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.AutoConstants.Yield;
@@ -10,12 +10,10 @@ import com.team2169.robot.auto.modes.DriveForwardAuto;
 import com.team2169.robot.auto.modes.FailureAuto;
 import com.team2169.robot.auto.modes.PrepForMatch;
 import com.team2169.robot.auto.modes.SelfTest;
-import com.team2169.robot.auto.modes.scaleAutos.left.ScaleLLAuto;
-import com.team2169.robot.auto.modes.scaleAutos.right.ScaleRRAuto;
-import com.team2169.robot.auto.modes.switchAutos.center.SwitchCLAuto;
-import com.team2169.robot.auto.modes.switchAutos.center.SwitchCRAuto;
-import com.team2169.robot.auto.modes.switchAutos.left.SwitchLLAuto;
-import com.team2169.robot.auto.modes.switchAutos.right.SwitchRRAuto;
+import com.team2169.robot.auto.modes.oneBlock.center.SwitchAuto;
+import com.team2169.robot.auto.modes.oneBlock.side.ScaleCloseAuto;
+import com.team2169.robot.auto.modes.oneBlock.side.ScaleFarAuto;
+import com.team2169.robot.auto.modes.oneBlock.side.SwitchCloseAuto;
 import com.team2169.util.FieldInterpreter;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -100,11 +98,10 @@ public class AutoManager {
 
 		SmartDashboard.putString("Field ID", gameMessage);
 
-		//auto = new DriveForwardAuto();
-		
+		// auto = new DriveForwardAuto();
+
 		auto.printName();
 		auto.start();
-		
 
 	}
 
@@ -131,88 +128,86 @@ public class AutoManager {
 			auto = new PrepForMatch();
 		} else {
 
+			// Run Center Autos
 			if (position == RobotSide.CENTER) {
-				if (interpreter.nearSwitchSide == ElementSide.LEFT) {
-					auto = new SwitchCLAuto();
-				} else if (interpreter.nearSwitchSide == ElementSide.RIGHT) {
-					auto = new SwitchCRAuto();
-				} else {
-					auto = new FailureAuto();
-				}
+				auto = new SwitchAuto(interpreter.nearSwitchSide);
 			}
 
-			else if (position == RobotSide.LEFT) {
-
-				String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-				
+			// Run Side Autos
+			else {
 				if (preference == Preference.SWITCH) {
-					if(gameMessage.equals("LLL")) {
-						auto = new SwitchLLAuto();
-					}
-					else if(gameMessage.equals("LRL")) {
-						auto = new SwitchLLAuto();
-					}
-					else if(gameMessage.equals("RLR")) {
-						auto = new DriveForwardAuto();
-					}
-					else if(gameMessage.contains("RRR")) {
-						auto = new DriveForwardAuto();
-					}
-				}
-				
-				else if (preference == Preference.SCALE) {
 
-						if(gameMessage.equals("LLL")) {
-							auto = new ScaleLLAuto();
+					// Branch 1
+					if (interpreter.nearSwitchPos == Possesion.CLOSE) {
+						auto = new SwitchCloseAuto(position);
+					}
+					// Branch 1
+					else if (interpreter.nearSwitchPos == Possesion.FAR) {
+						// Branch 2
+						if (interpreter.scalePos == Possesion.CLOSE) {
+							// Branch 3
+							if (yield == Yield.NONE || yield == Yield.FAR_SCALE) {
+								auto = new ScaleCloseAuto(position);
+							} else if (yield == Yield.ALL_SCALE) {
+								auto = new DriveForwardAuto();
+							} else {
+								auto = new FailureAuto();
+							}
 						}
-						else if(gameMessage.equals("RLR")) {
-							auto = new ScaleLLAuto();
+						// Branch 2
+						else if (interpreter.scalePos == Possesion.FAR) {
+							// Branch 3
+							if (yield == Yield.NONE) {
+								auto = new ScaleFarAuto(position);
+							}
+							// Branch 3
+							else if (yield == Yield.ALL_SCALE || yield == Yield.FAR_SCALE) {
+								auto = new DriveForwardAuto();
+							} else {
+								auto = new FailureAuto();
+							}
+						} else {
+							auto = new FailureAuto();
 						}
-						else if(gameMessage.contains("RRR") || gameMessage.equals("LRL")) {
-							//Not On Our Side
-							auto = new DriveForwardAuto();
-						}
-				} 
-				
-				else {
-					auto = new FailureAuto();
-				}
-			
-			} 
-			
-			else if (position == RobotSide.RIGHT) {
-				
-				String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-				
-				if (preference == Preference.SWITCH) {
-					if(gameMessage.equals("LLL")) {
-						auto = new DriveForwardAuto();
+					} else {
+						auto = new FailureAuto();
 					}
-					else if(gameMessage.equals("LRL")) {
-						auto = new DriveForwardAuto();
-					}
-					else if(gameMessage.equals("RLR")) {
-						auto = new SwitchRRAuto();
-					}
-					else if(gameMessage.contains("RRR")) {
-						auto = new SwitchRRAuto();
-					}
-				}
-				
-				else if (preference == Preference.SCALE) {
 
-						if(gameMessage.equals("LLL") || gameMessage.equals("RLR")) {
-							auto = new DriveForwardAuto();
+				}
+
+				// Scale Autos
+				// Branch 0
+				else if (preference == Preference.SCALE) {
+					if (interpreter.scalePos == Possesion.CLOSE) {
+						if (yield == Yield.FAR_SCALE || yield == Yield.NONE) {
+							auto = new ScaleCloseAuto(position);
+						} else if (yield == Yield.ALL_SCALE) {
+							if (interpreter.nearSwitchPos == Possesion.CLOSE) {
+								auto = new SwitchCloseAuto(position);
+							} else if (interpreter.nearSwitchPos == Possesion.FAR) {
+								auto = new DriveForwardAuto();
+							} else {
+								auto = new FailureAuto();
+							}
+						} else {
+							auto = new FailureAuto();
 						}
-						else if(gameMessage.equals("LRL")) {
-							auto = new ScaleRRAuto();
+					} else if (interpreter.scalePos == Possesion.FAR) {
+						if (yield == Yield.NONE) {
+							auto = new ScaleFarAuto(position);
+						} else if (yield == Yield.FAR_SCALE || yield == Yield.ALL_SCALE) {
+							if (interpreter.nearSwitchPos == Possesion.CLOSE) {
+								auto = new SwitchCloseAuto(position);
+							} else if (interpreter.nearSwitchPos == Possesion.FAR) {
+								auto = new DriveForwardAuto();
+							} else {
+								auto = new FailureAuto();
+							}
+						} else {
+							auto = new FailureAuto();
 						}
-						else if(gameMessage.contains("RRR")) {
-							auto = new ScaleRRAuto();
-						}
-				} 
-				
-				else {
+					}
+				} else {
 					auto = new FailureAuto();
 				}
 			}
