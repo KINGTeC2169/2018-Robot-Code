@@ -61,7 +61,6 @@ public class DriveStraight extends Task {
     	
         double leftOutput = -(speed - getAngleCorrection()) * directionFactor;
         double rightOutput = -(speed + getAngleCorrection()) * directionFactor;
-        System.out.println(getAngleCorrection());
         SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
         SmartDashboard.putNumber("Left DT Error", desiredEncoderTicks - drive.left.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Right DT Error", desiredEncoderTicks - drive.right.getSelectedSensorPosition(0));

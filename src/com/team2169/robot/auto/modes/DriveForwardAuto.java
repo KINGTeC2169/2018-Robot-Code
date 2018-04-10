@@ -8,6 +8,7 @@ public class DriveForwardAuto extends AutoMode {
     public DriveForwardAuto() {
 
 		RobotStates.runningMode = RunningMode.AUTO;
+		this.autoName = "Drive Forward";
 		addSequential(new OpenLoopDriveForward(), 5);
 
     }

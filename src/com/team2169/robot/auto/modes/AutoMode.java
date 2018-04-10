@@ -2,6 +2,7 @@ package com.team2169.robot.auto.modes;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class AutoMode extends CommandGroup {
 
@@ -12,7 +13,7 @@ public abstract class AutoMode extends CommandGroup {
     public String autoName;
     
     public void printName() {
-    	DriverStation.reportWarning("Running Auto: " + autoName, false);
+    	SmartDashboard.putString("Running Auto", autoName);
     	DriverStation.reportError("Game Message: " + DriverStation.getInstance().getGameSpecificMessage(), false);
     }
 
