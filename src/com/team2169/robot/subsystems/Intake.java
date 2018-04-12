@@ -9,10 +9,6 @@ import com.team2169.robot.auto.AutoConstants;
 import com.team2169.util.DebugPrinter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Ultrasonic;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Intake extends Subsystem {
 
@@ -25,15 +21,12 @@ public class Intake extends Subsystem {
         return iInstance;
     }
 
-    private ArrayList<Double> blockHeldHistory;
-    private Ultrasonic ultra;
     private TalonSRX left;
     private TalonSRX right;
     private DoubleSolenoid clampSolenoid;
-    private boolean exhaustFromDrop = false;
 
     private Intake() {
-        ultra = new Ultrasonic(ActuatorMap.intakeUltrasonicOutputPort, ActuatorMap.intakeUltrasonicInputPort);
+
         left = new TalonSRX(ActuatorMap.leftIntakeID);
         right = new TalonSRX(ActuatorMap.rightIntakeID);
         right.setInverted(true);
@@ -41,74 +34,10 @@ public class Intake extends Subsystem {
                 ActuatorMap.clampPortReverse);
         RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
 
-        ultra.setAutomaticMode(true);
-        blockHeldHistory = new ArrayList<>();
 
-    }
-
-    private void intakeManual(double power) {
-    	
-        left.set(ControlMode.PercentOutput, power);
-        right.set(ControlMode.PercentOutput, power);
-        
-    }
-
-    private double getBlockDistance() {
-        return ultra.getRangeInches();
-    }
-
-    private void storeBlockHistory(boolean currentBlockPosition) {
-        blockHeldHistory.remove(0);
-        if (currentBlockPosition) blockHeldHistory.add(1.0);
-        else blockHeldHistory.add(0.0);
-    }
-
-    private boolean getBlockHistoryAverage() {
-        double add = 0;
-        int pos = 0;
-        for (double i : blockHeldHistory) {
-            add = add + (i * pos + 1);
-            pos++;
-        }
-        return add >= Constants.WeightedAverageRequirement;
-    }
-
-    private boolean getAverage(List<Double> list) {
-        double add = 0;
-        for (double i : list) {
-            add = add + i;
-        }
-        return add >= ((list.size() + 1) / 2);
-    }
-
-
-    @SuppressWarnings("unused")
-    private void ultrasonicHandler() {
-        RobotStates.blockHeld = (RobotStates.intakeClamp == IntakeClamp.CLAMP) && RobotStates.ultraAverage;
-        RobotStates.ultraWithinRange = (getBlockDistance() <= Constants.maxUltraTriggerDistance
-                && getBlockDistance() >= Constants.minUltraTriggerDistance);
-        storeBlockHistory(RobotStates.ultraWithinRange);
-        RobotStates.ultraAverage = getBlockHistoryAverage();
-
-        if ((!getAverage(blockHeldHistory.subList(0, 9))) && ((getAverage(blockHeldHistory.subList(10, 19))))) {
-            RobotStates.blockRecent = RobotStates.blockRecentState.JUST_ENTERED;
-        } else if ((getAverage(blockHeldHistory.subList(0, 9))) && ((!getAverage(blockHeldHistory.subList(10, 19))))) {
-            RobotStates.blockRecent = RobotStates.blockRecentState.JUST_LEFT;
-        } else {
-            RobotStates.blockRecent = RobotStates.blockRecentState.NO_CHANGE;
-        }
     }
 
     void intakeHandler() {
-        //ultrasonicHandler();
-    	
-        if (RobotStates.operatorWantsUltrasonic && RobotStates.ultraAverage) {
-            RobotWantedStates.wantedIntakeClamp = IntakeClamp.CLAMP;
-        }
-
-        if (exhaustFromDrop) {
-            RobotWantedStates.wantedIntakeMode = IntakeMode.EXHAUST;
-        }
 
         // Handle Intake State
         switch (RobotWantedStates.wantedIntakeMode) {
@@ -123,7 +52,16 @@ public class Intake extends Subsystem {
                 break;
 
             case MANUAL:
-            	intakeManual(ControlMap.intakeAmount());
+            	
+            	//If the intake is being actively controlled, follow driver's instructions
+            	if(Math.abs(ControlMap.intakeAmount()) >= .2){
+            		intakeManual(ControlMap.intakeAmount());
+            	}
+            	
+            	//Otherwise, provide 2v of negative power to hold in block
+            	else {
+            		intakeManual(-(20/12));
+            	}
             	
             	break;
             	
@@ -175,6 +113,12 @@ public class Intake extends Subsystem {
 
     }
 
+    private void intakeManual(double power) {
+    	
+        left.set(ControlMode.PercentOutput, power);
+        right.set(ControlMode.PercentOutput, power);
+    }
+    
     @Override
     public void zeroSensors() {
         // TODO Auto-generated method stub
@@ -183,7 +127,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void stop() {
-        // TODO Auto-generated method stub
+        intakeManual(0);
 
     }
 
