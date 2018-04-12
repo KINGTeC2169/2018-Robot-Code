@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
-import com.team2169.robot.subsystems.elevatorArm.Arm;
+import com.team2169.robot.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.Timer;
 

@@ -3,7 +3,7 @@ package com.team2169.robot.auto.tasks.arm;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.Constants;
-import com.team2169.robot.subsystems.elevatorArm.Arm;
+import com.team2169.robot.subsystems.Arm;
 
 import edu.wpi.first.wpilibj.command.PIDCommand;
 

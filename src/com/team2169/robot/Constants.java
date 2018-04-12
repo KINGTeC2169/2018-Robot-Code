@@ -63,13 +63,13 @@ public class Constants {
         armData.slotIDx = 0;
         armData.pidLoopIDx = 0;
         armData.timeoutMs = 10;
-        armData.allowedError = 2;
+        armData.allowedError = 10;
         armData.p = 1;
         armData.i = 0;
         armData.d = 0;
         armData.f = .1;
         armData.zero = false;
-        armData.encoderType = FeedbackDevice.PulseWidthEncodedPosition;
+        armData.encoderType = FeedbackDevice.Analog;
         elevatorData.sensorPhase = false;
 
     }
