@@ -21,7 +21,7 @@ public class OpenLoopDrive extends Task {
 
     protected void initialize() {
 
-        RobotWantedStates.wantedDriveType = DriveType.STOP_PATH;
+        RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
     }
 
     protected void execute() {

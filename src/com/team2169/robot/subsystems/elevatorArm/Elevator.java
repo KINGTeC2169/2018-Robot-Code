@@ -224,19 +224,8 @@ public class Elevator {
     }
 
     private void elevatorManual(double power) {
-        int position = elevator.getSelectedSensorPosition(Constants.elevatorData.slotIDx);
-        if (position < 14000 && position > 12000) {
-            elevator.set(ControlMode.PercentOutput, -power * .75);
-        } else if (position < 1500) {
-            elevator.set(ControlMode.PercentOutput, -power * .33);
-        } else if (position > 1500 && position < 4000) {
-            elevator.set(ControlMode.PercentOutput, -power * .75);
-        } else if (position > 14000) {
-            elevator.set(ControlMode.PercentOutput, -power * .5);
-        } else {
-            elevator.set(ControlMode.PercentOutput, -power);
+    	elevator.set(ControlMode.PercentOutput, -power);
 
-        }
     }
 
     private void resetElevatorPosition() {
@@ -260,7 +249,6 @@ public class Elevator {
 
         // Upper Limit Switch Active
         if (!bottomLimit.get()) {
-            elevator.configPeakOutputReverse(0, Constants.elevatorData.timeoutMs);
             resetElevatorPosition();
         } 
         else if(RobotStates.runningMode == RunningMode.AUTO) {
@@ -272,8 +260,6 @@ public class Elevator {
 
         // Lower Limit Switch Active
         if (!topLimit.get()) {
-            elevator.configPeakOutputForward(0, Constants.elevatorData.timeoutMs);
-
         } 
         else if(RobotStates.runningMode == RunningMode.AUTO) {
         	elevator.configPeakOutputReverse(.5, Constants.elevatorData.timeoutMs);

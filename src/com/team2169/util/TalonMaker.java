@@ -11,7 +11,7 @@ public class TalonMaker {
         public int timeoutMs = 10;
         public int pidLoopIDx = 0;
         public int slotIDx = 0;
-        boolean inverted = false;
+        public boolean inverted = false;
         public double p;
         public double i;
         public double d;
@@ -33,7 +33,7 @@ public class TalonMaker {
         talon_.setInverted(config.inverted);
 
         talon_.setSensorPhase(config.sensorPhase);
-        talon_.setInverted(false);
+        talon_.setInverted(config.inverted);
 
 		/* Set relevant frame periods to be at least as fast as periodic rate */
         talon_.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, config.timeoutMs);

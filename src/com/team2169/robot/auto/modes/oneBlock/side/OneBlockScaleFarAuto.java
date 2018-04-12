@@ -13,7 +13,7 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
 
-public class ScaleFarAuto extends AutoMode {
+public class OneBlockScaleFarAuto extends AutoMode {
 /*
 
 	
@@ -37,7 +37,7 @@ public class ScaleFarAuto extends AutoMode {
 	 
 */
 
-    public ScaleFarAuto(RobotSide side) {
+    public OneBlockScaleFarAuto(RobotSide side) {
     	
     	RobotStates.runningMode = RunningMode.AUTO;
     	this.autoName = "Far Scale Auto on " + side.name() + " side.";

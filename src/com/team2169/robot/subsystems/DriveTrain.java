@@ -9,17 +9,12 @@ import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
 import com.team2169.util.FlyByWireHandler;
-import com.team2169.util.motionProfiling.MotionProfilePath;
-import com.team2169.util.motionProfiling.PathFollower;
-import com.team2169.util.motionProfiling.PathStorageHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
 
 public class DriveTrain extends Subsystem {
 
@@ -40,7 +35,6 @@ public class DriveTrain extends Subsystem {
     private TalonSRX rightTop;
     private DoubleSolenoid shifter;
     private DoubleSolenoid ptoShift;
-    private PathFollower pathFollower;
     public AHRS navX;
     private int maxLeft = 0;
     private int maxRight = 0;
@@ -203,32 +197,6 @@ public class DriveTrain extends Subsystem {
                 rightTop.set(ControlMode.Follower, ActuatorMap.rightMasterDriveTalon);
 
                 break;
-
-            case WANTS_TO_FOLLOW_PATH:
-
-                RobotStates.driveType = DriveType.WANTS_TO_FOLLOW_PATH;
-
-                DriverStation.reportWarning("Wanting To Follow Path", false);
-
-                pathFollower = new PathFollower(generatePath(RobotStates.currentPath), left, right);
-                pathFollower.startPath();
-                
-                RobotWantedStates.wantedDriveType = DriveType.FOLLOW_PATH;
-                
-                break;
-
-            case FOLLOW_PATH:
-
-            	pathFollower.pathLooper();
-                RobotStates.driveType = DriveType.FOLLOW_PATH;
-                break;
-
-            case STOP_PATH:
-            	if(pathFollower != null) {
-            		pathFollower.stopPath();
-            	}
-            	RobotStates.driveType = DriveType.STOP_PATH;
-                break;
                 
             case EXTERNAL_DRIVING:
             	break;
@@ -373,26 +341,7 @@ public class DriveTrain extends Subsystem {
     	}
     	
     }
-    
-    @SuppressWarnings("unused")
-	private MotionProfilePath generatePath(Waypoint[] path) {
-    	DriverStation.reportWarning("Calculating Path", false);
-    	try {
-        	Trajectory.Config cfg = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC,
-                    Trajectory.Config.SAMPLES_HIGH, PathfinderData.timeStep, PathfinderData.max_velocity,
-                    PathfinderData.max_acceleration, PathfinderData.max_jerk);
-        	return PathStorageHandler.handlePath(path, cfg);
-            	
-        }
-        catch(Exception e){
-        	e.printStackTrace();
-        	System.out.println("Path Reading Failed");
-        	return new MotionProfilePath();
-        }
-    	
-        
 
-    }
 
     @Override
     public void stop() {
@@ -401,22 +350,5 @@ public class DriveTrain extends Subsystem {
         right.set(ControlMode.Disabled, 1);
         resetGyro();
         resetEncoders();
-    }
-
-    public static class PathfinderData {
-
-        static final double max_velocity = 10;
-        static final double max_acceleration = 11;
-        static final double max_jerk = 55;
-        private static final double timeStep = .01;
-        
-        public static final double wheel_diameter = 1/2;
-        public static final double wheel_base_width = 2.91;
-        
-		public static final double kP = 0;
-		public static final double kI = 0;
-		public static final double kD = 0;
-		public static final double kF = 0;
-
     }
 }

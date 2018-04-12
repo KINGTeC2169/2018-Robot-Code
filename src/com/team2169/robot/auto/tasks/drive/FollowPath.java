@@ -22,7 +22,7 @@ public class FollowPath extends Task {
     // Called just before this Command runs the first time
     protected void initialize() {
         DriverStation.reportWarning("Calculating path", false);
-        RobotWantedStates.wantedDriveType = DriveType.WANTS_TO_FOLLOW_PATH;
+        RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
         DriverStation.reportWarning("Path Calculated", false);
 
     }
@@ -42,7 +42,7 @@ public class FollowPath extends Task {
     // Called once after isFinished returns true
     protected void end() {
         System.out.println("Path Finished");
-        RobotWantedStates.wantedDriveType = DriveType.STOP_PATH;
+        RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
         drive.stop();
     }
 

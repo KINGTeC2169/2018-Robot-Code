@@ -2,6 +2,10 @@ package com.team2169.robot.auto;
 
 public class AutoConstants {
 
+	public enum AutoSequenceMode{
+		NORMAL, DRIVE_FORWARD, NOTHING, SELF_TEST
+	}
+	
 	public enum ElementSide {
 		LEFT, RIGHT, ERROR
 	}
@@ -17,7 +21,15 @@ public class AutoConstants {
 	public enum RobotSide {
 		LEFT, RIGHT, CENTER, ERROR
 	}
-
+	
+	public enum CenterPriority {
+		ONE_BLOCK, TWO_BLOCK
+	}
+	
+	public enum SidePriority {
+		ONE_SCALE, TWO_SCALE, SWITCH_SCALE_ONE_BLOCK, SWITCH_SCALE_TWO_BLOCK
+	}
+	
 	public enum Possesion {
 		CLOSE, FAR, CENTER, ERROR
 	}

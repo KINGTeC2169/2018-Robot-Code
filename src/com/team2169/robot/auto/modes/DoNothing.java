@@ -3,13 +3,13 @@ package com.team2169.robot.auto.modes;
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
 
-public class DriveForwardAuto extends AutoMode {
+public class DoNothing extends AutoMode {
 
-    public DriveForwardAuto() {
+    public DoNothing() {
 
-		RobotStates.runningMode = RunningMode.AUTO;
-		this.autoName = "Drive Forward";
-		addSequential(new OpenLoopDriveForward(), 5);
+    	this.autoName = "FAILURE AUTO";
+        RobotStates.runningMode = RunningMode.AUTO;
+        // This is where you put tasks
 
     }
 

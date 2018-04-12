@@ -13,7 +13,7 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
 
-public class ScaleCloseAuto extends AutoMode {
+public class OneBlockScaleCloseAuto extends AutoMode {
 /*
 
 	
@@ -36,7 +36,7 @@ public class ScaleCloseAuto extends AutoMode {
 +----+
 	 
 */
-    public ScaleCloseAuto(RobotSide side) {
+    public OneBlockScaleCloseAuto(RobotSide side) {
 
     	RobotStates.runningMode = RunningMode.AUTO;
     	this.autoName = "Scale Close on " + side.name() + " side.";
