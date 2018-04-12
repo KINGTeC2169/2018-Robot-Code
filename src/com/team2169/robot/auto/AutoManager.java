@@ -207,7 +207,29 @@ public class AutoManager {
 					if (doScale) {
 						// We have the scale and we have clearance to use it
 						if (interpreter.scalePos == Possesion.CLOSE && yield != Yield.ALL_SCALE) {
+							
+							// Check if drivers have asked for a switch-scale auto
+							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
+									|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+								
+								//If they have, set priority to the backup
+								if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
+									sidePriority = SidePriority.ONE_SCALE;
+								} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+									sidePriority = SidePriority.TWO_SCALE;
+								}
+							}
+							
+							// Check if priority is One Block Scale auto, and run that.
+							if (sidePriority == SidePriority.ONE_SCALE) {
+								auto = new OneBlockScaleCloseAuto(position);
+							}
 
+							// Check if priority is Two Block Scale auto, and run that.
+							else if (sidePriority == SidePriority.TWO_SCALE) {
+								auto = new TwoBlockScaleCloseAuto(position);
+							}
+						
 						}
 
 						// We don't have the scale but we still have clearance to use it
@@ -217,7 +239,6 @@ public class AutoManager {
 							// Check if drivers have asked for a switch-scale auto
 							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
 									|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-
 								// Run a SwitchScaleFar
 								auto = new SwitchScaleFarAuto(position);
 							}
