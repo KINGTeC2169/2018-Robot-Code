@@ -110,6 +110,12 @@ public class RobotStates {
 
     }
     
+	public static enum ElevatorDirection {
+		UP, DOWN
+	}
+	
+	public static ElevatorDirection elevatorDirection;
+    
     public enum HookState{
     	EXTEND, RETRACT, IDLE
     }

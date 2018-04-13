@@ -3,8 +3,10 @@ package com.team2169.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
+import com.team2169.robot.RobotStates.ElevatorDirection;
 import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.RobotStates.RunningMode;
+import com.team2169.util.Converter;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -62,7 +64,7 @@ public class Elevator {
 		case GROUND:
 
 			// Move Elevator To Position
-			setPIDPos(0);
+			setPIDPos(Macro.GROUND);
 			elevatorToPos(Constants.groundElevatorEncoderPosition);
 
 			// Set RobotStates
@@ -72,7 +74,7 @@ public class Elevator {
 		case SCALE_HIGH:
 
 			// Move Elevator To Position
-			setPIDPos(4);
+			setPIDPos(Macro.SCALE_HIGH);
 			elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
 
 			// Set Robot States
@@ -82,7 +84,7 @@ public class Elevator {
 		case SCALE_MID:
 
 			// Move Elevator To Position
-			setPIDPos(3);
+			setPIDPos(Macro.SCALE_MID);
 			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
 
 			// Set Robot States
@@ -92,7 +94,7 @@ public class Elevator {
 		case SCALE_LOW:
 
 			// Move Elevator To Position
-			setPIDPos(2);
+			setPIDPos(Macro.SCALE_LOW);
 			elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
 
 			// Set Robot States
@@ -102,7 +104,7 @@ public class Elevator {
 		case SWITCH:
 
 			// Move Elevator To Position
-			setPIDPos(1);
+			setPIDPos(Macro.SWITCH);
 			elevatorToPos(Constants.switchElevatorEncoderPosition);
 
 			// Set Robot States
@@ -116,14 +118,17 @@ public class Elevator {
 	}
 
 	//Variable PID Setter
-	private void setPIDPos(int pos) {
+	private void setPIDPos(Macro macro) {
+		// Going Down
+		
+		int pos = Converter.macroToInt(macro);
 		
 		if (heightPos > pos) {
-			setPID(0);
+			setPID(ElevatorDirection.DOWN);
 		}
 		// Going Up
 		else if (heightPos < pos) {
-			setPID(1);
+			setPID(ElevatorDirection.UP);
 		}
 		
 		heightPos = pos;
@@ -176,24 +181,24 @@ public class Elevator {
 	}
 
 	//Elevator PID Setter
-	private void setPID(int direction) {
+	private void setPID(ElevatorDirection direction) {
 
 		// Going Down
-		if (direction == 0) {
+		if (direction == ElevatorDirection.DOWN) {
 			elevator.config_kP(0, Constants.elevatorDownData.p, 10);
 			elevator.config_kI(0, Constants.elevatorDownData.i, 10);
 			elevator.config_kD(0, Constants.elevatorDownData.d, 10);
 			elevator.config_kF(0, Constants.elevatorDownData.f, 10);
-			SmartDashboard.putString("Direction", "Going Down");
+			RobotStates.elevatorDirection = ElevatorDirection.DOWN;
 		}
 
 		// Going Up
-		else if (direction == 1) {
-			elevator.config_kP(0, .35, 10);
-			elevator.config_kI(0, 0, 10);
-			elevator.config_kD(0, .15, 10);
-			elevator.config_kF(0, .015, 10);
-			SmartDashboard.putString("Direction", "Going Up");
+		else if (direction == ElevatorDirection.UP) {
+			elevator.config_kP(0, Constants.elevatorUpData.p, 10);
+			elevator.config_kI(0, Constants.elevatorUpData.i, 10);
+			elevator.config_kD(0, Constants.elevatorUpData.d, 10);
+			elevator.config_kF(0, Constants.elevatorUpData.f, 10);
+			RobotStates.elevatorDirection = ElevatorDirection.UP;
 		}
 	}
 	
@@ -207,6 +212,16 @@ public class Elevator {
 		elevator.set(ControlMode.PercentOutput, 0);
 	}
 	
+	public void pushToDashboard() {
+
+		SmartDashboard.putBoolean("Top Limit", topLimit.get());
+		SmartDashboard.putBoolean("Bottom Limit", bottomLimit.get());
+		SmartDashboard.putString("Elevator State", RobotWantedStates.wantedElevatorPos.name());
+		SmartDashboard.putString("Elevator Direction", RobotStates.elevatorDirection.name());
+		SmartDashboard.putNumber("Elevator Error", elevator.getClosedLoopError(0));
+		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorUpData.slotIDx));
+	}
+
 	public TalonSRX prepElevatorTalon(TalonSRX talon) {
 		
 		talon.configPeakCurrentLimit(30, Constants.elevatorUpData.timeoutMs);
@@ -219,15 +234,4 @@ public class Elevator {
 		return talon;
 		
 	}
-
-	
-	public void pushToDashboard() {
-
-		SmartDashboard.putBoolean("Top Limit", topLimit.get());
-		SmartDashboard.putBoolean("Bottom Limit", bottomLimit.get());
-		SmartDashboard.putString("Elevator State", RobotWantedStates.wantedElevatorPos.name());
-		SmartDashboard.putNumber("Elevator Error", elevator.getClosedLoopError(0));
-		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorUpData.slotIDx));
-	}
-
 }

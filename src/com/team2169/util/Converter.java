@@ -1,6 +1,7 @@
 package com.team2169.util;
 
 import com.team2169.robot.Constants;
+import com.team2169.robot.RobotStates.Macro;
 
 public class Converter {
 
@@ -38,6 +39,25 @@ public class Converter {
         double val = (feet * 12 * .5 * Constants.ticksPerRotation) / (drumDiameterIN * Math.PI);
         return (int) Math.round(val);
 
+    }
+    
+    public static int macroToInt(Macro macro) {
+    	switch(macro) {
+		case GROUND:
+		default:
+			return 0;
+		case SWITCH:
+			return 1;
+		case SCALE_LOW:
+			return 2;
+		case SCALE_MID:
+			return 3;
+		case SCALE_HIGH:
+			return 4;
+
+		
+    	
+    	}
     }
 
 }
