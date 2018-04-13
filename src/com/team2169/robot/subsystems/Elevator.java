@@ -41,76 +41,54 @@ public class Elevator {
 		getLimits();
 		
 		switch (RobotWantedStates.wantedElevatorPos) {
-
 		case OVERRIDE:
 		default:
-			
 			//Follow Driver's Manual Controls
 			elevatorManual(ControlMap.getOperatorStickValue());
-
 			// Set RobotStates
 			RobotStates.elevatorPos = Macro.OVERRIDE;
 			break;
-
 		case HOLD_POSITION:
-
 			// Hold Elevator In Position
 			holdInPosition();
-
 			// Set RobotStates
 			RobotStates.elevatorPos = Macro.HOLD_POSITION;
 			break;
-
 		case GROUND:
-
 			// Move Elevator To Position
 			setPIDPos(Macro.GROUND);
 			elevatorToPos(Constants.groundElevatorEncoderPosition);
-
 			// Set RobotStates
 			RobotStates.elevatorPos = Macro.GROUND;
 			break;
-
 		case SCALE_HIGH:
-
 			// Move Elevator To Position
 			setPIDPos(Macro.SCALE_HIGH);
 			elevatorToPos(Constants.scaleHighElevatorEncoderPosition);
-
 			// Set Robot States
 			RobotStates.elevatorPos = Macro.SCALE_HIGH;
 			break;
-
 		case SCALE_MID:
-
 			// Move Elevator To Position
 			setPIDPos(Macro.SCALE_MID);
 			elevatorToPos(Constants.scaleMidElevatorEncoderPosition);
-
 			// Set Robot States
 			RobotStates.elevatorPos = Macro.SCALE_MID;
 			break;
-
 		case SCALE_LOW:
-
 			// Move Elevator To Position
 			setPIDPos(Macro.SCALE_LOW);
 			elevatorToPos(Constants.scaleLowElevatorEncoderPosition);
-
 			// Set Robot States
 			RobotStates.elevatorPos = Macro.SCALE_LOW;
 			break;
-
 		case SWITCH:
-
 			// Move Elevator To Position
 			setPIDPos(Macro.SWITCH);
 			elevatorToPos(Constants.switchElevatorEncoderPosition);
-
 			// Set Robot States
 			RobotStates.elevatorPos = Macro.SWITCH;
 			break;
-
 		case PASS:
 			break;
 

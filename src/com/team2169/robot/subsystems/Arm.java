@@ -11,6 +11,7 @@ import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 	
@@ -35,15 +36,7 @@ public class Arm {
 		
 		// Define Lift Talons
 		arm = new TalonSRX(ActuatorMap.armID);
-		
-		// Pull Constants Data for Arm
-		Constants.setArmDataFromConstants();
-
-		// Apply Talon Settings
-		arm = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
-		arm.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
-		arm.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);
-		arm.setNeutralMode(NeutralMode.Brake);
+		arm = prepArmTalon(arm);
 
 	}
 
@@ -87,15 +80,24 @@ public class Arm {
 	}
 	
 	public void pushToDashboard() {
-
-	}
-	
-	public void zeroSensors() {
-		
+		SmartDashboard.putNumber("Arm Position", arm.getSelectedSensorPosition(0));
+		SmartDashboard.putString("Arm State", RobotWantedStates.wantedArmPos.name());
 	}
 
 	public void stop() {
 		arm.set(ControlMode.PercentOutput, 0);
+	}
+	
+	public TalonSRX prepArmTalon(TalonSRX talon) {
+		
+		Constants.setArmDataFromConstants();
+		// Apply Talon Settings
+		talon = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
+		talon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
+		talon.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);
+		talon.setNeutralMode(NeutralMode.Brake);
+		return talon;
+		
 	}
 
 }

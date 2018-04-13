@@ -48,7 +48,6 @@ public class ElevatorArm extends Subsystem {
     public void zeroSensors() {
 
         elevator.zeroSensors();
-        arm.zeroSensors();
 
     }
 
