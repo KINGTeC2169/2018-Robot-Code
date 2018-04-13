@@ -22,25 +22,13 @@ public class Elevator {
 		// Define Lift Talons
 		elevator = new TalonSRX(ActuatorMap.elevatorMasterID);
 		TalonSRX elevatorSlave = new TalonSRX(ActuatorMap.elevatorSlaveID);
+		
+		//Configure Talons
+		elevator = prepElevatorTalon(elevator);
+		elevatorSlave = prepElevatorTalon(elevatorSlave);
 		elevatorSlave.set(ControlMode.Follower, ActuatorMap.elevatorMasterID);
-		elevator.configPeakCurrentLimit(30, Constants.elevatorUpData.timeoutMs);
-		elevatorSlave.configPeakCurrentLimit(30, Constants.elevatorUpData.timeoutMs);
-		elevator.configAllowableClosedloopError(Constants.elevatorUpData.slotIDx, Constants.elevatorUpData.allowedError,
-				Constants.elevatorUpData.timeoutMs);
-		elevatorSlave.configAllowableClosedloopError(Constants.elevatorUpData.slotIDx,
-				Constants.elevatorUpData.allowedError, Constants.elevatorUpData.timeoutMs);
-		elevator.configPeakCurrentLimit(35, Constants.elevatorUpData.timeoutMs);
-		elevatorSlave.configPeakCurrentLimit(35, Constants.elevatorUpData.timeoutMs);
-		elevator.configPeakCurrentDuration(500, Constants.elevatorUpData.timeoutMs);
-		elevatorSlave.configPeakCurrentDuration(500, Constants.elevatorUpData.timeoutMs);
 
-		elevator.setSensorPhase(false);
-
-		elevator.configPeakOutputForward(.5, 10);
-		elevator.configPeakOutputReverse(-.5, 10);
-		elevator.configClosedloopRamp(.75, 10);
-		elevatorSlave.configClosedloopRamp(.75, 10);
-
+		//Create Limit Switches
 		topLimit = new DigitalInput(ActuatorMap.elevatorTopLimitID);
 		bottomLimit = new DigitalInput(ActuatorMap.elevatorBottomLimitID);
 
@@ -217,6 +205,19 @@ public class Elevator {
 	//Stop Elevator
 	public void stop() {
 		elevator.set(ControlMode.PercentOutput, 0);
+	}
+	
+	public TalonSRX prepElevatorTalon(TalonSRX talon) {
+		
+		talon.configPeakCurrentLimit(30, Constants.elevatorUpData.timeoutMs);
+		talon.configAllowableClosedloopError(Constants.elevatorUpData.slotIDx, Constants.elevatorUpData.allowedError,
+				Constants.elevatorUpData.timeoutMs);
+		talon.configPeakCurrentLimit(35, Constants.elevatorUpData.timeoutMs);
+		talon.configPeakCurrentDuration(500, Constants.elevatorUpData.timeoutMs);
+		talon.setSensorPhase(false);
+		talon.configClosedloopRamp(Constants.elevatorRampRate, 10);
+		return talon;
+		
 	}
 
 	
