@@ -1,7 +1,6 @@
 package com.team2169.robot.subsystems;
 
 import com.team2169.robot.RobotStates;
-import com.team2169.util.DebugPrinter;
 
 public class ElevatorArm extends Subsystem {
 
@@ -25,9 +24,6 @@ public class ElevatorArm extends Subsystem {
 
         RobotStates.elevatorInPosition = false;
 
-        // Calulcate Latest Macro Positions
-        // Constants.calculateMacros();
-
     }
 
     void elevatorArmHandler() {
@@ -38,20 +34,14 @@ public class ElevatorArm extends Subsystem {
         // Elevator Handler
         elevator.elevatorMacroLooper();
 
-        //pushToDashboard();
-
     }
 
     @Override
     public void pushToDashboard() {
 
         arm.pushToDashboard();
-
-        if (RobotStates.debugMode) {
-            DebugPrinter.armDebug();
-            DebugPrinter.elevatorDebug();
-        }
-
+        elevator.pushToDashboard();
+        
     }
 
     @Override

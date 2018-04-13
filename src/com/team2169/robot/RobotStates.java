@@ -37,7 +37,7 @@ public class RobotStates {
     // DriveMode Handler
     public enum DriveMode {
 
-        LOW, HIGH, SHIFT_TO_LOW, SHIFT_TO_HIGH
+        LOW, HIGH
 
     }
 
@@ -47,7 +47,7 @@ public class RobotStates {
     // DriveOverride Handler
     public enum DriveType {
 
-        IDLE, WANTS_TO_HANG, WANTS_TO_DRIVE, OVERRIDE_DRIVING, HANG, NORMAL_DRIVING, EXTERNAL_DRIVING
+        OVERRIDE_DRIVING, NORMAL_DRIVING, EXTERNAL_DRIVING, HANG
 
     }
 
@@ -55,8 +55,6 @@ public class RobotStates {
 
     public static boolean canCycleMode;
 
-    // Gyro angle
-    public static double gyroAngle;
 
     // Intake Mode Handler
     public enum IntakeMode {
@@ -108,7 +106,7 @@ public class RobotStates {
     // Elevator Position Handler
     public enum Macro {
 
-        HANG, SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION, PASS
+        SCALE_HIGH, SCALE_MID, SCALE_LOW, SWITCH, GROUND, OVERRIDE, HOLD_POSITION, PASS
 
     }
     
@@ -131,6 +129,8 @@ public class RobotStates {
 
     public static Waypoint[] currentPath;
     public static boolean reverseCurrentPath;
+
+	public static boolean driveTrainOverride;
 
 
 }

@@ -21,20 +21,18 @@ public class Superstructure {
         return sInstance;
     }
 
-    public static DriveTrain drive;
+    public DriveTrain drive;
     private Intake intake;
-    private Platform platform;
     private ElevatorArm liftArm;
     private Compressor comp;
     private Climber climber;
 
     public Superstructure() {
 
+    	comp = new Compressor(ActuatorMap.PCMPort);
         drive = DriveTrain.getInstance();
         intake = Intake.getInstance();
-        platform = Platform.getInstance();
         liftArm = ElevatorArm.getInstance();
-        comp = new Compressor(ActuatorMap.PCMPort);
         climber = new Climber();
 
     }
@@ -66,29 +64,23 @@ public class Superstructure {
     }
 
     public void subsystemLooper() {
-        drive.pushToDashboard();
+    	
         drive.driveHandler();
-        // platform.platformHandler();
         intake.intakeHandler();
         liftArm.elevatorArmHandler();
-        //DebugPrinter.elevatorDebug();
-        drive.pushToDashboard();
         climber.climberHandler();
 
     }
 
     public void zeroAllSensors() {
-        drive.resetForPath();
         drive.zeroSensors();
         intake.zeroSensors();
-        platform.zeroSensors();
         liftArm.zeroSensors();
 
     }
 
     public void stop() {
         drive.stop();
-        platform.stop();
         liftArm.stop();
         intake.stop();
     }

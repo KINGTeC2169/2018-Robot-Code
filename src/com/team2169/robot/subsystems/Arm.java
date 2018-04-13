@@ -13,9 +13,7 @@ import com.team2169.util.TalonMaker;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Arm {
-
-	Timer timer;
-
+	
 	private static Arm aInstance = null;
 
 	public static Arm getInstance() {
@@ -28,12 +26,16 @@ public class Arm {
 	// Create Talons
 	public TalonSRX arm;
 	public int lastPosition;
+	Timer timer;
 
 	public Arm() {
 
+		//Create Talon
 		timer = new Timer();
+		
 		// Define Lift Talons
 		arm = new TalonSRX(ActuatorMap.armID);
+		
 		// Pull Constants Data for Arm
 		Constants.setArmDataFromConstants();
 
@@ -80,18 +82,16 @@ public class Arm {
 
 	}
 
-	public void pushToDashboard() {
-
-	}
-
 	private void armSetOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.PercentOutput, joystickValue);
 	}
+	
+	public void pushToDashboard() {
 
-
+	}
 	
 	public void zeroSensors() {
-		arm.setSelectedSensorPosition(0, Constants.armData.slotIDx, Constants.armData.timeoutMs);
+		
 	}
 
 	public void stop() {

@@ -9,6 +9,7 @@ import com.team2169.robot.auto.AutoConstants;
 import com.team2169.util.DebugPrinter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Subsystem {
 
@@ -24,6 +25,7 @@ public class Intake extends Subsystem {
     private TalonSRX left;
     private TalonSRX right;
     private DoubleSolenoid clampSolenoid;
+    private boolean lastIntook = false;
 
     private Intake() {
 
@@ -40,6 +42,10 @@ public class Intake extends Subsystem {
     void intakeHandler() {
 
         // Handle Intake State
+    	
+    	SmartDashboard.putNumber("Intake Left Current", left.getOutputCurrent());
+    	SmartDashboard.putNumber("Intake Right Current", right.getOutputCurrent());
+    	
         switch (RobotWantedStates.wantedIntakeMode) {
         
             case IDLE:
@@ -54,14 +60,25 @@ public class Intake extends Subsystem {
             case MANUAL:
             	
             	//If the intake is being actively controlled, follow driver's instructions
-            	if(Math.abs(ControlMap.intakeAmount()) >= .2){
+
+            	if(Math.abs(ControlMap.intakeAmount()) >= ControlMap.operatorDeadband){
             		intakeManual(ControlMap.intakeAmount());
             	}
-            	
-            	//Otherwise, provide 2v of negative power to hold in block
-            	else {
-            		intakeManual(-(20/12));
+            	else if(lastIntook) {
+            		intakeManual(Constants.intakeHoldVoltage/12.0);
             	}
+            	else {
+            		intakeManual(0);
+            	}
+            	
+            	if(ControlMap.intakeAmount() >= ControlMap.operatorDeadband) {
+            		lastIntook = true;
+            	}
+            	else if(ControlMap.intakeAmount() <= -ControlMap.operatorDeadband) {
+            		lastIntook = false;
+            	}
+            	//Otherwise, provide 2v of negative power to hold in block
+
             	
             	break;
             	
@@ -97,6 +114,7 @@ public class Intake extends Subsystem {
 
                 clampSolenoid.set(Value.kForward);
                 RobotStates.intakeClamp = IntakeClamp.OPEN;
+                lastIntook = false;
                 break;
 
         }

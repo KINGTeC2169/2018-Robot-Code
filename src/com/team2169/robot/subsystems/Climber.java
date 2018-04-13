@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.ActuatorMap;
+import com.team2169.robot.Constants;
 import com.team2169.robot.ControlMap;
 import com.team2169.robot.RobotStates.HookState;
 import com.team2169.robot.RobotWantedStates;
@@ -13,20 +14,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Climber extends Subsystem {
 
     private static Climber hInstance = null;
-    TalonSRX release;
-
     public static Climber getInstance() {
         if (hInstance == null) {
             hInstance = new Climber();
         }
         return hInstance;
     }
+    
+    TalonSRX release;
 
     public Climber() {
     	
     	release = new TalonSRX(ActuatorMap.hookDeplyID);
-    	release.configPeakOutputForward(1, 10);
-    	release.configPeakOutputReverse(-1, 10);
     	release.setNeutralMode(NeutralMode.Brake);
         RobotWantedStates.climberRelease = false;
     }
@@ -35,15 +34,13 @@ public class Climber extends Subsystem {
 
         ControlMap.getWantedHookRelease();
         
-        //release.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false));
-        SmartDashboard.putNumber("Hook Encoder Amount", release.getSelectedSensorPosition(0));
-        
         if(RobotWantedStates.hookRelease == HookState.EXTEND) {
-        	release.set(ControlMode.PercentOutput, .5);
+        	release.set(ControlMode.PercentOutput, Constants.hookDeploySpeed);
+        	RobotWantedStates.climberRelease = true;
         }
         else if(RobotWantedStates.hookRelease == HookState.RETRACT) {
-        	System.out.println("SENDING PACKET!!!!!!!!!11");
-        	release.set(ControlMode.PercentOutput, -.5);
+        	release.set(ControlMode.PercentOutput, -Constants.hookDeploySpeed);
+        	RobotWantedStates.climberRelease = false;
         }
         else {
         	release.set(ControlMode.PercentOutput, 0);
@@ -53,7 +50,7 @@ public class Climber extends Subsystem {
 
     @Override
     public void pushToDashboard() {
-
+        SmartDashboard.putNumber("Hook Encoder Amount", release.getSelectedSensorPosition(0));
     }
 
     @Override

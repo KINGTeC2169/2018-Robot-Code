@@ -6,7 +6,6 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class OpenLoopDrive extends Task {
 
@@ -26,10 +25,6 @@ public class OpenLoopDrive extends Task {
 
     protected void execute() {
 
-        double leftOutput = 1;
-        double rightOutput = 1;
-        SmartDashboard.putNumber("Left Output", leftOutput);
-        SmartDashboard.putNumber("Right Output", rightOutput);
         drive.left.set(ControlMode.PercentOutput, -.5);
         drive.right.set(ControlMode.PercentOutput, -.5);
 
