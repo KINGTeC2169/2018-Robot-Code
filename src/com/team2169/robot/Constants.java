@@ -79,15 +79,15 @@ public class Constants {
 			elevatorUpData.encoderType = FeedbackDevice.CTRE_MagEncoder_Relative;
 			elevatorUpData.sensorPhase = false;
 			
-			elevatorUpData.p = .35;
+			elevatorUpData.p = .15;
 			elevatorUpData.i = 0;
-			elevatorUpData.d = .15;
-			elevatorUpData.f = .015;
+			elevatorUpData.d = .25;
+			elevatorUpData.f = .005;
 			
-			elevatorDownData.p = .15;
+			elevatorDownData.p = .35;
 			elevatorDownData.i = 0;
-			elevatorDownData.d = .25;
-			elevatorDownData.f = .005;
+			elevatorDownData.d = .15;
+			elevatorDownData.f = .015;
 
 		}
 

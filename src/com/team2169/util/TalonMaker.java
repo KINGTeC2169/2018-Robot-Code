@@ -23,7 +23,7 @@ public class TalonMaker {
 
     }
 
-    public static TalonSRX prepTalonForMotionProfiling(TalonSRX talon_, TalonConfig config) {
+    public static TalonSRX prepTalon(TalonSRX talon_, TalonConfig config) {
 
         // Elevator Height Configuration
         /* first choose the sensor */

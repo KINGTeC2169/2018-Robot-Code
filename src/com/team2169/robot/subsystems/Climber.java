@@ -60,7 +60,7 @@ public class Climber extends Subsystem {
 
     @Override
     public void stop() {
-
+    	release.set(ControlMode.PercentOutput, 0);
     }
 
 }

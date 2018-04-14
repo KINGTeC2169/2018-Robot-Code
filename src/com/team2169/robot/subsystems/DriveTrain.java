@@ -51,8 +51,8 @@ public class DriveTrain extends Subsystem {
 		rightTop = new TalonSRX(ActuatorMap.rightTop);
 
 		// Configure Mag Encoders
-		left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+		right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		
 		//Configure Frame Periods for faster response time
 		left.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);

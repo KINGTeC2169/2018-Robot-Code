@@ -33,6 +33,10 @@ public class Elevator {
 		//Create Limit Switches
 		topLimit = new DigitalInput(ActuatorMap.elevatorTopLimitID);
 		bottomLimit = new DigitalInput(ActuatorMap.elevatorBottomLimitID);
+		
+		//Set Initial States
+		RobotStates.elevatorDirection = ElevatorDirection.UP;
+		setPID(ElevatorDirection.UP);
 
 	}
 
@@ -161,6 +165,8 @@ public class Elevator {
 	//Elevator PID Setter
 	private void setPID(ElevatorDirection direction) {
 
+		System.out.println("Setting PID");
+		
 		// Going Down
 		if (direction == ElevatorDirection.DOWN) {
 			elevator.config_kP(0, Constants.elevatorDownData.p, 10);

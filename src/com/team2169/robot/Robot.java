@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
 		if (auto != null) {
 			auto.endAuto();
 		}
-
+		System.out.println("Starting Tele");
 		Scheduler.getInstance().removeAll();
 		RobotStates.armPos = ArmPos.IDLE;
 		RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
 			DriverStation.reportError(e.toString(), true);
 		}
 		
-
+		System.out.println("Tele Loop");
 		superStructure.subsystemLooper();
 
 	}

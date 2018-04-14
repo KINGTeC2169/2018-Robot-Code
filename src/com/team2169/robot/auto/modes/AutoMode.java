@@ -10,10 +10,10 @@ public abstract class AutoMode extends CommandGroup {
 
     public abstract void smartDashPush();
     
-    public String autoName;
+    public String autoName = "null";
     
     public void printName() {
-    	SmartDashboard.putString("Running Auto", autoName);
+    	SmartDashboard.putString("Running Auto", this.autoName);
     	DriverStation.reportError("Game Message: " + DriverStation.getInstance().getGameSpecificMessage(), false);
     }
 

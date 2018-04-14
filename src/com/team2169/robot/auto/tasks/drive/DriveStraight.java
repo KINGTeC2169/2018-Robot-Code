@@ -52,10 +52,18 @@ public class DriveStraight extends Task {
 
     protected void execute() {
     	
-        double leftOutput = -(speed - getAngleCorrection()) * directionFactor;
-        double rightOutput = -(speed + getAngleCorrection()) * directionFactor;
-        drive.left.set(ControlMode.PercentOutput, leftOutput);
-        drive.right.set(ControlMode.PercentOutput, rightOutput);
+    	if(i > 5) {
+    		double leftOutput = -(speed - getAngleCorrection()) * directionFactor;
+            double rightOutput = -(speed + getAngleCorrection()) * directionFactor;
+            drive.left.set(ControlMode.PercentOutput, leftOutput);
+            drive.right.set(ControlMode.PercentOutput, rightOutput);
+            SmartDashboard.putNumber("Left Drive Error", drive.left.getSelectedSensorPosition(0) - desiredEncoderTicks);
+            SmartDashboard.putNumber("Right Drive Error", drive.right.getSelectedSensorPosition(0) - desiredEncoderTicks);
+    	}
+    	else {
+    		i++;
+    	}
+        
 
     }
 

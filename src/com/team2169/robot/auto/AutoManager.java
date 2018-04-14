@@ -105,8 +105,8 @@ public class AutoManager {
 
 		SmartDashboard.putData("Mode Selector", modeChooser);
 		SmartDashboard.putData("Field Position Selector", positionChooser);
-		SmartDashboard.putData("Auto Mode Selector", preferenceChooser);
-		SmartDashboard.putData("Preference Chooser", yieldChooser);
+		SmartDashboard.putData("Preference Selector", preferenceChooser);
+		SmartDashboard.putData("Yield Chooser", yieldChooser);
 		SmartDashboard.putData("Center Priority Chooser", centerPriorityChooser);
 		SmartDashboard.putData("Side Priority Chooser", sidePriorityChooser);
 		SmartDashboard.putData("Do Switch on Drive Forward", doSwitchChooser);
@@ -171,6 +171,7 @@ public class AutoManager {
 			auto = new DoNothing();
 		} else if (autoMode == AutoSequenceMode.NORMAL) {
 
+			System.out.println("Running a Normal Auto");
 			// Run Center Autos
 			if (position == RobotSide.CENTER) {
 				if (centPriority == CenterPriority.ONE_BLOCK) {
@@ -184,6 +185,8 @@ public class AutoManager {
 
 			// Run Side Autos
 			else {
+
+				System.out.println("Position is On The Side");
 
 				// Switch Autos
 				if (preference == Preference.SWITCH) {
@@ -199,29 +202,101 @@ public class AutoManager {
 						}
 
 					}
-				}
-				// We don't have the switch
-				else if (interpreter.nearSwitchPos == Possesion.FAR) {
-					// Check the yield to see if we can access the scale and check if we have the
-					// scale
-					if (doScale) {
-						// We have the scale and we have clearance to use it
-						if (interpreter.scalePos == Possesion.CLOSE && yield != Yield.ALL_SCALE) {
+					// We don't have the switch
+					else if (interpreter.nearSwitchPos == Possesion.FAR) {
+						// Check the yield to see if we can access the scale and check if we have the
+						// scale
+						if (doScale) {
+							// We have the scale and we have clearance to use it
+							if (interpreter.scalePos == Possesion.CLOSE && yield != Yield.ALL_SCALE) {
 
+								// Check if drivers have asked for a switch-scale auto
+								if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
+										|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+
+									// If they have, set priority to the backup
+									if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
+										sidePriority = SidePriority.ONE_SCALE;
+									} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+										sidePriority = SidePriority.TWO_SCALE;
+									}
+								}
+
+								// Check if priority is One Block Scale auto, and run that.
+								if (sidePriority == SidePriority.ONE_SCALE) {
+									auto = new OneBlockScaleCloseAuto(position);
+								}
+
+								// Check if priority is Two Block Scale auto, and run that.
+								else if (sidePriority == SidePriority.TWO_SCALE) {
+									auto = new TwoBlockScaleCloseAuto(position);
+								}
+
+							}
+
+							// We don't have the scale but we still have clearance to use it
+							// Run Far Scale autos
+							else if (interpreter.scalePos == Possesion.FAR && yield == Yield.NONE) {
+
+								// Check if drivers have asked for a switch-scale auto
+								if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
+										|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+									// Run a SwitchScaleFar
+									auto = new SwitchScaleFarAuto(position);
+								}
+
+								// Check if priority is One Block Scale auto, and run that.
+								else if (sidePriority == SidePriority.ONE_SCALE) {
+									auto = new OneBlockScaleFarAuto(position);
+								}
+
+								// Check if priority is Two Block Scale auto, and run that.
+								else if (sidePriority == SidePriority.TWO_SCALE) {
+									auto = new TwoBlockScaleFarAuto(position);
+								}
+
+							}
+
+						}
+					} else {
+						// We are yielded against using the scale, and we don't have the switch. Drive
+						// forward.
+						auto = new DriveForwardAuto();
+					}
+				}
+
+				// Scale Autos
+				else if (preference == Preference.SCALE) {
+					System.out.println("Scale is Perferred");
+					// Close Scale Handler
+					if (interpreter.scalePos == Possesion.CLOSE) {
+						System.out.println("Scale is Close");
+						// Check who we are yielding to, if we have access to the scale, carry on.
+						if (yield == Yield.FAR_SCALE || yield == Yield.NONE) {
+							System.out.println("No Yield");
 							// Check if drivers have asked for a switch-scale auto
 							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
 									|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+								System.out.println("Drivers Want SwitchScale Auto");
+								// Check if we have the opportunity to run a switch-scale
+								if (interpreter.nearSwitchPos == Possesion.CLOSE) {
+									// If we can, set that as our auto
+									auto = new SwitchScaleCloseAuto(position);
+								}
 
-								// If they have, set priority to the backup
-								if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
-									sidePriority = SidePriority.ONE_SCALE;
-								} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-									sidePriority = SidePriority.TWO_SCALE;
+								// We can't run a switch scale auto, so set the priority to the backup plan
+								else {
+									if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
+										sidePriority = SidePriority.ONE_SCALE;
+									} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+										sidePriority = SidePriority.TWO_SCALE;
+									}
 								}
 							}
 
 							// Check if priority is One Block Scale auto, and run that.
 							if (sidePriority == SidePriority.ONE_SCALE) {
+								System.out.println("Running OneBlockScaleAutoClose");
 								auto = new OneBlockScaleCloseAuto(position);
 							}
 
@@ -230,21 +305,49 @@ public class AutoManager {
 								auto = new TwoBlockScaleCloseAuto(position);
 							}
 
+							else {
+								auto = new FailureAuto();
+							}
 						}
 
-						// We don't have the scale but we still have clearance to use it
-						// Run Far Scale autos
-						else if (interpreter.scalePos == Possesion.FAR && yield == Yield.NONE) {
+						// We have yields preventing us from using the scale
+						else if (yield == Yield.ALL_SCALE) {
+							// Check if we can/should drop it in the switch
+							if (doSwitch && interpreter.nearSwitchPos == Possesion.CLOSE) {
+								auto = new SwitchCloseAuto(position);
+							}
+							// We don't want to drop it in, drive forward.
+							else {
+								auto = new DriveForwardAuto();
+							}
+						}
+					}
 
+					// Far Scale Handler
+					else if (interpreter.scalePos == Possesion.FAR) {
+						// Check who we are yielding to, if we have access to the scale, carry on.
+						if (yield == Yield.NONE) {
 							// Check if drivers have asked for a switch-scale auto
 							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
 									|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-								// Run a SwitchScaleFar
-								auto = new SwitchScaleFarAuto(position);
+								// Check if we have the opportunity to run a switch-scale
+								if (interpreter.nearSwitchPos == Possesion.FAR) {
+									// If we can, set that as our auto
+									auto = new SwitchScaleFarAuto(position);
+								}
+
+								// We can't run a switch scale auto, so set the priority to the backup plan
+								else {
+									if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
+										sidePriority = SidePriority.ONE_SCALE;
+									} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
+										sidePriority = SidePriority.TWO_SCALE;
+									}
+								}
 							}
 
 							// Check if priority is One Block Scale auto, and run that.
-							else if (sidePriority == SidePriority.ONE_SCALE) {
+							if (sidePriority == SidePriority.ONE_SCALE) {
 								auto = new OneBlockScaleFarAuto(position);
 							}
 
@@ -252,112 +355,22 @@ public class AutoManager {
 							else if (sidePriority == SidePriority.TWO_SCALE) {
 								auto = new TwoBlockScaleFarAuto(position);
 							}
-
 						}
 
+						// We have yields preventing us from using the scale
+						else if (yield == Yield.FAR_SCALE || yield == Yield.ALL_SCALE) {
+							// Check if we can/should drop it in the switch
+							if (doSwitch && interpreter.nearSwitchPos == Possesion.CLOSE) {
+								auto = new SwitchCloseAuto(position);
+							}
+							// We don't want to drop it in, drive forward.
+							else {
+								auto = new DriveForwardAuto();
+							}
+						}
 					}
 				} else {
-					// We are yielded against using the scale, and we don't have the switch. Drive
-					// forward.
-					auto = new DriveForwardAuto();
-				}
-			}
-		}
-
-		// Scale Autos
-		else if (preference == Preference.SCALE) {
-
-			// Close Scale Handler
-			if (interpreter.scalePos == Possesion.CLOSE) {
-				// Check who we are yielding to, if we have access to the scale, carry on.
-				if (yield == Yield.FAR_SCALE || yield == Yield.NONE) {
-					// Check if drivers have asked for a switch-scale auto
-					if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
-							|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-						// Check if we have the opportunity to run a switch-scale
-						if (interpreter.nearSwitchPos == Possesion.CLOSE) {
-							// If we can, set that as our auto
-							auto = new SwitchScaleCloseAuto(position);
-						}
-
-						// We can't run a switch scale auto, so set the priority to the backup plan
-						else {
-							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
-								sidePriority = SidePriority.ONE_SCALE;
-							} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-								sidePriority = SidePriority.TWO_SCALE;
-							}
-						}
-					}
-
-					// Check if priority is One Block Scale auto, and run that.
-					if (sidePriority == SidePriority.ONE_SCALE) {
-						auto = new OneBlockScaleCloseAuto(position);
-					}
-
-					// Check if priority is Two Block Scale auto, and run that.
-					else if (sidePriority == SidePriority.TWO_SCALE) {
-						auto = new TwoBlockScaleCloseAuto(position);
-					}
-				}
-
-				// We have yields preventing us from using the scale
-				else if (yield == Yield.ALL_SCALE) {
-					// Check if we can/should drop it in the switch
-					if (doSwitch && interpreter.nearSwitchPos == Possesion.CLOSE) {
-						auto = new SwitchCloseAuto(position);
-					}
-					// We don't want to drop it in, drive forward.
-					else {
-						auto = new DriveForwardAuto();
-					}
-				}
-			}
-
-			// Far Scale Handler
-			else if (interpreter.scalePos == Possesion.FAR) {
-				// Check who we are yielding to, if we have access to the scale, carry on.
-				if (yield == Yield.NONE) {
-					// Check if drivers have asked for a switch-scale auto
-					if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
-							|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-						// Check if we have the opportunity to run a switch-scale
-						if (interpreter.nearSwitchPos == Possesion.FAR) {
-							// If we can, set that as our auto
-							auto = new SwitchScaleFarAuto(position);
-						}
-
-						// We can't run a switch scale auto, so set the priority to the backup plan
-						else {
-							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
-								sidePriority = SidePriority.ONE_SCALE;
-							} else if (sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-								sidePriority = SidePriority.TWO_SCALE;
-							}
-						}
-					}
-
-					// Check if priority is One Block Scale auto, and run that.
-					if (sidePriority == SidePriority.ONE_SCALE) {
-						auto = new OneBlockScaleFarAuto(position);
-					}
-
-					// Check if priority is Two Block Scale auto, and run that.
-					else if (sidePriority == SidePriority.TWO_SCALE) {
-						auto = new TwoBlockScaleFarAuto(position);
-					}
-				}
-
-				// We have yields preventing us from using the scale
-				else if (yield == Yield.FAR_SCALE || yield == Yield.ALL_SCALE) {
-					// Check if we can/should drop it in the switch
-					if (doSwitch && interpreter.nearSwitchPos == Possesion.CLOSE) {
-						auto = new SwitchCloseAuto(position);
-					}
-					// We don't want to drop it in, drive forward.
-					else {
-						auto = new DriveForwardAuto();
-					}
+					auto = new FailureAuto();
 				}
 			}
 		} else {

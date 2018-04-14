@@ -2,6 +2,7 @@ package com.team2169.robot.auto.modes;
 
 import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotStates.RunningMode;
+import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
@@ -20,7 +21,7 @@ public class SelfTest extends AutoMode {
         addParallel(new IntakeOpen());
     	addSequential(new IntakeExhaust(.5, true), 2);
     	addSequential(new DriveStraight(24, .5));
-    	addSequential(new TurnInPlace(30, .25));
+    	addSequential(new TurnInPlace(30, .5, RobotSide.RIGHT));
     	addSequential(new IntakeClampAction());
     }
 

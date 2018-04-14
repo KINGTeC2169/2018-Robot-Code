@@ -92,7 +92,7 @@ public class Arm {
 		
 		Constants.setArmDataFromConstants();
 		// Apply Talon Settings
-		talon = TalonMaker.prepTalonForMotionProfiling(arm, Constants.armData);
+		talon = TalonMaker.prepTalon(arm, Constants.armData);
 		talon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
 		talon.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);
 		talon.setNeutralMode(NeutralMode.Brake);

@@ -1,5 +1,6 @@
 package com.team2169.robot.subsystems;
 
+import com.team2169.robot.Constants;
 import com.team2169.robot.RobotStates;
 
 public class ElevatorArm extends Subsystem {
@@ -23,6 +24,7 @@ public class ElevatorArm extends Subsystem {
         elevator = new Elevator();
 
         RobotStates.elevatorInPosition = false;
+        Constants.setElevatorDataFromConstants();
 
     }
 

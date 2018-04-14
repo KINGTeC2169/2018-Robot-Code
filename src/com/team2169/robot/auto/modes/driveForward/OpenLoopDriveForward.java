@@ -11,6 +11,7 @@ public class OpenLoopDriveForward extends AutoMode {
     public OpenLoopDriveForward() {
 
 		RobotStates.runningMode = RunningMode.AUTO;
+		this.autoName = "Open Loop Drive Forward";
 		addSequential(new DriveStraight(AutoConstants.driveForwardDistance, .5), 5);
 
     }
