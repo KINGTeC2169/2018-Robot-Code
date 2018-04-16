@@ -193,7 +193,7 @@ public class AutoManager {
 					// Check if we have the switch
 					if (interpreter.nearSwitchPos == Possesion.CLOSE) {
 						// Check if we can/should do the scale as well
-						if (doScale && yield != Yield.ALL_SCALE && interpreter.nearSwitchPos == Possesion.CLOSE) {
+						if (doScale && yield != Yield.ALL_SCALE && interpreter.scalePos == Possesion.CLOSE) {
 							auto = new SwitchScaleCloseAuto(position);
 						}
 						// We shouldn't/can't do the scale as well

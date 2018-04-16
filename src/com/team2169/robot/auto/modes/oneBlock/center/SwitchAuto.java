@@ -41,22 +41,30 @@ public class SwitchAuto extends AutoMode {
 
         RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Center Switch Auto on " + side.name() + " side.";
-        boolean inversion = false;
 
-        if(side == ElementSide.RIGHT) {
-        	inversion = true;
-        }
+  
         
-        addParallel(new ArmRetract());
-        addParallel(new ElevatorToSwitch());
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.startToPoint, .5));
-        addSequential(new TurnInPlace(AutoConstants.CenterAutos.OneBlock.pointToSwitchTurn, .5, inversion), 1.5);
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.pointToPoint2, .5));
-        addSequential(new TurnInPlace(-AutoConstants.CenterAutos.OneBlock.pointToSwitchTurn, .5, inversion), 1.5);
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.pointToSwitch, .5));
-        addParallel(new IntakeOpen());
-        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.OneBlock.intakeSpeed, true), 2);
-        
+        if (side == ElementSide.RIGHT){
+	        addParallel(new ArmRetract());
+	        addParallel(new ElevatorToSwitch());
+	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Right.startToPoint, .5));
+	        addSequential(new TurnInPlace(AutoConstants.CenterAutos.OneBlock.Right.pointToSwitchTurn, .5), 1.5);
+	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Right.pointToPoint2, .5));
+	        addSequential(new TurnInPlace(-AutoConstants.CenterAutos.OneBlock.Right.pointToSwitchTurn, .5), 1.5);
+	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Right.pointToSwitch, .5));
+	        addParallel(new IntakeOpen());
+	        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.OneBlock.intakeSpeed, true), 2);
+	    } else if(side == ElementSide.LEFT) {
+	    	addParallel(new ArmRetract());
+	        addParallel(new ElevatorToSwitch());
+	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Left.startToPoint, .5));
+	        addSequential(new TurnInPlace(AutoConstants.CenterAutos.OneBlock.Left.pointToSwitchTurn, .5), 1.5);
+	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Left.pointToPoint2, .5));
+	        addSequential(new TurnInPlace(-AutoConstants.CenterAutos.OneBlock.Left.pointToSwitchTurn, .5), 1.5);
+	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Left.pointToSwitch, .5));
+	        addParallel(new IntakeOpen());
+	        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.OneBlock.intakeSpeed, true), 2);
+	    }
     }
 
     // Put looping checks/code in here

@@ -68,24 +68,32 @@ public class AutoConstants {
 		public static class TwoBlockAutos {
 
 			public static class Close {
-
-				public static class SwitchScale {
-
-				}
-
-				public static class TwoScale {
-
+				public static double startToPoint = 256;
+				public static double pointToScale = 18;
+				public static double pointToScaleTurn = 50;
+				public static double pointToBlockTurn = 100;
+				public static double pointToBlock = 65;
+				public static double intakeSpeed = .3;
+				public static double intakeInSpeed = .5;
+				
+				public static class ScaleSwitchClose {
+					public static double blockToSwitch = 6;
 				}
 			}
 
 			public static class Far {
+				public static double startToPoint = 210;
+				public static double pointToPoint2Turn = 90;
+				public static double pointToPoint2 = 245;
+				public static double point2ToScaleTurn = -120;
+				public static double point2ToScale = 60;
+				public static double point2ToPoint3 = -18;
+				public static double point3ToBlockTurn = -120;
+				public static double point3ToBlock = 48;
+				public static double intakeSpeed = .3;
 
-				public static class SwitchScale {
-
-				}
-
-				public static class TwoScale {
-
+				public static class ScaleSwitchFar {
+					public static double BlockToSwitch = 6;
 				}
 			}
 		}
@@ -95,15 +103,27 @@ public class AutoConstants {
 
 		// Left Switch
 		public static class OneBlock {
-			public static double startToPoint = 27;
-			public static double pointToSwitchTurn = -55;
-			public static double pointToPoint2 = 72;
-			public static double pointToSwitch = 30;
 			public static double intakeSpeed = .3;
+			public static double intakeInSpeed = .5;
+
+			public static class Left{
+				public static double startToPoint = 27;
+				public static double pointToSwitchTurn = -55;
+				public static double pointToPoint2 = 78;
+				public static double pointToSwitch = 24;
+			}
+			public static class Right{
+				public static double startToPoint = 27;
+				public static double pointToSwitchTurn = 55;
+				public static double pointToPoint2 = 60;
+				public static double pointToSwitch = 35;
+			}
 		}
 		
 		public static class TwoBlock {
-
+			public static double switchToPoint = -70;
+			public static double pointToPileTurn = 45;
+			public static double pointToPile = 59;
 		}
 
 	}
