@@ -131,10 +131,30 @@ public class StateManager {
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
 		}
-		else {
-			RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
+
+		else if (ControlMap.extendArm()) {
+			RobotStates.armButtonMode = true;
 			RobotStates.armStickMode = false;
 			CANCycleHandler.cancelArmElevatorCycles();
+			RobotWantedStates.wantedArmPos = ArmPos.EXTEND;
 		}
+
+		else if (ControlMap.retractArm()) {
+			RobotStates.armButtonMode = true;
+			RobotStates.armStickMode = false;
+			CANCycleHandler.cancelArmElevatorCycles();
+			RobotWantedStates.wantedArmPos = ArmPos.RETRACT;
+		}
+
+		else if (RobotStates.armStickMode) {
+			RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
+		}
+
+		//Elevator isn't being controlled, and no state has been set, so set the robot to HOLD_POSITION on next loop
+		else {
+			RobotStates.armStickMode = true;
+			CANCycleHandler.cancelArmElevatorCycles();
+			RobotWantedStates.wantedArmPos = ArmPos.IDLE;
+}
 	}
 }
