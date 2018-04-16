@@ -35,43 +35,75 @@ public class AutoConstants {
 	}
 
 	
-	//Left Side Default
+	// Left Side Default
 	public static class SideAutos {
 
-		public static class Switch {
-			public static double startToPoint = 156;
-			public static double pointToSwitchTurn = 90;
-			public static double pointToSwitch = 18;
-			public static double intakeSpeed = .75;
-		}
+		public static class OneBlockAutos {
+			
+			public static class Switch {
+				public static double startToPoint = 156;
+				public static double pointToSwitchTurn = 90;
+				public static double pointToSwitch = 18;
+				public static double intakeSpeed = .75;
+			}
+
+			public static class CloseScale {
+				public static double startToPoint = 291;
+				public static double pointToScaleTurn = 50;
+				public static double pointToScale = 20;
+				public static double intakeSpeed = .2;
+			}
+
+			public static class FarScale {
+				public static double startToPoint = 235;
+				public static double pointToPoint2Turn = 90;
+				public static double pointToPoint2 = 217;
+				public static double point2ToScaleTurn = -120;
+				public static double point2ToScale = 54;
+				public static double intakeSpeed = .3;
+			}
 		
-		public static class CloseScale {
-			public static double startToPoint = 291;
-			public static double pointToScaleTurn = 50;
-			public static double pointToScale = 20;
-			public static double intakeSpeed = .2;
 		}
-		
-		public static class FarScale {
-			public static double startToPoint = 235;
-			public static double pointToPoint2Turn = 90;
-			public static double pointToPoint2 = 217;
-			public static double point2ToScaleTurn = -120;
-			public static double point2ToScale = 54;
-			public static double intakeSpeed = .3;
+
+		public static class TwoBlockAutos {
+
+			public static class Close {
+
+				public static class SwitchScale {
+
+				}
+
+				public static class TwoScale {
+
+				}
+			}
+
+			public static class Far {
+
+				public static class SwitchScale {
+
+				}
+
+				public static class TwoScale {
+
+				}
+			}
 		}
-		
 	}
 
 	public static class CenterAutos {
 
-		//Left Switch
-		public static class Switch {
+		// Left Switch
+		public static class OneBlock {
 			public static double startToPoint = 27;
 			public static double pointToSwitchTurn = -55;
 			public static double pointToPoint2 = 72;
 			public static double pointToSwitch = 30;
 			public static double intakeSpeed = .3;
+		}
+		
+		public static class TwoBlock {
+
 		}
 
 	}

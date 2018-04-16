@@ -44,14 +44,14 @@ public class OneBlockScaleFarAuto extends AutoMode {
     	
         addParallel(new ArmExtend());
         addParallel(new ElevatorToSwitch());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.FarScale.startToPoint, .75), 4);       
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.FarScale.pointToPoint2Turn, .5, side), 2);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.FarScale.pointToPoint2, .75), 4);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.startToPoint, .75), 4);       
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2Turn, .5, side), 2);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2, .75), 4);
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.FarScale.point2ToScaleTurn, .4, side), 2);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.FarScale.point2ToScale, .25), 4);
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScaleTurn, .4, side), 2);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScale, .25), 4);
         addParallel(new IntakeOpen());
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.FarScale.intakeSpeed, true), 2);
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.FarScale.intakeSpeed, true), 2);
     }
 
     // Put looping checks/code in here

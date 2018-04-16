@@ -42,10 +42,10 @@ public class SwitchCloseAuto extends AutoMode {
         
         addParallel(new ArmExtend());
         addParallel(new ElevatorToSwitch());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.Switch.startToPoint, .75), 15);   
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.Switch.pointToSwitchTurn, .5, side), 3);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.Switch.pointToSwitch, .75), 2);
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.Switch.intakeSpeed, true), 7);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.Switch.startToPoint, .75), 15);   
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.Switch.pointToSwitchTurn, .5, side), 3);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.Switch.pointToSwitch, .75), 2);
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.Switch.intakeSpeed, true), 7);
         
     }
 

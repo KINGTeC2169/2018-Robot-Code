@@ -43,12 +43,12 @@ public class OneBlockScaleCloseAuto extends AutoMode {
     	
         addParallel(new ElevatorToSwitch());
         addParallel(new ArmRetract());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.CloseScale.startToPoint, .75), 6);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.CloseScale.startToPoint, .75), 6);
         addParallel(new ElevatorToScaleHigh(), 2);
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.CloseScale.pointToScaleTurn, .5, side), 1.5);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.CloseScale.pointToScale, .5), 10);
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.CloseScale.pointToScaleTurn, .5, side), 1.5);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.CloseScale.pointToScale, .5), 10);
         addParallel(new IntakeOpen());
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.CloseScale.intakeSpeed, true), 7);
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.CloseScale.intakeSpeed, true), 7);
 
 
 

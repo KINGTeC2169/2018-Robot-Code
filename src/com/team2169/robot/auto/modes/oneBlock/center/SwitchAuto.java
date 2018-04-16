@@ -49,13 +49,13 @@ public class SwitchAuto extends AutoMode {
         
         addParallel(new ArmRetract());
         addParallel(new ElevatorToSwitch());
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.Switch.startToPoint, .5));
-        addSequential(new TurnInPlace(AutoConstants.CenterAutos.Switch.pointToSwitchTurn, .5, inversion), 1.5);
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.Switch.pointToPoint2, .5));
-        addSequential(new TurnInPlace(-AutoConstants.CenterAutos.Switch.pointToSwitchTurn, .5, inversion), 1.5);
-        addSequential(new DriveStraight(AutoConstants.CenterAutos.Switch.pointToSwitch, .5));
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.startToPoint, .5));
+        addSequential(new TurnInPlace(AutoConstants.CenterAutos.OneBlock.pointToSwitchTurn, .5, inversion), 1.5);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.pointToPoint2, .5));
+        addSequential(new TurnInPlace(-AutoConstants.CenterAutos.OneBlock.pointToSwitchTurn, .5, inversion), 1.5);
+        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.pointToSwitch, .5));
         addParallel(new IntakeOpen());
-        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.Switch.intakeSpeed, true), 2);
+        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.OneBlock.intakeSpeed, true), 2);
         
     }
 
