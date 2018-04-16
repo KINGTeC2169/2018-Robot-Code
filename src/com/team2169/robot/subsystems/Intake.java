@@ -6,7 +6,6 @@ import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.auto.AutoConstants;
-import com.team2169.util.DebugPrinter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,11 +40,7 @@ public class Intake extends Subsystem {
 
     void intakeHandler() {
 
-        // Handle Intake State
-    	
-    	SmartDashboard.putNumber("Intake Left Current", left.getOutputCurrent());
-    	SmartDashboard.putNumber("Intake Right Current", right.getOutputCurrent());
-    	
+        // Handle Intake Wheels' State
         switch (RobotWantedStates.wantedIntakeMode) {
         
             case IDLE:
@@ -60,7 +55,6 @@ public class Intake extends Subsystem {
             case MANUAL:
             	
             	//If the intake is being actively controlled, follow driver's instructions
-
             	if(Math.abs(ControlMap.intakeAmount()) >= ControlMap.operatorDeadband){
             		intakeManual(ControlMap.intakeAmount());
             	}
@@ -85,7 +79,6 @@ public class Intake extends Subsystem {
             case INTAKE:
 
                 // Run Intakes
-
                 intakeManual(AutoConstants.desireIntakeSpeed);
                 RobotStates.intakeMode = IntakeMode.INTAKE;
                 break;
@@ -118,16 +111,14 @@ public class Intake extends Subsystem {
                 break;
 
         }
-        pushToDashboard();
 
     }
 
     @Override
     public void pushToDashboard() {
 
-        if (RobotStates.debugMode) {
-            DebugPrinter.intakeDebug();
-        }
+    	SmartDashboard.putNumber("Intake Left Current", left.getOutputCurrent());
+    	SmartDashboard.putNumber("Intake Right Current", right.getOutputCurrent());
 
     }
 
@@ -137,12 +128,10 @@ public class Intake extends Subsystem {
         right.set(ControlMode.PercentOutput, power);
     }
     
-    @Override
-    public void zeroSensors() {
-        // TODO Auto-generated method stub
 
-    }
-
+	@Override
+	public void zeroSensors() {}
+    
     @Override
     public void stop() {
         intakeManual(0);

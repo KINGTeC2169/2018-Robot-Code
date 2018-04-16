@@ -89,25 +89,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		SmartDashboard.putBoolean("New Control Data", DriverStation.getInstance().isNewControlData());
-		
 		Scheduler.getInstance().run();
 
-		RobotStates.isFMSConnected = m_ds.isFMSAttached();
-		RobotStates.runningMode = RunningMode.TELEOP;
-
 		try {
-
 			StateManager.teleOpStateLooper();
 			shuffle.teleOp();
-
+			superStructure.subsystemLooper();
+			
 		} catch (Exception e) {
 			DriverStation.reportError(e.toString(), true);
 		}
 		
-		System.out.println("Tele Loop");
-		superStructure.subsystemLooper();
-
 	}
 
 	@Override
