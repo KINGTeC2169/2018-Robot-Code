@@ -91,6 +91,7 @@ public class AutoConstants {
 				public static double point3ToBlockTurn = -120;
 				public static double point3ToBlock = 48;
 				public static double intakeSpeed = .3;
+				public static double intakeInSpeed = .5;
 
 				public static class ScaleSwitchFar {
 					public static double BlockToSwitch = 6;
