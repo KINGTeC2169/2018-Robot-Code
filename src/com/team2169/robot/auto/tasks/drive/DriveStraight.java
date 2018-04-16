@@ -14,7 +14,8 @@ public class DriveStraight extends Task {
     private int desiredEncoderTicks;
     private double initialAngle;
     private DriveTrain drive;
-    int i;
+    private int i;
+    private double j = 0;
     private double speed;
     private int directionFactor;
 
@@ -53,8 +54,8 @@ public class DriveStraight extends Task {
     protected void execute() {
     	
     	if(i > 5) {
-    		double leftOutput = -(speed - getAngleCorrection()) * directionFactor;
-            double rightOutput = -(speed + getAngleCorrection()) * directionFactor;
+    		double leftOutput = -(speed - getAngleCorrection()) * directionFactor * getRampMultiplier();
+            double rightOutput = -(speed + getAngleCorrection()) * directionFactor * getRampMultiplier();
             drive.left.set(ControlMode.PercentOutput, leftOutput);
             drive.right.set(ControlMode.PercentOutput, rightOutput);
             SmartDashboard.putNumber("Left Drive Error", drive.left.getSelectedSensorPosition(0) - desiredEncoderTicks);
@@ -63,6 +64,8 @@ public class DriveStraight extends Task {
     	else {
     		i++;
     	}
+    	
+    	j++;
         
 
     }
@@ -92,6 +95,15 @@ public class DriveStraight extends Task {
         return error;
     }
 
+    private double getRampMultiplier() {
+    	//If we aren't at full speed yet,
+    	if(j < Constants.autoRampTime/.05) {
+    		return (j)/(Constants.autoRampTime/.05);
+    	}
+    	//Otherwise go full speed
+    	return 1;
+    }
+    
     protected void end() {
         drive.left.set(ControlMode.PercentOutput, 0);
         drive.right.set(ControlMode.PercentOutput, 0);

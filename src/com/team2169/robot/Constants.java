@@ -64,6 +64,9 @@ public class Constants {
 		//Turn-In-Place data
 		public static double driveTrainP = .025;
 		
+		//Autonomous Ramp Time (seconds)
+		public static double autoRampTime = .75;
+		
 		
 	//Elevator
 
