@@ -108,9 +108,9 @@ public class Constants {
 		
 	//Arm
 
-		public static int extendedArmEncoderPosition = 2500;
-		public static int retractedArmEncoderPosition = 1000;
-		public static int stowArmEncoderPosition = 0;
+		public static int extendedArmEncoderPosition = 504;
+		public static int retractedArmEncoderPosition = 335;
+		public static int stowArmEncoderPosition = 280;
 		
 		//Arm TalonConfig Data	
 		public static TalonConfig armData = new TalonConfig();
@@ -119,10 +119,10 @@ public class Constants {
 			armData.pidLoopIDx = 0;
 			armData.timeoutMs = 10;
 			armData.allowedError = 10;
-			armData.p = 1;
+			armData.p = 10;
 			armData.i = 0;
 			armData.d = 0;
-			armData.f = .1;
+			armData.f = .3;
 			armData.zero = false;
 			armData.encoderType = FeedbackDevice.Analog;
 			armData.sensorPhase = false;

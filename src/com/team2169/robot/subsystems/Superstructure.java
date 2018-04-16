@@ -47,7 +47,7 @@ public class Superstructure {
 
         // Set WantedStates
         RobotWantedStates.wantedIntakeMode = IntakeMode.IDLE;
-        RobotWantedStates.wantedArmPos = ArmPos.PASS;
+        RobotWantedStates.wantedArmPos = ArmPos.RETRACT;
         RobotWantedStates.wantedElevatorPos = Macro.PASS;
         StateManager.stateInit();
 

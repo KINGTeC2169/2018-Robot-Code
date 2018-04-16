@@ -37,6 +37,14 @@ public class Arm {
 		// Define Lift Talons
 		arm = new TalonSRX(ActuatorMap.armID);
 		arm = prepArmTalon(arm);
+		
+		//Wait 20ms to let the encoder catch up
+		try {
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+		}
+		
+		lastPosition = arm.getSelectedSensorPosition(0);
 
 	}
 
@@ -45,26 +53,24 @@ public class Arm {
 		// Set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedArmPos) {
 		case STOW:
-			armSetOverrideLooper(0);
+			runToPosition(Constants.stowArmEncoderPosition);
 			RobotStates.armPos = ArmPos.STOW;
 			break;
-		case EXTENDED:
-			armSetOverrideLooper(0);
-			RobotStates.armPos = ArmPos.EXTENDED;
+		case EXTEND:
+			runToPosition(Constants.extendedArmEncoderPosition);
+			RobotStates.armPos = ArmPos.EXTEND;
 			break;
-		case RETRACTED:
-			armSetOverrideLooper(0);
-			RobotStates.armPos = ArmPos.RETRACTED;
+		case RETRACT:
+			runToPosition(Constants.retractedArmEncoderPosition);
+			RobotStates.armPos = ArmPos.RETRACT;
 			break;
 		case HOLD_POSITION:
-			armSetOverrideLooper(0);
+			holdInPosition();
 			RobotStates.armPos = ArmPos.HOLD_POSITION;
 			break;
 		case IDLE:
 			armSetOverrideLooper(0);
 			RobotStates.armPos = ArmPos.IDLE;
-			break;
-		case PASS:
 			break;
 		case OVERRIDE:
 		default:
@@ -75,6 +81,15 @@ public class Arm {
 
 	}
 
+	private void runToPosition(int pos) {
+		arm.set(ControlMode.Position, pos);
+		lastPosition = arm.getSelectedSensorPosition(0);
+	}
+	
+	private void holdInPosition() {
+		arm.set(ControlMode.Position, lastPosition);
+	}
+	
 	private void armSetOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.PercentOutput, joystickValue);
 	}
