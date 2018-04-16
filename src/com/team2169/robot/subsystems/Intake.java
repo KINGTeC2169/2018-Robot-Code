@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.IntakeClamp;
 import com.team2169.robot.RobotStates.IntakeMode;
-import com.team2169.robot.auto.AutoConstants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,14 +78,14 @@ public class Intake extends Subsystem {
             case INTAKE:
 
                 // Run Intakes
-                intakeManual(AutoConstants.desireIntakeSpeed);
+                intakeManual(Constants.intakeSpeed);
                 RobotStates.intakeMode = IntakeMode.INTAKE;
                 break;
 
             case EXHAUST:
 
                 // Run Intakes Backwards
-            	intakeManual(-AutoConstants.desireIntakeSpeed);
+            	intakeManual(-Constants.intakeSpeed);
                 RobotStates.intakeMode = IntakeMode.EXHAUST;
                 break;
 

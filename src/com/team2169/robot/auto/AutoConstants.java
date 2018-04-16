@@ -109,5 +109,5 @@ public class AutoConstants {
 	}
 
 	public static final double driveForwardDistance = 100;
-	public static double desireIntakeSpeed;
+	
 }

@@ -129,6 +129,7 @@ public class Constants {
 	//Intake
 		
 		public static final double intakeHoldVoltage = 2;
+		public static double intakeSpeed = .5;
 		
 		
 	//Climber

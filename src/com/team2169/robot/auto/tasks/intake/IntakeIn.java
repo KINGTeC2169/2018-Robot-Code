@@ -1,8 +1,8 @@
 package com.team2169.robot.auto.tasks.intake;
 
+import com.team2169.robot.Constants;
 import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotWantedStates;
-import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.tasks.Task;
 
 public class IntakeIn extends Task {
@@ -19,7 +19,7 @@ public class IntakeIn extends Task {
 
     protected void initialize() {
 
-    	AutoConstants.desireIntakeSpeed = speed;
+    	Constants.intakeSpeed = speed;
         RobotWantedStates.wantedIntakeMode = IntakeMode.INTAKE;
 
     }
