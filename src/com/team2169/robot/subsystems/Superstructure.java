@@ -25,7 +25,7 @@ public class Superstructure {
     private Intake intake;
     private ElevatorArm liftArm;
     private Compressor comp;
-    //private Climber climber;
+    private Climber climber;
 
     public Superstructure() {
 
@@ -33,7 +33,7 @@ public class Superstructure {
         drive = DriveTrain.getInstance();
         intake = Intake.getInstance();
         liftArm = ElevatorArm.getInstance();
-        //climber = new Climber();
+        climber = new Climber();
 
     }
 
@@ -67,7 +67,7 @@ public class Superstructure {
         drive.driveHandler();
         intake.intakeHandler();
         liftArm.elevatorArmHandler();
-        //climber.climberHandler();
+        climber.climberHandler();
         
         smartDashboardLooper();
 

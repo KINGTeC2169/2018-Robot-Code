@@ -50,7 +50,7 @@ public class Constants {
 		public static TalonConfig rightDriveData = new TalonConfig();
 
 		//Measurements
-		public static final double wheelDiameter = 6.14;
+		public static final double wheelDiameter = 6;
 
 		// Drivetrain Shifting States
 		public static final Value highGear = Value.kForward;
@@ -62,7 +62,10 @@ public class Constants {
 		public static final int driveTrainCurrentTimeout = 5;
 		
 		//Turn-In-Place data
-		public static double driveTrainP = .025;
+		public static final double driveTrainTurnP = .025;
+		
+		//Drive Straight data
+		public static final double driveStraightP = .00014;
 		
 		//Autonomous Ramp Time (seconds)
 		public static double autoRampTime = .75;

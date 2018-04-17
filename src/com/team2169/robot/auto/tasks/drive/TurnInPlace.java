@@ -24,10 +24,10 @@ public class TurnInPlace extends Task{
     this.angle = angle;
 	if(side == RobotSide.LEFT) {
 		this.angle = -this.angle;
-		p = 0.0196;
+		p = 0.0134;
 	}
 	else {
-		p = 0.0199;
+		p = 0.0138;
 	}
 	
     drive = DriveTrain.getInstance();
@@ -39,7 +39,11 @@ public class TurnInPlace extends Task{
 	    this.speed = speed;
 	    this.angle = angle;
 		if(inverted) {
-			this.angle = -this.angle;
+			this.angle = -this.angle;			
+			p = 0.0134;
+		}
+		else {
+			p = 0.0138;
 		}
 		
 	    drive = DriveTrain.getInstance();
@@ -50,6 +54,12 @@ public class TurnInPlace extends Task{
 
 	    this.speed = speed;
 	    this.angle = angle;
+	    if(angle > 0) {
+	    	p = 0.0134;
+		}
+		else {
+			p = 0.0138;
+		}
 		
 	    drive = DriveTrain.getInstance();
 	    
@@ -78,6 +88,7 @@ public class TurnInPlace extends Task{
 
     
     error = drive.getAngle() - this.angle;
+    System.out.println(error);
     SmartDashboard.putNumber("Turn Error", error);
     drive.left.set(ControlMode.PercentOutput, -p * error * speed);
     drive.right.set(ControlMode.PercentOutput, p * error * speed);
