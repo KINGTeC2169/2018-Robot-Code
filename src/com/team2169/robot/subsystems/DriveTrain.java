@@ -2,7 +2,6 @@ package com.team2169.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.team2169.robot.*;
@@ -53,10 +52,6 @@ public class DriveTrain extends Subsystem {
 		// Configure Mag Encoders
 		left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
 		right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
-		
-		//Configure Frame Periods for faster response time
-		left.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);
-		right.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);
 
 		// Set Left Slaves
 		leftTop.set(ControlMode.Follower, ActuatorMap.leftMasterDriveTalon);

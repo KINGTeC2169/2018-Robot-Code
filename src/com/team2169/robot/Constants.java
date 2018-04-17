@@ -50,7 +50,7 @@ public class Constants {
 		public static TalonConfig rightDriveData = new TalonConfig();
 
 		//Measurements
-		public static final double wheelDiameter = 6;
+		public static final double wheelDiameter = 6.14;
 
 		// Drivetrain Shifting States
 		public static final Value highGear = Value.kForward;
@@ -122,7 +122,7 @@ public class Constants {
 			armData.p = 10;
 			armData.i = 0;
 			armData.d = 0;
-			armData.f = .3;
+			armData.f = .5;
 			armData.zero = false;
 			armData.encoderType = FeedbackDevice.Analog;
 			armData.sensorPhase = false;

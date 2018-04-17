@@ -22,8 +22,6 @@ public class DebugPrinter {
 
     public static void armDebug() {
         SmartDashboard.putString("Arm State: ", RobotStates.armPos.name());
-        String string = "" + RobotStates.armStickMode;
-        SmartDashboard.putString("Arm Override Mode: ", string);
         // DriverStation.reportWarning("Arm In Position: " + RobotStates.armInPosition,
         // false);
         SmartDashboard.putBoolean("CanCycle Active", RobotStates.canCycleMode);

@@ -98,8 +98,6 @@ public class RobotStates {
     }
 
     public static ArmPos armPos;
-    public static boolean armStickMode = false;
-    static boolean armButtonMode = false;
     static boolean armOverride = false;
     public static boolean armInPosition;
 

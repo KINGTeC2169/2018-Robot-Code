@@ -1,4 +1,3 @@
-
 package com.team2169.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -92,6 +91,7 @@ public class Arm {
 	
 	private void armSetOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.PercentOutput, joystickValue);
+		lastPosition = arm.getSelectedSensorPosition(0);
 	}
 	
 	public void pushToDashboard() {

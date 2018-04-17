@@ -25,8 +25,6 @@ public class StateManager {
 		RobotWantedStates.wantedMacro = pos;
 		CANCycleHandler.cancelArmElevatorCycles();
 		RobotStates.elevatorOverrideMode = false;
-		RobotStates.armStickMode = false;
-		RobotStates.armButtonMode = false;
 		RobotStates.intakeClampOverride = false;
 	}
 
@@ -127,34 +125,26 @@ public class StateManager {
 		// Intake Wheel States
 		// Driver has taken control of mechanism, follow their controls.
 		if (ControlMap.operatorStickState == OperatorStickState.ARM) {
-			RobotStates.armStickMode = true;
+			RobotStates.armOverride= true;
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = ArmPos.OVERRIDE;
 		}
 
 		else if (ControlMap.extendArm()) {
-			RobotStates.armButtonMode = true;
-			RobotStates.armStickMode = false;
+			RobotStates.armOverride= false;
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = ArmPos.EXTEND;
 		}
 
 		else if (ControlMap.retractArm()) {
-			RobotStates.armButtonMode = true;
-			RobotStates.armStickMode = false;
+			RobotStates.armOverride= false;
 			CANCycleHandler.cancelArmElevatorCycles();
 			RobotWantedStates.wantedArmPos = ArmPos.RETRACT;
 		}
 
-		else if (RobotStates.armStickMode) {
+		//Robot is in stick mode, and not a button mode
+		else if (RobotStates.armOverride) {
 			RobotWantedStates.wantedArmPos = ArmPos.HOLD_POSITION;
 		}
-
-		//Elevator isn't being controlled, and no state has been set, so set the robot to HOLD_POSITION on next loop
-		else {
-			RobotStates.armStickMode = true;
-			CANCycleHandler.cancelArmElevatorCycles();
-			RobotWantedStates.wantedArmPos = ArmPos.IDLE;
-}
 	}
 }

@@ -64,7 +64,6 @@ public class Superstructure {
     }
 
     public void subsystemLooper() {
-    	System.out.println("Loop");
         drive.driveHandler();
         intake.intakeHandler();
         liftArm.elevatorArmHandler();

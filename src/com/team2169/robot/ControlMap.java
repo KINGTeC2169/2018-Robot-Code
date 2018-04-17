@@ -185,7 +185,7 @@ public class ControlMap {
 			RobotStates.elevatorOverrideMode = true;
 		} else if (operator.getRawButton(armOverrideButton)) {
 			operatorStickState = OperatorStickState.ARM;
-			RobotStates.armStickMode = true;
+			RobotStates.armOverride = true;
 		} else {
 			operatorStickState = OperatorStickState.INTAKE;
 		}
