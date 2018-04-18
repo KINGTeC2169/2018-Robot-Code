@@ -122,7 +122,7 @@ public class Constants {
 			armData.pidLoopIDx = 0;
 			armData.timeoutMs = 10;
 			armData.allowedError = 10;
-			armData.p = .019;
+			armData.p = 10;
 			armData.i = 0;
 			armData.d = 0;
 			armData.f = .5;

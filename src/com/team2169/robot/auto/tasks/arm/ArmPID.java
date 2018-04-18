@@ -4,30 +4,39 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.Constants;
 import com.team2169.robot.subsystems.Arm;
+import com.team2169.util.MiniPID;
 
 public class ArmPID{ 
 	
-	TalonSRX arm;
+	private TalonSRX arm;
+	private MiniPID pid;
 	private double setpoint;
 	
 	public ArmPID(Arm arm_) {	
 	
+		pid = new MiniPID(Constants.armData.p, Constants.armData.i, Constants.armData.d, Constants.armData.f);		
+		pid.setOutputLimits(-1, 1);
+		pid.setOutputRampRate(.25);
 		arm = arm_.arm;
 		
 	}
 	
 	public void setDesiredPosition(int pos) {
+		
 		setpoint = pos % 1023;
+		pid.setSetpoint(setpoint);
+
 	}
 
 	public void loop() {
-		System.out.println(Constants.armData.p * getError());
-		arm.set(ControlMode.PercentOutput, Constants.armData.p * getError());
+		double output = pid.getOutput(getPosition());
+		System.out.println("Output: " + output);
+		arm.set(ControlMode.PercentOutput, output);
 	}
 
-	protected double getError() {
+	protected double getPosition() {
 		int read = arm.getSelectedSensorPosition(0);
-		/* flip pulse width to match selected sensor. */
+		
 		if (Constants.armData.sensorPhase) {
 			read *= -1;
 		}
@@ -36,12 +45,8 @@ public class ArmPID{
 			read *= -1;
 		}	
 		
-		/* throw out the overflows, CTRE Encoder is 4096 units per rotation => 12 bitmask (0xFFF) */
-		read = read % 1023;
-		
-		System.out.println(read);
-		
-		/* set the value back with no overflows */
-		return setpoint - read;
+		double foo = read % 1023;
+		System.out.println("Pos: foo");
+		return foo;
 	}
 }

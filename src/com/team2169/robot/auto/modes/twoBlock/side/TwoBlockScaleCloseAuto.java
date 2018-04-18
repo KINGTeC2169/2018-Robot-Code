@@ -46,14 +46,14 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         
         RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Close 2 Block Auto on " + side.name() + " side.";
-        boolean inversion = false;
+        boolean inversion = true;
 
         if(side == RobotSide.RIGHT) {
-        	inversion = true;
+        	inversion = false;
         }
         addParallel(new ArmRetract());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, .5));
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion));
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, .75), 4.5);
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 1.5);
         addParallel(new ElevatorToScaleHigh());
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5));
         addSequential(new ArmExtend());
