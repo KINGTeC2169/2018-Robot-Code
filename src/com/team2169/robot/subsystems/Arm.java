@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.ArmPos;
+import com.team2169.robot.auto.tasks.arm.ArmPID;
 import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -27,12 +28,12 @@ public class Arm {
 	public TalonSRX arm;
 	public int lastPosition;
 	Timer timer;
+	ArmPID armPID;
 
 	public Arm() {
 
 		//Create Talon
 		timer = new Timer();
-		
 		// Define Lift Talons
 		arm = new TalonSRX(ActuatorMap.armID);
 		arm = prepArmTalon(arm);
@@ -44,6 +45,7 @@ public class Arm {
 		}
 		
 		lastPosition = arm.getSelectedSensorPosition(0);
+		armPID = new ArmPID(this);
 
 	}
 
@@ -81,12 +83,14 @@ public class Arm {
 	}
 
 	private void runToPosition(int pos) {
-		arm.set(ControlMode.Position, pos);
+		armPID.loop();
+		armPID.setDesiredPosition(pos);
 		lastPosition = arm.getSelectedSensorPosition(0);
 	}
 	
 	private void holdInPosition() {
-		arm.set(ControlMode.Position, lastPosition);
+		armPID.loop();
+		armPID.setDesiredPosition(lastPosition);
 	}
 	
 	private void armSetOverrideLooper(double joystickValue) {
@@ -96,6 +100,7 @@ public class Arm {
 	
 	public void pushToDashboard() {
 		SmartDashboard.putNumber("Arm Position", arm.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Arm Position Modulo: ", arm.getSelectedSensorPosition(0) % 1023);
 		SmartDashboard.putString("Arm State", RobotWantedStates.wantedArmPos.name());
 	}
 
