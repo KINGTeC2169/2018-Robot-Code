@@ -13,8 +13,10 @@ import com.team2169.util.FlyByWireHandler;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+@SuppressWarnings("deprecation")
 public class DriveTrain extends Subsystem {
 
 	private static DriveTrain dInstance = null;
@@ -35,9 +37,23 @@ public class DriveTrain extends Subsystem {
 	private DoubleSolenoid shifter;
 	private DoubleSolenoid ptoShift;
 	public AHRS navX;
+	private NetworkTable table;
 
 	private DriveTrain() {
 
+		table = NetworkTable.getTable("SmartDashboard");
+		
+		//Fastest Robot will turn
+		table.putValue("Max Speed", Constants.turnMaxSpeed);
+		//Slowest Robot will turn
+		table.putValue("Min Speed", Constants.turnMinSpeed);
+		//How much error until Max Speed
+		table.putValue("Max Error", Constants.turnMaxError);
+		//How little error until Min Speed
+		table.putValue("Min Error", Constants.turnMinError);
+		//How little error until stop
+		table.putValue("Zero Error", Constants.turnZeroError);
+		
 		// Create IMU
 		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 
@@ -89,7 +105,13 @@ public class DriveTrain extends Subsystem {
 	}
 
 	void driveHandler() {
-
+		
+		Constants.turnMaxError = table.getDouble("Max Error", 0);
+		Constants.turnMinError = table.getDouble("Min Error", 0);
+		Constants.turnZeroError = table.getDouble("Zero Error", 0);
+		Constants.turnMaxSpeed = table.getDouble("Max Speed", 0);
+		Constants.turnMinSpeed = table.getDouble("Min Speed", 0);
+		
 		switch (RobotWantedStates.wantedDriveType) {
 
 		// Drive without Override

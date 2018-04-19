@@ -62,11 +62,11 @@ public class Constants {
 		public static final int driveTrainCurrentTimeout = 5;
 		
 		//Turn-In-Place data
-		public static final double turnMaxError = 50;
-		public static final double turnMinError = 10;
-		public static final double turnZeroError = 5;
-		public static final double turnMaxSpeed = .5;
-		public static final double turnMinSpeed = .2;
+		public static double turnMaxError = 50;
+		public static double turnMinError = 10;
+		public static double turnZeroError = 5;
+		public static double turnMaxSpeed = .5;
+		public static double turnMinSpeed = .2;
 		
 		//Turn-In-Place PID
 		public static final double driveTrainTurnAllowedError = 3;
