@@ -24,7 +24,6 @@ public class DriveStraight extends Task {
 
     public DriveStraight(double inches, double speed_) {
 
-    	System.out.println("RECRREATING FOR NEW DRIVE FORWARD");
     	RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
         directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
         desiredEncoderTicks = (int) (inches /  (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
@@ -41,6 +40,8 @@ public class DriveStraight extends Task {
         drive.navX.reset();
         initialAngle = drive.navX.getAngle();
         i = 0;
+        
+        //Verify that the encoder actually zeroed and didn't jump back to original value
         while(i < 5) {
 
         	if(((Math.abs(drive.left.getSelectedSensorPosition(0)) <= 50) || drive.left.getSelectedSensorPosition(0) == 0)
@@ -58,6 +59,7 @@ public class DriveStraight extends Task {
 
     protected void execute() {
 
+    	//Wait 10 loops to verify encoder didn't retain old value.  If you have more than 10 loops, execute as normal.
     	if(i > 10) {
 
 	        leftError = desiredEncoderTicks - drive.left.getSelectedSensorPosition(0);
@@ -85,6 +87,8 @@ public class DriveStraight extends Task {
     }
 
     private double getDesiredSpeed(double error) {
+    	
+    	//Cap PID output
     	double p = Constants.driveStraightP * error;
     	System.out.println(p);
         if(p > speed) {
@@ -129,7 +133,7 @@ public class DriveStraight extends Task {
     }
 
     protected void end() {
-    	System.out.println("DONE");
+    	System.out.println("DONE DRIVING");
         drive.left.setNeutralMode(NeutralMode.Brake);
         drive.right.setNeutralMode(NeutralMode.Brake);	
         drive.left.set(ControlMode.PercentOutput, 0);

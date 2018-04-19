@@ -18,7 +18,10 @@ public class TurnInPlace extends Task{
   private PIDF pid;
   private DriveTrain drive;
   private double error;
+  private double slope;
+  private double intercept;
   
+  //Constructor for turns with RobotSide object (used in side autos)
   public TurnInPlace(double angle, double speed, RobotSide side) {
 
     this.angle = angle;
@@ -27,7 +30,8 @@ public class TurnInPlace extends Task{
     drive = DriveTrain.getInstance();
     
   }
-  
+
+  //Constructor for turns with an invert boolean (used in center autos)
   public TurnInPlace(double angle, double speed, boolean inverted) {
 
 	    this.angle = angle;
@@ -37,6 +41,7 @@ public class TurnInPlace extends Task{
 	    
   }
   
+  //Used for quick fixes and tests
   public TurnInPlace(double angle, double speed) {
 
 	    this.angle = angle;
@@ -47,14 +52,18 @@ public class TurnInPlace extends Task{
 }
 
   protected void initialize() {
-	  
+	slope = (Constants.turnMaxSpeed - Constants.turnMinSpeed) / 
+			  (Constants.turnMaxError - Constants.turnMinError);
+	intercept = Constants.turnMaxSpeed - (slope * Constants.turnMaxError);
     drive.resetGyro();
     RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
     
   }
 
   protected boolean isFinished() {
-	  if(Math.abs(error) < 3 || this.isTimedOut()) {
+	  
+	  //Make sure robot is in tolerance for 3 loops to verify it didn't just fly past it.
+	  if(Math.abs(error) < Constants.driveTrainTurnAllowedError || this.isTimedOut()) {
 		  i++;
 	  }
 	  else {
@@ -67,19 +76,60 @@ public class TurnInPlace extends Task{
 
   protected void execute() {
 
-    
+    //Find Error and set the motors to the PID output
     error = drive.getAngle() - this.angle;
     System.out.println("Output: " + pid.getOutput(drive.getAngle()));
     System.out.println("Error: " + error);
-    drive.left.set(ControlMode.PercentOutput, pid.getOutput(drive.getAngle()));
-    drive.right.set(ControlMode.PercentOutput, -pid.getOutput(drive.getAngle()));
+    drive.left.set(ControlMode.PercentOutput, getMotorOutput(true));
+    drive.right.set(ControlMode.PercentOutput, getMotorOutput(false));
     SmartDashboard.putNumber("Turn Error", error);
     
     
   }
 
+  private double getMotorOutput(boolean left) {
+	
+	  //Get PID value
+	  double num = drive.getAngle();
+	  double dir = 1;
+	  
+	  //Turn Direction Multiplier around if going reverse
+	  if(num < 0) {
+		  dir = -1;
+	  }
+	  
+	  //Max. Error Speed Capping
+	  if(Math.abs(num) >= Constants.turnMaxError) {
+		  num = Constants.turnMaxSpeed * dir;
+	  }
+	  else {
+		  //Zero Speed
+		  if(Math.abs(num) <= Constants.turnZeroError) {
+			  num = 0;
+		  }
+		  //Not in Zero Speed, check if below minimum speed
+		  else if(Math.abs(num) <= Constants.turnMinError) {
+			  num = Constants.turnMinSpeed * dir;
+		  }
+		  //We're on the curve.  Use that    C U R V E 
+		  else {
+			  num =  ((Math.abs(num) * slope) + intercept) * dir;
+		  }
+	  }
+	  
+	  
+	  //Invert value for motor
+	  if(left) {
+		  return num;  
+	  }
+	  return -num;
+	  
+  }
+
+  
   protected void end() {
 
+	  //Stop motors on end
 	  drive.left.set(ControlMode.PercentOutput, 0);
 	  drive.right.set(ControlMode.PercentOutput, 0);
 
