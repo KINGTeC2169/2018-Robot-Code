@@ -1,66 +1,47 @@
 package com.team2169.robot.auto.tasks.drive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.team2169.robot.Constants;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.subsystems.DriveTrain;
+import com.team2169.util.PIDF;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnInPlace extends Task{
 
-  private double speed = 0.0;
   private double angle = 0.0;
+  private int i = 0;
+  private PIDF pid;
   private DriveTrain drive;
   private double error;
-  private int i = 0;
-  double p;
   
   public TurnInPlace(double angle, double speed, RobotSide side) {
 
-    this.speed = speed;
     this.angle = angle;
-	if(side == RobotSide.LEFT) {
-		this.angle = -this.angle;
-		p = 0.0134;
-	}
-	else {
-		p = 0.0138;
-	}
-	
+	pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
+	pid.setSetpoint(angle);
     drive = DriveTrain.getInstance();
     
   }
   
   public TurnInPlace(double angle, double speed, boolean inverted) {
 
-	    this.speed = speed;
 	    this.angle = angle;
-		if(inverted) {
-			this.angle = -this.angle;			
-			p = 0.0134;
-		}
-		else {
-			p = 0.0138;
-		}
-		
+		pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
+		pid.setSetpoint(angle);
 	    drive = DriveTrain.getInstance();
 	    
   }
   
   public TurnInPlace(double angle, double speed) {
 
-	    this.speed = speed;
 	    this.angle = angle;
-	    if(angle > 0) {
-	    	p = 0.0134;
-		}
-		else {
-			p = 0.0138;
-		}
-		
+		pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
+		pid.setSetpoint(angle);		
 	    drive = DriveTrain.getInstance();
 	    
 }
@@ -73,14 +54,14 @@ public class TurnInPlace extends Task{
   }
 
   protected boolean isFinished() {
-	  if(Math.abs(error) < 1 || this.isTimedOut()) {
+	  if(Math.abs(error) < 3 || this.isTimedOut()) {
 		  i++;
 	  }
 	  else {
 		  i = 0;
 	  }
 
-	  return i > 25;
+	  return i > 2;
     
   }
 
@@ -88,10 +69,11 @@ public class TurnInPlace extends Task{
 
     
     error = drive.getAngle() - this.angle;
-    System.out.println(error);
+    System.out.println("Output: " + pid.getOutput(drive.getAngle()));
+    System.out.println("Error: " + error);
+    drive.left.set(ControlMode.PercentOutput, pid.getOutput(drive.getAngle()));
+    drive.right.set(ControlMode.PercentOutput, -pid.getOutput(drive.getAngle()));
     SmartDashboard.putNumber("Turn Error", error);
-    drive.left.set(ControlMode.PercentOutput, -p * error * speed);
-    drive.right.set(ControlMode.PercentOutput, p * error * speed);
     
     
   }

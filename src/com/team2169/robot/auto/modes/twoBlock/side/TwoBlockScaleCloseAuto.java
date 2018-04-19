@@ -53,11 +53,11 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         }
         addParallel(new ArmRetract());
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, .75), 4.5);
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 1.5);
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5));
-        addSequential(new ArmExtend());
-        addParallel(new IntakeOpen());
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 1.75);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5), 1);
+        addSequential(new ArmExtend(), 0.5);
+        addParallel(new IntakeOpen(), 0.5);
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.5);
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, 0.5));
         addParallel(new ElevatorToGround());

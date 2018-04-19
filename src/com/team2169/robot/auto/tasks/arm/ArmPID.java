@@ -4,19 +4,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.Constants;
 import com.team2169.robot.subsystems.Arm;
-import com.team2169.util.MiniPID;
+import com.team2169.util.PIDF;
 
 public class ArmPID{ 
 	
 	private TalonSRX arm;
-	private MiniPID pid;
+	private PIDF pid;
 	private double setpoint;
 	
 	public ArmPID(Arm arm_) {	
 	
-		pid = new MiniPID(Constants.armData.p, Constants.armData.i, Constants.armData.d, Constants.armData.f);		
-		pid.setOutputLimits(-1, 1);
-		pid.setOutputRampRate(.25);
+		pid = new PIDF(Constants.armData.p, Constants.armData.i, Constants.armData.d, Constants.armData.f);	
 		arm = arm_.arm;
 		
 	}
@@ -30,7 +28,6 @@ public class ArmPID{
 
 	public void loop() {
 		double output = pid.getOutput(getPosition());
-		System.out.println("Output: " + output);
 		arm.set(ControlMode.PercentOutput, output);
 	}
 
@@ -46,7 +43,6 @@ public class ArmPID{
 		}	
 		
 		double foo = read % 1023;
-		System.out.println("Pos: foo");
 		return foo;
 	}
 }

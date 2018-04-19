@@ -119,7 +119,7 @@ public class DriveStraight extends Task {
     }
     
     private double getAngleCorrection() {
-        return Constants.driveTrainTurnP * getAngleError();
+        return Constants.driveTrainAngleCorrectionP * getAngleError();
     }
 
     private double getAngleError() {

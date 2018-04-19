@@ -1,6 +1,6 @@
 package com.team2169.util;
 
-public class MiniPID{
+public class PIDF{
 
 	private double P=0;
 	private double I=0;
@@ -39,7 +39,7 @@ public class MiniPID{
 	 * @param i Integral gain.  Becomes large if setpoint cannot reach target quickly. 
 	 * @param d Derivative gain. Responds quickly to large changes in error. Small values prevents P and I terms from causing overshoot.
 	 */
-	public MiniPID(double p, double i, double d){
+	public PIDF(double p, double i, double d){
 		P=p; I=i; D=d;
 		checkSigns();
 		}
@@ -52,7 +52,7 @@ public class MiniPID{
 	 * @param d Derivative gain. Responds quickly to large changes in error. Small values prevents P and I terms from causing overshoot.
 	 * @param f Feed-forward gain. Open loop "best guess" for the output should be. Only useful if setpoint represents a rate.
 	 */
-	public MiniPID(double p, double i, double d, double f){
+	public PIDF(double p, double i, double d, double f){
 		P=p; I=i; D=d; F=f;
 		checkSigns();
 		}
@@ -224,7 +224,7 @@ public class MiniPID{
 	 * Configure setpoint for the PID calculations<br>
 	 * This represents the target for the PID system's, such as a 
 	 * position, velocity, or angle. <br>
-	 * @see MiniPID#getOutput(actual) <br>
+	 * @see PIDF#getOutput(actual) <br>
 	 * @param setpoint
 	 */
 	public void setSetpoint(double setpoint){
@@ -341,7 +341,7 @@ public class MiniPID{
 	/**
 	 * Calculate the output value for the current PID cycle.<br>
 	 * In one parameter mode, the last configured setpoint will be used.<br>
-	 * @see MiniPID#setSetpoint()
+	 * @see PIDF#setSetpoint()
 	 * @param actual The monitored value, typically as a sensor input.
 	 * @param setpoint The target value for the system
 	 * @return calculated output value for driving the system

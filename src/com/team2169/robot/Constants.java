@@ -62,7 +62,11 @@ public class Constants {
 		public static final int driveTrainCurrentTimeout = 5;
 		
 		//Turn-In-Place data
-		public static final double driveTrainTurnP = .025;
+		public static final double driveTrainAngleCorrectionP = .025;
+		public static final double driveTurnP = 0.00775;
+		public static final double driveTurnI = 0.00000025;
+		public static final double driveTurnD = 250;
+		public static final double driveTurnF = 0.0000001;
 		
 		//Drive Straight data
 		public static final double driveStraightP = .00014;
@@ -111,7 +115,7 @@ public class Constants {
 		
 	//Arm
 
-		public static int extendedArmEncoderPosition = 504;
+		public static int extendedArmEncoderPosition = 515;
 		public static int retractedArmEncoderPosition = 335;
 		public static int stowArmEncoderPosition = 280;
 		
@@ -122,10 +126,10 @@ public class Constants {
 			armData.pidLoopIDx = 0;
 			armData.timeoutMs = 10;
 			armData.allowedError = 10;
-			armData.p = 10;
+			armData.p = .01;
 			armData.i = 0;
 			armData.d = 0;
-			armData.f = .5;
+			armData.f = .0001;
 			armData.zero = false;
 			armData.encoderType = FeedbackDevice.Analog;
 			armData.sensorPhase = false;
