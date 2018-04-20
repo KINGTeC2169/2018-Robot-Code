@@ -66,7 +66,7 @@ public class Constants {
 		public static double turnMinError = 10;
 		public static double turnZeroError = 2;
 		public static double turnMaxSpeed = .6;
-		public static double turnMinSpeed = .15;
+		public static double turnMinSpeed = .12;
 		public static double TurnTestAngle = 90;
 		
 		//Turn-In-Place PID
@@ -147,7 +147,7 @@ public class Constants {
 
 	//Intake
 		
-		public static final double intakeHoldVoltage = 2;
+		public static final double intakeHoldVoltage = 3;
 		public static double intakeSpeed = .5;
 		
 		

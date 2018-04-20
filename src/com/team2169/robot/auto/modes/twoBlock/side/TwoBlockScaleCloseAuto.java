@@ -11,7 +11,7 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
-import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
+import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleLow;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
@@ -62,7 +62,7 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         //To Start,  put down the arm and move up the elevator and drive to first point
         addParallel(new IntakePin());
         addParallel(new ArmRetract());
-        addParallel(new ElevatorToSwitch());        
+        addParallel(new ElevatorToScaleLow());        
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, 1), 4.5);
         addParallel(new ElevatorToScaleHigh());
         

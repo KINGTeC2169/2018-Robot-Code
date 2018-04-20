@@ -22,6 +22,9 @@ public class ArmPID{
 	public void setDesiredPosition(int pos) {
 		
 		setpoint = pos % 1023;
+		if(setpoint < 0) {
+			setpoint += 1023;
+		}
 		pid.setSetpoint(setpoint);
 
 	}
@@ -43,6 +46,9 @@ public class ArmPID{
 		}	
 		
 		double foo = read % 1023;
+		if(foo < 0) {
+			foo += 1023;
+		}
 		return foo;
 	}
 }
