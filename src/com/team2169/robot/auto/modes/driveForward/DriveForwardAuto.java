@@ -8,7 +8,6 @@ import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
-import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleMid;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 
 public class DriveForwardAuto extends AutoMode {
