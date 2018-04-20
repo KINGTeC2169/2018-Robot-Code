@@ -45,7 +45,7 @@ public class DriveStraight extends Task {
         i = 0;
         
         //Verify that the encoder actually zeroed and didn't jump back to original value
-        while((i < 5) || k > 200) {
+        while((i < 5) || k > 100) {
 
         	if(((Math.abs(drive.left.getSelectedSensorPosition(0)) <= 50) || drive.left.getSelectedSensorPosition(0) == 0)
         			&& ((Math.abs(drive.right.getSelectedSensorPosition(0)) <= 50) || drive.right.getSelectedSensorPosition(0) == 0)) {

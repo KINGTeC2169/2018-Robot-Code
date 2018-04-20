@@ -7,7 +7,6 @@ import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.subsystems.DriveTrain;
-import com.team2169.util.PIDF;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,7 +14,6 @@ public class TurnInPlace extends Task {
 
 	private double angle = 0.0;
 	private int i = 0;
-	private PIDF pid;
 	private DriveTrain drive;
 	private double error;
 	private double slope;
@@ -25,8 +23,6 @@ public class TurnInPlace extends Task {
 	public TurnInPlace(double angle, double speed, RobotSide side) {
 
 		this.angle = angle;
-		pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
-		pid.setSetpoint(angle);
 		drive = DriveTrain.getInstance();
 
 	}
@@ -38,8 +34,6 @@ public class TurnInPlace extends Task {
 		} else{
 			this.angle = angle;
 		}
-		pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
-		pid.setSetpoint(angle);
 		drive = DriveTrain.getInstance();
 
 	}
@@ -48,8 +42,6 @@ public class TurnInPlace extends Task {
 	public TurnInPlace(double angle, double speed) {
 
 		this.angle = angle;
-		pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
-		pid.setSetpoint(angle);
 		drive = DriveTrain.getInstance();
 
 	}
