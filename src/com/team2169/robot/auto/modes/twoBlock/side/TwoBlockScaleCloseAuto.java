@@ -6,6 +6,7 @@ import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
+import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
@@ -16,6 +17,8 @@ import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class TwoBlockScaleCloseAuto extends AutoMode {
 /*
@@ -51,31 +54,46 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         	inversion = false;
         }
         
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, 1), 4.5);
-        addParallel(new ArmExtend());
-        addParallel(new ElevatorToSwitch());
+        //To Start,  put down the arm and move up the elevator and drive to first point
+        addParallel(new ArmRetract());
+        addParallel(new ElevatorToSwitch());        
+        addParallel(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, 1), 4.5);
         
+        //We're at the scale, turn and bring the elevator all the way up
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 2.25);
         addParallel(new ElevatorToScaleHigh());
-        //addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5), 1);
-        
-        //addParallel(new IntakeOpen(), 0.5);
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
-        //addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, 0.5),3);
-        addParallel(new IntakeOpen(), 0.5);
-        
-        addParallel(new ElevatorToGround());
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion));
-        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 2);
-        addParallel(new ElevatorToScaleHigh());
-        addParallel(new IntakeClampAction());
-        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 3);
-        addParallel(new IntakeIdle());
 
-        addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 2);        //
+        //Exhaust (shoot) and then open 
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
+        addSequential(new IntakeOpen(), 0.5);
+        
+        //Turn and bring elevator to the ground to prep to pick up block
+        addParallel(new ElevatorToGround());
+        addParallel(new ArmRetract());
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion));
+        
+        //Start running intake in and bring the arm down
         addParallel(new ArmExtend());
-        //addParallel(new IntakeOpen());
+        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
+        //Drive to block
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 2);
+        
+        //Clamp block, wait 1/4 of a second and start to bring elevator up
+        addSequential(new IntakeClampAction());
+        addSequential(new WaitCommand(.25));
+        addSequential(new ElevatorToScaleHigh());
+        
+        //Back up to scale and stop the intakes
+        addParallel(new ArmRetract());
+        addParallel(new IntakeIdle());
+        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 3);
+
+        //Turn to the scale
+        addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 2);        //
+        
+        //Extend the arm, wait for it to go down, and shoot
+        addSequential(new ArmExtend());
+        addSequential(new WaitCommand(.5));
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 2);
         
     }
