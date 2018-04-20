@@ -64,12 +64,13 @@ public class Constants {
 		//Turn-In-Place data
 		public static double turnMaxError = 50;
 		public static double turnMinError = 10;
-		public static double turnZeroError = 5;
-		public static double turnMaxSpeed = .5;
-		public static double turnMinSpeed = .2;
+		public static double turnZeroError = 2;
+		public static double turnMaxSpeed = .6;
+		public static double turnMinSpeed = .15;
+		public static double TurnTestAngle = 90;
 		
 		//Turn-In-Place PID
-		public static final double driveTrainTurnAllowedError = 3;
+		public static final double driveTrainTurnAllowedError = 2;
 		public static final double driveTrainAngleCorrectionP = .025;
 		public static final double driveTurnP = 0.00775;
 		public static final double driveTurnI = 0.00000025;

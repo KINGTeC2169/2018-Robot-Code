@@ -111,7 +111,7 @@ public class DriveStraight extends Task {
     public boolean distanceFinished() {
     	
     	//If either encoder has hit the point, stop.  This is because red/orange encoders don't read as many ticks, so they overshoot.
-    	if(Math.abs(leftError) < 100 || Math.abs(rightError) < 100 ) {
+    	if(Math.abs(leftError) < 500 || Math.abs(rightError) < 500 ) {
     		System.out.println("Loop Added   Left Error: " + leftError + "Right Error: " + rightError);
     		j++;
     	}

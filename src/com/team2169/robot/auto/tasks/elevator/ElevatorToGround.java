@@ -16,10 +16,9 @@ public class ElevatorToGround extends Task {
         RobotWantedStates.wantedElevatorPos = Macro.GROUND;
 
     }
-
     @Override
     protected boolean isFinished() {
-        return RobotStates.elevatorInPosition;
+        return  RobotStates.elevatorInPosition;
     }
 
     protected void end() {

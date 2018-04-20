@@ -37,6 +37,7 @@ public class Elevator {
 		//Set Initial States
 		RobotStates.elevatorDirection = ElevatorDirection.UP;
 		setPID(ElevatorDirection.UP);
+		
 
 	}
 
@@ -106,10 +107,12 @@ public class Elevator {
 		int pos = Converter.macroToInt(macro);
 		
 		if (heightPos > pos) {
+			Constants.setElevatorDataFromConstants();
 			setPID(ElevatorDirection.DOWN);
 		}
 		// Going Up
 		else if (heightPos < pos) {
+			Constants.setElevatorDataFromConstants();
 			setPID(ElevatorDirection.UP);
 		}
 		
@@ -148,7 +151,7 @@ public class Elevator {
 		if (!bottomLimit.get()) {
 			resetElevatorPosition();
 		} else if (RobotStates.runningMode == RunningMode.AUTO) {
-			elevator.configPeakOutputReverse(-.5, Constants.elevatorUpData.timeoutMs);
+			elevator.configPeakOutputReverse(-.7, Constants.elevatorUpData.timeoutMs);
 		} else {
 			elevator.configPeakOutputReverse(-1, Constants.elevatorUpData.timeoutMs);
 		}
@@ -156,7 +159,7 @@ public class Elevator {
 		// Lower Limit Switch Active
 		if (!topLimit.get()) {
 		} else if (RobotStates.runningMode == RunningMode.AUTO) {
-			elevator.configPeakOutputReverse(.5, Constants.elevatorUpData.timeoutMs);
+			elevator.configPeakOutputForward(.7, Constants.elevatorUpData.timeoutMs);
 		} else {
 			elevator.configPeakOutputForward(1, Constants.elevatorUpData.timeoutMs);
 		}
@@ -166,7 +169,6 @@ public class Elevator {
 	private void setPID(ElevatorDirection direction) {
 
 		System.out.println("Setting PID");
-		
 		// Going Down
 		if (direction == ElevatorDirection.DOWN) {
 			elevator.config_kP(0, Constants.elevatorDownData.p, 10);
@@ -197,13 +199,15 @@ public class Elevator {
 	}
 	
 	public void pushToDashboard() {
-
+		
 		SmartDashboard.putBoolean("Top Limit", topLimit.get());
 		SmartDashboard.putBoolean("Bottom Limit", bottomLimit.get());
 		SmartDashboard.putString("Elevator State", RobotWantedStates.wantedElevatorPos.name());
 		SmartDashboard.putString("Elevator Direction", RobotStates.elevatorDirection.name());
 		SmartDashboard.putNumber("Elevator Error", elevator.getClosedLoopError(0));
 		SmartDashboard.putNumber("Elevator Setpoint", elevator.getSelectedSensorPosition(Constants.elevatorUpData.slotIDx));
+		SmartDashboard.putNumber("Elevator Output", elevator.getMotorOutputVoltage());
+
 	}
 
 	public TalonSRX prepElevatorTalon(TalonSRX talon) {

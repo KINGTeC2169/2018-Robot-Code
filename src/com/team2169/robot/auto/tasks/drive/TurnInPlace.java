@@ -33,8 +33,11 @@ public class TurnInPlace extends Task {
 
 	// Constructor for turns with an invert boolean (used in center autos)
 	public TurnInPlace(double angle, double speed, boolean inverted) {
-
-		this.angle = angle;
+		if(inverted){
+			this.angle = -angle;
+		} else{
+			this.angle = angle;
+		}
 		pid = new PIDF(Constants.driveTurnP, Constants.driveTurnI, Constants.driveTurnD, Constants.driveTurnF);
 		pid.setSetpoint(angle);
 		drive = DriveTrain.getInstance();
@@ -72,7 +75,7 @@ public class TurnInPlace extends Task {
 			i = 0;
 		}
 
-		return i > 2;
+		return i > 20;
 
 	}
 
@@ -80,10 +83,10 @@ public class TurnInPlace extends Task {
 
 		// Find Error and set the motors to the PID output
 		error = drive.getAngle() - this.angle;
-		System.out.println("Output: " + pid.getOutput(drive.getAngle()));
+		System.out.println("Output: " + getMotorOutput(true));
 		System.out.println("Error: " + error);
-		drive.left.set(ControlMode.PercentOutput, getMotorOutput(true));
-		drive.right.set(ControlMode.PercentOutput, getMotorOutput(false));
+		drive.left.set(ControlMode.PercentOutput, getMotorOutput(false));
+		drive.right.set(ControlMode.PercentOutput, getMotorOutput(true));
 		SmartDashboard.putNumber("Turn Error", error);
 
 	}
@@ -91,7 +94,7 @@ public class TurnInPlace extends Task {
 	private double getMotorOutput(boolean left) {
 
 		// Get PID value
-		double num = drive.getAngle();
+		double num = this.error;
 		double dir = 1;
 
 		// Turn Direction Multiplier around if going reverse

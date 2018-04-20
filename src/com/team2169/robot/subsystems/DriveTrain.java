@@ -54,6 +54,8 @@ public class DriveTrain extends Subsystem {
 		//How little error until stop
 		table.putValue("Zero Error", Constants.turnZeroError);
 		
+		table.putValue("Test Turn Angle", Constants.TurnTestAngle);
+		
 		// Create IMU
 		navX = new AHRS(SPI.Port.kMXP, (byte) 200);
 
@@ -111,6 +113,7 @@ public class DriveTrain extends Subsystem {
 		Constants.turnZeroError = table.getDouble("Zero Error", 0);
 		Constants.turnMaxSpeed = table.getDouble("Max Speed", 0);
 		Constants.turnMinSpeed = table.getDouble("Min Speed", 0);
+		Constants.TurnTestAngle = table.getDouble("Test Turn Angle", 0);
 		
 		switch (RobotWantedStates.wantedDriveType) {
 

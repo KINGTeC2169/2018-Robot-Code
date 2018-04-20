@@ -1,6 +1,7 @@
 package com.team2169.robot.auto.tasks.elevator;
 
 import com.team2169.robot.RobotStates.Macro;
+import com.team2169.robot.RobotStates;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 
@@ -18,7 +19,7 @@ public class ElevatorToSwitch extends Task {
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return RobotStates.elevatorInPosition;
     }
 
     protected void end() {
