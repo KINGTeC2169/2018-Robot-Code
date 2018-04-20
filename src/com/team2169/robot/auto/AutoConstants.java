@@ -69,11 +69,11 @@ public class AutoConstants {
 
 			public static class Close {
 				public static double startToPoint = 256;
-				public static double pointToScale = 20;
+				public static double pointToScale = 17;
 				public static double pointToScaleTurn = 50;
 				public static double pointToBlockTurn = 100;
 				public static double pointToBlock = 65;
-				public static double intakeSpeed = .3;
+				public static double intakeSpeed = .7;
 				public static double intakeInSpeed = .5;
 				
 				public static class ScaleSwitchClose {

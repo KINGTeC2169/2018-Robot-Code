@@ -16,6 +16,7 @@ public class DriveStraight extends Task {
     private double initialAngle;
     private DriveTrain drive;
     private int i;
+    private int k;
     private int j = 0;
     private double speed;
     private int directionFactor;
@@ -23,7 +24,9 @@ public class DriveStraight extends Task {
     private double rightError = 0;
 
     public DriveStraight(double inches, double speed_) {
-
+    	i = 0;
+    	j = 0;
+    	k = 0;
     	RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
         directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
         desiredEncoderTicks = (int) (inches /  (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
@@ -33,7 +36,7 @@ public class DriveStraight extends Task {
     }
 
     protected void initialize() {
-
+    	k = 0;
         RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
         drive.left.setSelectedSensorPosition(0, 0, 10);
         drive.right.setSelectedSensorPosition(0, 0, 10);
@@ -42,17 +45,22 @@ public class DriveStraight extends Task {
         i = 0;
         
         //Verify that the encoder actually zeroed and didn't jump back to original value
-        while(i < 5) {
+        while((i < 5) || k > 200) {
 
         	if(((Math.abs(drive.left.getSelectedSensorPosition(0)) <= 50) || drive.left.getSelectedSensorPosition(0) == 0)
         			&& ((Math.abs(drive.right.getSelectedSensorPosition(0)) <= 50) || drive.right.getSelectedSensorPosition(0) == 0)) {
         		i++;
         	}
         	else {
+        		
+ 
         		i = 0;
+        		
         	}
+        	k++;
+        	System.out.println("oof" + k);
         }
-        
+        System.out.println("how many loops it took" + k);
         i = 0;
     	
     }

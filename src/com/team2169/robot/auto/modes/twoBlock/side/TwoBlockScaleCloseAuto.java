@@ -52,28 +52,31 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         if(side == RobotSide.RIGHT) {
         	inversion = false;
         }
-        addParallel(new ArmRetract());
+        addParallel(new ArmExtend());
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, .75), 4.5);
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 1.75);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5), 1);
-        addSequential(new ArmExtend(), 0.5);
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 2.25);
+
+        //addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5), 1);
+        
+        //addParallel(new IntakeOpen(), 0.5);
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
+        //addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, 0.5),3);
         addParallel(new IntakeOpen(), 0.5);
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.5);
-        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, 0.5),3);
+        
         addParallel(new ElevatorToGround());
-        addParallel(new ArmExtend());
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion));
-        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false));
+        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.5), 2);
         addParallel(new ElevatorToScaleHigh());
         addParallel(new IntakeClampAction());
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.5), 3);
-        addParallel(new ArmRetract());
+
         addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 2);
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5));
+        //
         addParallel(new ArmExtend());
-        addParallel(new IntakeOpen());
+        //addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 2);
         
     }

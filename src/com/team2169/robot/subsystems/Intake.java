@@ -48,7 +48,9 @@ public class Intake extends Subsystem {
                 // Stop Intakes
                 intakeManual(0);
                 RobotStates.intakeMode = IntakeMode.IDLE;
-
+                if(lastIntook) {
+            		intakeManual(Constants.intakeHoldVoltage/12.0);
+            	}
                 break;
 
             case MANUAL:
@@ -76,14 +78,14 @@ public class Intake extends Subsystem {
             	break;
             	
             case INTAKE:
-
+            	lastIntook = true;
                 // Run Intakes
                 intakeManual(Constants.intakeSpeed);
                 RobotStates.intakeMode = IntakeMode.INTAKE;
                 break;
 
             case EXHAUST:
-
+            	lastIntook = false;
                 // Run Intakes Backwards
             	intakeManual(-Constants.intakeSpeed);
                 RobotStates.intakeMode = IntakeMode.EXHAUST;
