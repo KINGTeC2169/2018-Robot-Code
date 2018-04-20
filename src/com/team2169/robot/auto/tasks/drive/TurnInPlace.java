@@ -75,8 +75,6 @@ public class TurnInPlace extends Task {
 
 		// Find Error and set the motors to the PID output
 		error = drive.getAngle() - this.angle;
-		System.out.println("Output: " + getMotorOutput(true));
-		System.out.println("Error: " + error);
 		drive.left.set(ControlMode.PercentOutput, getMotorOutput(false));
 		drive.right.set(ControlMode.PercentOutput, getMotorOutput(true));
 		SmartDashboard.putNumber("Turn Error", error);

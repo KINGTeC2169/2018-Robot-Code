@@ -48,11 +48,14 @@ public class Intake extends Subsystem {
                 // Stop Intakes
                 intakeManual(0);
                 RobotStates.intakeMode = IntakeMode.IDLE;
-                if(lastIntook) {
-            		intakeManual(Constants.intakeHoldVoltage/12.0);
-            	}
                 break;
 
+            case PIN:
+            	
+            	intakeManual(Constants.intakeHoldVoltage/12.0);
+                RobotStates.intakeMode = IntakeMode.PIN;
+            	break;
+                
             case MANUAL:
             	
             	//If the intake is being actively controlled, follow driver's instructions

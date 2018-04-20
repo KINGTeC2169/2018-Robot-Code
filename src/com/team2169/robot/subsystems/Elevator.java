@@ -159,7 +159,7 @@ public class Elevator {
 		// Lower Limit Switch Active
 		if (!topLimit.get()) {
 		} else if (RobotStates.runningMode == RunningMode.AUTO) {
-			elevator.configPeakOutputForward(.7, Constants.elevatorUpData.timeoutMs);
+			elevator.configPeakOutputForward(1, Constants.elevatorUpData.timeoutMs);
 		} else {
 			elevator.configPeakOutputForward(1, Constants.elevatorUpData.timeoutMs);
 		}

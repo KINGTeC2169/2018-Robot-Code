@@ -1,19 +1,18 @@
-package com.team2169.robot.auto.tasks.elevator;
+package com.team2169.robot.auto.tasks.intake;
 
-import com.team2169.robot.RobotStates.Macro;
+import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.auto.tasks.Task;
 
+public class IntakePin extends Task {
 
-public class ElevatorToScaleHigh extends Task {
-
-    public ElevatorToScaleHigh() {
+    public IntakePin() {
 
     }
 
     protected void initialize() {
 
-        RobotWantedStates.wantedElevatorPos = Macro.SCALE_HIGH;
+        RobotWantedStates.wantedIntakeMode = IntakeMode.PIN;
 
     }
 

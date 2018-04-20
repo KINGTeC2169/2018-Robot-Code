@@ -58,9 +58,9 @@ public class DriveStraight extends Task {
         		
         	}
         	k++;
-        	System.out.println("oof" + k);
+        	System.out.println("Loop Count: " + k);
         }
-        System.out.println("how many loops it took" + k);
+        System.out.println("Total Loops: " + k);
         i = 0;
     	
     }
@@ -82,11 +82,6 @@ public class DriveStraight extends Task {
 	        drive.left.set(ControlMode.PercentOutput, leftOutput);
 	        drive.right.set(ControlMode.PercentOutput, rightOutput);
 	        
-	        System.out.println("Left Error: " + leftError + "Right Error: " + rightError);
-	        
-	        System.out.println("Left Des Speed: " + getDesiredSpeed(leftError));
-	        System.out.println("Right Des Speed: " + getDesiredSpeed(rightError));
-	        
 
     	}
     	
@@ -98,7 +93,6 @@ public class DriveStraight extends Task {
     	
     	//Cap PID output
     	double p = Constants.driveStraightP * error;
-    	System.out.println(p);
         if(p > speed) {
         	return speed;
         }
@@ -119,15 +113,14 @@ public class DriveStraight extends Task {
     public boolean distanceFinished() {
     	
     	//If either encoder has hit the point, stop.  This is because red/orange encoders don't read as many ticks, so they overshoot.
-    	if(Math.abs(leftError) < 500 || Math.abs(rightError) < 500 ) {
-    		System.out.println("Loop Added   Left Error: " + leftError + "Right Error: " + rightError);
+    	if(Math.abs(leftError) < 750 || Math.abs(rightError) < 750 ) {
     		j++;
     	}
     	else {
     		j = 0;
     	}
     	
-    	return j > 20;
+    	return j > 12;
     }
     
     private double getAngleCorrection() {

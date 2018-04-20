@@ -59,7 +59,7 @@ public class RobotStates {
     // Intake Mode Handler
     public enum IntakeMode {
 
-        INTAKE, EXHAUST, IDLE, MANUAL
+        INTAKE, EXHAUST, IDLE, MANUAL, PIN
 
     }
 
@@ -121,7 +121,7 @@ public class RobotStates {
     public static Macro elevatorPos;
     public static double elevatorHeight = 0;
 
-    public static boolean elevatorInPosition;
+    public static boolean elevatorInPosition = true;
     public static boolean elevatorOverrideMode = false;
     public static boolean platformRelease;
 

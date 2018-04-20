@@ -14,10 +14,11 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
-import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.intake.IntakePin;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class TwoBlockScaleCloseAuto extends AutoMode {
@@ -44,8 +45,12 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
 	 
 */
 
+	Timer time;
+	
 	public TwoBlockScaleCloseAuto(RobotSide side) {
         
+		time = new Timer();
+		
         RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Close 2 Block Auto on " + side.name() + " side.";
         boolean inversion = true;
@@ -55,13 +60,15 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         }
         
         //To Start,  put down the arm and move up the elevator and drive to first point
+        addParallel(new IntakePin());
         addParallel(new ArmRetract());
         addParallel(new ElevatorToSwitch());        
-        addParallel(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, 1), 4.5);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, 1), 4.5);
+        addParallel(new ElevatorToScaleHigh());
         
         //We're at the scale, turn and bring the elevator all the way up
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 2.25);
-        addParallel(new ElevatorToScaleHigh());
+        
 
         //Exhaust (shoot) and then open 
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
@@ -69,7 +76,7 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         
         //Turn and bring elevator to the ground to prep to pick up block
         addParallel(new ElevatorToGround());
-        addParallel(new ArmRetract());
+        addParallel(new ArmExtend());
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion));
         
         //Start running intake in and bring the arm down
@@ -81,22 +88,28 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         //Clamp block, wait 1/4 of a second and start to bring elevator up
         addSequential(new IntakeClampAction());
         addSequential(new WaitCommand(.25));
-        addSequential(new ElevatorToScaleHigh());
         
         //Back up to scale and stop the intakes
+        addParallel(new ElevatorToScaleHigh());
         addParallel(new ArmRetract());
-        addParallel(new IntakeIdle());
-        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 3);
+        addParallel(new IntakePin());
+        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.5), 3);
 
         //Turn to the scale
         addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 2);        //
         
         //Extend the arm, wait for it to go down, and shoot
-        addSequential(new ArmExtend());
-        addSequential(new WaitCommand(.5));
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 2);
-        
+    
     }
+	
+	public void initialize() {
+		time.start();
+	}
+	
+	public void end() {
+		System.out.println("Time: " + time.get());
+	}
 
     // Put looping checks/code in here
     public void looper() {
