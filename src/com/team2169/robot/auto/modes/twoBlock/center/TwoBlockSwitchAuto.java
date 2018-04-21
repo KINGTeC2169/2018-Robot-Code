@@ -15,6 +15,10 @@ import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
+
+import edu.wpi.first.wpilibj.Timer;
 
 
 public class TwoBlockSwitchAuto extends AutoMode {
@@ -41,15 +45,20 @@ public class TwoBlockSwitchAuto extends AutoMode {
 	 
 */
 
-    @SuppressWarnings("unused")
+	Timer time = new Timer();
+	
+    
 	public TwoBlockSwitchAuto(ElementSide side) {
 
         RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Center Switch Auto on " + side.name() + " side.";
         boolean inversion = false;
-
+        
+        addParallel(new StartTimer(time));
+        
         if(side == ElementSide.RIGHT) {
         	inversion = true;
+        	
 	        addParallel(new ArmRetract());
 	        addParallel(new ElevatorToSwitch());
 	        addSequential(new DriveStraight(AutoConstants.CenterAutos.OneBlock.Right.startToPoint, .5));
@@ -83,7 +92,7 @@ public class TwoBlockSwitchAuto extends AutoMode {
         addSequential(new DriveStraight(-AutoConstants.CenterAutos.TwoBlock.switchToPoint, .5));
         addParallel(new IntakeOpen(), 1.5);
         addSequential(new IntakeExhaust(AutoConstants.CenterAutos.OneBlock.intakeSpeed, true), .5);
-
+        addSequential(new StopTimer(time));
 
         
         

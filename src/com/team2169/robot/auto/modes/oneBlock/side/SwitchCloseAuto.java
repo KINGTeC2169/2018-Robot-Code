@@ -10,6 +10,10 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class SwitchCloseAuto extends AutoMode {
 /*
@@ -35,18 +39,20 @@ public class SwitchCloseAuto extends AutoMode {
 	 
 */
 
+	Timer time = new Timer();
+	
     public SwitchCloseAuto(RobotSide side) {
         
     	RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Side Switch Auto on " + side.name() + " side.";
-        
+        addParallel(new StartTimer(time));
         addParallel(new ArmExtend());
         addParallel(new ElevatorToSwitch());
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.Switch.startToPoint, .75), 15);   
         addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.Switch.pointToSwitchTurn, .5, side), 3);
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.Switch.pointToSwitch, .75), 2);
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.Switch.intakeSpeed, true), 7);
-        
+        addSequential(new StopTimer(time));
     }
 
     // Put looping checks/code in here

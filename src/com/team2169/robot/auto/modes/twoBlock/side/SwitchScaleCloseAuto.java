@@ -18,7 +18,10 @@ import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
 import com.team2169.robot.auto.tasks.intake.IntakePin;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class SwitchScaleCloseAuto extends AutoMode {
@@ -44,8 +47,8 @@ public class SwitchScaleCloseAuto extends AutoMode {
 +----+
 	 
 */
-
-    @SuppressWarnings("unused")
+	Timer time = new Timer();
+	
 	public SwitchScaleCloseAuto(RobotSide side) {
         
         RobotStates.runningMode = RunningMode.AUTO;
@@ -56,7 +59,7 @@ public class SwitchScaleCloseAuto extends AutoMode {
         	inversion = true;
         }
 
-        //To Start,  put down the arm and move up the elevator and drive to first point
+        addParallel(new StartTimer(time));
         addParallel(new IntakePin());
         addParallel(new ArmRetract());
         addParallel(new ElevatorToScaleLow());        
@@ -90,7 +93,8 @@ public class SwitchScaleCloseAuto extends AutoMode {
         addSequential(new ElevatorToSwitch());
         addSequential(new WaitCommand(.5));
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true));
-    }
+        addSequential(new StopTimer(time));
+	}
 
     // Put looping checks/code in here
     public void looper() {

@@ -12,6 +12,10 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class OneBlockScaleCloseAuto extends AutoMode {
 /*
@@ -36,11 +40,13 @@ public class OneBlockScaleCloseAuto extends AutoMode {
 +----+
 	 
 */
+	Timer time = new Timer();
+	
     public OneBlockScaleCloseAuto(RobotSide side) {
 
     	RobotStates.runningMode = RunningMode.AUTO;
     	this.autoName = "Scale Close on " + side.name() + " side.";
-    	
+    	addParallel(new StartTimer(time));
         addParallel(new ElevatorToSwitch());
         addParallel(new ArmRetract());
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.CloseScale.startToPoint, .75), 6);
@@ -49,7 +55,7 @@ public class OneBlockScaleCloseAuto extends AutoMode {
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.CloseScale.pointToScale, .5), 10);
         addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.CloseScale.intakeSpeed, true), 7);
-
+        addSequential(new StopTimer(time));
 
 
     }

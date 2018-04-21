@@ -16,6 +16,10 @@ import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class TwoBlockScaleFarAuto extends AutoMode {
 /*
@@ -40,8 +44,8 @@ public class TwoBlockScaleFarAuto extends AutoMode {
 +----+
 	 
 */
-
-    @SuppressWarnings("unused")
+	Timer time = new Timer();
+    
 	public TwoBlockScaleFarAuto(RobotSide side) {
         
         RobotStates.runningMode = RunningMode.AUTO;
@@ -52,6 +56,7 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         	inversion = true;
         }
         
+        addParallel(new StartTimer(time));
         addParallel(new ArmRetract());
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.startToPoint, 0.5));
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.pointToPoint2Turn, 0.5, inversion));
@@ -75,7 +80,7 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToPoint3, 0.5));
         addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeSpeed, true), 2);
-        
+        addSequential(new StopTimer(time));
     }
 
     // Put looping checks/code in here

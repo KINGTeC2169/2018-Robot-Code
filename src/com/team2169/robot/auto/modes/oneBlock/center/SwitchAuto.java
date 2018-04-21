@@ -11,6 +11,10 @@ import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
+
+import edu.wpi.first.wpilibj.Timer;
 
 
 public class SwitchAuto extends AutoMode {
@@ -36,14 +40,15 @@ public class SwitchAuto extends AutoMode {
                  +-----+      
 	 
 */
-
+	Timer time = new Timer();
+	
     public SwitchAuto(ElementSide side) {
 
         RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Center Switch Auto on " + side.name() + " side.";
 
   
-        
+        addParallel(new StartTimer(time));
         if (side == ElementSide.RIGHT){
 	        addParallel(new ArmRetract());
 	        addParallel(new ElevatorToSwitch());
@@ -65,6 +70,7 @@ public class SwitchAuto extends AutoMode {
 	        addParallel(new IntakeOpen());
 	        addSequential(new IntakeExhaust(AutoConstants.CenterAutos.OneBlock.intakeSpeed, true), 2);
 	    }
+        addSequential(new StopTimer(time));
     }
 
     // Put looping checks/code in here

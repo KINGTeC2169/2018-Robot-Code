@@ -12,6 +12,10 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.timer.StartTimer;
+import com.team2169.robot.auto.tasks.timer.StopTimer;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class OneBlockScaleFarAuto extends AutoMode {
 /*
@@ -36,12 +40,13 @@ public class OneBlockScaleFarAuto extends AutoMode {
 +----+
 	 
 */
-
+	Timer time = new Timer();
+	
     public OneBlockScaleFarAuto(RobotSide side) {
     	
     	RobotStates.runningMode = RunningMode.AUTO;
     	this.autoName = "Far Scale Auto on " + side.name() + " side.";
-    	
+    	addParallel(new StartTimer(time));
         addParallel(new ArmExtend());
         addParallel(new ElevatorToSwitch());
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.startToPoint, .75), 4);       
@@ -52,6 +57,7 @@ public class OneBlockScaleFarAuto extends AutoMode {
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScale, .25), 4);
         addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.FarScale.intakeSpeed, true), 2);
+        addSequential(new StopTimer(time));
     }
 
     // Put looping checks/code in here
