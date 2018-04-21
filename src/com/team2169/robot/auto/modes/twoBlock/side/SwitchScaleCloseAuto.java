@@ -11,12 +11,15 @@ import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
+import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleLow;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
-import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.intake.IntakePin;
+
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 public class SwitchScaleCloseAuto extends AutoMode {
 /*
@@ -52,26 +55,41 @@ public class SwitchScaleCloseAuto extends AutoMode {
         if(side == RobotSide.RIGHT) {
         	inversion = true;
         }
+
+        //To Start,  put down the arm and move up the elevator and drive to first point
+        addParallel(new IntakePin());
         addParallel(new ArmRetract());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, .5));
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion));
+        addParallel(new ElevatorToScaleLow());        
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.startToPoint, 1), 4.5);
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, .5));
-        addSequential(new ArmExtend());
-        addParallel(new IntakeOpen());
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.5);
-        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScale, 0.5));
+        
+        //We're at the scale, turn and bring the elevator all the way up
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 2.25);
+        
+
+        //Exhaust (shoot) and then open 
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
+        addSequential(new IntakeOpen(), 0.5);
+        
+        //Turn and bring elevator to the ground to prep to pick up block
         addParallel(new ElevatorToGround());
         addParallel(new ArmExtend());
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion));
-        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false));
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.5));
-        addParallel(new IntakeClampAction());
-        addParallel(new IntakeIdle());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.ScaleSwitchClose.blockToSwitch, 0.5));
-        addParallel(new ElevatorToSwitch());
-        addSequential(new IntakeOpen());
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 2);
+        
+        //Start running intake in and bring the arm down
+        addParallel(new ArmExtend());
+        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
+        //Drive to block
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 2);
+        
+        //Clamp block, wait 1/4 of a second and start to bring elevator up
+        addSequential(new IntakeClampAction());
+        addSequential(new WaitCommand(.25));
+        
+        //Back up to scale and stop the intakes
+        addSequential(new ElevatorToSwitch());
+        addSequential(new WaitCommand(.5));
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true));
     }
 
     // Put looping checks/code in here

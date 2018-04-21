@@ -115,7 +115,7 @@ public class Constants {
 		public static int groundElevatorEncoderPosition = 0;
 		public static int switchElevatorEncoderPosition = 6000;
 		public static int scaleLowElevatorEncoderPosition = 9000;
-		public static int scaleMidElevatorEncoderPosition = 17000;
+		public static int scaleMidElevatorEncoderPosition = 13000;
 		public static int scaleHighElevatorEncoderPosition = 18000;
 		
 		//Ramp Rate
@@ -126,7 +126,7 @@ public class Constants {
 
 		public static int extendedArmEncoderPosition = 530;
 		public static int retractedArmEncoderPosition = 400;
-		public static int stowArmEncoderPosition = 300;
+		public static int stowArmEncoderPosition = 340;
 		
 		//Arm TalonConfig Data	
 		public static TalonConfig armData = new TalonConfig();

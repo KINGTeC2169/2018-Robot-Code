@@ -72,7 +72,7 @@ public class AutoConstants {
 				public static double pointToScale = 17;
 				public static double pointToScaleTurn = 50;
 				public static double pointToBlockTurn = 100;
-				public static double pointToBlock = 65;
+				public static double pointToBlock = 61;
 				public static double intakeSpeed = .7;
 				public static double intakeInSpeed = .5;
 				
