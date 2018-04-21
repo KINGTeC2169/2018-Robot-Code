@@ -58,9 +58,9 @@ public class DriveStraight extends Task {
         		
         	}
         	k++;
-        	System.out.println("Loop Count: " + k);
+        	//System.out.println("Loop Count: " + k);
         }
-        System.out.println("Total Loops: " + k);
+        //System.out.println("Total Loops: " + k);
         i = 0;
     	
     }
