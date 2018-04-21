@@ -27,6 +27,7 @@ public class Climber extends Subsystem {
     	
     	release = new TalonSRX(ActuatorMap.hookDeplyID);
     	release.setNeutralMode(NeutralMode.Brake);
+    	release.setInverted(true);
         RobotWantedStates.climberRelease = false;
     }
 

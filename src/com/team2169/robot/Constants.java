@@ -112,7 +112,7 @@ public class Constants {
 
 		
 		//Elevator Encoder Heights
-		public static int groundElevatorEncoderPosition = 0;
+		public static int groundElevatorEncoderPosition = -600;
 		public static int switchElevatorEncoderPosition = 6000;
 		public static int scaleLowElevatorEncoderPosition = 9000;
 		public static int scaleMidElevatorEncoderPosition = 13000;

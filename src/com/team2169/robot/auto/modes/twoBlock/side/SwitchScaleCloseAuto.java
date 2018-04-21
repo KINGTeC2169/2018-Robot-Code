@@ -5,6 +5,7 @@ import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.modes.AutoMode;
+import com.team2169.robot.auto.tasks.DelayedTask;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
@@ -12,7 +13,6 @@ import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleLow;
-import com.team2169.robot.auto.tasks.elevator.ElevatorToSwitch;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
@@ -47,6 +47,7 @@ public class SwitchScaleCloseAuto extends AutoMode {
 +----+
 	 
 */
+
 	Timer time = new Timer();
 	
 	public SwitchScaleCloseAuto(RobotSide side) {
@@ -55,10 +56,11 @@ public class SwitchScaleCloseAuto extends AutoMode {
         this.autoName = "Close Switch/Scale Auto on " + side.name() + " side.";
         boolean inversion = false;
 
-        if(side == RobotSide.RIGHT) {
+        if(side == RobotSide.LEFT) {
         	inversion = true;
         }
 
+        //To Start,  put down the arm and move up the elevator and drive to first point
         addParallel(new StartTimer(time));
         addParallel(new IntakePin());
         addParallel(new ArmRetract());
@@ -89,12 +91,16 @@ public class SwitchScaleCloseAuto extends AutoMode {
         addSequential(new IntakeClampAction());
         addSequential(new WaitCommand(.25));
         
-        //Back up to scale and stop the intakes
-        addSequential(new ElevatorToSwitch());
-        addSequential(new WaitCommand(.5));
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true));
+        //Back up to scale and stop the intakes, and wait for it to get up enough
+        addSequential(new ElevatorToScaleLow());
+        
+        //Shoot
+        addParallel(new DelayedTask(new ArmRetract(), .5));
+        addSequential(new DelayedTask(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 3));
+        
+        //Stop Timer
         addSequential(new StopTimer(time));
-	}
+    }
 
     // Put looping checks/code in here
     public void looper() {

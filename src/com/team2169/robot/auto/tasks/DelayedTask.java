@@ -23,7 +23,7 @@ public class DelayedTask extends Command {
     protected void execute() {
     	if(timer.get() >= delay_ && !started) {
     		started = true;
-    		System.out.println("Started Timed Task!");
+    		System.out.println("Started Delayed Task!");
     		task_.start();
     	}
     }

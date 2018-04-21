@@ -99,7 +99,7 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
 
         //Turn to the scale
         addParallel(new IntakePin());
-        addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 2);        //
+        addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 1.25);        //
         
         //Extend the arm, wait for it to go down, and shoot
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 1);

@@ -179,6 +179,7 @@ public class AutoManager {
 				} else if (centPriority == CenterPriority.TWO_BLOCK) {
 					auto = new TwoBlockSwitchAuto(interpreter.nearSwitchSide);
 				} else {
+					System.out.println("Line 182");
 					auto = new FailureAuto();
 				}
 			}
@@ -213,7 +214,6 @@ public class AutoManager {
 								// Check if drivers have asked for a switch-scale auto
 								if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
 										|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-
 									// If they have, set priority to the backup
 									if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK) {
 										sidePriority = SidePriority.ONE_SCALE;
@@ -281,6 +281,7 @@ public class AutoManager {
 								// Check if we have the opportunity to run a switch-scale
 								if (interpreter.nearSwitchPos == Possesion.CLOSE) {
 									// If we can, set that as our auto
+									System.out.println("We can run a SwitchScale Auto");
 									auto = new SwitchScaleCloseAuto(position);
 								}
 
@@ -304,10 +305,7 @@ public class AutoManager {
 							else if (sidePriority == SidePriority.TWO_SCALE) {
 								auto = new TwoBlockScaleCloseAuto(position);
 							}
-
-							else {
-								auto = new FailureAuto();
-							}
+							
 						}
 
 						// We have yields preventing us from using the scale
@@ -370,10 +368,12 @@ public class AutoManager {
 						}
 					}
 				} else {
+					System.out.println("Line 373");
 					auto = new FailureAuto();
 				}
 			}
 		} else {
+			System.out.println("Line 378");
 			auto = new FailureAuto();
 		}
 	}
