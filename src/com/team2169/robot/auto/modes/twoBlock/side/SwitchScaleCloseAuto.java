@@ -71,8 +71,7 @@ public class SwitchScaleCloseAuto extends AutoMode {
         //We're at the scale, turn and bring the elevator all the way up
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToScaleTurn, .5, inversion), 2.25);
         
-
-        //Exhaust (shoot) and then open 
+        //Exhaust (shoot) and then open
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
         addSequential(new IntakeOpen(), 0.5);
         
@@ -84,6 +83,7 @@ public class SwitchScaleCloseAuto extends AutoMode {
         //Start running intake in and bring the arm down
         addParallel(new ArmExtend());
         addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
+        
         //Drive to block
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 2);
         

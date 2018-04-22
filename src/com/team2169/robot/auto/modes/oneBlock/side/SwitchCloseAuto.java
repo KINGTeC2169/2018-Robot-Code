@@ -45,13 +45,19 @@ public class SwitchCloseAuto extends AutoMode {
         
     	RobotStates.runningMode = RunningMode.AUTO;
         this.autoName = "Side Switch Auto on " + side.name() + " side.";
+        
+        //Start the timer, extend the arm, and move elevator into switch
         addParallel(new StartTimer(time));
         addParallel(new ArmExtend());
         addParallel(new ElevatorToSwitch());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.Switch.startToPoint, .75), 15);   
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.Switch.pointToSwitchTurn, .5, side), 3);
-        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.Switch.pointToSwitch, .75), 2);
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.Switch.intakeSpeed, true), 7);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.CloseSwitch.startToPoint, .75), 15);   
+        
+        //Turn to the switch and drive into it
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.CloseSwitch.pointToSwitchTurn, .5, side), 3);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.CloseSwitch.pointToSwitch, .75), 2);
+        
+        //Exhaust the block and stop the timer
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.CloseSwitch.intakeSpeed, true), 7);
         addSequential(new StopTimer(time));
     }
 

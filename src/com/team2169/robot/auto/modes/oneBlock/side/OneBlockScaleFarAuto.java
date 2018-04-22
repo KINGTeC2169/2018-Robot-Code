@@ -59,21 +59,21 @@ public class OneBlockScaleFarAuto extends AutoMode {
         addParallel(new StartTimer(time));
         addParallel(new ArmRetract());
         addParallel(new IntakePin());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.startToPoint, 1));
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.startToPoint, 1));
         
         //Turn in place
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.pointToPoint2Turn, 0.5, inversion));
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2Turn, 0.5, inversion));
         
         //Drive Straight to the second point
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.pointToPoint2, 1));
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2, 1));
         
         //Bring up elevator and turn to the scale
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToScaleTurn, 0.5, inversion));
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScaleTurn, 0.5, inversion));
         
         //Drive to scale and outake block
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToScale, .5));
-        addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeSpeed, true), 0.5);
+        addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScale, .5));
+        addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.FarScale.intakeSpeed, true), 0.5);
         
         //Turn around and bring the elevator down
         addParallel(new DelayedTask(new ElevatorToGround(), 1));

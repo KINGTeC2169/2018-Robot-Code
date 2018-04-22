@@ -40,27 +40,43 @@ public class AutoConstants {
 
 		public static class OneBlockAutos {
 			
-			public static class Switch {
+			public static class CloseSwitch {
 				public static double startToPoint = 156;
 				public static double pointToSwitchTurn = 90;
 				public static double pointToSwitch = 18;
-				public static double intakeSpeed = .75;
+				public static double intakeSpeed = .75;				
+			}
+			
+			public static class FarSwitch{
+				public static double startToPoint = 210;
+				public static double pointToPoint2Turn = 90;
+				public static double pointToPoint2 = 236;
+				public static double point2ToSwitchTurn = 120;
+				public static double point2ToSwitch= 36;
+				public static double intakeSpeed = .3;
+				public static double intakeInSpeed = .5;
 			}
 
 			public static class CloseScale {
-				public static double startToPoint = 291;
+				public static double startToPoint = 256;
 				public static double pointToScaleTurn = 50;
-				public static double pointToScale = 20;
-				public static double intakeSpeed = .2;
+				public static double pointToScale = 17;
+				public static double intakeSpeed = .3;
+				public static double intakeInSpeed = .5;
+				
+				public static class ScaleSwitchClose {
+					public static double blockToSwitch = 6;
+				}
 			}
 
 			public static class FarScale {
-				public static double startToPoint = 235;
+				public static double startToPoint = 210;
 				public static double pointToPoint2Turn = 90;
-				public static double pointToPoint2 = 217;
-				public static double point2ToScaleTurn = -120;
-				public static double point2ToScale = 54;
-				public static double intakeSpeed = .3;
+				public static double pointToPoint2 = 236;
+				public static double point2ToScaleTurn = -95;
+				public static double point2ToScale = 65;
+				public static double intakeSpeed = .4;
+				public static double intakeInSpeed = .5;
 			}
 		
 		}
@@ -69,8 +85,8 @@ public class AutoConstants {
 
 			public static class Close {
 				public static double startToPoint = 256;
-				public static double pointToScale = 17;
 				public static double pointToScaleTurn = 50;
+				public static double pointToScale = 17;
 				public static double pointToBlockTurn = 100;
 				public static double pointToBlock = 64;
 				public static double intakeSpeed = .7;
@@ -84,7 +100,7 @@ public class AutoConstants {
 			public static class Far {
 				public static double startToPoint = 210;
 				public static double pointToPoint2Turn = 90;
-				public static double pointToPoint2 = 226;
+				public static double pointToPoint2 = 236;
 				public static double point2ToScaleTurn = -95;
 				public static double point2ToScale = 65;
 				public static double point2ToPoint3 = -18;

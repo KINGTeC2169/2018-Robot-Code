@@ -14,7 +14,6 @@ import com.team2169.robot.auto.tasks.elevator.ElevatorToGround;
 import com.team2169.robot.auto.tasks.elevator.ElevatorToScaleHigh;
 import com.team2169.robot.auto.tasks.intake.IntakeClampAction;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
-import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
 import com.team2169.robot.auto.tasks.intake.IntakePin;
@@ -83,18 +82,31 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         addParallel(new DelayedTask(new ElevatorToGround(), 2));
         addSequential(new DriveStraight(-24, .5));
         
+        //Back up from scale
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToPoint3, 0.5));
+        
+        //Bring down the elevator, extend the arm, and turn to face block
         addParallel(new ElevatorToGround());
         addParallel(new ArmExtend());
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.point3ToBlockTurn, 0.5, inversion));
+        
+        //Start intaking and driving towards second block
         addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeInSpeed, false));
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.point3ToBlock, 0.5));
+        
+        //Clamp the intakes, pin the block, and drive back to the scale
         addParallel(new IntakeClampAction());
-        addParallel(new IntakeIdle());
+        addParallel(new IntakePin());
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Far.point3ToBlock, 0.5));
-        addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Far.point3ToBlockTurn, 0.5, inversion));
+        
+        //Turn to face the scale while bringing up the elevator
         addParallel(new ElevatorToScaleHigh());
+        addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Far.point3ToBlockTurn, 0.5, inversion));
+        
+        //Drive to the scale
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToPoint3, 0.5));
+        
+        //Drop and exhaust the block
         addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeSpeed, true), 2);
         
