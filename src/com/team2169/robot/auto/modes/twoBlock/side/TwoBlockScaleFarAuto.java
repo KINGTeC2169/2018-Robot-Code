@@ -5,6 +5,7 @@ import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.modes.AutoMode;
+import com.team2169.robot.auto.tasks.DelayedTask;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
@@ -16,6 +17,7 @@ import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 import com.team2169.robot.auto.tasks.intake.IntakeIdle;
 import com.team2169.robot.auto.tasks.intake.IntakeIn;
 import com.team2169.robot.auto.tasks.intake.IntakeOpen;
+import com.team2169.robot.auto.tasks.intake.IntakePin;
 import com.team2169.robot.auto.tasks.timer.StartTimer;
 import com.team2169.robot.auto.tasks.timer.StopTimer;
 
@@ -52,20 +54,35 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         this.autoName = "Far 2 Block Auto on " + side.name() + " side.";
         boolean inversion = false;
 
-        if(side == RobotSide.RIGHT) {
+        if(side == RobotSide.LEFT) {
         	inversion = true;
         }
         
+        
+        //Pull up Arm, Pin intake, and start the timer
         addParallel(new StartTimer(time));
         addParallel(new ArmRetract());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.startToPoint, 0.5));
+        addParallel(new IntakePin());
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.startToPoint, 1));
+        
+        //Turn in place
         addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.pointToPoint2Turn, 0.5, inversion));
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.pointToPoint2, 0.5));
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToScaleTurn, 0.5, inversion));
+        
+        //Drive Straight to the second point
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.pointToPoint2, 1));
+        
+        //Bring up elevator and turn to the scale
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToScale, 0.5));
-        addParallel(new IntakeOpen());
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToScaleTurn, 0.5, inversion));
+        
+        //Drive to scale and outake block
+        addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToScale, .5));
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeSpeed, true), 0.5);
+        
+        //Back up and bring the elevator down
+        addParallel(new DelayedTask(new ElevatorToGround(), 2));
+        addSequential(new DriveStraight(-24, .5));
+        
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToPoint3, 0.5));
         addParallel(new ElevatorToGround());
         addParallel(new ArmExtend());
@@ -80,6 +97,13 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Far.point2ToPoint3, 0.5));
         addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeSpeed, true), 2);
+        
+        //Turn around and bring the elevator down
+        addParallel(new DelayedTask(new ElevatorToGround(), 2));
+        addParallel(new IntakeOpen());
+        addSequential(new DriveStraight(-12, .5));
+        addSequential(new TurnInPlace(180, 1));
+        
         addSequential(new StopTimer(time));
     }
 

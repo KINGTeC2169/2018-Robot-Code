@@ -5,6 +5,7 @@ import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.modes.AutoMode;
+import com.team2169.robot.auto.tasks.DelayedTask;
 import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
@@ -55,7 +56,7 @@ public class SwitchScaleFarAuto extends AutoMode {
         this.autoName = "Fars Switch/Scale Auto on " + side.name() + " side.";
         boolean inversion = false;
 
-        if(side == RobotSide.RIGHT) {
+        if(side == RobotSide.LEFT) {
         	inversion = true;
         }
         
@@ -81,6 +82,13 @@ public class SwitchScaleFarAuto extends AutoMode {
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Far.ScaleSwitchFar.BlockToSwitch, 0.5));
         addParallel(new IntakeOpen());
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Far.intakeSpeed, true), 2);
+        
+        //Turn around and bring the elevator down
+        addParallel(new DelayedTask(new ElevatorToGround(), 2));
+        addParallel(new IntakeOpen());
+        addSequential(new DriveStraight(-12, .5));
+        addSequential(new TurnInPlace(180, 1));
+        
         addSequential(new StopTimer(time));
     }
 

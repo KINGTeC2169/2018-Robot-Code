@@ -72,7 +72,7 @@ public class AutoConstants {
 				public static double pointToScale = 17;
 				public static double pointToScaleTurn = 50;
 				public static double pointToBlockTurn = 100;
-				public static double pointToBlock = 61;
+				public static double pointToBlock = 64;
 				public static double intakeSpeed = .7;
 				public static double intakeInSpeed = .5;
 				
@@ -84,9 +84,9 @@ public class AutoConstants {
 			public static class Far {
 				public static double startToPoint = 210;
 				public static double pointToPoint2Turn = 90;
-				public static double pointToPoint2 = 245;
-				public static double point2ToScaleTurn = -120;
-				public static double point2ToScale = 60;
+				public static double pointToPoint2 = 226;
+				public static double point2ToScaleTurn = -95;
+				public static double point2ToScale = 65;
 				public static double point2ToPoint3 = -18;
 				public static double point3ToBlockTurn = -120;
 				public static double point3ToBlock = 48;

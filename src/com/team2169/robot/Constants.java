@@ -115,8 +115,8 @@ public class Constants {
 		public static int groundElevatorEncoderPosition = -600;
 		public static int switchElevatorEncoderPosition = 6000;
 		public static int scaleLowElevatorEncoderPosition = 9000;
-		public static int scaleMidElevatorEncoderPosition = 13000;
-		public static int scaleHighElevatorEncoderPosition = 18000;
+		public static int scaleMidElevatorEncoderPosition = 14000;
+		public static int scaleHighElevatorEncoderPosition = 19500;
 		
 		//Ramp Rate
 		public static final double elevatorRampRate = .75;

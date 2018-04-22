@@ -17,6 +17,7 @@ public class DelayedTask extends Command {
     }
     
     protected void initialize() {
+    	System.out.println("Timer Started");
     	timer.start();
     }
     

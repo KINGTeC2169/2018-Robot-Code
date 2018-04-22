@@ -89,14 +89,18 @@ public class SwitchScaleCloseAuto extends AutoMode {
         
         //Clamp block, wait 1/4 of a second and start to bring elevator up
         addSequential(new IntakeClampAction());
-        addSequential(new WaitCommand(.25));
+        addSequential(new WaitCommand(.5));
         
         //Back up to scale and stop the intakes, and wait for it to get up enough
         addSequential(new ElevatorToScaleLow());
         
         //Shoot
-        addParallel(new DelayedTask(new ArmRetract(), .5));
-        addSequential(new DelayedTask(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 3));
+        addParallel(new DelayedTask(new ArmRetract(), 1));
+        addSequential(new DelayedTask(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 2), 4);
+        
+        //Back up and bring down the elevator
+        addParallel(new DelayedTask(new ElevatorToGround(), 2));
+        addSequential(new DriveStraight(-24, .5));
         
         //Stop Timer
         addSequential(new StopTimer(time));

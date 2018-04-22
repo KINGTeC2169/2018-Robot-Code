@@ -7,6 +7,7 @@ import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.DelayedTask;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
+import com.team2169.robot.auto.tasks.drive.TurnInPlace;
 import com.team2169.robot.auto.tasks.intake.IntakeExhaust;
 
 public class DriveForwardAuto extends AutoMode {
@@ -16,10 +17,9 @@ public class DriveForwardAuto extends AutoMode {
 		RobotStates.runningMode = RunningMode.AUTO;
 		this.autoName = "Drive Forward";
 		
-        addParallel(new DelayedTask(new ArmRetract(), .5));
-        addSequential(new DelayedTask(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 3));
+		addSequential(new DriveStraight(100, .5));
+		//addSequential(new TurnInPlace(90, 1));
 		
-		addSequential(new DriveStraight(120, .5));
     }
 
     // Put looping checks/code in here

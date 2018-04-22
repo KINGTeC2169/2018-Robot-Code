@@ -83,26 +83,33 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         
         //Start running intake in and bring the arm down
         addParallel(new ArmExtend());
-        addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
+        addSequential(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
         //Drive to block
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 2);
         
         //Clamp block, wait 1/4 of a second and start to bring elevator up
         addSequential(new IntakeClampAction());
-        addSequential(new WaitCommand(.25));
+        addSequential(new WaitCommand(.75));
         
         //Back up to scale and stop the intakes
         addParallel(new ElevatorToScaleHigh());
-        addParallel(new DelayedTask(new ArmRetract(), 2));
+        addParallel(new DelayedTask(new ArmRetract(), .5));
         addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed,false));
         addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.5), 3);
 
         //Turn to the scale
-        addParallel(new IntakePin());
         addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 1.25);        //
         
         //Extend the arm, wait for it to go down, and shoot
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 1);
+        
+        //Turn around and bring the elevator down
+        addParallel(new DelayedTask(new ElevatorToGround(), 2));
+        addParallel(new IntakeOpen());
+        addSequential(new DriveStraight(-12, .5));
+        addSequential(new TurnInPlace(180, 1));
+        
+        
         addSequential(new StopTimer(time));
     }
 	
