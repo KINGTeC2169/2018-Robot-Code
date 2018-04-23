@@ -17,6 +17,7 @@ import com.team2169.robot.auto.modes.oneBlock.center.SwitchAuto;
 import com.team2169.robot.auto.modes.oneBlock.side.OneBlockScaleCloseAuto;
 import com.team2169.robot.auto.modes.oneBlock.side.OneBlockScaleFarAuto;
 import com.team2169.robot.auto.modes.oneBlock.side.SwitchCloseAuto;
+import com.team2169.robot.auto.modes.oneBlock.side.SwitchFarAuto;
 import com.team2169.robot.auto.modes.twoBlock.center.TwoBlockSwitchAuto;
 import com.team2169.robot.auto.modes.twoBlock.side.SwitchScaleCloseAuto;
 import com.team2169.robot.auto.modes.twoBlock.side.SwitchScaleFarAuto;
@@ -207,7 +208,10 @@ public class AutoManager {
 					else if (interpreter.nearSwitchPos == Possesion.FAR) {
 						// Check the yield to see if we can access the scale and check if we have the
 						// scale
-						if (doScale) {
+						if(yield == Yield.NONE) {
+							auto = new SwitchFarAuto(position);
+						}
+						else if (doScale) {
 							// We have the scale and we have clearance to use it
 							if (interpreter.scalePos == Possesion.CLOSE && yield != Yield.ALL_SCALE) {
 

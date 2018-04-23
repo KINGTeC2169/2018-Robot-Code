@@ -120,27 +120,28 @@ public class AutoConstants {
 
 		// Left Switch
 		public static class OneBlock {
-			public static double intakeSpeed = .3;
+			public static double intakeSpeed = .5;
 			public static double intakeInSpeed = .5;
 
-			public static class Left{
-				public static double startToPoint = 27;
-				public static double pointToSwitchTurn = -55;
-				public static double pointToPoint2 = 78;
-				public static double pointToSwitch = 24;
-			}
 			public static class Right{
 				public static double startToPoint = 27;
+				public static double pointToSwitchTurn = -55;
+				public static double pointToPoint2 = 50;
+				public static double pointToSwitch = 41;
+			}
+			public static class Left{
+				public static double startToPoint = 27;
 				public static double pointToSwitchTurn = 55;
-				public static double pointToPoint2 = 60;
-				public static double pointToSwitch = 35;
+				public static double pointToPoint2 = 80;
+				public static double pointToSwitch = 25;
 			}
 		}
 		
 		public static class TwoBlock {
+			
 			public static double switchToPoint = -70;
 			public static double pointToPileTurn = 45;
-			public static double pointToPile = 59;
+			public static double pointToPile = 52;
 		}
 
 	}

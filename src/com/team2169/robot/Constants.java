@@ -125,7 +125,7 @@ public class Constants {
 	//Arm
 
 		public static int extendedArmEncoderPosition = 530;
-		public static int retractedArmEncoderPosition = 400;
+		public static int retractedArmEncoderPosition = 370;
 		public static int stowArmEncoderPosition = 340;
 		
 		//Arm TalonConfig Data	
