@@ -5,6 +5,8 @@ import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 
+import edu.wpi.first.wpilibj.command.WaitCommand;
+
 public class DriveForwardAuto extends AutoMode {
 
     public DriveForwardAuto() {
@@ -12,7 +14,8 @@ public class DriveForwardAuto extends AutoMode {
 		RobotStates.runningMode = RunningMode.AUTO;
 		this.autoName = "Drive Forward";
 		
-		addSequential(new DriveStraight(100, .5));
+		addSequential(new WaitCommand(10));
+		addSequential(new DriveStraight(110, 1));
 		//addSequential(new TurnInPlace(90, 1));
 		
     }

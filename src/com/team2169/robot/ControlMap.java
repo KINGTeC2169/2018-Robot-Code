@@ -34,6 +34,8 @@ public class ControlMap {
 	private static int bMacroScaleMid = 4;
 	private static int bMacroScaleHigh = 5;
 	private static int bMacroHang = 6;
+	
+	public static int operatorBlockRelease = 1;
 
 	// Intake Keys
 	private static int operatorAxis = 1;
@@ -178,6 +180,10 @@ public class ControlMap {
 		return operator.getRawButton(resetElevatorButton);
 	}
 
+	public static boolean releaseBlock() {
+		return intakeStick.getRawButton(operatorBlockRelease);
+	}
+	
 	static void getOperatorStickState() {
 
 		if (operator.getRawButton(elevatorOverrideButton)) {

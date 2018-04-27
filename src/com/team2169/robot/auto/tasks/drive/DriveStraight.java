@@ -28,9 +28,9 @@ public class DriveStraight extends Task {
     	j = 0;
     	k = 0;
     	RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
-        directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
         desiredEncoderTicks = (int) (inches /  (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
         desiredEncoderTicks += 400;
+        directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
         drive = DriveTrain.getInstance();
         speed = speed_;   
     }
@@ -68,21 +68,20 @@ public class DriveStraight extends Task {
     protected void execute() {
 
     	//Wait 10 loops to verify encoder didn't retain old value.  If you have more than 10 loops, execute as normal.
-    	if(i > 10) {
-
-	        leftError = desiredEncoderTicks - drive.left.getSelectedSensorPosition(0);
-	        rightError = desiredEncoderTicks - drive.right.getSelectedSensorPosition(0);
-	        double leftOutput = 0;
-	        double rightOutput = 0;
-	        leftOutput = (getDesiredSpeed(leftError) - getAngleCorrection()) * directionFactor;
-	        rightOutput = (getDesiredSpeed(rightError) + getAngleCorrection()) * directionFactor;
-	        SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
-	        SmartDashboard.putNumber("Left DT Error", leftError);
-	        SmartDashboard.putNumber("Right DT Error", rightError);
-	        drive.left.set(ControlMode.PercentOutput, leftOutput);
-	        drive.right.set(ControlMode.PercentOutput, rightOutput);
-	        
-
+    	if(i > 2) {
+        		leftError = desiredEncoderTicks - (drive.left.getSelectedSensorPosition(0));
+     	        rightError = desiredEncoderTicks - (drive.right.getSelectedSensorPosition(0));
+     	        double leftOutput = 0;
+     	        double rightOutput = 0;
+     	        leftOutput = (speed - getAngleCorrection()) * directionFactor;
+     	        rightOutput = ((speed) + getAngleCorrection()) * directionFactor;
+     	        SmartDashboard.putNumber("Dir Factor", directionFactor);
+     	        SmartDashboard.putNumber("DS Angle Correction", getAngleCorrection());
+     	        SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
+     	        SmartDashboard.putNumber("Left DT Error", leftError);
+     	        SmartDashboard.putNumber("Right DT Error", rightError);
+     	        drive.left.set(ControlMode.PercentOutput, leftOutput);
+     	        drive.right.set(ControlMode.PercentOutput, rightOutput);
     	}
     	
     	i++;
@@ -113,16 +112,18 @@ public class DriveStraight extends Task {
     public boolean distanceFinished() {
     	
     	//If either encoder has hit the point, stop.  This is because red/orange encoders don't read as many ticks, so they overshoot.
-    	if(Math.abs(leftError) < 750 || Math.abs(rightError) < 750 ) {
+    	System.out.println("L: " + leftError);
+    	System.out.println("R: " + rightError);
+    	if(Math.abs(leftError) < 800 || Math.abs(rightError) < 800 ) {
     		j++;
-    	}
-    	else {
-    		j = 0;
+    	} else {
+    		j = 1;
     	}
     	
-    	return j > 12;
+    	return j > 3;
     }
     
+   		
     private double getAngleCorrection() {
         return Constants.driveTrainAngleCorrectionP * getAngleError();
     }
@@ -134,8 +135,13 @@ public class DriveStraight extends Task {
     }
 
     protected void end() {
-    	System.out.println("DONE DRIVING");
-        drive.left.setNeutralMode(NeutralMode.Brake);
+    	if(directionFactor == -1) {
+    		System.out.println("DONE DRIVING BACKWARD");	
+    	}
+    	else {
+    		System.out.println("DONE DRIVING");	
+    	}
+    	drive.left.setNeutralMode(NeutralMode.Brake);
         drive.right.setNeutralMode(NeutralMode.Brake);	
         drive.left.set(ControlMode.PercentOutput, 0);
         drive.right.set(ControlMode.PercentOutput, 0);

@@ -49,36 +49,43 @@ public class Intake extends Subsystem {
                 intakeManual(0);
                 RobotStates.intakeMode = IntakeMode.IDLE;
                 break;
+                
+            case MANUAL:
+            	
+            	//If the intake is being actively controlled, follow driver's instructions
+            	if(ControlMap.releaseBlock()) {
+            		intakeManual(-Constants.intakeReleaseVoltage/12.0);
+            	}
+            	else {
+            		if(Math.abs(ControlMap.intakeAmount()) >= ControlMap.operatorDeadband){
+                		intakeManual(ControlMap.intakeAmount());
+                	}
+                	else if(lastIntook) {
+                		intakeManual(Constants.intakeHoldVoltage/12.0);
+                	}
+                	else {
+                		intakeManual(0);
+                	}
+                	
+                	if(ControlMap.intakeAmount() >= ControlMap.operatorDeadband) {
+                		lastIntook = true;
+                	}
+                	else if(ControlMap.intakeAmount() <= -ControlMap.operatorDeadband) {
+                		lastIntook = false;
+                	}
+                	//Otherwise, provide 2v of negative power to hold in block
 
+            	}
+            	
+            	
+            	break;
+            	
             case PIN:
             	
             	intakeManual(Constants.intakeHoldVoltage/12.0);
                 RobotStates.intakeMode = IntakeMode.PIN;
             	break;
-                
-            case MANUAL:
-            	
-            	//If the intake is being actively controlled, follow driver's instructions
-            	if(Math.abs(ControlMap.intakeAmount()) >= ControlMap.operatorDeadband){
-            		intakeManual(ControlMap.intakeAmount());
-            	}
-            	else if(lastIntook) {
-            		intakeManual(Constants.intakeHoldVoltage/12.0);
-            	}
-            	else {
-            		intakeManual(0);
-            	}
-            	
-            	if(ControlMap.intakeAmount() >= ControlMap.operatorDeadband) {
-            		lastIntook = true;
-            	}
-            	else if(ControlMap.intakeAmount() <= -ControlMap.operatorDeadband) {
-            		lastIntook = false;
-            	}
-            	//Otherwise, provide 2v of negative power to hold in block
-
-            	
-            	break;
+                	
             	
             case INTAKE:
             	lastIntook = true;

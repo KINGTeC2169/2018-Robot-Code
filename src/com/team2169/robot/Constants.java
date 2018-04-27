@@ -24,11 +24,11 @@ public class Constants {
 			public static final int camera1Height = 320;
 
 			// Camera2
-			public static final String camera2Name = "Camera 2 Name";
+			public static final String camera2Name = "Scale Cam";
 			public static final int camera2ID = 1;
 			public static final int camera2FPS = 0;
-			public static final int camera2Width = 640;
-			public static final int camera2Height = 480;
+			public static final int camera2Width = 489;
+			public static final int camera2Height = 320;
 
 			// Camera3
 			public static final String camera3Name = "Camera 3 Name";
@@ -124,9 +124,9 @@ public class Constants {
 		
 	//Arm
 
-		public static int extendedArmEncoderPosition = 530;
-		public static int retractedArmEncoderPosition = 370;
-		public static int stowArmEncoderPosition = 340;
+		public static int extendedArmEncoderPosition = 840;
+		public static int retractedArmEncoderPosition = 715;
+		public static int stowArmEncoderPosition = 215;
 		
 		//Arm TalonConfig Data	
 		public static TalonConfig armData = new TalonConfig();
@@ -148,12 +148,14 @@ public class Constants {
 	//Intake
 		
 		public static final double intakeHoldVoltage = 3;
+		public static final double intakeReleaseVoltage = 3;
 		public static double intakeSpeed = .5;
 		
 		
 	//Climber
 		
 		public static final double hookDeploySpeed = .5;
+		
 		
 
 }
