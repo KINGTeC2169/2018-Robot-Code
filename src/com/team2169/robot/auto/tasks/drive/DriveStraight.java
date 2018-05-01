@@ -88,7 +88,8 @@ public class DriveStraight extends Task {
     	
     }
 
-    private double getDesiredSpeed(double error) {
+    @SuppressWarnings("unused")
+	private double getDesiredSpeed(double error) {
     	
     	//Cap PID output
     	double p = Constants.driveStraightP * error;

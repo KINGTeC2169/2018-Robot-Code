@@ -15,7 +15,7 @@ public class DriveForwardAuto extends AutoMode {
 		this.autoName = "Drive Forward";
 		
 		addSequential(new WaitCommand(10));
-		addSequential(new DriveStraight(110, 1));
+		addSequential(new DriveStraight(103, 1));
 		//addSequential(new TurnInPlace(90, 1));
 		
     }
