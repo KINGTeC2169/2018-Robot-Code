@@ -52,5 +52,6 @@ public class ActuatorMap {
     public static final int intakeUltrasonicOutputPort = 1;
     public static final int elevatorBottomLimitID = 2;
     public static final int elevatorTopLimitID = 3;
+	public static final int armEncoderPort = 4;
 
 }

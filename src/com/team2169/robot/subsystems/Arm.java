@@ -3,14 +3,13 @@ package com.team2169.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.ArmPos;
 import com.team2169.robot.auto.tasks.arm.ArmPID;
 import com.team2169.util.TalonMaker;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
@@ -25,18 +24,18 @@ public class Arm {
 	}
 
 	// Create Talons
+	
+	private AnalogInput enc;
 	public TalonSRX arm;
-	public int lastPosition;
-	Timer timer;
-	ArmPID armPID;
+	private int lastPosition;
+	private ArmPID armPID;
 
 	public Arm() {
 
-		//Create Talon
-		timer = new Timer();
 		// Define Lift Talons
 		arm = new TalonSRX(ActuatorMap.armID);
 		arm = prepArmTalon(arm);
+		enc = new AnalogInput(ActuatorMap.armEncoderPort);
 		
 		//Wait 20ms to let the encoder catch up
 		try {
@@ -82,6 +81,10 @@ public class Arm {
 
 	}
 
+	public int getEncPosition() {
+		return enc.getValue();
+	}
+	
 	private void runToPosition(int pos) {
 		armPID.loop();
 		armPID.setDesiredPosition(pos);
@@ -112,8 +115,7 @@ public class Arm {
 		
 		Constants.setArmDataFromConstants();
 		talon = TalonMaker.prepTalon(arm, Constants.armData);
-		talon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
-		talon.setStatusFramePeriod(StatusFrame.Status_1_General, 5, 10);
+		talon.configSelectedFeedbackSensor(FeedbackDevice.None, 0, 10);
 		talon.setNeutralMode(NeutralMode.Brake);
 		return talon;
 		
