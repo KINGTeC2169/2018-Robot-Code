@@ -8,6 +8,7 @@ import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.tasks.Task;
 import com.team2169.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnInPlace extends Task {
@@ -68,7 +69,7 @@ public class TurnInPlace extends Task {
 			i = 0;
 		}
 
-		return i > 20;
+		return i > 5;
 
 	}
 
@@ -82,6 +83,7 @@ public class TurnInPlace extends Task {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private double getMotorOutput(boolean left) {
 
 		// Get PID value
@@ -96,18 +98,25 @@ public class TurnInPlace extends Task {
 		// Max. Error Speed Capping
 		if (Math.abs(num) >= Constants.turnMaxError) {
 			num = Constants.turnMaxSpeed * dir;
+			System.out.println("FULL SPEED");
 		} else {
 			// Zero Speed
 			if (Math.abs(num) <= Constants.turnZeroError) {
 				num = 0;
+				System.out.println("STOPPED");
 			}
 			// Not in Zero Speed, check if below minimum speed
 			else if (Math.abs(num) <= Constants.turnMinError) {
-				num = Constants.turnMinSpeed * dir;
+				//num = Constants.turnMinSpeed * dir;
+				num = num * .0095 * (14-DriverStation.getInstance().getBatteryVoltage());
+				System.out.println("PID: "+ num);
 			}
 			// We're on the curve. Use that C U R V E
 			else {
+
 				num = ((Math.abs(num) * slope) + intercept) * dir;
+				System.out.println("RAMPING: " + num);
+				
 			}
 		}
 

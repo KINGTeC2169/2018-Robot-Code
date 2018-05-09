@@ -62,11 +62,11 @@ public class Constants {
 		public static final int driveTrainCurrentTimeout = 5;
 		
 		//Turn-In-Place data
-		public static double turnMaxError = 50;
+		public static double turnMaxError = 30;
 		public static double turnMinError = 10;
 		public static double turnZeroError = 2;
-		public static double turnMaxSpeed = .6;
-		public static double turnMinSpeed = .12;
+		public static double turnMaxSpeed = .4;
+		public static double turnMinSpeed = .075;
 		public static double TurnTestAngle = 90;
 		
 		//Turn-In-Place PID
@@ -124,8 +124,8 @@ public class Constants {
 		
 	//Arm
 
-		public static int extendedArmEncoderPosition = 70;
-		public static int retractedArmEncoderPosition = -60;
+		public static int extendedArmEncoderPosition = 3930;
+		public static int retractedArmEncoderPosition = extendedArmEncoderPosition - 600;
 		public static int stowArmEncoderPosition = 215;
 		
 		//Arm TalonConfig Data	
@@ -135,12 +135,12 @@ public class Constants {
 			armData.pidLoopIDx = 0;
 			armData.timeoutMs = 10;
 			armData.allowedError = 10;
-			armData.p = .01;
+			armData.p = 0.01;
 			armData.i = 0;
 			armData.d = 0;
-			armData.f = .0001;
+			armData.f = 0;
 			armData.zero = false;
-			armData.encoderType = FeedbackDevice.Analog;
+			armData.encoderType = FeedbackDevice.None;
 			armData.sensorPhase = false;
 
 		}

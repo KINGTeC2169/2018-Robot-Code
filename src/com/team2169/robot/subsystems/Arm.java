@@ -10,7 +10,6 @@ import com.team2169.robot.auto.tasks.arm.ArmPID;
 import com.team2169.util.TalonMaker;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Arm {
 	
@@ -37,6 +36,7 @@ public class Arm {
 		arm = prepArmTalon(arm);
 		enc = new AnalogInput(ActuatorMap.armEncoderPort);
 		
+		
 		//Wait 20ms to let the encoder catch up
 		try {
 			Thread.sleep(20);
@@ -49,7 +49,7 @@ public class Arm {
 	}
 
 	public void armMacroLooper() {
-
+		
 		// Set robot's actual state to WantedState's value
 		switch (RobotWantedStates.wantedArmPos) {
 		case STOW:
@@ -88,7 +88,7 @@ public class Arm {
 	private void runToPosition(int pos) {
 		armPID.loop();
 		armPID.setDesiredPosition(pos);
-		lastPosition = arm.getSelectedSensorPosition(0);
+		lastPosition = armPID.getPosition();
 	}
 	
 	private void holdInPosition() {
@@ -98,13 +98,11 @@ public class Arm {
 	
 	private void armSetOverrideLooper(double joystickValue) {
 		arm.set(ControlMode.PercentOutput, joystickValue);
-		lastPosition = arm.getSelectedSensorPosition(0);
+		lastPosition = armPID.getPosition();
 	}
 	
 	public void pushToDashboard() {
-		SmartDashboard.putNumber("Arm Position", arm.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Arm Position Modulo: ", arm.getSelectedSensorPosition(0) % 1023);
-		SmartDashboard.putString("Arm State", RobotWantedStates.wantedArmPos.name());
+		armPID.printToDashoard();
 	}
 
 	public void stop() {

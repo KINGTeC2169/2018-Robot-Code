@@ -16,11 +16,11 @@ public class ActuatorMap {
     // Elevator TalonSRX IDs
     public static final int elevatorMasterID = 7;
     public static final int elevatorSlaveID = 6;
-    public static final int armID = 10;
+    public static final int armID = 9;
 
     // Intake TalonSRX IDs
     public static final int leftIntakeID = 8;
-    public static final int rightIntakeID = 9;
+    public static final int rightIntakeID = 10;
     
 	public static final int hookDeplyID = 11;
 
@@ -30,7 +30,7 @@ public class ActuatorMap {
 
     // Intake Piston
     public static final int clampPortForward = 5;
-    public static final int clampPortReverse = 4;
+    public static final int clampPortReverse = 7;
 
     // Drive Train Shifting
     public static final int dtSpeedShiftForward = 1;
@@ -52,6 +52,6 @@ public class ActuatorMap {
     public static final int intakeUltrasonicOutputPort = 1;
     public static final int elevatorBottomLimitID = 2;
     public static final int elevatorTopLimitID = 3;
-	public static final int armEncoderPort = 4;
+	public static final int armEncoderPort = 2;
 
 }

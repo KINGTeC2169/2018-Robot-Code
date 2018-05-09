@@ -12,143 +12,136 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveStraight extends Task {
 
-    private int desiredEncoderTicks;
-    private double initialAngle;
-    private DriveTrain drive;
-    private int i;
-    private int k;
-    private int j = 0;
-    private double speed;
-    private int directionFactor;
-    private double leftError = 0;
-    private double rightError = 0;
+	private int desiredEncoderTicks;
+	private double initialAngle;
+	private DriveTrain drive;
+	private int i;
+	private int k;
+	private int j = 0;
+	private double speed;
+	private int directionFactor;
+	private double leftError = 0;
+	private double rightError = 0;
 
-    public DriveStraight(double inches, double speed_) {
-    	i = 0;
-    	j = 0;
-    	k = 0;
-    	RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
-        desiredEncoderTicks = (int) (inches /  (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
-        desiredEncoderTicks += 400;
-        directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
-        drive = DriveTrain.getInstance();
-        speed = speed_;   
-    }
+	public DriveStraight(double inches, double speed_) {
+		i = 0;
+		j = 0;
+		k = 0;
+		RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
+		directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
+		desiredEncoderTicks = (int) (inches / (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
+		desiredEncoderTicks += 400;
+		drive = DriveTrain.getInstance();
+		speed = speed_;
+	}
 
-    protected void initialize() {
-    	k = 0;
-        RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
-        drive.left.setSelectedSensorPosition(0, 0, 10);
-        drive.right.setSelectedSensorPosition(0, 0, 10);
-        drive.navX.reset();
-        initialAngle = drive.navX.getAngle();
-        i = 0;
-        
-        //Verify that the encoder actually zeroed and didn't jump back to original value
-        while((i < 5) || k > 100) {
+	protected void initialize() {
+		k = 0;
+		RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
+		drive.left.setSelectedSensorPosition(0, 0, 10);
+		drive.right.setSelectedSensorPosition(0, 0, 10);
+		drive.navX.reset();
+		initialAngle = drive.navX.getAngle();
+		i = 0;
 
-        	if(((Math.abs(drive.left.getSelectedSensorPosition(0)) <= 50) || drive.left.getSelectedSensorPosition(0) == 0)
-        			&& ((Math.abs(drive.right.getSelectedSensorPosition(0)) <= 50) || drive.right.getSelectedSensorPosition(0) == 0)) {
-        		i++;
-        	}
-        	else {
-        		
- 
-        		i = 0;
-        		
-        	}
-        	k++;
-        	//System.out.println("Loop Count: " + k);
-        }
-        //System.out.println("Total Loops: " + k);
-        i = 0;
-    	
-    }
+		// Verify that the encoder actually zeroed and didn't jump back to original
+		// value
+		while ((i < 5) || k > 100) {
 
-    protected void execute() {
+			if (((Math.abs(drive.left.getSelectedSensorPosition(0)) <= 50)
+					|| drive.left.getSelectedSensorPosition(0) == 0)
+					&& ((Math.abs(drive.right.getSelectedSensorPosition(0)) <= 50)
+							|| drive.right.getSelectedSensorPosition(0) == 0)) {
+				i++;
+			} else {
 
-    	//Wait 10 loops to verify encoder didn't retain old value.  If you have more than 10 loops, execute as normal.
-    	if(i > 2) {
-        		leftError = desiredEncoderTicks - (drive.left.getSelectedSensorPosition(0));
-     	        rightError = desiredEncoderTicks - (drive.right.getSelectedSensorPosition(0));
-     	        double leftOutput = 0;
-     	        double rightOutput = 0;
-     	        leftOutput = (speed - getAngleCorrection()) * directionFactor;
-     	        rightOutput = ((speed) + getAngleCorrection()) * directionFactor;
-     	        SmartDashboard.putNumber("Dir Factor", directionFactor);
-     	        SmartDashboard.putNumber("DS Angle Correction", getAngleCorrection());
-     	        SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
-     	        SmartDashboard.putNumber("Left DT Error", leftError);
-     	        SmartDashboard.putNumber("Right DT Error", rightError);
-     	        drive.left.set(ControlMode.PercentOutput, leftOutput);
-     	        drive.right.set(ControlMode.PercentOutput, rightOutput);
-    	}
-    	
-    	i++;
-    	
-    }
+				i = 0;
 
-    @SuppressWarnings("unused")
+			}
+			k++;
+			// System.out.println("Loop Count: " + k);
+		}
+		// System.out.println("Total Loops: " + k);
+		i = 0;
+
+	}
+
+	protected void execute() {
+
+		// Wait 10 loops to verify encoder didn't retain old value. If you have more
+		// than 10 loops, execute as normal.
+		if (i > 10) {
+
+			leftError = desiredEncoderTicks - drive.left.getSelectedSensorPosition(0);
+			rightError = desiredEncoderTicks - drive.right.getSelectedSensorPosition(0);
+			double leftOutput = 0;
+			double rightOutput = 0;
+			leftOutput = (getDesiredSpeed(leftError) - getAngleCorrection()) * directionFactor;
+			rightOutput = (getDesiredSpeed(rightError) + getAngleCorrection()) * directionFactor;
+			SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
+			SmartDashboard.putNumber("Left DT Error", leftError);
+			SmartDashboard.putNumber("Right DT Error", rightError);
+			drive.left.set(ControlMode.PercentOutput, leftOutput);
+			drive.right.set(ControlMode.PercentOutput, rightOutput);
+
+		}
+
+		i++;
+
+	}
+
 	private double getDesiredSpeed(double error) {
-    	
-    	//Cap PID output
-    	double p = Constants.driveStraightP * error;
-        if(p > speed) {
-        	return speed;
-        }
-        else if(-p < -speed) {
-        	return -speed;
-        }
-        
-        return p;
-    	
+
+		// Cap PID output
+		double p = Constants.driveStraightP * error;
+		if (p > speed) {
+			return speed;
+		} else if (-p < -speed) {
+			return -speed;
+		}
+
+		return p;
+
 	}
 
 	@Override
-    protected boolean isFinished() {
-        boolean finished = distanceFinished() || this.isTimedOut();
-        return finished;
-    }
+	protected boolean isFinished() {
+		boolean finished = distanceFinished() || this.isTimedOut();
+		return finished;
+	}
 
-    public boolean distanceFinished() {
-    	
-    	//If either encoder has hit the point, stop.  This is because red/orange encoders don't read as many ticks, so they overshoot.
-    	System.out.println("L: " + leftError);
-    	System.out.println("R: " + rightError);
-    	if(Math.abs(leftError) < 800 || Math.abs(rightError) < 800 ) {
-    		j++;
-    	} else {
-    		j = 1;
-    	}
-    	
-    	return j > 3;
-    }
-    
-   		
-    private double getAngleCorrection() {
-        return Constants.driveTrainAngleCorrectionP * getAngleError();
-    }
+	public boolean distanceFinished() {
 
-    private double getAngleError() {
-        double error = initialAngle - drive.getAngle();
-        SmartDashboard.putNumber("Angle Error", error);
-        return error;
-    }
+		// If either encoder has hit the point, stop. This is because red/orange
+		// encoders don't read as many ticks, so they overshoot.
+		if (Math.abs(leftError) < 750 || Math.abs(rightError) < 750) {
+			j++;
+		} else {
+			j = 0;
+		}
 
-    protected void end() {
-    	if(directionFactor == -1) {
-    		System.out.println("DONE DRIVING BACKWARD");	
-    	}
-    	else {
-    		System.out.println("DONE DRIVING");	
-    	}
-    	drive.left.setNeutralMode(NeutralMode.Brake);
-        drive.right.setNeutralMode(NeutralMode.Brake);	
-        drive.left.set(ControlMode.PercentOutput, 0);
-        drive.right.set(ControlMode.PercentOutput, 0);
-    }
+		return j > 12;
+	}
 
-    protected void interrupted() {
-        end();
-    }
+	private double getAngleCorrection() {
+		return Constants.driveTrainAngleCorrectionP * getAngleError();
+	}
+
+	private double getAngleError() {
+		double error = initialAngle - drive.getAngle();
+		SmartDashboard.putNumber("Angle Error", error);
+		return error;
+	}
+
+	protected void end() {
+		System.out.println("DONE DRIVING");
+		drive.left.setNeutralMode(NeutralMode.Brake);
+		drive.right.setNeutralMode(NeutralMode.Brake);
+		drive.left.set(ControlMode.PercentOutput, 0);
+		drive.right.set(ControlMode.PercentOutput, 0);
+	}
+
+	protected void interrupted() {
+		end();
+	}
 }

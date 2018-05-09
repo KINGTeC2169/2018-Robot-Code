@@ -7,6 +7,8 @@ import com.team2169.robot.RobotStates.IntakeMode;
 import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.RobotWantedStates;
 import com.team2169.robot.StateManager;
+import com.team2169.util.DataSelector;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -39,6 +41,8 @@ public class Superstructure {
 
     public void robotInit() {
 
+    	DataSelector.pushValues();
+    	
         if (RobotStates.debugMode) {
             DriverStation.reportWarning("Starting Superstructure Init", false);
         }
@@ -64,6 +68,9 @@ public class Superstructure {
     }
 
     public void subsystemLooper() {
+    	
+    	DataSelector.looper();
+    	
         drive.driveHandler();
         intake.intakeHandler();
         liftArm.elevatorArmHandler();
