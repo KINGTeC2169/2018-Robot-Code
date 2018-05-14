@@ -30,7 +30,7 @@ public class DriveStraight extends Task {
 		RobotWantedStates.wantedDriveType = DriveType.EXTERNAL_DRIVING;
 		directionFactor = (desiredEncoderTicks >= 0) ? -1 : 1;
 		desiredEncoderTicks = (int) (inches / (Constants.wheelDiameter * Math.PI) * Constants.ticksPerRotation);
-		desiredEncoderTicks += 400;
+		desiredEncoderTicks += 600;
 		drive = DriveTrain.getInstance();
 		speed = speed_;
 	}
@@ -77,7 +77,9 @@ public class DriveStraight extends Task {
 			double leftOutput = 0;
 			double rightOutput = 0;
 			leftOutput = (getDesiredSpeed(leftError) - getAngleCorrection()) * directionFactor;
-			rightOutput = (getDesiredSpeed(rightError) + getAngleCorrection()) * directionFactor;
+			rightOutput = (getDesiredSpeed(leftError) + getAngleCorrection()) * directionFactor;
+			SmartDashboard.putNumber("Left Output", leftOutput);
+			SmartDashboard.putNumber("Right Output", rightOutput);
 			SmartDashboard.putNumber("Desired Ticks", desiredEncoderTicks);
 			SmartDashboard.putNumber("Left DT Error", leftError);
 			SmartDashboard.putNumber("Right DT Error", rightError);
@@ -106,21 +108,26 @@ public class DriveStraight extends Task {
 
 	@Override
 	protected boolean isFinished() {
-		boolean finished = distanceFinished() || this.isTimedOut();
-		return finished;
+		if (i > 10) {
+			boolean finished = distanceFinished() || this.isTimedOut();
+			return finished;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public boolean distanceFinished() {
 
 		// If either encoder has hit the point, stop. This is because red/orange
 		// encoders don't read as many ticks, so they overshoot.
-		if (Math.abs(leftError) < 750 || Math.abs(rightError) < 750) {
+		if (Math.abs(leftError) < 750) {
 			j++;
 		} else {
 			j = 0;
 		}
 
-		return j > 12;
+		return j > 1;
 	}
 
 	private double getAngleCorrection() {

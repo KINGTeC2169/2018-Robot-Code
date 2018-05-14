@@ -6,6 +6,7 @@ import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.DelayedTask;
+import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
@@ -62,14 +63,14 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.startToPoint, 1));
         
         //Turn in place
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2Turn, 0.5, inversion));
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2Turn, 1, inversion));
         
         //Drive Straight to the second point
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.pointToPoint2, 1));
         
         //Bring up elevator and turn to the scale
         addParallel(new ElevatorToScaleHigh());
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScaleTurn, 0.5, inversion));
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScaleTurn, 1, inversion));
         
         //Drive to scale and outake block
         addSequential(new DriveStraight(AutoConstants.SideAutos.OneBlockAutos.FarScale.point2ToScale, .5));
@@ -77,6 +78,7 @@ public class TwoBlockScaleFarAuto extends AutoMode {
         
         //Turn around and bring the elevator down
         addParallel(new DelayedTask(new ElevatorToGround(), 1));
+        addParallel(new DelayedTask(new ArmExtend(), 1));
         addParallel(new IntakeOpen());
         addSequential(new DriveStraight(-12, .5));
         addSequential(new TurnInPlace(180, 1));

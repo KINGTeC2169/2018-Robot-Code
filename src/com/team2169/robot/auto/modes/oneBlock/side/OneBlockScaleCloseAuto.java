@@ -70,13 +70,13 @@ public class OneBlockScaleCloseAuto extends AutoMode {
 
         //Exhaust (shoot) and then open 
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.OneBlockAutos.CloseScale.intakeSpeed, true), 0.3);
-        addSequential(new IntakeOpen(), 0.5);
+        //addSequential(new IntakeOpen(), 0.5);
         
         //Turn around and bring the elevator down
         addParallel(new DelayedTask(new ElevatorToGround(), 2));
         addParallel(new IntakeOpen());
         addSequential(new DriveStraight(-12, .5));
-        addSequential(new TurnInPlace(180, 1));
+        addSequential(new TurnInPlace(100, 1));
 
         //Stop Timer
         addSequential(new StopTimer(time));

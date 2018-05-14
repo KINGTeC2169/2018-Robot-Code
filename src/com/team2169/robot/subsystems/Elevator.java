@@ -168,7 +168,6 @@ public class Elevator {
 	//Elevator PID Setter
 	private void setPID(ElevatorDirection direction) {
 
-		System.out.println("Setting PID");
 		// Going Down
 		if (direction == ElevatorDirection.DOWN) {
 			elevator.config_kP(0, Constants.elevatorDownData.p, 10);

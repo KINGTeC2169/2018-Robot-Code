@@ -60,8 +60,8 @@ public class AutoConstants {
 			public static class CloseScale {
 				public static double startToPoint = 256;
 				public static double pointToScaleTurn = 50;
-				public static double pointToScale = 17;
-				public static double intakeSpeed = .3;
+				public static double pointToScale = 24;
+				public static double intakeSpeed = .5;
 				public static double intakeInSpeed = .5;
 				
 				public static class ScaleSwitchClose {
@@ -73,7 +73,7 @@ public class AutoConstants {
 				public static double startToPoint = 210;
 				public static double pointToPoint2Turn = 90;
 				public static double pointToPoint2 = 236;
-				public static double point2ToScaleTurn = -95;
+				public static double point2ToScaleTurn = -105;
 				public static double point2ToScale = 65;
 				public static double intakeSpeed = .4;
 				public static double intakeInSpeed = .5;
@@ -127,13 +127,13 @@ public class AutoConstants {
 				public static double startToPoint = 27;
 				public static double pointToSwitchTurn = -55;
 				public static double pointToPoint2 = 50;
-				public static double pointToSwitch = 41;
+				public static double pointToSwitch = 35;
 			}
 			public static class Left{
 				public static double startToPoint = 27;
 				public static double pointToSwitchTurn = 55;
-				public static double pointToPoint2 = 80;
-				public static double pointToSwitch = 25;
+				public static double pointToPoint2 = 70;
+				public static double pointToSwitch = 30;
 			}
 		}
 		

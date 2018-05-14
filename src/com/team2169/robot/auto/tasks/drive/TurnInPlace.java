@@ -15,6 +15,8 @@ public class TurnInPlace extends Task {
 
 	private double angle = 0.0;
 	private int i = 0;
+	private int j = 0;
+	private boolean done;
 	private DriveTrain drive;
 	private double error;
 	private double slope;
@@ -69,7 +71,7 @@ public class TurnInPlace extends Task {
 			i = 0;
 		}
 
-		return i > 5;
+		return done || i > 5;
 
 	}
 
@@ -98,24 +100,29 @@ public class TurnInPlace extends Task {
 		// Max. Error Speed Capping
 		if (Math.abs(num) >= Constants.turnMaxError) {
 			num = Constants.turnMaxSpeed * dir;
-			System.out.println("FULL SPEED");
 		} else {
 			// Zero Speed
 			if (Math.abs(num) <= Constants.turnZeroError) {
 				num = 0;
-				System.out.println("STOPPED");
 			}
 			// Not in Zero Speed, check if below minimum speed
 			else if (Math.abs(num) <= Constants.turnMinError) {
 				//num = Constants.turnMinSpeed * dir;
 				num = num * .0095 * (14-DriverStation.getInstance().getBatteryVoltage());
-				System.out.println("PID: "+ num);
+				if(Math.abs(num) < .035) {
+					j++;
+				}
+				else {
+					j = 0;
+				}
+				if(j > 4) {
+					done = true;
+				}
 			}
 			// We're on the curve. Use that C U R V E
 			else {
 
 				num = ((Math.abs(num) * slope) + intercept) * dir;
-				System.out.println("RAMPING: " + num);
 				
 			}
 		}

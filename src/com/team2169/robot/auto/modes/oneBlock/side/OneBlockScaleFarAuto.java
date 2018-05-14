@@ -6,6 +6,7 @@ import com.team2169.robot.auto.AutoConstants;
 import com.team2169.robot.auto.AutoConstants.RobotSide;
 import com.team2169.robot.auto.modes.AutoMode;
 import com.team2169.robot.auto.tasks.DelayedTask;
+import com.team2169.robot.auto.tasks.arm.ArmExtend;
 import com.team2169.robot.auto.tasks.arm.ArmRetract;
 import com.team2169.robot.auto.tasks.drive.DriveStraight;
 import com.team2169.robot.auto.tasks.drive.TurnInPlace;
@@ -77,6 +78,7 @@ public class OneBlockScaleFarAuto extends AutoMode {
         
         //Turn around and bring the elevator down
         addParallel(new DelayedTask(new ElevatorToGround(), 1));
+        addParallel(new DelayedTask(new ArmExtend(), 1));
         addParallel(new IntakeOpen());
         addSequential(new DriveStraight(-12, .5));
         addSequential(new TurnInPlace(180, 1));

@@ -18,7 +18,6 @@ public class StopTimer extends Task {
     // Called just before this Command runs the first time
     protected void initialize() {
 
-    	System.out.println("Timer: " + timer_.get());
         timer_.stop();
 
     }

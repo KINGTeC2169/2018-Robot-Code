@@ -74,28 +74,29 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
 
         //Exhaust (shoot) and then open 
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 0.3);
-        addSequential(new IntakeOpen(), 0.5);
+        //addSequential(new IntakeOpen(), 0.5);
         
         //Turn and bring elevator to the ground to prep to pick up block
         addParallel(new ElevatorToGround());
         addParallel(new ArmExtend());
-        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion));
+        addSequential(new TurnInPlace(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 2);
         
         //Start running intake in and bring the arm down
         addParallel(new ArmExtend());
+        addParallel(new IntakeOpen());
         addSequential(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeInSpeed, false), 1);
         //Drive to block
         addSequential(new DriveStraight(AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.75), 2);
         
         //Clamp block, wait 1/4 of a second and start to bring elevator up
         addSequential(new IntakeClampAction());
-        addSequential(new WaitCommand(.75));
+        addSequential(new WaitCommand(.25));
         
         //Back up to scale and stop the intakes
         addParallel(new ElevatorToScaleHigh());
         addParallel(new DelayedTask(new ArmRetract(), .5));
         addParallel(new IntakeIn(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed,false));
-        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 0.5), 3);
+        addSequential(new DriveStraight(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlock, 1), 3);
 
         //Turn to the scale
         addSequential(new TurnInPlace(-AutoConstants.SideAutos.TwoBlockAutos.Close.pointToBlockTurn, 0.5, inversion), 1.25);        //
@@ -104,10 +105,11 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         addSequential(new IntakeExhaust(AutoConstants.SideAutos.TwoBlockAutos.Close.intakeSpeed, true), 1);
         
         //Turn around and bring the elevator down
-        addParallel(new DelayedTask(new ElevatorToGround(), 2));
+        addParallel(new DelayedTask(new ElevatorToGround(), .5));
+        addParallel(new DelayedTask(new ArmExtend(), .5));
         addParallel(new IntakeOpen());
         addSequential(new DriveStraight(-12, .5));
-        addSequential(new TurnInPlace(180, 1));
+        addSequential(new TurnInPlace(100, 1));
         
         
         addSequential(new StopTimer(time));

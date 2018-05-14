@@ -172,7 +172,6 @@ public class AutoManager {
 			auto = new DoNothing();
 		} else if (autoMode == AutoSequenceMode.NORMAL) {
 
-			System.out.println("Running a Normal Auto");
 			// Run Center Autos
 			if (position == RobotSide.CENTER) {
 				if (centPriority == CenterPriority.ONE_BLOCK) {
@@ -180,15 +179,12 @@ public class AutoManager {
 				} else if (centPriority == CenterPriority.TWO_BLOCK) {
 					auto = new TwoBlockSwitchAuto(interpreter.nearSwitchSide);
 				} else {
-					System.out.println("Line 182");
 					auto = new FailureAuto();
 				}
 			}
 
 			// Run Side Autos
 			else {
-
-				System.out.println("Position is On The Side");
 
 				// Switch Autos
 				if (preference == Preference.SWITCH) {
@@ -271,21 +267,16 @@ public class AutoManager {
 
 				// Scale Autos
 				else if (preference == Preference.SCALE) {
-					System.out.println("Scale is Perferred");
 					// Close Scale Handler
 					if (interpreter.scalePos == Possesion.CLOSE) {
-						System.out.println("Scale is Close");
 						// Check who we are yielding to, if we have access to the scale, carry on.
 						if (yield == Yield.FAR_SCALE || yield == Yield.NONE) {
-							System.out.println("No Yield");
 							// Check if drivers have asked for a switch-scale auto
 							if (sidePriority == SidePriority.SWITCH_SCALE_ONE_BLOCK
 									|| sidePriority == SidePriority.SWITCH_SCALE_TWO_BLOCK) {
-								System.out.println("Drivers Want SwitchScale Auto");
 								// Check if we have the opportunity to run a switch-scale
 								if (interpreter.nearSwitchPos == Possesion.CLOSE) {
 									// If we can, set that as our auto
-									System.out.println("We can run a SwitchScale Auto");
 									auto = new SwitchScaleCloseAuto(position);
 								}
 
@@ -301,7 +292,6 @@ public class AutoManager {
 
 							// Check if priority is One Block Scale auto, and run that.
 							if (sidePriority == SidePriority.ONE_SCALE) {
-								System.out.println("Running OneBlockScaleAutoClose");
 								auto = new OneBlockScaleCloseAuto(position);
 							}
 
@@ -372,12 +362,10 @@ public class AutoManager {
 						}
 					}
 				} else {
-					System.out.println("Line 373");
 					auto = new FailureAuto();
 				}
 			}
 		} else {
-			System.out.println("Line 378");
 			auto = new FailureAuto();
 		}
 	}
