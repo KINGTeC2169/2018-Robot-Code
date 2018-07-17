@@ -8,6 +8,8 @@ import com.team2169.robot.*;
 import com.team2169.robot.RobotStates.DriveMode;
 import com.team2169.robot.RobotStates.DriveType;
 import com.team2169.util.DebugPrinter;
+import com.team2169.util.DriveManager;
+import com.team2169.util.DriveSignal;
 import com.team2169.util.FlyByWireHandler;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -38,10 +40,12 @@ public class DriveTrain extends Subsystem {
 	private DoubleSolenoid ptoShift;
 	public AHRS navX;
 	private NetworkTable table;
+	private DriveManager dManager;
 
 	private DriveTrain() {
 
 		table = NetworkTable.getTable("SmartDashboard");
+		dManager = new DriveManager();
 		
 		//Fastest Robot will turn
 		table.putValue("Max Speed", Constants.turnMaxSpeed);
@@ -106,6 +110,12 @@ public class DriveTrain extends Subsystem {
 
 	}
 
+	void cheesyDrive(DriveSignal signal) {
+		left.set(ControlMode.PercentOutput, signal.getLeft());
+		right.set(ControlMode.PercentOutput, signal.getRight());
+		
+	}
+	
 	void driveHandler() {
 		
 		Constants.turnMaxError = table.getDouble("Max Error", 0);
@@ -117,6 +127,7 @@ public class DriveTrain extends Subsystem {
 		
 		switch (RobotWantedStates.wantedDriveType) {
 
+		
 		// Drive without Override
 		case NORMAL_DRIVING:
 		default:
@@ -124,9 +135,17 @@ public class DriveTrain extends Subsystem {
 			shift();
 
 			// Drive with Acceleration Handler
-			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false) * FlyByWireHandler.getSafeSpeed());
-			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false) * FlyByWireHandler.getSafeSpeed());
-
+			if(RobotStates.cheesyDrive) {
+				cheesyDrive(dManager.cheesyDrive(ControlMap.leftTankStick(false), ControlMap.rightTankStick(false), ControlMap.getQuickTurn(),
+						RobotStates.driveMode != RobotStates.DriveMode.LOW));
+				
+				break;
+			}
+			else {
+				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false) * FlyByWireHandler.getSafeSpeed());
+				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false) * FlyByWireHandler.getSafeSpeed());
+			}
+			
 			RobotStates.driveTrainOverride = false;
 			RobotStates.driveType = DriveType.NORMAL_DRIVING;
 
@@ -137,10 +156,18 @@ public class DriveTrain extends Subsystem {
 
 			shift();
 
+			if(RobotStates.cheesyDrive) {
+				cheesyDrive(dManager.cheesyDrive(ControlMap.leftTankStick(false), ControlMap.rightTankStick(false), ControlMap.getQuickTurn(),
+						RobotStates.driveMode != RobotStates.DriveMode.LOW));
+				
+				break;
+			}
+			else {
 			// Drive with Override
-			left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false));
-			right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false));
-
+				left.set(ControlMode.PercentOutput, ControlMap.leftTankStick(false));
+				right.set(ControlMode.PercentOutput, ControlMap.rightTankStick(false));
+			}
+			
 			RobotStates.driveTrainOverride = true;
 			RobotStates.driveType = DriveType.OVERRIDE_DRIVING;
 
