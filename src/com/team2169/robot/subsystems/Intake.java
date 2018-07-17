@@ -112,6 +112,7 @@ public class Intake extends Subsystem {
                 // Set Clamp to Clamped
                 clampSolenoid.set(Value.kReverse);
                 RobotStates.intakeClamp = IntakeClamp.CLAMP;
+                lastIntook = true;
                 break;
 
             case OPEN:

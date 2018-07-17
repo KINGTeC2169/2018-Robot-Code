@@ -70,11 +70,11 @@ public class AutoConstants {
 			}
 
 			public static class FarScale {
-				public static double startToPoint = 210;
+				public static double startToPoint = 215;
 				public static double pointToPoint2Turn = 90;
 				public static double pointToPoint2 = 236;
-				public static double point2ToScaleTurn = -105;
-				public static double point2ToScale = 65;
+				public static double point2ToScaleTurn = -110;
+				public static double point2ToScale = 62;
 				public static double intakeSpeed = .4;
 				public static double intakeInSpeed = .5;
 			}
@@ -88,9 +88,9 @@ public class AutoConstants {
 				public static double pointToScaleTurn = 50;
 				public static double pointToScale = 17;
 				public static double pointToBlockTurn = 100;
-				public static double pointToBlock = 64;
+				public static double pointToBlock = 61;
 				public static double intakeSpeed = .7;
-				public static double intakeInSpeed = .5;
+				public static double intakeInSpeed = 1;
 				
 				public static class ScaleSwitchClose {
 					public static double blockToSwitch = 6;
@@ -98,11 +98,11 @@ public class AutoConstants {
 			}
 
 			public static class Far {
-				public static double startToPoint = 210;
+				public static double startToPoint = 215;
 				public static double pointToPoint2Turn = 90;
 				public static double pointToPoint2 = 236;
 				public static double point2ToScaleTurn = -95;
-				public static double point2ToScale = 65;
+				public static double point2ToScale = 62;
 				public static double point2ToPoint3 = -18;
 				public static double point3ToBlockTurn = -120;
 				public static double point3ToBlock = 48;
@@ -140,7 +140,7 @@ public class AutoConstants {
 		public static class TwoBlock {
 			
 			public static double switchToPoint = -70;
-			public static double pointToPileTurn = 45;
+			public static double pointToPileTurn = 35;
 			public static double pointToPile = 52;
 		}
 

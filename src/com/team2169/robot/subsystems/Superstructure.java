@@ -11,7 +11,6 @@ import com.team2169.util.DataSelector;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Superstructure {
 
@@ -68,11 +67,9 @@ public class Superstructure {
         comp.start();
     }
 
-    public void subsystemLooper() {
+	public void subsystemLooper() {
     	
     	DataSelector.looper();
-    	
-    	SmartDashboard.putNumber("Voltage", DriverStation.getInstance().getBatteryVoltage());
     	
         drive.driveHandler();
         intake.intakeHandler();
@@ -81,6 +78,8 @@ public class Superstructure {
         
         smartDashboardLooper();
 
+        RobotStates.loopCount++;
+        
     }
 
     private void smartDashboardLooper() {

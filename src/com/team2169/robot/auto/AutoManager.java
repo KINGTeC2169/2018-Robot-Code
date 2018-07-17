@@ -1,6 +1,11 @@
 package com.team2169.robot.auto;
 
 import com.team2169.robot.Constants;
+import com.team2169.robot.RobotStates;
+import com.team2169.robot.RobotWantedStates;
+import com.team2169.robot.RobotStates.ArmPos;
+import com.team2169.robot.RobotStates.DriveType;
+import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.auto.AutoConstants.AutoSequenceMode;
 import com.team2169.robot.auto.AutoConstants.CenterPriority;
 import com.team2169.robot.auto.AutoConstants.Possesion;
@@ -153,6 +158,9 @@ public class AutoManager {
 		if (auto != null) {
 			auto.cancel();
 		}
+		RobotStates.armPos = ArmPos.IDLE;
+		RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
+		RobotWantedStates.wantedElevatorPos = Macro.PASS;
 	}
 
 	public void autoLooping() {

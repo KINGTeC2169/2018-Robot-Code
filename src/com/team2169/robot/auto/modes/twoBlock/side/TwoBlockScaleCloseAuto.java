@@ -90,7 +90,7 @@ public class TwoBlockScaleCloseAuto extends AutoMode {
         
         //Clamp block, wait 1/4 of a second and start to bring elevator up
         addSequential(new IntakeClampAction());
-        addSequential(new WaitCommand(.25));
+        addSequential(new WaitCommand(.5));
         
         //Back up to scale and stop the intakes
         addParallel(new ElevatorToScaleHigh());

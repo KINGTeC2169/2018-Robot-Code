@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 public class Constants {
 
 	//Global Constants
-
+	
 	 // Auto Names
 		public static final String preferenceOneName = "Switch";
 		public static final String preferenceTwoName = "Scale";
@@ -42,6 +42,7 @@ public class Constants {
 		public static final double kNeutralDeadband = 0;
 		public static final int kTimeoutMs = 10;
 		public static final int kBaseTrajPeriodMs = 0;
+		public static final double minimumEncoderVoltage = 0;
 		
 
 	//Drive Train
@@ -112,21 +113,25 @@ public class Constants {
 
 		
 		//Elevator Encoder Heights
-		public static int groundElevatorEncoderPosition = -600;
+		public static int groundElevatorEncoderPosition = -300;
 		public static int switchElevatorEncoderPosition = 7750;
 		public static int scaleLowElevatorEncoderPosition = 9000;
 		public static int scaleMidElevatorEncoderPosition = 14000;
-		public static int scaleHighElevatorEncoderPosition = 17750;
+		public static int scaleHighElevatorEncoderPosition = 19500;
 		
 		//Ramp Rate
-		public static final double elevatorRampRate = .75;
+		public static final double elevatorRampRate = .3;
 
 		
 	//Arm
 
-		public static int extendedArmEncoderPosition = 3930;
+		public static int extendedArmEncoderPosition = 3934 - 53;
 		public static int retractedArmEncoderPosition = extendedArmEncoderPosition - 600;
 		public static int stowArmEncoderPosition = 215;
+		
+		public static final double armLowerBound = -1250;
+		public static final double armUpperBound = 0;
+		
 		
 		//Arm TalonConfig Data	
 		public static TalonConfig armData = new TalonConfig();
@@ -155,6 +160,7 @@ public class Constants {
 	//Climber
 		
 		public static final double hookDeploySpeed = .5;
+
 		
 		
 

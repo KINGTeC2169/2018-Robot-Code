@@ -82,7 +82,7 @@ public class Arm {
 	}
 
 	public int getEncPosition() {
-		return enc.getValue();
+		return enc.getAverageValue();
 	}
 	
 	private void runToPosition(int pos) {

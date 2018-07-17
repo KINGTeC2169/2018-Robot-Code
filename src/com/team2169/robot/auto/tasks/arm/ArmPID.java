@@ -12,6 +12,7 @@ public class ArmPID{
 	private Arm arm;
 	private PIDF pid;
 	private double setpoint;
+	private int errorCounter;
 	
 	public ArmPID(Arm arm_) {	
 	
@@ -39,8 +40,23 @@ public class ArmPID{
 		pid.setI(Constants.armData.i);
 		pid.setD(Constants.armData.d);
 		pid.setF(Constants.armData.f);
-		double output = pid.getOutput(getPosition());
-		arm.arm.set(ControlMode.PercentOutput, output);
+
+		if(Math.abs(getPosition() - setpoint) > 7) {
+			errorCounter++;
+		}
+		else {
+			errorCounter = 0;
+		}
+		
+		if(errorCounter > 4) {
+			double output = pid.getOutput(getPosition());
+			arm.arm.set(ControlMode.PercentOutput, output);
+		}
+		else {
+			arm.arm.set(ControlMode.PercentOutput, 0);
+		}
+		
+		
 	}
 
 	public int getPosition() {

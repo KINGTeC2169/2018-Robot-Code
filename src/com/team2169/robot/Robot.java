@@ -1,8 +1,5 @@
 package com.team2169.robot;
 
-import com.team2169.robot.RobotStates.ArmPos;
-import com.team2169.robot.RobotStates.DriveType;
-import com.team2169.robot.RobotStates.Macro;
 import com.team2169.robot.RobotStates.RunningMode;
 import com.team2169.robot.auto.AutoManager;
 import com.team2169.robot.canCycles.CANCycleHandler;
@@ -69,7 +66,6 @@ public class Robot extends TimedRobot {
 			System.out.println("Auto Error");
 		}
 		superStructure.subsystemLooper();
-		// auto.autoLooping();
 
 	}
 
@@ -81,9 +77,6 @@ public class Robot extends TimedRobot {
 		}
 		System.out.println("Starting Tele");
 		Scheduler.getInstance().removeAll();
-		RobotStates.armPos = ArmPos.IDLE;
-		RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
-		RobotWantedStates.wantedElevatorPos = Macro.PASS;
 	}
 
 	@Override

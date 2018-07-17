@@ -14,7 +14,7 @@ public class PIDF{
 	private double maxOutput=0; 
 	private double minOutput=0;
 
-	private double setpoint=0;
+	public double setpoint=0;
 
 	private double lastActual=0;
 
