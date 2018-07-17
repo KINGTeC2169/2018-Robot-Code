@@ -41,13 +41,14 @@ public class RobotStates {
 
     }
 
+    public static boolean cheesyDrive = false;
     public static DriveMode driveMode;
     public static boolean ptoActive;
-
+    
     // DriveOverride Handler
     public enum DriveType {
 
-        OVERRIDE_DRIVING, NORMAL_DRIVING, EXTERNAL_DRIVING, HANG
+        OVERRIDE_DRIVING, NORMAL_DRIVING, EXTERNAL_DRIVING, HANG, CHEESY_DRIVE
 
     }
 

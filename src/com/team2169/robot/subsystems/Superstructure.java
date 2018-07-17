@@ -68,7 +68,8 @@ public class Superstructure {
         comp.start();
     }
 
-    public void subsystemLooper() {
+    @SuppressWarnings("deprecation")
+	public void subsystemLooper() {
     	
     	DataSelector.looper();
     	

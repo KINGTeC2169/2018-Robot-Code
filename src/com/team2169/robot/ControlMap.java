@@ -231,4 +231,8 @@ public class ControlMap {
 		}
 	}
 
+	public static boolean getQuickTurn() {
+		return primaryLeft.getRawButton(6) || primaryRight.getRawButton(11);
+	}
+
 }

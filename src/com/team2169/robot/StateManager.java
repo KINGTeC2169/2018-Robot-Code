@@ -31,24 +31,8 @@ public class StateManager {
 	// Wanted Driver Override Handler
 	private static void getWantedDriveOverride() {
 
-		boolean hangActive = true;
 		
-		if(ControlMap.driversWantToHang()) {
-			RobotWantedStates.wantedDriveType = DriveType.HANG;
-		}
-		else if(ControlMap.driversWantToDrive()) {
-			hangActive = false;
-		}
 		
-		if(!hangActive) {
-			if (ControlMap.primaryDriverOverride()) {
-				RobotWantedStates.wantedDriveType = DriveType.OVERRIDE_DRIVING;
-			}
-			// Drivers Want to Drive
-			else {
-				RobotWantedStates.wantedDriveType = DriveType.NORMAL_DRIVING;
-			}
-		}
 	}
 
 	// Wanted Driver Shift Handler
