@@ -10,11 +10,11 @@ public class AutoConstants {
 		LEFT, RIGHT, ERROR
 	}
 
-	public static enum Preference {
+	public enum Preference {
 		SWITCH, SCALE
 	}
 
-	public static enum Yield {
+	public enum Yield {
 		NONE, FAR_SCALE, ALL_SCALE
 	}
 

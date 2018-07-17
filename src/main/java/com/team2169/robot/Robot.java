@@ -18,7 +18,6 @@ public class Robot extends TimedRobot {
 	private static Superstructure superStructure;
 	public static FMSManager fms;
 	private static ShuffleBoardManager shuffle;
-	boolean lastConnected = true;
 
 	@Override
 	public void robotInit() {

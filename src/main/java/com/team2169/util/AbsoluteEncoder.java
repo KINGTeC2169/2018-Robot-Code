@@ -15,7 +15,7 @@ public class AbsoluteEncoder {
 	private boolean wrap = false;
 	private int holdCounter = 0;
 	
-	public static enum EncoderHealth {
+	public enum EncoderHealth {
 		HEALTHY, UNHEALTHY, UNKNOWN
 	}
 

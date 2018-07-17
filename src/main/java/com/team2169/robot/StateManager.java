@@ -31,8 +31,6 @@ public class StateManager {
 	// Wanted Driver Override Handler
 	private static void getWantedDriveOverride() {
 
-		
-		
 	}
 
 	// Wanted Driver Shift Handler

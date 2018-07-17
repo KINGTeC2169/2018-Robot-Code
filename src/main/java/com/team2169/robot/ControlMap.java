@@ -34,7 +34,7 @@ public class ControlMap {
 	private static int bMacroScaleMid = 4;
 	private static int bMacroScaleHigh = 5;
 	private static int bMacroHang = 6;
-	
+
 	public static int operatorBlockRelease = 1;
 
 	// Intake Keys

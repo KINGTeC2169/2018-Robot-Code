@@ -28,5 +28,7 @@ bin/
 \.idea/
 
 *.iml
-
+.gradle/
+gradle/
+build/
 \.settings/

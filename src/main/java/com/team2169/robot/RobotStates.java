@@ -110,7 +110,7 @@ public class RobotStates {
 
     }
     
-	public static enum ElevatorDirection {
+	public enum ElevatorDirection {
 		UP, DOWN
 	}
 	
