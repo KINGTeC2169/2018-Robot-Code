@@ -29,27 +29,17 @@ public class ActuatorMap {
     public static final int PCMPort = 12;
 
     // Intake Piston
-    public static final int clampPortForward = 5;
-    public static final int clampPortReverse = 4;
+    public static final int clampPortForward = 0;
+    public static final int clampPortReverse = 1;
 
     // Drive Train Shifting
-    public static final int dtSpeedShiftForward = 1;
-    public static final int dtSpeedShiftReverse = 0;
+    public static final int dtSpeedShiftForward = 3;
+    public static final int dtSpeedShiftReverse = 2;
 
     // PTO Ports
-    public static final int ptoShiftForward = 2;
-    public static final int ptoShiftReverse = 3;
+    public static final int ptoShiftForward = 4;
+    public static final int ptoShiftReverse = 5;
 
-    // Hanger Ports
-    public static final int platformReleasePiston = 9;
-
-    // Arduino Ports
-    public static final int prepArduinoDIOPort = 4;
-    public static final int arduinoComPort = 0;
-
-    // Analog Inputs
-    public static final int intakeUltrasonicInputPort = 0;
-    public static final int intakeUltrasonicOutputPort = 1;
     public static final int elevatorBottomLimitID = 2;
     public static final int elevatorTopLimitID = 3;
 	public static final int armEncoderPort = 2;

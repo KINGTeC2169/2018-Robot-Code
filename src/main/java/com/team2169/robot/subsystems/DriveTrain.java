@@ -136,7 +136,7 @@ public class DriveTrain extends Subsystem {
 
 			// Drive with Acceleration Handler
 			if(RobotStates.cheesyDrive) {
-				cheesyDrive(dManager.cheesyDrive(ControlMap.leftTankStick(false), ControlMap.rightTankStick(false), ControlMap.getQuickTurn(),
+				cheesyDrive(dManager.cheesyDrive(ControlMap.leftTankStick(false), ControlMap.getTurn(), ControlMap.getQuickTurn(),
 						RobotStates.driveMode != RobotStates.DriveMode.LOW));
 				
 				break;

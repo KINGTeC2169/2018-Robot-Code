@@ -89,7 +89,7 @@ public class AutoManager {
 
 		// Mode Choosers
 		preferenceChooser.addDefault(Constants.preferenceOneName, Preference.SWITCH);
-		preferenceChooser.addObject(Constants.preferenceTwoName, Preference.SCALE);
+		preferenceChooser.addDefault(Constants.preferenceTwoName, Preference.SCALE);
 
 		sidePriorityChooser.addDefault("1 In Scale", SidePriority.ONE_SCALE);
 		sidePriorityChooser.addObject("2 In Scale", SidePriority.TWO_SCALE);

@@ -216,6 +216,7 @@ public class Elevator {
 				Constants.elevatorUpData.timeoutMs);
 		talon.configPeakCurrentLimit(35, Constants.elevatorUpData.timeoutMs);
 		talon.configPeakCurrentDuration(500, Constants.elevatorUpData.timeoutMs);
+		talon.setInverted(true);
 		talon.setSensorPhase(false);
 		talon.configClosedloopRamp(.5, 10);
 		talon.configOpenloopRamp(Constants.elevatorRampRate, 10);

@@ -84,14 +84,16 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 
 		try {
-			StateManager.teleOpStateLooper();
-			shuffle.teleOp();
-			superStructure.subsystemLooper();
+
 			
 		} catch (Exception e) {
 			DriverStation.reportError(e.toString(), true);
 		}
-		
+
+		StateManager.teleOpStateLooper();
+		shuffle.teleOp();
+		superStructure.subsystemLooper();
+
 	}
 
 	@Override

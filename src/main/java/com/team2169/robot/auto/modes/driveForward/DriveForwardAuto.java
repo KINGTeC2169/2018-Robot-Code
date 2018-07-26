@@ -13,9 +13,8 @@ public class DriveForwardAuto extends AutoMode {
 		RobotStates.runningMode = RunningMode.AUTO;
 		this.autoName = "Drive Forward";
 		
-		addSequential(new DriveStraight(240, 1));    
-		addSequential(new TurnInPlace(90, 1));   
-		addSequential(new DriveStraight(60, 1));
+		addSequential(new DriveStraight(240, 1));
+
     }
 
     // Put looping checks/code in here

@@ -14,7 +14,7 @@ public class ShuffleBoardManager {
 
     	driveTypeChooser.addDefault("No", false);
     	driveTypeChooser.addObject("Yes", true);
-    	SmartDashboard.putData(driveTypeChooser);
+    	SmartDashboard.putData("Bootleg Setup", driveTypeChooser);
         connected();
 
     }

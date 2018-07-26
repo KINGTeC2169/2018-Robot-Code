@@ -106,6 +106,10 @@ public class ControlMap {
 		return stickVal;
 	}
 
+	public static double getTurn(){
+		return -primaryRight.getRawAxis(0);
+	}
+
 	// Primary Driver DT Shift Up
 	static boolean shiftUp() {
 		return (primaryRight.getRawButton(topShiftUp) || primaryLeft.getRawButton(topShiftUp)

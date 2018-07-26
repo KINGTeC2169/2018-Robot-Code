@@ -42,7 +42,7 @@ public class RobotStates {
 
     }
 
-    public static boolean cheesyDrive = false;
+    public static boolean cheesyDrive = true;
     public static DriveMode driveMode;
     public static boolean ptoActive;
     

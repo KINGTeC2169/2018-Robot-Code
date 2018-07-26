@@ -81,7 +81,8 @@ public class AbsoluteEncoder {
 			 * If the number is negative, figure out how many rotations negative it is,
 			 * multiply that by the # of ticks needed for 1 rotation, and add that to the
 			 * output. This shouldn't ever happen due to the nature of abs. encoders, but
-			 * I've seen weird things, so here it is, just to be safe.
+			 * I've seen weird 
+			 * things, so here it is, just to be safe.
 			 */
 			foo += 4096 * (Math.floor(setpoint / 4096));
 		}
